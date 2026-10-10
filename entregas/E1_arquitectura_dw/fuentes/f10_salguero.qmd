@@ -1,0 +1,23 @@
+---
+title: "F10. Mapa de feminicidios de María Salguero (no aceptada)"
+---
+
+Mapa ciudadano de feminicidios reportados por la prensa; en E0 se propuso para dimensionar el subregistro oficial.
+
+| Campo | Descripción |
+|---|---|
+| **Nombre y dueño** | "Feminicidios en México", Mapa Nacional de Feminicidios en México reportados por la prensa. Elaborado por la geofísica María Salguero, a partir de notas de prensa desde 2016 [[4]](../referencias.qmd). |
+| **URL** | <https://www.google.com/maps/d/viewer?mid=174IjBzP-fl_6wpRHg5pkGSj2egE> |
+| **Acceso** | Visualización en Google My Maps; sin exportación de datos. |
+| **Formato y tamaño** | Mapa con un punto por caso. |
+| **Grano** | Un feminicidio reportado en prensa (ubicación y descripción). |
+| **Cobertura** | Capas anuales de 2016 a 2020; publicado el 18 de febrero de 2023. |
+| **Información de México** | Casos en todo el país. |
+| **Licencia y restricciones** | Sin licencia declarada. |
+| **Llaves de integración** | Ubicación geográfica (habría que asignarla a entidad) y año. |
+| **Decisión** | **No aceptada:** no cumple C2 (solo 2016–2020) ni C4 (sin licencia ni descarga). Se cita solo como contexto del subregistro. |
+
+![Mapa en Google My Maps con capas por año](../img/origen_salguero.png){width=60% fig-align="center"}
+
+
+[← Volver a fuentes de datos](../fuentes.qmd)

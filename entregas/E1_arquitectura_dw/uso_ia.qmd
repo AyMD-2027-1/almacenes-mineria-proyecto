@@ -1,0 +1,56 @@
+---
+title: "Documentación de uso de herramientas de IA"
+subtitle: "Entrega E1"
+---
+
+Usamos Claude (Anthropic) durante la búsqueda y verificación de fuentes de esta entrega. Documentamos
+su uso a continuación, tal como lo pide el instructivo de la entrega.
+
+## 1. Herramienta utilizada
+
+Claude (Anthropic), modelo Opus, mediante Claude Code (asistente con acceso a terminal y navegador).
+
+## 2. Tareas para las cuales lo usamos
+
+### a) Búsqueda de fuentes candidatas
+
+Le describimos el problema y las preguntas P1–P4 y le pedimos fuentes reales con su URL, además de
+revisar las que ya teníamos de E0 y de nuestra propuesta de modelo.
+
+### b) Entender datasets muy grandes
+
+Varias fuentes traen demasiada información para revisarla a mano (decenas de tablas por edición de la
+ENDIREH, el CSV de 3.5 GB de Kaggle, el formato ancho del SESNSP). Le pedimos abrirlas, describir
+columnas, contar filas, comprobar que hubiera información de México e identificar llaves de unión.
+
+### c) Pruebas de cobertura
+
+Pruebas de LRCLIB y MusicBrainz con las canciones más escuchadas en México.
+
+### d) Vistas previas de los datos y formato
+
+Tablas de vista previa generadas a partir de los archivos descargados y formato del documento.
+
+## 3. Prompts empleados (resumen fiel)
+
+Le dimos el instructivo de E1 y las preguntas de E0 y le pedimos evaluar al menos cinco fuentes,
+comprobar que cada una existiera y tuviera datos de México, y documentar formato, grano, cobertura,
+licencia y llaves de integración, sin incluir nada que no se pudiera abrir.
+
+## 4. Qué hicimos con la salida obtenida
+
+- Definimos los criterios de selección y decidimos qué fuentes aceptar o no.
+- Identificamos que la ENDIREH tiene cinco ediciones y pedimos verificarlas todas.
+- Descargamos con nuestras cuentas el dataset de Kaggle y elegimos el recurso de CONAPO adecuado para
+  calcular tasas.
+- Entramos a Spotify Charts, revisamos sus términos de uso y documentamos por qué no se acepta.
+- Revisamos las cifras contra los archivos descargados y corregimos lo que no coincidía con las fuentes
+  oficiales (por ejemplo, la comparabilidad de la serie del SESNSP).
+- Descartamos propuestas que no tenían cobertura suficiente o requerían credenciales, y dejamos Google
+  Trends como trabajo futuro.
+- Decidimos no guardar ni publicar letras de canciones por derechos de autor.
+
+## 5. Revisión y validación de nuestra parte
+
+Las decisiones de alcance, los criterios y la elección de fuentes fueron nuestras; la herramienta nos
+ayudó a hacer la búsqueda y la verificación más rápido.

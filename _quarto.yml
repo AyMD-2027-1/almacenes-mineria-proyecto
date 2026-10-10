@@ -34,6 +34,37 @@ website:
             text: "Riesgos y supuestos"
           - href: entregas/E0_comprension_negocio/uso_ia.qmd
             text: "Uso de herramientas de IA"
+      - text: "E1 · Arquitectura del DW"
+        menu:
+          - href: entregas/E1_arquitectura_dw/fuentes.qmd
+            text: "Fuentes de datos"
+          - text: "---"
+          - text: "Catálogo de fuentes"
+          - href: entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.qmd
+            text: "F1 · SESNSP"
+          - href: entregas/E1_arquitectura_dw/fuentes/f02_endireh.qmd
+            text: "F2 · ENDIREH"
+          - href: entregas/E1_arquitectura_dw/fuentes/f03_conapo.qmd
+            text: "F3 · CONAPO"
+          - href: entregas/E1_arquitectura_dw/fuentes/f04_kworb.qmd
+            text: "F4 · Kworb"
+          - href: entregas/E1_arquitectura_dw/fuentes/f05_kaggle.qmd
+            text: "F5 · Kaggle Spotify Charts"
+          - href: entregas/E1_arquitectura_dw/fuentes/f06_misongyny.qmd
+            text: "F6 · MiSonGyny"
+          - href: entregas/E1_arquitectura_dw/fuentes/f07_lrclib.qmd
+            text: "F7 · LRCLIB"
+          - href: entregas/E1_arquitectura_dw/fuentes/f08_musicbrainz.qmd
+            text: "F8 · MusicBrainz"
+          - href: entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.qmd
+            text: "F9 · Spotify Charts (no aceptada)"
+          - href: entregas/E1_arquitectura_dw/fuentes/f10_salguero.qmd
+            text: "F10 · Mapa de Salguero (no aceptada)"
+          - text: "---"
+          - href: entregas/E1_arquitectura_dw/uso_ia.qmd
+            text: "Uso de herramientas de IA"
+          - href: entregas/E1_arquitectura_dw/referencias.qmd
+            text: "Referencias"
     right:
       - icon: github
         href: "https://github.com/jzarcoo/almacenes-mineria-proyecto"

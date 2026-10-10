@@ -1,0 +1,93 @@
+---
+title: "Fuentes de datos"
+subtitle: "Búsqueda, criterios de selección y catálogo verificado"
+---
+
+## Glosario
+
+| Término | Significado |
+|---|---|
+| SESNSP | Secretariado Ejecutivo del Sistema Nacional de Seguridad Pública. |
+| RNID | Registro Nacional de Incidencia Delictiva: metodología del SESNSP vigente desde enero de 2026. |
+| INEGI | Instituto Nacional de Estadística y Geografía. |
+| ENDIREH | Encuesta Nacional sobre la Dinámica de las Relaciones en los Hogares (INEGI). |
+| LGAMVLV | Ley General de Acceso de las Mujeres a una Vida Libre de Violencias (antes "…de Violencia"); ver [marco de referencia](#marco). |
+| CONAPO | Consejo Nacional de Población. |
+| MiSonGyny | Corpus de letras de canciones en español etiquetadas por misoginia. |
+| LRCLIB | Biblioteca de letras de canciones libre y abierta, con API y descargas de su base de datos. |
+
+## Criterios de selección
+
+Una fuente se acepta en el catálogo si cumple los cuatro criterios:
+
+- **C1. Relevancia:** alimenta al menos una pregunta de E0 (P1–P4).
+- **C2. Cobertura temporal** que se cruza con la ventana 2017–2025 y contiene información de México.
+- **C3. Llave de integración** explícita: clave INEGI de entidad, fecha, o canción/artista.
+- **C4. Licencia o términos de uso** que permiten el uso académico que requiere el proyecto.
+
+| ID | Pregunta de E0 (resumen) |
+|---|---|
+| P1 | Proporción de contenido misógino en la música consumida en México, por género musical y entidad. |
+| P2 | Correlación entre la misoginia musical por entidad y los indicadores oficiales de violencia de género (SESNSP). |
+| P3 | Evolución de la misoginia musical en la última década, por tipo de violencia. |
+| P4 | Tipos de violencia que predominan en la música y si coinciden con los más reportados oficialmente. |
+: {tbl-colwidths="[8,92]"}
+
+### Marco de referencia: tipos de violencia {#marco}
+
+Para comparar fuentes que clasifican la violencia de forma distinta usamos como taxonomía común la
+LGAMVLV (última reforma DOF 15-01-2026) [[1]](referencias.qmd). Su **artículo 6** define los tipos de
+violencias contra las mujeres: I. psicológica, II. física, III. patrimonial, IV. económica, V. sexual,
+VI. a través de interpósita persona (actos dirigidos contra hijas, hijos, familiares o personas
+allegadas con el objetivo de dañar a la mujer) y VII. cualquier otra forma análoga. Además, su
+**artículo 20 Quinquies** define la **violencia mediática**: todo acto a través de cualquier medio de
+comunicación que promueva estereotipos sexistas, haga apología de la violencia contra las mujeres o
+difunda discurso de odio sexista. Es el marco legal más cercano al contenido misógino en la música.
+
+## Proceso de búsqueda
+
+Partimos de las fuentes que ya habíamos identificado en E0 (Kworb, SESNSP, ENDIREH, mapa de Salguero,
+MiSonGyny) y de la propuesta de modelo integrado del equipo. Para ampliar la búsqueda y, sobre todo,
+para entender rápido datasets muy grandes, nos apoyamos en Claude (ver
+[uso de herramientas de IA](uso_ia.qmd)).
+
+| | |
+|---|---|
+| **Fecha de verificación** | 26 de septiembre de 2026. Las capturas de Kworb y las vistas previas se actualizaron el 9 de octubre de 2026. |
+| **Portales revisados** | Datos abiertos del SESNSP (gob.mx), INEGI (5 ediciones de la ENDIREH), datos.gob.mx (CONAPO), Kaggle, Kworb, Spotify Charts, GitHub (MiSonGyny), MusicBrainz, LRCLIB y Google My Maps. |
+| **Datos que se buscaron** | (A) consumo musical en México en el tiempo; (B) letras de esas canciones; (C) género musical y etiquetas de misoginia para el clasificador; (D) violencia de género por entidad y periodo, y población para calcular tasas. |
+: {tbl-colwidths="[25,75]"}
+
+### Fuentes evaluadas
+
+| # | Fuente | Tipo | Dato | Decisión | Motivo |
+|---|---|---|:-:|---|---|
+| F1 | [SESNSP, incidencia delictiva estatal](fuentes/f01_sesnsp.qmd) | Archivo CSV de portal abierto | D | **Aceptada** | C1–C4 |
+| F2 | [INEGI, ENDIREH (2003–2021)](fuentes/f02_endireh.qmd) | Microdatos institucionales | D | **Aceptada** | C1–C4 |
+| F3 | [CONAPO, población a mitad de año](fuentes/f03_conapo.qmd) | Archivo CSV de portal abierto | D | **Aceptada** | C1–C4 |
+| F4 | [Kworb, charts de Spotify México](fuentes/f04_kworb.qmd) | Página web | A | **Aceptada** | C1–C4 |
+| F5 | [Kaggle, *Spotify Charts*](fuentes/f05_kaggle.qmd) | Dataset de Kaggle | A | **Aceptada** | C1–C4 |
+| F6 | [MiSonGyny](fuentes/f06_misongyny.qmd) | Repositorio académico | C | **Aceptada** | C1–C4 |
+| F7 | [LRCLIB](fuentes/f07_lrclib.qmd) | API REST | B | **Aceptada** | C1–C4 |
+| F8 | [MusicBrainz](fuentes/f08_musicbrainz.qmd) | API REST | C | **Aceptada** | C1–C4 |
+| F9 | [Spotify Charts (por ciudad)](fuentes/f09_spotify_charts.qmd) | Portal web con cuenta | A | No aceptada | C4 |
+| F10 | [Mapa de feminicidios (M. Salguero)](fuentes/f10_salguero.qmd) | Mapa en Google My Maps | D | No aceptada | C2, C4 |
+
+### Resultado por tipo de fuente
+
+| Tipo de fuente | Fuentes | Decisión |
+|---|---|---|
+| Archivo CSV de portal abierto | SESNSP (F1), CONAPO (F3) | Aceptadas |
+| Microdatos institucionales | ENDIREH (F2) | Aceptada |
+| Página web | Kworb (F4) | Aceptada |
+| Dataset de Kaggle | *Spotify Charts* (F5) | Aceptada |
+| Repositorio académico | MiSonGyny (F6) | Aceptada |
+| API REST | LRCLIB (F7), MusicBrainz (F8) | Aceptadas |
+| Portal web con cuenta | Spotify Charts por ciudad (F9) | No aceptada |
+| Mapa en Google My Maps | Mapa de Salguero (F10) | No aceptada |
+| **Total** | **10 evaluadas: 8 aceptadas de 6 tipos distintos y 2 no aceptadas** | |
+
+## Trabajo futuro
+
+**Google Trends** (dataset público `bigquery-public-data.google_trends`) podría aportar interés musical
+por estado. Se evaluará en una entrega posterior para recuperar el nivel de entidad en P1 y P2.

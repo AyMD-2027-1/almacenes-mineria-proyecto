@@ -1,0 +1,23 @@
+---
+title: "F9. Spotify Charts — charts por ciudad (no aceptada)"
+---
+
+Portal oficial de Spotify; era la única fuente con consumo por ciudad.
+
+| Campo | Descripción |
+|---|---|
+| **Nombre y dueño** | Spotify Charts, portal de Spotify AB (empresa sueca de streaming de música). |
+| **URL** | <https://charts.spotify.com/charts/view/citytoptrack-mexicocity-weekly/2025-08-07> |
+| **Acceso** | Requiere cuenta de Spotify; consulta en pantalla, sin opción de descarga. |
+| **Formato y tamaño** | Página web. |
+| **Grano** | Una fila por canción y semana en cada ciudad: posición, pico, posición previa y racha. |
+| **Cobertura** | Semanal. |
+| **Información de México** | El equipo verificó el chart semanal de la Ciudad de México (semana del 7 de agosto de 2025). |
+| **Licencia y restricciones** | Términos de uso: solo uso personal; prohíben *scraping* o cualquier medio automatizado, copiar, redistribuir o mostrar públicamente el contenido. |
+| **Llaves de integración** | Ciudad, semana, artista y título. |
+| **Decisión** | **No aceptada:** no cumple C4; además no muestra streams, por lo que no permitiría ponderar el consumo. |
+
+![Chart semanal de la Ciudad de México: sin descarga ni columna de streams](../img/equipo_spotify_cdmx.png){width=60% fig-align="center"}
+
+
+[← Volver a fuentes de datos](../fuentes.qmd)
