@@ -26,9 +26,9 @@ Cifras oficiales de carpetas de investigación (delitos) y de víctimas, por ent
 
 ## Problemas anticipados para la integración
 
-- **Tres metodologías.** La página de descarga del SESNSP separa los archivos en tres bloques "correspondientes a recopilaciones metodológicas utilizadas en cada uno de los periodos": 1997–2017, 2015–2025 y 2026 a la fecha. La serie 1997–2017 usa un catálogo de delitos anterior al de 2015–2025. Para 2026 en adelante (RNID), la *Nota metodológica: comparación histórica* del SESNSP [[2]](../referencias.qmd) indica que la serie se diseñó para ser comparable, pero con cambios que afectan a este proyecto: (a) *Feminicidio* ahora especifica que incluye transfeminicidios y la *Tentativa de feminicidio* aparece como subtipo nuevo; (b) aparece el delito *Violación a la intimidad sexual*, que antes se registraba en "Otros delitos contra la libertad y la seguridad sexual" o en "Violencia de género distinta a la familiar".
-- **Formato ancho y codificación:** los meses vienen como columnas y el archivo está en latin-1, a diferencia de otras fuentes en UTF-8.
-- **Sexo de la víctima incompleto:** el archivo de víctimas solo cubre 13 tipos de delito (homicidio, feminicidio, lesiones, secuestro, trata, entre otros). Violencia familiar y los delitos sexuales solo están en el archivo de delitos, sin sexo de la víctima.
-- **Taxonomía distinta:** clasifica delitos, no los tipos de violencia de la LGAMVLV ([marco de referencia](../fuentes.qmd#marco)).
+- El SESNSP ha usado tres metodologías para registrar los delitos: una de 1997 a 2017, otra de 2015 a 2025 y una nueva a partir de 2026. Según su nota metodológica, la de 2026 se diseñó para ser comparable con la anterior, pero cambió la forma de registrar el feminicidio, que ahora separa la tentativa e incluye de forma explícita los transfeminicidios, y agregó el delito de violación a la intimidad sexual, que antes se contaba dentro de otras categorías [[2]](../referencias.qmd).
+- Los meses aparecen como columnas, a diferencia de las demás fuentes, y el archivo usa una codificación de caracteres distinta.
+- El archivo de víctimas solo indica el sexo en algunos delitos; en la violencia familiar y en los delitos sexuales no se sabe si la víctima fue mujer.
+- La fuente clasifica delitos, mientras que la referencia del proyecto son los tipos de violencia de la LGAMVLV, por lo que no hay una equivalencia directa entre ambas clasificaciones.
 
 [← Volver a fuentes de datos](../fuentes.qmd)

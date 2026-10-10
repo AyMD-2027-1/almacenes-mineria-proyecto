@@ -15,6 +15,10 @@ subtitle: "Búsqueda, criterios de selección y catálogo verificado"
 | CONAPO | Consejo Nacional de Población. |
 | MiSonGyny | Corpus de letras de canciones en español etiquetadas por misoginia. |
 | LRCLIB | Biblioteca de letras de canciones libre y abierta, con API y descargas de su base de datos. |
+| RNPDNO | Registro Nacional de Personas Desaparecidas y No Localizadas (Comisión Nacional de Búsqueda). |
+| ITER | Principales resultados por localidad del Censo de Población y Vivienda 2020 (INEGI). |
+| CONEVAL | Consejo Nacional de Evaluación de la Política de Desarrollo Social. |
+| ENDUTIH | Encuesta Nacional sobre Disponibilidad y Uso de Tecnologías de la Información en los Hogares (INEGI). |
 
 ## Criterios de selección
 
@@ -54,7 +58,7 @@ para entender rápido datasets muy grandes, nos apoyamos en Claude (ver
 | | |
 |---|---|
 | **Fecha de verificación** | 26 de septiembre de 2026. Las capturas de Kworb y las vistas previas se actualizaron el 9 de octubre de 2026. |
-| **Portales revisados** | Datos abiertos del SESNSP (gob.mx), INEGI (5 ediciones de la ENDIREH), datos.gob.mx (CONAPO), Kaggle, Kworb, Spotify Charts, GitHub (MiSonGyny), MusicBrainz, LRCLIB y Google My Maps. |
+| **Portales revisados** | Datos abiertos del SESNSP (gob.mx), INEGI (5 ediciones de la ENDIREH), datos.gob.mx (CONAPO), Kaggle, Kworb, Spotify Charts, GitHub (MiSonGyny), MusicBrainz, LRCLIB, Google Trends, Google My Maps, Data Cívica (RNPDNO), INEGI (Censo 2020 y ENDUTIH), CONEVAL, México Evalúa, Natural Earth y Last.fm. |
 | **Datos que se buscaron** | (A) consumo musical en México en el tiempo; (B) letras de esas canciones; (C) género musical y etiquetas de misoginia para el clasificador; (D) violencia de género por entidad y periodo, y población para calcular tasas. |
 : {tbl-colwidths="[25,75]"}
 
@@ -70,24 +74,34 @@ para entender rápido datasets muy grandes, nos apoyamos en Claude (ver
 | F6 | [MiSonGyny](fuentes/f06_misongyny.qmd) | Repositorio académico | C | **Aceptada** | C1–C4 |
 | F7 | [LRCLIB](fuentes/f07_lrclib.qmd) | API REST | B | **Aceptada** | C1–C4 |
 | F8 | [MusicBrainz](fuentes/f08_musicbrainz.qmd) | API REST | C | **Aceptada** | C1–C4 |
-| F9 | [Spotify Charts (por ciudad)](fuentes/f09_spotify_charts.qmd) | Portal web con cuenta | A | No aceptada | C4 |
-| F10 | [Mapa de feminicidios (M. Salguero)](fuentes/f10_salguero.qmd) | Mapa en Google My Maps | D | No aceptada | C2, C4 |
+| F9 | [Spotify Charts (por ciudad)](fuentes/f09_spotify_charts.qmd) | Portal web con cuenta | A | **Aceptada con limitaciones** | C1–C3; C4 parcial |
+| F10 | [Mapa de feminicidios (M. Salguero)](fuentes/f10_salguero.qmd) | Mapa en Google My Maps | D | **Aceptada con limitaciones** | C1, C3; C2 y C4 parciales |
+| F11 | [Google Trends, interés por estado](fuentes/f11_google_trends.qmd) | Servicio web de Google | A | **Aceptada** | C1–C4 |
+| F12 | [Kaggle, *Top Spotify Songs in 73 Countries*](fuentes/f12_kaggle_top73.qmd) | Dataset de Kaggle | A | **Aceptada** | C1–C4 |
+| F13 | [RNPDNO, personas desaparecidas (Data Cívica)](fuentes/f13_rnpdno.qmd) | Archivo CSV de organización civil | D | **Aceptada con limitaciones** | C3; C1, C2 y C4 parciales |
+| F14 | [INEGI, Censo 2020 ITER](fuentes/f14_censo_iter.qmd) | Archivo CSV de portal abierto | D | **Aceptada** | C1–C4 |
+| F15 | [CONEVAL, pobreza por entidad](fuentes/f15_coneval.qmd) | Archivo Excel institucional | D | **Aceptada** | C1–C4 |
+| F16 | [INEGI, ENDUTIH 2024](fuentes/f16_endutih.qmd) | Microdatos institucionales | A | **Aceptada** | C1–C4 |
+| F17 | [México Evalúa, índice de impunidad](fuentes/f17_mexico_evalua.qmd) | Reporte en PDF | D | **Aceptada con limitaciones** | C1, C3; C2 y C4 parciales |
+| F18 | [Natural Earth, límites de estados](fuentes/f18_natural_earth.qmd) | Archivo geográfico (shapefile) | D | **Aceptada** | C1, C3, C4 |
+| F19 | [Last.fm, etiquetas de género](fuentes/f19_lastfm.qmd) | API REST con llave | C | **Aceptada con limitaciones** | C1, C3; C4 condicionado |
 
 ### Resultado por tipo de fuente
 
 | Tipo de fuente | Fuentes | Decisión |
 |---|---|---|
-| Archivo CSV de portal abierto | SESNSP (F1), CONAPO (F3) | Aceptadas |
-| Microdatos institucionales | ENDIREH (F2) | Aceptada |
+| Archivo CSV de portal abierto | SESNSP (F1), CONAPO (F3), Censo 2020 ITER (F14) | Aceptadas |
+| Microdatos institucionales | ENDIREH (F2), ENDUTIH (F16) | Aceptadas |
 | Página web | Kworb (F4) | Aceptada |
-| Dataset de Kaggle | *Spotify Charts* (F5) | Aceptada |
+| Dataset de Kaggle | *Spotify Charts* (F5), *Top Spotify Songs in 73 Countries* (F12) | Aceptadas |
 | Repositorio académico | MiSonGyny (F6) | Aceptada |
 | API REST | LRCLIB (F7), MusicBrainz (F8) | Aceptadas |
-| Portal web con cuenta | Spotify Charts por ciudad (F9) | No aceptada |
-| Mapa en Google My Maps | Mapa de Salguero (F10) | No aceptada |
-| **Total** | **10 evaluadas: 8 aceptadas de 6 tipos distintos y 2 no aceptadas** | |
-
-## Trabajo futuro
-
-**Google Trends** (dataset público `bigquery-public-data.google_trends`) podría aportar interés musical
-por estado. Se evaluará en una entrega posterior para recuperar el nivel de entidad en P1 y P2.
+| Servicio web de Google | Google Trends (F11) | Aceptada |
+| Portal web con cuenta | Spotify Charts por ciudad (F9) | Aceptada con limitaciones |
+| Mapa en Google My Maps | Mapa de Salguero (F10) | Aceptada con limitaciones |
+| Archivo CSV de organización civil | RNPDNO vía Data Cívica (F13) | Aceptada con limitaciones |
+| Archivo Excel institucional | CONEVAL (F15) | Aceptada |
+| Reporte en PDF | México Evalúa (F17) | Aceptada con limitaciones |
+| Archivo geográfico (shapefile) | Natural Earth (F18) | Aceptada |
+| API REST con llave | Last.fm (F19) | Aceptada con limitaciones |
+| **Total** | **19 evaluadas y aceptadas, de 14 tipos distintos; cinco de ellas con limitaciones** | |

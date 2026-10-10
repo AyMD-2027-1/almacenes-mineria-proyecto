@@ -1,0 +1,380 @@
+---
+title: "Arquitectura de tres capas"
+subtitle: "Staging, DW y DataMart en BigQuery con enfoque medallion"
+---
+
+## Visión general
+
+Organizamos el almacén con el enfoque **medallion** y lo implementamos en BigQuery en tres datasets, como
+pide la entrega. Los tres datasets se crean en la misma ubicación, **US**, porque BigQuery no permite
+consultas entre datasets de regiones distintas.
+
+| Capa medallion | Capa de la entrega | Dónde vive | Contenido |
+|---|---|---|---|
+| **Bronze** | Staging | Dataset `misoginia_staging` | Datos crudos de cada fuente, tal como se descargaron. |
+| **Silver** | Preparación | Notebooks del equipo | Limpieza, unión de fuentes, letras y clasificador de misoginia. Se desarrolla en la siguiente entrega. |
+| **Gold** | DW | Dataset `misoginia_dw` | Esquema estrella: dos tablas de hechos y cinco dimensiones. |
+| **Gold** | DataMart | Dataset `misoginia_mart` | Vistas que responden cada pregunta de E0 con lógica OLAP. |
+
+```{mermaid}
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#eef3fb', 'primaryTextColor': '#1b1f24', 'primaryBorderColor': '#4a6fa5', 'lineColor': '#4a6fa5', 'fontSize': '14px'}}}%%
+flowchart TB
+    F1["Fuentes de violencia<br/>SESNSP · RNPDNO"]:::fuente
+    F2["Fuentes de consumo<br/>Kaggle · Kworb · Top 73 · Google Trends"]:::fuente
+    F3["Fuentes de contexto<br/>CONAPO · ENDIREH · Censo · CONEVAL<br/>ENDUTIH · México Evalúa · Salguero · Natural Earth"]:::fuente
+    F4["Fuentes para el clasificador y el género<br/>MiSonGyny · LRCLIB · MusicBrainz · Last.fm"]:::fuente
+    B["BRONZE · misoginia_staging<br/>tablas crudas por fuente"]:::bronze
+    S["SILVER · notebooks del equipo<br/>limpieza, unión y clasificador"]:::silver
+    D["GOLD · misoginia_dw<br/>esquema estrella"]:::gold
+    M["GOLD · misoginia_mart<br/>vistas por pregunta de E0"]:::gold
+    F1 --> B
+    F2 --> B
+    F3 --> B
+    F4 --> S
+    B --> S
+    S --> D
+    D --> M
+    classDef fuente fill:#ffffff,stroke:#7a8699,color:#1b1f24
+    classDef bronze fill:#f6e3cf,stroke:#a8692b,color:#1b1f24
+    classDef silver fill:#e9ecef,stroke:#6c757d,color:#1b1f24
+    classDef gold fill:#fff3c4,stroke:#b8860b,color:#1b1f24
+```
+
+## Capa staging · bronze
+
+Contiene una tabla por fuente con los datos tal como vienen, sin limpiar ni transformar. Basta una muestra
+de cada fuente, porque la carga desde la consola de BigQuery admite archivos de hasta unos 100 MB.
+
+| Tabla de staging | Fuente, archivo y tamaño | Observación |
+|---|---|---|
+| `stg_sesnsp_delitos` | [F1](fuentes/f01_sesnsp.qmd): Estatal-Delitos-2015-2025_ago2026.csv, 4.6 MB | Archivo completo. |
+| `stg_sesnsp_victimas` | [F1](fuentes/f01_sesnsp.qmd): Estatal-Víctimas-2015-2025_ago2026.csv, 12.4 MB | Archivo completo. |
+| `stg_endireh_2021_tb_sec_iv` | [F2](fuentes/f02_endireh.qmd): TB_SEC_IV.csv, 32 MB | Una tabla por sección que se use; la muestra es la sección IV. |
+| `stg_conapo_poblacion` | [F3](fuentes/f03_conapo.qmd): 00_Pob_Mitad_1950_2070.csv, 45.2 MB | Archivo completo. |
+| `stg_kworb_mx_diario` | [F4](fuentes/f04_kworb.qmd): Tabla del chart diario de México, 22 KB | Tabla de la página guardada como CSV, con fecha de consulta. |
+| `stg_kaggle_charts_mx` | [F5](fuentes/f05_kaggle.qmd): charts.csv, filas de México, 60.8 MB | El archivo global de 3.48 GB excede el límite; se carga la parte de México. |
+| `stg_trends` | [F11](fuentes/f11_google_trends.qmd): Resultados de consulta por término, < 1 MB | Una consulta por término y periodo. |
+| `stg_top73_mx` | [F12](fuentes/f12_kaggle_top73.qmd): universal_top_spotify_songs.csv, filas de México, 6.9 MB | El archivo de 498 MB excede el límite; se carga la parte de México. |
+| `stg_rnpdno` | [F13](fuentes/f13_rnpdno.qmd): Versión pública del RNPDNO, 13 MB | Se carga sin las columnas de nombres por tratarse de datos personales. |
+| `stg_censo_iter` | [F14](fuentes/f14_censo_iter.qmd): conjunto_de_datos_iter_00CSV20.csv, 150 MB | Excede el límite de la consola; se carga desde Cloud Storage o la muestra de filas por entidad. |
+| `stg_coneval_pobreza` | [F15](fuentes/f15_coneval.qmd): Anexo estadístico entidades 2022, 318 KB | BigQuery no carga Excel directamente; se carga cada hoja como CSV o desde Google Sheets. |
+| `stg_endutih_usuarios` | [F16](fuentes/f16_endutih.qmd): tic_2024_usuarios, 156 MB | Viene en DBF; se exporta a CSV para cargarlo. |
+| `stg_mexico_evalua` | [F17](fuentes/f17_mexico_evalua.qmd): Hallazgos 2023, < 1 MB | Valores por entidad tomados del reporte en PDF. |
+| `stg_salguero` | [F10](fuentes/f10_salguero.qmd): Totales por entidad y año, < 1 MB | Depende de obtener los totales de la autora. |
+| `stg_naturalearth_mx` | [F18](fuentes/f18_natural_earth.qmd): ne_10m_admin_1_states_provinces, < 1 MB | Registros de México con su geometría en texto. |
+| `stg_misongyny` | [F6](fuentes/f06_misongyny.qmd): TRAIN y TEST de las tareas 1 y 2, < 1 MB | Etiquetas de referencia para validar el clasificador. |
+: {tbl-colwidths="[28,36,36]"}
+
+No se cargan en staging las letras de LRCLIB, porque tienen derechos de autor, ni los charts por ciudad de
+Spotify Charts, porque sus términos de uso prohíben extraer su contenido. MusicBrainz y Last.fm se
+consultan en la capa silver para asignar el género de cada artista.
+
+## Capa silver · preparación
+
+Es el paso entre los datos crudos y el esquema estrella. Aquí se unen las fuentes por sus llaves, se
+obtienen las letras, se entrena y valida el clasificador con MiSonGyny y se asigna el género musical. Su
+salida llena las tablas del DW. La preparación completa corresponde a la siguiente entrega; en esta solo se
+documenta su lugar en la arquitectura.
+
+## Capa DW · gold
+
+Contiene el esquema estrella descrito en [Esquema estrella](estrella.qmd): `fact_violencia` y
+`fact_consumo_musical`, con las dimensiones conformadas `dim_fecha`, `dim_entidad`, `dim_tipo_violencia` y
+`dim_fuente`, más `dim_contenido_musical`. Las tablas se crean con el DDL de
+[`sql/ddl_dw.sql`](sql/ddl_dw.sql) y quedan vacías en esta entrega.
+
+## Capa DataMart · gold
+
+Contiene una vista por pregunta de E0, construida sobre el esquema estrella. Las vistas son válidas aunque
+las tablas todavía estén vacías.
+
+| Vista | Pregunta | Operación OLAP |
+|---|---|---|
+| `p1_proporcion_misogina_genero` | P1 | `GROUP BY ROLLUP` por año y género, con `GROUPING` para identificar subtotales. |
+| `p1_exposicion_misogina_entidad` | P1 | Ponderación del interés de búsqueda por género y `RANK` de entidades por año. |
+| `p2_serie_mensual_nacional` | P2 | Serie mensual de proporción misógina y tasa por 100 mil mujeres. |
+| `p2_correlacion_nacional` | P2 | `CORR` por tipo de violencia. |
+| `p2_panel_entidad_anio` | P2 | `CORR` como función de ventana entre estados por año, con variables de control. |
+| `p3_tendencia_categoria` | P3 | Media móvil de 12 meses y cambio anual con `LAG`. |
+| `p4_tipos_musica_vs_oficial` | P4 | `UNPIVOT` de la ENDIREH y `RANK` de los tipos de violencia en cada fuente. |
+
+El código completo está en [`sql/consultas_mart.sql`](sql/consultas_mart.sql):
+
+```sql
+-- =====================================================================
+-- E1 · Arquitectura del DW — Consultas del DataMart
+-- Una vista por pregunta de E0, construidas sobre el esquema estrella.
+-- Operaciones OLAP: ROLLUP, GROUPING, funciones de ventana y CORR.
+-- =====================================================================
+
+-- ---------------------------------------------------------------------
+-- P1a. Proporción de streams misóginos por año y género musical,
+--      con subtotales por año y total general (ROLLUP).
+-- ---------------------------------------------------------------------
+CREATE OR REPLACE VIEW misoginia_mart.p1_proporcion_misogina_genero AS
+SELECT
+  d.anio,
+  c.genero,
+  GROUPING(d.anio)   AS es_total_anios,
+  GROUPING(c.genero) AS es_total_generos,
+  SUM(f.streams) AS streams_totales,
+  SUM(IF(c.es_misogina, f.streams, 0)) AS streams_misoginos,
+  SAFE_DIVIDE(SUM(IF(c.es_misogina, f.streams, 0)), SUM(f.streams)) AS proporcion_misogina,
+  -- El Top 73 (F12) no trae streams: para sus filas se usa la permanencia en el chart
+  SAFE_DIVIDE(SUM(IF(c.es_misogina, f.dias_en_chart, 0)), SUM(f.dias_en_chart)) AS proporcion_misogina_por_dias,
+  AVG(IF(c.es_misogina, f.popularidad_promedio, NULL)) AS popularidad_promedio_misoginas
+FROM misoginia_dw.fact_consumo_musical AS f
+JOIN misoginia_dw.dim_fecha AS d ON d.fecha_key = f.fecha_key
+JOIN misoginia_dw.dim_contenido_musical AS c ON c.contenido_key = f.contenido_key
+JOIN misoginia_dw.dim_entidad AS e ON e.entidad_key = f.entidad_key
+WHERE c.tipo_contenido = 'cancion'
+  AND c.es_actual
+  AND e.cve_ent = 0
+GROUP BY ROLLUP (d.anio, c.genero);
+
+-- ---------------------------------------------------------------------
+-- P1b. Exposición a contenido misógino por entidad y año:
+--      interés de búsqueda por género (Google Trends), ponderado por la
+--      proporción misógina de cada género en el consumo nacional.
+-- ---------------------------------------------------------------------
+CREATE OR REPLACE VIEW misoginia_mart.p1_exposicion_misogina_entidad AS
+WITH misoginia_por_genero AS (
+  SELECT
+    d.anio,
+    c.genero,
+    SAFE_DIVIDE(SUM(IF(c.es_misogina, f.streams, 0)), SUM(f.streams)) AS proporcion_misogina
+  FROM misoginia_dw.fact_consumo_musical AS f
+  JOIN misoginia_dw.dim_fecha AS d ON d.fecha_key = f.fecha_key
+  JOIN misoginia_dw.dim_contenido_musical AS c ON c.contenido_key = f.contenido_key
+  WHERE c.tipo_contenido = 'cancion' AND c.es_actual
+  GROUP BY d.anio, c.genero
+),
+interes_por_entidad AS (
+  SELECT
+    d.anio,
+    e.cve_ent,
+    e.entidad,
+    c.genero,
+    AVG(SAFE_DIVIDE(f.interes_busqueda, NULLIF(f.interes_ancla, 0))) AS interes_relativo
+  FROM misoginia_dw.fact_consumo_musical AS f
+  JOIN misoginia_dw.dim_fecha AS d ON d.fecha_key = f.fecha_key
+  JOIN misoginia_dw.dim_entidad AS e ON e.entidad_key = f.entidad_key
+  JOIN misoginia_dw.dim_contenido_musical AS c ON c.contenido_key = f.contenido_key
+  WHERE c.tipo_contenido = 'termino_genero'
+    AND e.cve_ent BETWEEN 1 AND 32
+  GROUP BY d.anio, e.cve_ent, e.entidad, c.genero
+)
+SELECT
+  i.anio,
+  i.cve_ent,
+  i.entidad,
+  SAFE_DIVIDE(SUM(i.interes_relativo * m.proporcion_misogina), SUM(i.interes_relativo)) AS indice_exposicion_misogina,
+  RANK() OVER (PARTITION BY i.anio
+               ORDER BY SAFE_DIVIDE(SUM(i.interes_relativo * m.proporcion_misogina), SUM(i.interes_relativo)) DESC) AS lugar_en_el_anio
+FROM interes_por_entidad AS i
+JOIN misoginia_por_genero AS m ON m.anio = i.anio AND m.genero = i.genero
+GROUP BY i.anio, i.cve_ent, i.entidad;
+
+-- ---------------------------------------------------------------------
+-- P2a. Serie mensual nacional: proporción misógina del consumo frente a
+--      la tasa de delitos de violencia de género por 100 mil mujeres.
+-- ---------------------------------------------------------------------
+CREATE OR REPLACE VIEW misoginia_mart.p2_serie_mensual_nacional AS
+WITH musica AS (
+  SELECT
+    f.fecha_key,
+    SAFE_DIVIDE(SUM(IF(c.es_misogina, f.streams, 0)), SUM(f.streams)) AS proporcion_misogina
+  FROM misoginia_dw.fact_consumo_musical AS f
+  JOIN misoginia_dw.dim_contenido_musical AS c ON c.contenido_key = f.contenido_key
+  JOIN misoginia_dw.dim_entidad AS e ON e.entidad_key = f.entidad_key
+  WHERE c.tipo_contenido = 'cancion' AND c.es_actual AND e.cve_ent = 0
+  GROUP BY f.fecha_key
+),
+violencia AS (
+  SELECT
+    v.fecha_key,
+    t.tipo_lgamvlv,
+    SUM(v.conteo) AS conteo
+  FROM misoginia_dw.fact_violencia AS v
+  JOIN misoginia_dw.dim_tipo_violencia AS t ON t.tipo_violencia_key = v.tipo_violencia_key
+  JOIN misoginia_dw.dim_fuente AS s ON s.fuente_key = v.fuente_key
+  WHERE s.codigo_catalogo = 'F1'
+  GROUP BY v.fecha_key, t.tipo_lgamvlv
+),
+poblacion AS (
+  SELECT anio, SUM(poblacion_mujeres) AS mujeres
+  FROM misoginia_dw.dim_entidad
+  WHERE cve_ent BETWEEN 1 AND 32
+  GROUP BY anio
+)
+SELECT
+  d.fecha,
+  d.anio,
+  vi.tipo_lgamvlv,
+  mu.proporcion_misogina,
+  vi.conteo,
+  SAFE_DIVIDE(vi.conteo, p.mujeres) * 100000 AS tasa_100k_mujeres
+FROM violencia AS vi
+JOIN musica AS mu ON mu.fecha_key = vi.fecha_key
+JOIN misoginia_dw.dim_fecha AS d ON d.fecha_key = vi.fecha_key
+JOIN poblacion AS p ON p.anio = d.anio;
+
+-- ---------------------------------------------------------------------
+-- P2b. Coeficiente de correlación por tipo de violencia (serie nacional).
+-- ---------------------------------------------------------------------
+CREATE OR REPLACE VIEW misoginia_mart.p2_correlacion_nacional AS
+SELECT
+  tipo_lgamvlv,
+  COUNT(*) AS n_meses,
+  CORR(proporcion_misogina, tasa_100k_mujeres) AS correlacion_pearson
+FROM misoginia_mart.p2_serie_mensual_nacional
+GROUP BY tipo_lgamvlv;
+
+-- ---------------------------------------------------------------------
+-- P2c. Panel entidad-año: exposición misógina (proxy de Google Trends)
+--      frente a tasas oficiales, con variables de control y contraste
+--      del subregistro; correlación entre estados para cada año.
+-- ---------------------------------------------------------------------
+CREATE OR REPLACE VIEW misoginia_mart.p2_panel_entidad_anio AS
+WITH violencia AS (
+  SELECT
+    d.anio,
+    e.cve_ent,
+    SUM(IF(s.codigo_catalogo = 'F1' AND t.tipo_lgamvlv = 'feminicida', v.conteo, 0)) AS feminicidios_sesnsp,
+    SUM(IF(s.codigo_catalogo = 'F1', v.conteo, 0)) AS delitos_violencia_genero,
+    SUM(IF(s.codigo_catalogo = 'F13', v.conteo_mujeres, 0)) AS mujeres_desaparecidas
+  FROM misoginia_dw.fact_violencia AS v
+  JOIN misoginia_dw.dim_fecha AS d ON d.fecha_key = v.fecha_key
+  JOIN misoginia_dw.dim_entidad AS e ON e.entidad_key = v.entidad_key
+  JOIN misoginia_dw.dim_tipo_violencia AS t ON t.tipo_violencia_key = v.tipo_violencia_key
+  JOIN misoginia_dw.dim_fuente AS s ON s.fuente_key = v.fuente_key
+  GROUP BY d.anio, e.cve_ent
+),
+panel AS (
+  SELECT
+    x.anio,
+    x.cve_ent,
+    x.entidad,
+    x.indice_exposicion_misogina,
+    SAFE_DIVIDE(vi.delitos_violencia_genero, e.poblacion_mujeres) * 100000 AS tasa_delitos_100k,
+    SAFE_DIVIDE(vi.feminicidios_sesnsp, e.poblacion_mujeres) * 100000 AS tasa_feminicidio_100k,
+    SAFE_DIVIDE(vi.mujeres_desaparecidas, e.poblacion_mujeres) * 100000 AS tasa_desaparicion_100k,
+    SAFE_DIVIDE(e.feminicidios_prensa, NULLIF(vi.feminicidios_sesnsp, 0)) AS razon_prensa_vs_oficial,
+    e.pct_pobreza,
+    e.indice_impunidad,
+    e.pct_usuarios_internet,
+    e.pct_viviendas_internet
+  FROM misoginia_mart.p1_exposicion_misogina_entidad AS x
+  JOIN misoginia_dw.dim_entidad AS e ON e.cve_ent = x.cve_ent AND e.anio = x.anio
+  LEFT JOIN violencia AS vi ON vi.cve_ent = x.cve_ent AND vi.anio = x.anio
+)
+SELECT
+  *,
+  CORR(indice_exposicion_misogina, tasa_delitos_100k) OVER (PARTITION BY anio) AS correlacion_entre_estados
+FROM panel;
+
+-- ---------------------------------------------------------------------
+-- P3. Evolución mensual de cada categoría de contenido misógino:
+--     participación en el consumo, media móvil de 12 meses y cambio
+--     contra el mismo mes del año anterior (funciones de ventana).
+-- ---------------------------------------------------------------------
+CREATE OR REPLACE VIEW misoginia_mart.p3_tendencia_categoria AS
+WITH mensual AS (
+  SELECT
+    d.fecha,
+    c.categoria_misoginia,
+    SUM(f.streams) AS streams,
+    AVG(f.mejor_posicion) AS posicion_promedio
+  FROM misoginia_dw.fact_consumo_musical AS f
+  JOIN misoginia_dw.dim_fecha AS d ON d.fecha_key = f.fecha_key
+  JOIN misoginia_dw.dim_contenido_musical AS c ON c.contenido_key = f.contenido_key
+  JOIN misoginia_dw.dim_entidad AS e ON e.entidad_key = f.entidad_key
+  WHERE c.tipo_contenido = 'cancion' AND c.es_actual AND e.cve_ent = 0
+  GROUP BY d.fecha, c.categoria_misoginia
+),
+participacion AS (
+  SELECT
+    fecha,
+    categoria_misoginia,
+    streams,
+    posicion_promedio,
+    SAFE_DIVIDE(streams, SUM(streams) OVER (PARTITION BY fecha)) AS participacion
+  FROM mensual
+)
+SELECT
+  fecha,
+  categoria_misoginia,
+  streams,
+  posicion_promedio,
+  participacion,
+  AVG(participacion) OVER (PARTITION BY categoria_misoginia ORDER BY fecha
+                           ROWS BETWEEN 11 PRECEDING AND CURRENT ROW) AS media_movil_12m,
+  participacion - LAG(participacion, 12) OVER (PARTITION BY categoria_misoginia ORDER BY fecha) AS cambio_anual
+FROM participacion;
+
+-- ---------------------------------------------------------------------
+-- P4. Tipos de violencia: participación en la música misógina frente a
+--     los delitos del SESNSP y la prevalencia de la ENDIREH 2021,
+--     con su lugar en cada fuente (RANK).
+-- ---------------------------------------------------------------------
+CREATE OR REPLACE VIEW misoginia_mart.p4_tipos_musica_vs_oficial AS
+WITH musica AS (
+  SELECT t.tipo_lgamvlv, SUM(f.streams) AS valor
+  FROM misoginia_dw.fact_consumo_musical AS f
+  JOIN misoginia_dw.dim_tipo_violencia AS t ON t.tipo_violencia_key = f.tipo_violencia_key
+  JOIN misoginia_dw.dim_contenido_musical AS c ON c.contenido_key = f.contenido_key
+  WHERE c.tipo_contenido = 'cancion' AND c.es_actual AND c.es_misogina
+  GROUP BY t.tipo_lgamvlv
+),
+oficial AS (
+  SELECT t.tipo_lgamvlv, SUM(v.conteo) AS valor
+  FROM misoginia_dw.fact_violencia AS v
+  JOIN misoginia_dw.dim_tipo_violencia AS t ON t.tipo_violencia_key = v.tipo_violencia_key
+  JOIN misoginia_dw.dim_fuente AS s ON s.fuente_key = v.fuente_key
+  WHERE s.codigo_catalogo = 'F1'
+  GROUP BY t.tipo_lgamvlv
+),
+endireh AS (
+  SELECT tipo_lgamvlv, prevalencia
+  FROM misoginia_dw.dim_entidad
+  UNPIVOT (prevalencia FOR tipo_lgamvlv IN (
+    prevalencia_psicologica AS 'psicológica',
+    prevalencia_fisica AS 'física',
+    prevalencia_sexual AS 'sexual',
+    prevalencia_economica_patrimonial AS 'económica'))
+  WHERE cve_ent = 0 AND anio = 2021
+)
+SELECT
+  COALESCE(m.tipo_lgamvlv, o.tipo_lgamvlv, n.tipo_lgamvlv) AS tipo_lgamvlv,
+  SAFE_DIVIDE(m.valor, SUM(m.valor) OVER ()) AS participacion_musica,
+  SAFE_DIVIDE(o.valor, SUM(o.valor) OVER ()) AS participacion_sesnsp,
+  n.prevalencia AS prevalencia_endireh_2021,
+  RANK() OVER (ORDER BY m.valor DESC) AS lugar_musica,
+  RANK() OVER (ORDER BY o.valor DESC) AS lugar_sesnsp,
+  RANK() OVER (ORDER BY n.prevalencia DESC) AS lugar_endireh
+FROM musica AS m
+FULL OUTER JOIN oficial AS o ON o.tipo_lgamvlv = m.tipo_lgamvlv
+FULL OUTER JOIN endireh AS n ON n.tipo_lgamvlv = COALESCE(m.tipo_lgamvlv, o.tipo_lgamvlv);
+```
+
+## Análisis de integración
+
+### Llaves de unión
+
+| Llave | Fuentes y campo | Cómo se relacionan |
+|---|---|---|
+| Entidad | SESNSP, ENDIREH, CONAPO, Censo, ENDUTIH, RNPDNO, CONEVAL, México Evalúa, Google Trends, Natural Earth | Todas se llevan a la clave INEGI de 1 a 32; las que solo traen nombre o código ISO usan una tabla de equivalencias. |
+| Tiempo | SESNSP y RNPDNO por mes; Kworb, Kaggle y Top 73 por día; Google Trends por mes; las fuentes de contexto por año | Los datos diarios se agregan a mes; las fuentes anuales entran como versión anual de la entidad. |
+| ID de canción de Spotify | Kworb, Kaggle *Spotify Charts* y Top 73 | Unión exacta entre las fuentes de consumo. |
+| Artista y título | Charts, MiSonGyny y LRCLIB | Unen consumo, etiquetas de referencia y letras. |
+| Artista | Charts, MusicBrainz y Last.fm | Asignan el género musical. |
+| Tipo de violencia | SESNSP, RNPDNO, ENDIREH y el clasificador | Se mapean a los tipos de la LGAMVLV en `dim_tipo_violencia`. |
+
+### Diferencias de granularidad y problemas anticipados
+
+- El consumo musical real solo existe a nivel nacional; a nivel entidad se aproxima con búsquedas de Google
+  Trends.
+- La ventana común entre música y violencia es 2017–2025; la ENDIREH solo tiene un levantamiento en ella y
+  las fuentes de contexto no cubren todos los años.
+- Las clasificaciones de violencia son distintas en cada fuente y requieren un mapeo común.
+- Cada fuente tiene sus propios problemas, descritos en su ficha del [catálogo de fuentes](fuentes.qmd).

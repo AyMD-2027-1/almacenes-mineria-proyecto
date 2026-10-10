@@ -141,49 +141,18 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes.html">
  <span class="dropdown-text">Fuentes de datos</span></a>
   </li>  
-        <li><hr class="dropdown-divider"></li>
-        <li class="dropdown-header">Catálogo de fuentes</li>
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.html">
- <span class="dropdown-text">F1 · SESNSP</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/arquitectura.html">
+ <span class="dropdown-text">Arquitectura de tres capas</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f02_endireh.html">
- <span class="dropdown-text">F2 · ENDIREH</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/estrella.html">
+ <span class="dropdown-text">Esquema estrella</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f03_conapo.html">
- <span class="dropdown-text">F3 · CONAPO</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/trazabilidad.html">
+ <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f04_kworb.html">
- <span class="dropdown-text">F4 · Kworb</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f05_kaggle.html">
- <span class="dropdown-text">F5 · Kaggle Spotify Charts</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f06_misongyny.html">
- <span class="dropdown-text">F6 · MiSonGyny</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f07_lrclib.html">
- <span class="dropdown-text">F7 · LRCLIB</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f08_musicbrainz.html">
- <span class="dropdown-text">F8 · MusicBrainz</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html">
- <span class="dropdown-text">F9 · Spotify Charts (no aceptada)</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f10_salguero.html">
- <span class="dropdown-text">F10 · Mapa de Salguero (no aceptada)</span></a>
-  </li>  
-        <li><hr class="dropdown-divider"></li>
         <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
@@ -279,7 +248,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p><em>Fuentes:</em> <a href="../../../entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.html">F1</a>, archivo <code>Estatal-Delitos-2015-2025_ago2026.csv</code> (suma de enero a diciembre de 2025, tipo de delito <em>Feminicidio</em>, todas las modalidades); y este archivo de CONAPO (<code>ANIO</code> 2025, <code>SEXO</code> Mujeres, suma de las edades 0–109).</p>
+<p><em>Fuentes:</em> las carpetas de investigación salen del archivo estatal de delitos del SESNSP, <a href="../../../entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.html">F1</a>, sumando de enero a diciembre de 2025 todas las modalidades de feminicidio. La población sale de este archivo de CONAPO, sumando todas las edades de las mujeres en 2025.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -345,8 +314,9 @@ ul.task-list li input[type="checkbox"] {
 <section id="problemas-anticipados-para-la-integración" class="level2">
 <h2 class="anchored" data-anchor-id="problemas-anticipados-para-la-integración">Problemas anticipados para la integración</h2>
 <ul>
-<li>El archivo empieza en 1970 aunque su nombre dice 1950.</li>
-<li>Población anual frente a delitos mensuales.</li>
+<li>El archivo empieza en 1970, aunque su título indica que cubre desde 1950.</li>
+<li>La población es anual, mientras que los delitos del SESNSP y el consumo musical son mensuales.</li>
+<li>CONAPO actualiza sus proyecciones de forma retroactiva, por lo que las cifras de años pasados pueden cambiar en versiones futuras.</li>
 </ul>
 <p><a href="../../../entregas/E1_arquitectura_dw/fuentes.html">← Volver a fuentes de datos</a></p>
 

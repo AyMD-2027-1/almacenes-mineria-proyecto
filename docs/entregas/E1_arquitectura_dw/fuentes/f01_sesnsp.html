@@ -141,49 +141,18 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes.html">
  <span class="dropdown-text">Fuentes de datos</span></a>
   </li>  
-        <li><hr class="dropdown-divider"></li>
-        <li class="dropdown-header">Catálogo de fuentes</li>
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.html">
- <span class="dropdown-text">F1 · SESNSP</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/arquitectura.html">
+ <span class="dropdown-text">Arquitectura de tres capas</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f02_endireh.html">
- <span class="dropdown-text">F2 · ENDIREH</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/estrella.html">
+ <span class="dropdown-text">Esquema estrella</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f03_conapo.html">
- <span class="dropdown-text">F3 · CONAPO</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/trazabilidad.html">
+ <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f04_kworb.html">
- <span class="dropdown-text">F4 · Kworb</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f05_kaggle.html">
- <span class="dropdown-text">F5 · Kaggle Spotify Charts</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f06_misongyny.html">
- <span class="dropdown-text">F6 · MiSonGyny</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f07_lrclib.html">
- <span class="dropdown-text">F7 · LRCLIB</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f08_musicbrainz.html">
- <span class="dropdown-text">F8 · MusicBrainz</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html">
- <span class="dropdown-text">F9 · Spotify Charts (no aceptada)</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f10_salguero.html">
- <span class="dropdown-text">F10 · Mapa de Salguero (no aceptada)</span></a>
-  </li>  
-        <li><hr class="dropdown-divider"></li>
         <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
@@ -320,10 +289,10 @@ ul.task-list li input[type="checkbox"] {
 <section id="problemas-anticipados-para-la-integración" class="level2">
 <h2 class="anchored" data-anchor-id="problemas-anticipados-para-la-integración">Problemas anticipados para la integración</h2>
 <ul>
-<li><strong>Tres metodologías.</strong> La página de descarga del SESNSP separa los archivos en tres bloques “correspondientes a recopilaciones metodológicas utilizadas en cada uno de los periodos”: 1997–2017, 2015–2025 y 2026 a la fecha. La serie 1997–2017 usa un catálogo de delitos anterior al de 2015–2025. Para 2026 en adelante (RNID), la <em>Nota metodológica: comparación histórica</em> del SESNSP <a href="../../../entregas/E1_arquitectura_dw/referencias.html">[2]</a> indica que la serie se diseñó para ser comparable, pero con cambios que afectan a este proyecto: (a) <em>Feminicidio</em> ahora especifica que incluye transfeminicidios y la <em>Tentativa de feminicidio</em> aparece como subtipo nuevo; (b) aparece el delito <em>Violación a la intimidad sexual</em>, que antes se registraba en “Otros delitos contra la libertad y la seguridad sexual” o en “Violencia de género distinta a la familiar”.</li>
-<li><strong>Formato ancho y codificación:</strong> los meses vienen como columnas y el archivo está en latin-1, a diferencia de otras fuentes en UTF-8.</li>
-<li><strong>Sexo de la víctima incompleto:</strong> el archivo de víctimas solo cubre 13 tipos de delito (homicidio, feminicidio, lesiones, secuestro, trata, entre otros). Violencia familiar y los delitos sexuales solo están en el archivo de delitos, sin sexo de la víctima.</li>
-<li><strong>Taxonomía distinta:</strong> clasifica delitos, no los tipos de violencia de la LGAMVLV (<a href="../../../entregas/E1_arquitectura_dw/fuentes.html#marco">marco de referencia</a>).</li>
+<li>El SESNSP ha usado tres metodologías para registrar los delitos: una de 1997 a 2017, otra de 2015 a 2025 y una nueva a partir de 2026. Según su nota metodológica, la de 2026 se diseñó para ser comparable con la anterior, pero cambió la forma de registrar el feminicidio, que ahora separa la tentativa e incluye de forma explícita los transfeminicidios, y agregó el delito de violación a la intimidad sexual, que antes se contaba dentro de otras categorías <a href="../../../entregas/E1_arquitectura_dw/referencias.html">[2]</a>.</li>
+<li>Los meses aparecen como columnas, a diferencia de las demás fuentes, y el archivo usa una codificación de caracteres distinta.</li>
+<li>El archivo de víctimas solo indica el sexo en algunos delitos; en la violencia familiar y en los delitos sexuales no se sabe si la víctima fue mujer.</li>
+<li>La fuente clasifica delitos, mientras que la referencia del proyecto son los tipos de violencia de la LGAMVLV, por lo que no hay una equivalencia directa entre ambas clasificaciones.</li>
 </ul>
 <p><a href="../../../entregas/E1_arquitectura_dw/fuentes.html">← Volver a fuentes de datos</a></p>
 

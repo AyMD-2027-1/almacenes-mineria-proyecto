@@ -141,49 +141,18 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes.html">
  <span class="dropdown-text">Fuentes de datos</span></a>
   </li>  
-        <li><hr class="dropdown-divider"></li>
-        <li class="dropdown-header">Catálogo de fuentes</li>
         <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.html">
- <span class="dropdown-text">F1 · SESNSP</span></a>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/arquitectura.html">
+ <span class="dropdown-text">Arquitectura de tres capas</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f02_endireh.html">
- <span class="dropdown-text">F2 · ENDIREH</span></a>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/estrella.html">
+ <span class="dropdown-text">Esquema estrella</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f03_conapo.html">
- <span class="dropdown-text">F3 · CONAPO</span></a>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/trazabilidad.html">
+ <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f04_kworb.html">
- <span class="dropdown-text">F4 · Kworb</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f05_kaggle.html">
- <span class="dropdown-text">F5 · Kaggle Spotify Charts</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f06_misongyny.html">
- <span class="dropdown-text">F6 · MiSonGyny</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f07_lrclib.html">
- <span class="dropdown-text">F7 · LRCLIB</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f08_musicbrainz.html">
- <span class="dropdown-text">F8 · MusicBrainz</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html">
- <span class="dropdown-text">F9 · Spotify Charts (no aceptada)</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f10_salguero.html">
- <span class="dropdown-text">F10 · Mapa de Salguero (no aceptada)</span></a>
-  </li>  
-        <li><hr class="dropdown-divider"></li>
         <li>
     <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
@@ -232,7 +201,6 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#fuentes-evaluadas" id="toc-fuentes-evaluadas" class="nav-link" data-scroll-target="#fuentes-evaluadas">Fuentes evaluadas</a></li>
   <li><a href="#resultado-por-tipo-de-fuente" id="toc-resultado-por-tipo-de-fuente" class="nav-link" data-scroll-target="#resultado-por-tipo-de-fuente">Resultado por tipo de fuente</a></li>
   </ul></li>
-  <li><a href="#trabajo-futuro" id="toc-trabajo-futuro" class="nav-link" data-scroll-target="#trabajo-futuro">Trabajo futuro</a></li>
   </ul>
 </nav>
     </div>
@@ -301,6 +269,22 @@ ul.task-list li input[type="checkbox"] {
 <td>LRCLIB</td>
 <td>Biblioteca de letras de canciones libre y abierta, con API y descargas de su base de datos.</td>
 </tr>
+<tr class="odd">
+<td>RNPDNO</td>
+<td>Registro Nacional de Personas Desaparecidas y No Localizadas (Comisión Nacional de Búsqueda).</td>
+</tr>
+<tr class="even">
+<td>ITER</td>
+<td>Principales resultados por localidad del Censo de Población y Vivienda 2020 (INEGI).</td>
+</tr>
+<tr class="odd">
+<td>CONEVAL</td>
+<td>Consejo Nacional de Evaluación de la Política de Desarrollo Social.</td>
+</tr>
+<tr class="even">
+<td>ENDUTIH</td>
+<td>Encuesta Nacional sobre Disponibilidad y Uso de Tecnologías de la Información en los Hogares (INEGI).</td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -363,7 +347,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td><strong>Portales revisados</strong></td>
-<td>Datos abiertos del SESNSP (gob.mx), INEGI (5 ediciones de la ENDIREH), datos.gob.mx (CONAPO), Kaggle, Kworb, Spotify Charts, GitHub (MiSonGyny), MusicBrainz, LRCLIB y Google My Maps.</td>
+<td>Datos abiertos del SESNSP (gob.mx), INEGI (5 ediciones de la ENDIREH), datos.gob.mx (CONAPO), Kaggle, Kworb, Spotify Charts, GitHub (MiSonGyny), MusicBrainz, LRCLIB, Google Trends, Google My Maps, Data Cívica (RNPDNO), INEGI (Censo 2020 y ENDUTIH), CONEVAL, México Evalúa, Natural Earth y Last.fm.</td>
 </tr>
 <tr class="odd">
 <td><strong>Datos que se buscaron</strong></td>
@@ -454,16 +438,88 @@ ul.task-list li input[type="checkbox"] {
 <td><a href="../../entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html">Spotify Charts (por ciudad)</a></td>
 <td>Portal web con cuenta</td>
 <td style="text-align: center;">A</td>
-<td>No aceptada</td>
-<td>C4</td>
+<td><strong>Aceptada con limitaciones</strong></td>
+<td>C1–C3; C4 parcial</td>
 </tr>
 <tr class="even">
 <td>F10</td>
 <td><a href="../../entregas/E1_arquitectura_dw/fuentes/f10_salguero.html">Mapa de feminicidios (M. Salguero)</a></td>
 <td>Mapa en Google My Maps</td>
 <td style="text-align: center;">D</td>
-<td>No aceptada</td>
-<td>C2, C4</td>
+<td><strong>Aceptada con limitaciones</strong></td>
+<td>C1, C3; C2 y C4 parciales</td>
+</tr>
+<tr class="odd">
+<td>F11</td>
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f11_google_trends.html">Google Trends, interés por estado</a></td>
+<td>Servicio web de Google</td>
+<td style="text-align: center;">A</td>
+<td><strong>Aceptada</strong></td>
+<td>C1–C4</td>
+</tr>
+<tr class="even">
+<td>F12</td>
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f12_kaggle_top73.html">Kaggle, <em>Top Spotify Songs in 73 Countries</em></a></td>
+<td>Dataset de Kaggle</td>
+<td style="text-align: center;">A</td>
+<td><strong>Aceptada</strong></td>
+<td>C1–C4</td>
+</tr>
+<tr class="odd">
+<td>F13</td>
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f13_rnpdno.html">RNPDNO, personas desaparecidas (Data Cívica)</a></td>
+<td>Archivo CSV de organización civil</td>
+<td style="text-align: center;">D</td>
+<td><strong>Aceptada con limitaciones</strong></td>
+<td>C3; C1, C2 y C4 parciales</td>
+</tr>
+<tr class="even">
+<td>F14</td>
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f14_censo_iter.html">INEGI, Censo 2020 ITER</a></td>
+<td>Archivo CSV de portal abierto</td>
+<td style="text-align: center;">D</td>
+<td><strong>Aceptada</strong></td>
+<td>C1–C4</td>
+</tr>
+<tr class="odd">
+<td>F15</td>
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f15_coneval.html">CONEVAL, pobreza por entidad</a></td>
+<td>Archivo Excel institucional</td>
+<td style="text-align: center;">D</td>
+<td><strong>Aceptada</strong></td>
+<td>C1–C4</td>
+</tr>
+<tr class="even">
+<td>F16</td>
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f16_endutih.html">INEGI, ENDUTIH 2024</a></td>
+<td>Microdatos institucionales</td>
+<td style="text-align: center;">A</td>
+<td><strong>Aceptada</strong></td>
+<td>C1–C4</td>
+</tr>
+<tr class="odd">
+<td>F17</td>
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f17_mexico_evalua.html">México Evalúa, índice de impunidad</a></td>
+<td>Reporte en PDF</td>
+<td style="text-align: center;">D</td>
+<td><strong>Aceptada con limitaciones</strong></td>
+<td>C1, C3; C2 y C4 parciales</td>
+</tr>
+<tr class="even">
+<td>F18</td>
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f18_natural_earth.html">Natural Earth, límites de estados</a></td>
+<td>Archivo geográfico (shapefile)</td>
+<td style="text-align: center;">D</td>
+<td><strong>Aceptada</strong></td>
+<td>C1, C3, C4</td>
+</tr>
+<tr class="odd">
+<td>F19</td>
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f19_lastfm.html">Last.fm, etiquetas de género</a></td>
+<td>API REST con llave</td>
+<td style="text-align: center;">C</td>
+<td><strong>Aceptada con limitaciones</strong></td>
+<td>C1, C3; C4 condicionado</td>
 </tr>
 </tbody>
 </table>
@@ -486,13 +542,13 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>Archivo CSV de portal abierto</td>
-<td>SESNSP (F1), CONAPO (F3)</td>
+<td>SESNSP (F1), CONAPO (F3), Censo 2020 ITER (F14)</td>
 <td>Aceptadas</td>
 </tr>
 <tr class="even">
 <td>Microdatos institucionales</td>
-<td>ENDIREH (F2)</td>
-<td>Aceptada</td>
+<td>ENDIREH (F2), ENDUTIH (F16)</td>
+<td>Aceptadas</td>
 </tr>
 <tr class="odd">
 <td>Página web</td>
@@ -501,8 +557,8 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>Dataset de Kaggle</td>
-<td><em>Spotify Charts</em> (F5)</td>
-<td>Aceptada</td>
+<td><em>Spotify Charts</em> (F5), <em>Top Spotify Songs in 73 Countries</em> (F12)</td>
+<td>Aceptadas</td>
 </tr>
 <tr class="odd">
 <td>Repositorio académico</td>
@@ -515,29 +571,55 @@ ul.task-list li input[type="checkbox"] {
 <td>Aceptadas</td>
 </tr>
 <tr class="odd">
-<td>Portal web con cuenta</td>
-<td>Spotify Charts por ciudad (F9)</td>
-<td>No aceptada</td>
+<td>Servicio web de Google</td>
+<td>Google Trends (F11)</td>
+<td>Aceptada</td>
 </tr>
 <tr class="even">
+<td>Portal web con cuenta</td>
+<td>Spotify Charts por ciudad (F9)</td>
+<td>Aceptada con limitaciones</td>
+</tr>
+<tr class="odd">
 <td>Mapa en Google My Maps</td>
 <td>Mapa de Salguero (F10)</td>
-<td>No aceptada</td>
+<td>Aceptada con limitaciones</td>
+</tr>
+<tr class="even">
+<td>Archivo CSV de organización civil</td>
+<td>RNPDNO vía Data Cívica (F13)</td>
+<td>Aceptada con limitaciones</td>
+</tr>
+<tr class="odd">
+<td>Archivo Excel institucional</td>
+<td>CONEVAL (F15)</td>
+<td>Aceptada</td>
+</tr>
+<tr class="even">
+<td>Reporte en PDF</td>
+<td>México Evalúa (F17)</td>
+<td>Aceptada con limitaciones</td>
+</tr>
+<tr class="odd">
+<td>Archivo geográfico (shapefile)</td>
+<td>Natural Earth (F18)</td>
+<td>Aceptada</td>
+</tr>
+<tr class="even">
+<td>API REST con llave</td>
+<td>Last.fm (F19)</td>
+<td>Aceptada con limitaciones</td>
 </tr>
 <tr class="odd">
 <td><strong>Total</strong></td>
-<td><strong>10 evaluadas: 8 aceptadas de 6 tipos distintos y 2 no aceptadas</strong></td>
+<td><strong>19 evaluadas y aceptadas, de 14 tipos distintos; cinco de ellas con limitaciones</strong></td>
 <td></td>
 </tr>
 </tbody>
 </table>
-</section>
-</section>
-<section id="trabajo-futuro" class="level2">
-<h2 class="anchored" data-anchor-id="trabajo-futuro">Trabajo futuro</h2>
-<p><strong>Google Trends</strong> (dataset público <code>bigquery-public-data.google_trends</code>) podría aportar interés musical por estado. Se evaluará en una entrega posterior para recuperar el nivel de entidad en P1 y P2.</p>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->

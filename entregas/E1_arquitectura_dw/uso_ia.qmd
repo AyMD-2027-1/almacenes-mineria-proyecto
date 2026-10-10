@@ -31,6 +31,12 @@ Pruebas de LRCLIB y MusicBrainz con las canciones más escuchadas en México.
 
 Tablas de vista previa generadas a partir de los archivos descargados y formato del documento.
 
+### e) Revisión del esquema estrella, DDL y consultas
+
+Le compartimos el esquema estrella que diseñó el equipo y le pedimos revisarlo contra los criterios del
+instructivo. Con sus observaciones ajustamos el diseño a cinco dimensiones y un grano mensual, y le pedimos
+redactar el DDL, las consultas del DataMart y el borrador de la matriz de trazabilidad.
+
 ## 3. Prompts empleados (resumen fiel)
 
 Le dimos el instructivo de E1 y las preguntas de E0 y le pedimos evaluar al menos cinco fuentes,
@@ -46,9 +52,10 @@ licencia y llaves de integración, sin incluir nada que no se pudiera abrir.
 - Entramos a Spotify Charts, revisamos sus términos de uso y documentamos por qué no se acepta.
 - Revisamos las cifras contra los archivos descargados y corregimos lo que no coincidía con las fuentes
   oficiales (por ejemplo, la comparabilidad de la serie del SESNSP).
-- Descartamos propuestas que no tenían cobertura suficiente o requerían credenciales, y dejamos Google
-  Trends como trabajo futuro.
+- Descartamos propuestas que no tenían cobertura suficiente o requerían credenciales.
 - Decidimos no guardar ni publicar letras de canciones por derechos de autor.
+- Diseñamos el esquema estrella original y validamos los ajustes propuestos; el DDL y las consultas se
+  ejecutan en nuestro proyecto de BigQuery, donde tomamos las capturas de evidencia.
 
 ## 5. Revisión y validación de nuestra parte
 

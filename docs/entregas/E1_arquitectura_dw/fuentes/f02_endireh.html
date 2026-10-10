@@ -141,49 +141,18 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes.html">
  <span class="dropdown-text">Fuentes de datos</span></a>
   </li>  
-        <li><hr class="dropdown-divider"></li>
-        <li class="dropdown-header">Catálogo de fuentes</li>
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.html">
- <span class="dropdown-text">F1 · SESNSP</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/arquitectura.html">
+ <span class="dropdown-text">Arquitectura de tres capas</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f02_endireh.html">
- <span class="dropdown-text">F2 · ENDIREH</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/estrella.html">
+ <span class="dropdown-text">Esquema estrella</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f03_conapo.html">
- <span class="dropdown-text">F3 · CONAPO</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/trazabilidad.html">
+ <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f04_kworb.html">
- <span class="dropdown-text">F4 · Kworb</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f05_kaggle.html">
- <span class="dropdown-text">F5 · Kaggle Spotify Charts</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f06_misongyny.html">
- <span class="dropdown-text">F6 · MiSonGyny</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f07_lrclib.html">
- <span class="dropdown-text">F7 · LRCLIB</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f08_musicbrainz.html">
- <span class="dropdown-text">F8 · MusicBrainz</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html">
- <span class="dropdown-text">F9 · Spotify Charts (no aceptada)</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f10_salguero.html">
- <span class="dropdown-text">F10 · Mapa de Salguero (no aceptada)</span></a>
-  </li>  
-        <li><hr class="dropdown-divider"></li>
         <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
@@ -328,10 +297,11 @@ ul.task-list li input[type="checkbox"] {
 <section id="problemas-anticipados-para-la-integración" class="level2">
 <h2 class="anchored" data-anchor-id="problemas-anticipados-para-la-integración">Problemas anticipados para la integración</h2>
 <ul>
-<li><strong>Comparabilidad entre ediciones:</strong> en la página de la edición 2011 el INEGI advierte que, por cambios metodológicos y conceptuales, “no existe una comparabilidad” con 2006 <a href="../../../entregas/E1_arquitectura_dw/referencias.html">[3]</a>. Tablas e identificadores cambian en cada edición (<code>LLAVE</code>, <code>N_CON</code>, <code>CONTROL</code>, <code>ID_VIV</code>/<code>ID_PER</code>) y hasta 2011 el cuestionario se separa por situación conyugal.</li>
-<li><strong>No es serie de tiempo:</strong> solo 2021 cae en la ventana 2017–2025. Los periodos de referencia (últimos 12 meses / a lo largo de la vida) difieren de los del SESNSP.</li>
-<li><strong>Formato de la clave:</strong> <code>CVE_ENT</code> viene como texto <code>"01"</code>; en SESNSP y CONAPO es entero <code>1</code>.</li>
-<li><strong>Muestra, no conteo:</strong> cada mujer representa a otras según su factor de expansión.</li>
+<li>El INEGI advierte que las ediciones no siempre son comparables entre sí; en particular, la de 2011 no es comparable con la de 2006 por cambios metodológicos y conceptuales <a href="../../../entregas/E1_arquitectura_dw/referencias.html">[3]</a>. El cuestionario y la organización de las tablas también cambian de una edición a otra.</li>
+<li>La encuesta se levanta cada cinco años, por lo que dentro de la ventana 2017–2025 solo hay una edición, la de 2021.</li>
+<li>Mide la violencia vivida por las mujeres en periodos de referencia propios de la encuesta, que no coinciden con los registros mensuales del SESNSP.</li>
+<li>Es una muestra: sus resultados representan a la población solo cuando se usan los factores de expansión.</li>
+<li>La clave de entidad tiene un formato distinto al que usan el SESNSP y CONAPO.</li>
 </ul>
 <p><a href="../../../entregas/E1_arquitectura_dw/fuentes.html">← Volver a fuentes de datos</a></p>
 

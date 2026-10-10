@@ -18,7 +18,7 @@ Pages.
 | Entrega | Fase CRISP-DM | Contenido |
 |---|---|---|
 | **E0 — Comprensión del negocio** | 1. Comprensión del negocio | Bitácora del stakeholder, Business Understanding Canvas, preguntas de investigación, criterio de éxito, riesgos y supuestos, uso de IA. |
-| **E1 — Arquitectura del DW** *(en curso)* | 2. Comprensión de los datos | **Fuentes de datos:** criterios de selección, proceso de búsqueda, 10 fuentes evaluadas (8 aceptadas de 6 tipos distintos) y catálogo con una página por fuente. Uso de IA y referencias. *Pendiente:* arquitectura de 3 capas en BigQuery, esquema estrella y matriz de trazabilidad. |
+| **E1 — Arquitectura del DW** | 2. Comprensión de los datos | **Fuentes de datos:** criterios de selección, proceso de búsqueda, 19 fuentes evaluadas y aceptadas, de 14 tipos distintos y catálogo con una página por fuente. Arquitectura de tres capas con enfoque medallion, esquema estrella con DDL, consultas del DataMart y matriz de trazabilidad. Uso de IA y referencias. |
 
 ## Estructura del repositorio
 
@@ -34,10 +34,14 @@ Pages.
 │   │   └── uso_ia.qmd            # documentación de uso de LLMs
 │   └── E1_arquitectura_dw/
 │       ├── fuentes.qmd           # criterios, búsqueda documentada y fuentes evaluadas
-│       ├── fuentes/              # catálogo: una página por fuente (F1–F10)
+│       ├── fuentes/              # catálogo: una página por fuente (F1–F19)
+│       ├── arquitectura.qmd      # capas staging, DW y DataMart; integración; consultas del mart
+│       ├── estrella.qmd          # grano, hechos, dimensiones, diagrama Mermaid y DDL
+│       ├── trazabilidad.qmd      # matriz pregunta-métrica-dimensión-fuente
+│       ├── sql/                  # ddl_dw.sql, consultas_mart.sql
 │       ├── uso_ia.qmd            # documentación de uso de LLMs
 │       ├── referencias.qmd       # referencias citadas en E1
-│       └── img/                  # capturas de pantalla y vistas previas de los datos
+│       └── img/                  # capturas de pantalla, vistas previas y evidencia de BigQuery
 ├── assets/                       # logo y scripts del sitio
 ├── _quarto.yml                   # configuración y navegación del sitio (output-dir: docs)
 ├── index.qmd                     # página de inicio del sitio

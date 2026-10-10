@@ -9,7 +9,7 @@ Población por entidad, edad y sexo. Es necesaria porque los conteos de delitos 
 | Estado de México (15) | 55 | 9,121,081 | 0.60 |
 | Morelos (17) | 37 | 1,062,217 | 3.48 |
 
-*Fuentes:* [F1](f01_sesnsp.qmd), archivo `Estatal-Delitos-2015-2025_ago2026.csv` (suma de enero a diciembre de 2025, tipo de delito *Feminicidio*, todas las modalidades); y este archivo de CONAPO (`ANIO` 2025, `SEXO` Mujeres, suma de las edades 0–109).
+*Fuentes:* las carpetas de investigación salen del archivo estatal de delitos del SESNSP, [F1](f01_sesnsp.qmd), sumando de enero a diciembre de 2025 todas las modalidades de feminicidio. La población sale de este archivo de CONAPO, sumando todas las edades de las mujeres en 2025.
 
 | Campo | Descripción |
 |---|---|
@@ -31,7 +31,8 @@ Población por entidad, edad y sexo. Es necesaria porque los conteos de delitos 
 
 ## Problemas anticipados para la integración
 
-- El archivo empieza en 1970 aunque su nombre dice 1950.
-- Población anual frente a delitos mensuales.
+- El archivo empieza en 1970, aunque su título indica que cubre desde 1950.
+- La población es anual, mientras que los delitos del SESNSP y el consumo musical son mensuales.
+- CONAPO actualiza sus proyecciones de forma retroactiva, por lo que las cifras de años pasados pueden cambiar en versiones futuras.
 
 [← Volver a fuentes de datos](../fuentes.qmd)

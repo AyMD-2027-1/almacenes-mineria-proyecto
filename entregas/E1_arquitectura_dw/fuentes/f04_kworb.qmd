@@ -33,8 +33,9 @@ Sitio que recopila diariamente los charts públicos de Spotify. Ofrece dos vista
 
 ## Problemas anticipados para la integración
 
-- Artista, título y colaboraciones vienen en una sola celda ("Artista - Título (w/ …)").
-- En el historial, posición y streams vienen juntos como texto (`1 (2,427,912)`).
-- Sin desagregación por entidad: P1 y P2 "por entidad" quedan con cobertura parcial.
+- El artista, el título y los artistas invitados aparecen juntos en un mismo texto.
+- En el historial de cada canción, la posición y el número de reproducciones aparecen juntos en una misma celda.
+- Solo hay datos a nivel nacional, por lo que no permite analizar el consumo por entidad.
+- La página se actualiza todos los días y no conserva versiones anteriores del chart.
 
 [← Volver a fuentes de datos](../fuentes.qmd)

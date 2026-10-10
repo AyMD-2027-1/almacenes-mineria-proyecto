@@ -141,49 +141,18 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes.html">
  <span class="dropdown-text">Fuentes de datos</span></a>
   </li>  
-        <li><hr class="dropdown-divider"></li>
-        <li class="dropdown-header">Catálogo de fuentes</li>
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.html">
- <span class="dropdown-text">F1 · SESNSP</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/arquitectura.html">
+ <span class="dropdown-text">Arquitectura de tres capas</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f02_endireh.html">
- <span class="dropdown-text">F2 · ENDIREH</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/estrella.html">
+ <span class="dropdown-text">Esquema estrella</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f03_conapo.html">
- <span class="dropdown-text">F3 · CONAPO</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/trazabilidad.html">
+ <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f04_kworb.html">
- <span class="dropdown-text">F4 · Kworb</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f05_kaggle.html">
- <span class="dropdown-text">F5 · Kaggle Spotify Charts</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f06_misongyny.html">
- <span class="dropdown-text">F6 · MiSonGyny</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f07_lrclib.html">
- <span class="dropdown-text">F7 · LRCLIB</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f08_musicbrainz.html">
- <span class="dropdown-text">F8 · MusicBrainz</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html">
- <span class="dropdown-text">F9 · Spotify Charts (no aceptada)</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f10_salguero.html">
- <span class="dropdown-text">F10 · Mapa de Salguero (no aceptada)</span></a>
-  </li>  
-        <li><hr class="dropdown-divider"></li>
         <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
@@ -338,9 +307,10 @@ ul.task-list li input[type="checkbox"] {
 <section id="problemas-anticipados-para-la-integración" class="level2">
 <h2 class="anchored" data-anchor-id="problemas-anticipados-para-la-integración">Problemas anticipados para la integración</h2>
 <ul>
-<li>Artista, título y colaboraciones vienen en una sola celda (“Artista - Título (w/ …)”).</li>
-<li>En el historial, posición y streams vienen juntos como texto (<code>1 (2,427,912)</code>).</li>
-<li>Sin desagregación por entidad: P1 y P2 “por entidad” quedan con cobertura parcial.</li>
+<li>El artista, el título y los artistas invitados aparecen juntos en un mismo texto.</li>
+<li>En el historial de cada canción, la posición y el número de reproducciones aparecen juntos en una misma celda.</li>
+<li>Solo hay datos a nivel nacional, por lo que no permite analizar el consumo por entidad.</li>
+<li>La página se actualiza todos los días y no conserva versiones anteriores del chart.</li>
 </ul>
 <p><a href="../../../entregas/E1_arquitectura_dw/fuentes.html">← Volver a fuentes de datos</a></p>
 

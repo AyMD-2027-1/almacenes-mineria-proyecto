@@ -141,49 +141,18 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes.html">
  <span class="dropdown-text">Fuentes de datos</span></a>
   </li>  
-        <li><hr class="dropdown-divider"></li>
-        <li class="dropdown-header">Catálogo de fuentes</li>
         <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.html">
- <span class="dropdown-text">F1 · SESNSP</span></a>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/arquitectura.html">
+ <span class="dropdown-text">Arquitectura de tres capas</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f02_endireh.html">
- <span class="dropdown-text">F2 · ENDIREH</span></a>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/estrella.html">
+ <span class="dropdown-text">Esquema estrella</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f03_conapo.html">
- <span class="dropdown-text">F3 · CONAPO</span></a>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/trazabilidad.html">
+ <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f04_kworb.html">
- <span class="dropdown-text">F4 · Kworb</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f05_kaggle.html">
- <span class="dropdown-text">F5 · Kaggle Spotify Charts</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f06_misongyny.html">
- <span class="dropdown-text">F6 · MiSonGyny</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f07_lrclib.html">
- <span class="dropdown-text">F7 · LRCLIB</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f08_musicbrainz.html">
- <span class="dropdown-text">F8 · MusicBrainz</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html">
- <span class="dropdown-text">F9 · Spotify Charts (no aceptada)</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes/f10_salguero.html">
- <span class="dropdown-text">F10 · Mapa de Salguero (no aceptada)</span></a>
-  </li>  
-        <li><hr class="dropdown-divider"></li>
         <li>
     <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
@@ -229,6 +198,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#b-entender-datasets-muy-grandes" id="toc-b-entender-datasets-muy-grandes" class="nav-link" data-scroll-target="#b-entender-datasets-muy-grandes">b) Entender datasets muy grandes</a></li>
   <li><a href="#c-pruebas-de-cobertura" id="toc-c-pruebas-de-cobertura" class="nav-link" data-scroll-target="#c-pruebas-de-cobertura">c) Pruebas de cobertura</a></li>
   <li><a href="#d-vistas-previas-de-los-datos-y-formato" id="toc-d-vistas-previas-de-los-datos-y-formato" class="nav-link" data-scroll-target="#d-vistas-previas-de-los-datos-y-formato">d) Vistas previas de los datos y formato</a></li>
+  <li><a href="#e-revisión-del-esquema-estrella-ddl-y-consultas" id="toc-e-revisión-del-esquema-estrella-ddl-y-consultas" class="nav-link" data-scroll-target="#e-revisión-del-esquema-estrella-ddl-y-consultas">e) Revisión del esquema estrella, DDL y consultas</a></li>
   </ul></li>
   <li><a href="#prompts-empleados-resumen-fiel" id="toc-prompts-empleados-resumen-fiel" class="nav-link" data-scroll-target="#prompts-empleados-resumen-fiel">3. Prompts empleados (resumen fiel)</a></li>
   <li><a href="#qué-hicimos-con-la-salida-obtenida" id="toc-qué-hicimos-con-la-salida-obtenida" class="nav-link" data-scroll-target="#qué-hicimos-con-la-salida-obtenida">4. Qué hicimos con la salida obtenida</a></li>
@@ -282,6 +252,10 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="d-vistas-previas-de-los-datos-y-formato">d) Vistas previas de los datos y formato</h3>
 <p>Tablas de vista previa generadas a partir de los archivos descargados y formato del documento.</p>
 </section>
+<section id="e-revisión-del-esquema-estrella-ddl-y-consultas" class="level3">
+<h3 class="anchored" data-anchor-id="e-revisión-del-esquema-estrella-ddl-y-consultas">e) Revisión del esquema estrella, DDL y consultas</h3>
+<p>Le compartimos el esquema estrella que diseñó el equipo y le pedimos revisarlo contra los criterios del instructivo. Con sus observaciones ajustamos el diseño a cinco dimensiones y un grano mensual, y le pedimos redactar el DDL, las consultas del DataMart y el borrador de la matriz de trazabilidad.</p>
+</section>
 </section>
 <section id="prompts-empleados-resumen-fiel" class="level2">
 <h2 class="anchored" data-anchor-id="prompts-empleados-resumen-fiel">3. Prompts empleados (resumen fiel)</h2>
@@ -295,8 +269,9 @@ ul.task-list li input[type="checkbox"] {
 <li>Descargamos con nuestras cuentas el dataset de Kaggle y elegimos el recurso de CONAPO adecuado para calcular tasas.</li>
 <li>Entramos a Spotify Charts, revisamos sus términos de uso y documentamos por qué no se acepta.</li>
 <li>Revisamos las cifras contra los archivos descargados y corregimos lo que no coincidía con las fuentes oficiales (por ejemplo, la comparabilidad de la serie del SESNSP).</li>
-<li>Descartamos propuestas que no tenían cobertura suficiente o requerían credenciales, y dejamos Google Trends como trabajo futuro.</li>
+<li>Descartamos propuestas que no tenían cobertura suficiente o requerían credenciales.</li>
 <li>Decidimos no guardar ni publicar letras de canciones por derechos de autor.</li>
+<li>Diseñamos el esquema estrella original y validamos los ajustes propuestos; el DDL y las consultas se ejecutan en nuestro proyecto de BigQuery, donde tomamos las capturas de evidencia.</li>
 </ul>
 </section>
 <section id="revisión-y-validación-de-nuestra-parte" class="level2">

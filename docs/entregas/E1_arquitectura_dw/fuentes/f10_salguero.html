@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F10. Mapa de feminicidios de María Salguero (no aceptada) – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F10. Mapa de feminicidios de María Salguero – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -141,49 +141,18 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes.html">
  <span class="dropdown-text">Fuentes de datos</span></a>
   </li>  
-        <li><hr class="dropdown-divider"></li>
-        <li class="dropdown-header">Catálogo de fuentes</li>
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.html">
- <span class="dropdown-text">F1 · SESNSP</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/arquitectura.html">
+ <span class="dropdown-text">Arquitectura de tres capas</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f02_endireh.html">
- <span class="dropdown-text">F2 · ENDIREH</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/estrella.html">
+ <span class="dropdown-text">Esquema estrella</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f03_conapo.html">
- <span class="dropdown-text">F3 · CONAPO</span></a>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/trazabilidad.html">
+ <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f04_kworb.html">
- <span class="dropdown-text">F4 · Kworb</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f05_kaggle.html">
- <span class="dropdown-text">F5 · Kaggle Spotify Charts</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f06_misongyny.html">
- <span class="dropdown-text">F6 · MiSonGyny</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f07_lrclib.html">
- <span class="dropdown-text">F7 · LRCLIB</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f08_musicbrainz.html">
- <span class="dropdown-text">F8 · MusicBrainz</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html">
- <span class="dropdown-text">F9 · Spotify Charts (no aceptada)</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/fuentes/f10_salguero.html">
- <span class="dropdown-text">F10 · Mapa de Salguero (no aceptada)</span></a>
-  </li>  
-        <li><hr class="dropdown-divider"></li>
         <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
@@ -217,15 +186,21 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">En esta página</h2>
+   
+  <ul>
+  <li><a href="#problemas-anticipados-para-la-integración" id="toc-problemas-anticipados-para-la-integración" class="nav-link active" data-scroll-target="#problemas-anticipados-para-la-integración">Problemas anticipados para la integración</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F10. Mapa de feminicidios de María Salguero (no aceptada)</h1>
+<h1 class="title">F10. Mapa de feminicidios de María Salguero</h1>
 </div>
 
 
@@ -242,7 +217,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Mapa ciudadano de feminicidios reportados por la prensa; en E0 se propuso para dimensionar el subregistro oficial.</p>
+<p>Mapa ciudadano de feminicidios reportados por la prensa. Se acepta como <strong>contraste del subregistro oficial</strong> del SESNSP (riesgo 2 de E0): permite comparar, por estado y año, los feminicidios reportados en prensa contra las carpetas de investigación oficiales.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -288,8 +263,12 @@ ul.task-list li input[type="checkbox"] {
 <td>Ubicación geográfica (habría que asignarla a entidad) y año.</td>
 </tr>
 <tr class="even">
+<td><strong>Preguntas de E0</strong></td>
+<td>P2.</td>
+</tr>
+<tr class="odd">
 <td><strong>Decisión</strong></td>
-<td><strong>No aceptada:</strong> no cumple C2 (solo 2016–2020) ni C4 (sin licencia ni descarga). Se cita solo como contexto del subregistro.</td>
+<td><strong>Aceptada con limitaciones:</strong> cumple los criterios C1 y C3. Cumple C2 solo de forma parcial, porque sus datos de 2016 a 2020 se cruzan con la ventana del proyecto únicamente de 2017 a 2020. Cumple C4 solo de forma parcial, porque los datos son públicos pero no tienen una licencia declarada; se usan con fines académicos y citando a la autora.</td>
 </tr>
 </tbody>
 </table>
@@ -299,9 +278,18 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Mapa en Google My Maps con capas por año</figcaption>
 </figure>
 </div>
+<section id="problemas-anticipados-para-la-integración" class="level2">
+<h2 class="anchored" data-anchor-id="problemas-anticipados-para-la-integración">Problemas anticipados para la integración</h2>
+<ul>
+<li>El mapa no permite exportar los datos; habría que solicitarlos a la autora o usar los totales que ella publica.</li>
+<li>Solo cubre de 2016 a 2020.</li>
+<li>Los casos están ubicados como puntos en el mapa y no asignados a una entidad.</li>
+<li>Se basa en notas de prensa, con criterios distintos a los de los registros oficiales.</li>
+</ul>
 <p><a href="../../../entregas/E1_arquitectura_dw/fuentes.html">← Volver a fuentes de datos</a></p>
 
 
+</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script>

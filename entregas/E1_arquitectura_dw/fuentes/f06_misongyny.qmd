@@ -24,8 +24,9 @@ Canciones en español etiquetadas por misoginia; sirve para entrenar y validar e
 
 ## Problemas anticipados para la integración
 
-- No trae letras.
-- Sus etiquetas (sexualización, violencia, odio) no son los tipos del artículo 6 de la LGAMVLV; se acercan más a la violencia mediática (art. 20 Quinquies).
-- Es un insumo de entrenamiento, no una tabla de hechos del almacén.
+- No incluye la letra de las canciones, solo el título, el artista y la etiqueta.
+- Sus categorías de sexualización, violencia y odio no corresponden a los tipos de violencia del artículo 6 de la LGAMVLV; se acercan más a la violencia mediática del artículo 20 Quinquies.
+- Es un corpus para entrenar y validar el clasificador, no un registro de consumo musical.
+- Los títulos y los nombres de los artistas pueden estar escritos de forma distinta que en los charts.
 
 [← Volver a fuentes de datos](../fuentes.qmd)

@@ -2,31 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/index.html</loc>
-    <lastmod>2026-09-14T05:49:09.385Z</lastmod>
+    <lastmod>2026-10-10T05:34:47.817Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/trazabilidad.html</loc>
+    <lastmod>2026-10-10T05:17:42.188Z</lastmod>
   </url>
   <url>
     <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/uso_ia.html</loc>
-    <lastmod>2026-10-10T00:01:14.313Z</lastmod>
+    <lastmod>2026-10-10T05:22:03.321Z</lastmod>
   </url>
   <url>
-    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f10_salguero.html</loc>
-    <lastmod>2026-10-10T00:15:03.874Z</lastmod>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f19_lastfm.html</loc>
+    <lastmod>2026-10-10T04:58:19.491Z</lastmod>
   </url>
   <url>
-    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f08_musicbrainz.html</loc>
-    <lastmod>2026-10-10T00:15:03.873Z</lastmod>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f17_mexico_evalua.html</loc>
+    <lastmod>2026-10-10T04:57:17.424Z</lastmod>
   </url>
   <url>
-    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f06_misongyny.html</loc>
-    <lastmod>2026-10-10T00:01:01.558Z</lastmod>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f15_coneval.html</loc>
+    <lastmod>2026-10-10T04:57:17.422Z</lastmod>
   </url>
   <url>
-    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f04_kworb.html</loc>
-    <lastmod>2026-10-10T00:01:01.558Z</lastmod>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f13_rnpdno.html</loc>
+    <lastmod>2026-10-10T04:57:17.424Z</lastmod>
   </url>
   <url>
-    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f02_endireh.html</loc>
-    <lastmod>2026-10-10T00:01:01.558Z</lastmod>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f11_google_trends.html</loc>
+    <lastmod>2026-10-10T04:57:17.422Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html</loc>
+    <lastmod>2026-10-10T04:58:19.490Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f07_lrclib.html</loc>
+    <lastmod>2026-10-10T04:57:17.421Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f05_kaggle.html</loc>
+    <lastmod>2026-10-10T04:57:17.421Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f03_conapo.html</loc>
+    <lastmod>2026-10-10T04:57:17.425Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.html</loc>
+    <lastmod>2026-10-10T04:57:17.420Z</lastmod>
   </url>
   <url>
     <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E0_comprension_negocio/bitacora.html</loc>
@@ -53,31 +77,55 @@
     <lastmod>2026-09-14T06:21:03.721Z</lastmod>
   </url>
   <url>
-    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f01_sesnsp.html</loc>
-    <lastmod>2026-10-10T00:01:01.557Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f03_conapo.html</loc>
-    <lastmod>2026-10-10T00:15:03.874Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f05_kaggle.html</loc>
-    <lastmod>2026-10-10T00:01:01.558Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f07_lrclib.html</loc>
-    <lastmod>2026-10-10T00:01:01.558Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html</loc>
-    <lastmod>2026-10-10T00:01:01.559Z</lastmod>
-  </url>
-  <url>
     <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes.html</loc>
-    <lastmod>2026-10-10T00:15:03.872Z</lastmod>
+    <lastmod>2026-10-10T04:58:19.491Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f02_endireh.html</loc>
+    <lastmod>2026-10-10T04:57:17.420Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f04_kworb.html</loc>
+    <lastmod>2026-10-10T04:57:17.421Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f06_misongyny.html</loc>
+    <lastmod>2026-10-10T04:57:17.421Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f08_musicbrainz.html</loc>
+    <lastmod>2026-10-10T04:57:17.421Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f10_salguero.html</loc>
+    <lastmod>2026-10-10T04:57:17.423Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f12_kaggle_top73.html</loc>
+    <lastmod>2026-10-10T04:57:17.422Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f14_censo_iter.html</loc>
+    <lastmod>2026-10-10T04:57:17.422Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f16_endutih.html</loc>
+    <lastmod>2026-10-10T04:57:17.422Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/fuentes/f18_natural_earth.html</loc>
+    <lastmod>2026-10-10T04:57:17.423Z</lastmod>
   </url>
   <url>
     <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/referencias.html</loc>
-    <lastmod>2026-10-10T00:15:03.874Z</lastmod>
+    <lastmod>2026-10-10T00:20:42.406Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/estrella.html</loc>
+    <lastmod>2026-10-10T05:47:45.637Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jzarcoo.github.io/almacenes-mineria-proyecto/entregas/E1_arquitectura_dw/arquitectura.html</loc>
+    <lastmod>2026-10-10T05:47:45.636Z</lastmod>
   </url>
 </urlset>

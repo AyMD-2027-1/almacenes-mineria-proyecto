@@ -34,7 +34,7 @@ Desarrollamos el proyecto de forma incremental siguiendo las fases de **CRISP-DM
 | # | Fase CRISP-DM | Estatus |
 |---|---|---|
 | 1 | Comprensión del negocio | Cubierta en **E0** |
-| 2 | Comprensión de los datos | Entrega posterior |
+| 2 | Comprensión de los datos | Cubierta en **E1** |
 | 3 | Preparación de los datos | Entrega posterior |
 | 4 | Modelado | Entrega posterior |
 | 5 | Evaluación | Entrega posterior |
@@ -50,3 +50,12 @@ Desarrollamos el proyecto de forma incremental siguiendo las fases de **CRISP-DM
 - [Criterio de éxito en términos de negocio](entregas/E0_comprension_negocio/criterio_exito.qmd)
 - [Riesgos y supuestos](entregas/E0_comprension_negocio/riesgos_supuestos.qmd)
 - [Documentación de uso de herramientas de IA](entregas/E0_comprension_negocio/uso_ia.qmd)
+
+### E1 — Arquitectura del DW
+
+- [Fuentes de datos](entregas/E1_arquitectura_dw/fuentes.qmd)
+- [Arquitectura de tres capas](entregas/E1_arquitectura_dw/arquitectura.qmd)
+- [Esquema estrella](entregas/E1_arquitectura_dw/estrella.qmd)
+- [Trazabilidad a E0](entregas/E1_arquitectura_dw/trazabilidad.qmd)
+- [Documentación de uso de herramientas de IA](entregas/E1_arquitectura_dw/uso_ia.qmd)
+- [Referencias](entregas/E1_arquitectura_dw/referencias.qmd)

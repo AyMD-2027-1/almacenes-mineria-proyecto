@@ -26,8 +26,8 @@ Colección completa de los charts diarios de Spotify; aporta los streams diarios
 
 ## Problemas anticipados para la integración
 
-- Faltan 34 fechas, casi todo diciembre de 2021, y termina en 2021.
-- Empalme con Kworb: 2,827 de los 3,748 IDs (75 %) coinciden; el resto solo se relaciona por artista y título. Una canción puede tener varios IDs (3,748 IDs para 3,128 pares artista–título).
-- El archivo global (3.48 GB) excede el límite de carga de BigQuery.
+- Faltan 34 días, la mayoría de diciembre de 2021, y la serie termina ese año.
+- Una parte de las canciones no tiene el mismo identificador que en Kworb, porque una misma canción puede tener varios identificadores en Spotify.
+- El archivo completo es demasiado grande para cargarlo directamente en BigQuery desde la consola.
 
 [← Volver a fuentes de datos](../fuentes.qmd)

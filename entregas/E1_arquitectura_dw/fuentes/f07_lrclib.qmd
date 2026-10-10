@@ -24,7 +24,8 @@ Biblioteca abierta de letras; es la entrada de texto para el clasificador.
 
 ## Problemas anticipados para la integración
 
-- La búsqueda puede devolver otra versión o un *cover* de la canción.
-- La cobertura del top 60 puede no sostenerse en canciones menos escuchadas.
+- La búsqueda por artista y título puede devolver otra versión de la canción o la interpretación de otro artista.
+- La cobertura se comprobó con las canciones más escuchadas y puede ser menor en canciones menos populares.
+- Las letras tienen derechos de autor, por lo que no pueden publicarse.
 
 [← Volver a fuentes de datos](../fuentes.qmd)
