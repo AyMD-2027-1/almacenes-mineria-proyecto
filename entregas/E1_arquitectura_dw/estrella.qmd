@@ -3,46 +3,122 @@ title: "Esquema estrella"
 subtitle: "Grano, hechos, dimensiones, diagrama y DDL"
 ---
 
+## El diseño en pocas palabras
+
+- **Dos hechos:** `fact_consumo_musical`, con **una fila por canción, entidad y mes**, y `fact_violencia`, con
+  **una fila por entidad, delito o registro (modalidad del SESNSP o desaparición del RNPDNO) y mes**.
+- **Cinco dimensiones:** cuándo (`dim_fecha`), dónde (`dim_entidad`), qué canción (`dim_cancion`), qué tipo de
+  violencia (`dim_tipo_violencia`) y cómo estaba ese estado ese año (`dim_contexto_entidad`, una mini-dimensión).
+  Los dos hechos comparten todas menos `dim_cancion`.
+- **El consumo por estado es una estimación** ([cómo se calcula](#estimacion)): la suma de los estados da el total
+  nacional, y toda salida por entidad lo indica.
+
 ## Granos candidatos
 
-Las fuentes tienen granos muy distintos: los charts de Spotify son diarios y nacionales, el SESNSP es
-mensual por entidad, Google Trends se puede consultar por estado y mes, y CONAPO, ENDIREH y las fuentes de
-contexto son anuales o de un solo levantamiento. Consideramos tres granos:
+Las fuentes tienen granos muy distintos. Los charts de Spotify son nacionales: semanales en el historial de Kworb (F4, desde 2013) y diarios en Kaggle (F5, 2017–2021). El SESNSP es
+mensual por entidad (F1) y el RNPDNO registra la fecha y la entidad de cada desaparición (F13). Google Trends da un valor por entidad para el periodo que se descargue, sea un año o un mes (F11). CONAPO, ENDIREH y las fuentes de contexto son anuales o de un solo levantamiento.
 
-| Grano candidato | Qué permite | Qué no permite |
-|---|---|---|
-| Una fila por canción por día, a nivel nacional | Máximo detalle del consumo musical. | No se cruza con la violencia, que no existe por día, ni con la entidad. |
-| **Una fila por entidad por mes** | Es el grano nativo del SESNSP y el común denominador entre consumo y violencia; permite la serie mensual 2017–2025 para P2 y P3. | Los datos diarios se agregan a mes; las fuentes anuales entran como contexto de la entidad. |
-| Una fila por entidad por año | Todas las fuentes caben sin ajustes. | Solo nueve puntos en el tiempo: se pierde la serie mensual de P3 y la mayor parte de la potencia de P2. |
+### Consumo musical
 
-**Elegimos el mes** como grano común porque es el nivel más fino que comparten la música y la violencia
-oficial, y conserva suficientes observaciones para la correlación de P2. Los charts diarios se agregan a mes;
-el consumo de Spotify es nacional, por lo que se registra en la entidad 0, Nacional; el consumo por entidad
-se aproxima con Google Trends. Las fuentes anuales (CONAPO, ENDIREH, Censo, CONEVAL, ENDUTIH, México Evalúa y
-Salguero) entran como atributos de la entidad para cada año. Este ajuste no cambia el objetivo de minería ni
-el criterio de éxito de E0, por lo que no requiere pivote.
+| # | Grano candidato | Qué lo sustenta | Qué permite | Qué no permite |
+|---|---|---|---|---|
+| C1 | **Una fila por canción, entidad y mes** | Streams semanales por canción del historial de Kworb (F4), repartidos a mes; interés de búsqueda del artista por entidad en Trends (F11), descargado por año | P1–P4. La misoginia se mide por canción, que es lo que se clasifica, y el mes coincide con el SESNSP | Medir reproducciones reales por entidad: se estiman |
+| C2 | Una fila por artista, entidad y año | Los mismos datos, agregados | P1 y P2 con menos filas | Ver categorías y tipos de violencia por canción (P3, P4) y la serie mensual |
+| C3 | Una fila por canción y semana, nacional | Kworb (F4) tal como viene | P3 con el mayor detalle | Llegar a la entidad (P1, P2); el SESNSP no existe por semana |
+
+**Elegimos C1.** La letra se clasifica por canción, así que bajar a artista perdería la desagregación por tipo de
+violencia que piden P3 y P4. El mes es el grano nativo del SESNSP y de la serie nacional de streams, así que los dos
+hechos se cruzan sin convertir fechas. C3 se agrega hacia arriba en la preparación: cada semana se reparte entre los
+meses según cuántos de sus 7 días caen en cada uno.
+
+### Violencia
+
+| # | Grano candidato | Qué lo sustenta | Qué permite | Qué no permite |
+|---|---|---|---|---|
+| V1 | **Una fila por entidad, delito o registro y mes** | Archivos de delitos y de víctimas del SESNSP (F1), mensuales por entidad, con bien jurídico, tipo, subtipo y modalidad; registros del RNPDNO (F13) contados por entidad y mes de desaparición | P2, P3 y P4; subir a tipo de la LGAMVLV o a año con `ROLLUP` | Casos individuales: el SESNSP publica conteos |
+| V2 | Una fila por entidad, tipo de la LGAMVLV y año | El mismo archivo, agregado | El cruce anual por entidad de P2 | Corregir el mapeo a la LGAMVLV sin recargar; la serie mensual |
+
+**Elegimos V1.** Guardar el delito y dejar el tipo de la LGAMVLV como atributo de la dimensión permite corregir el
+mapeo sin recargar los hechos.
+
+## Cómo se estima el consumo por entidad {#estimacion}
+
+Ninguna fuente abierta publica reproducciones por entidad ([pivote](pivote.qmd)). El consumo nacional de cada
+canción se **reparte** entre las 32 entidades con un peso que sale de Google Trends.
+
+Google Trends divide cada dato entre el total de búsquedas de la región y del periodo, y lo escala de 0 a 100
+[[5]](referencias.qmd). Su ayuda lo dice así: 100 indica la ubicación con mayor frecuencia de búsquedas "en
+proporción al total de búsquedas realizadas en esa ubicación". Por eso el valor de una entidad dice qué tanto pesa
+el artista **dentro** de las búsquedas de esa entidad, no cuántas búsquedas hubo. Para acercarlo a un volumen se multiplica por los usuarios de internet
+de la entidad:
+
+$$
+\text{peso}(e, t, p) = \frac{\text{Trends}(e, t, p) \times \text{usuarios}(e, a)}{\sum_{e'=1}^{32} \text{Trends}(e', t, p) \times \text{usuarios}(e', a)}
+$$
+
+$$
+\text{streams\_estimados}(c, e, m) = \text{streams\_nacionales}(c, m) \times \text{peso}(e, t, p)
+$$
+
+donde $e$ es la entidad, $c$ la canción, $t$ el tema de Trends de su artista, $m$ el mes, $a$ el año de ese mes y
+$p$ el periodo de la descarga de Trends, que es el año $a$.
+
+- **Los pesos suman 1**, así que la suma de las 32 entidades devuelve el consumo nacional. Las
+  medidas estimadas siguen siendo aditivas y la serie nacional se conserva sin cambios.
+- **No se necesita un término ancla.** Cada descarga se normaliza por separado, pero el peso solo usa cómo se
+  reparte el interés entre entidades dentro de la misma descarga.
+- **Se descarga el tema, no el término.** Trends ofrece "temas" (por ejemplo, "Bad Bunny — Cantante" o
+  "Reguetón — Género musical") que reúnen todas las formas de escribir un nombre. Las descargas como término
+  cambian mucho según la escritura, y el tema es estable entre descargas (ver [verificación de Trends](fuentes/f11_google_trends.qmd#evidencia-trends)).
+  Si un artista no tiene tema, se usa su término más común. `termino_trends` guarda cuál se usó.
+- **El peso sale de una sola descarga por año, en este orden:**
+
+  | `origen_peso` | De dónde sale | Cuándo se usa |
+  |---|---|---|
+  | `artista_anio` | Tema del artista en ese año | **Caso principal**: los 50 artistas con más streams de cada año |
+  | `genero_anio` | Tema del género del artista en ese año | Artistas fuera de esos 50 o con menos de 28 entidades con valor |
+  | `usuarios_internet` | Solo los usuarios de internet de cada entidad | Si tampoco hay dato del género |
+
+  Se toma el vector completo de las 32 entidades de un solo nivel, sin mezclar niveles entre entidades, para que
+  los pesos sigan sumando 1. Todo resultado por entidad se puede reportar también solo con pesos del artista.
+
+Ejemplo con un archivo ya descargado (tema "Reguetón — Género musical", 2021, 32 de 32 entidades con valor):
+Chiapas vale 100 y Baja California 53. Con el mismo número de usuarios de internet, Chiapas recibiría 1.89 veces el
+peso de Baja California. Con los usuarios reales, la diferencia se ajusta al tamaño de cada entidad.
 
 ## Tablas de hechos
 
-Hay dos tablas de hechos que comparten las dimensiones de fecha, entidad, tipo de violencia y fuente.
-
-| Hecho | Grano | Fuentes |
-|---|---|---|
-| `fact_violencia` | **Una fila por entidad, por mes, por tipo de violencia y por fuente.** | SESNSP delitos y víctimas (F1), RNPDNO (F13). |
-| `fact_consumo_musical` | **Una fila por contenido musical, por entidad, por mes y por fuente.** | Kaggle *Spotify Charts* (F5), Kworb (F4), Kaggle Top 73 (F12), Google Trends (F11). |
+| Hecho | Fuentes |
+|---|---|
+| `fact_consumo_musical` | Kworb (F4), Google Trends (F11), ENDUTIH (F16) y CONAPO (F3) para el peso. Kaggle (F5) valida 2017–2021. |
+| `fact_violencia` | SESNSP, archivos de delitos y de víctimas (F1); RNPDNO, mujeres desaparecidas (F13). |
 
 ### Medidas
 
 | Hecho | Medida | Descripción | Aditividad |
 |---|---|---|---|
-| `fact_violencia` | `conteo` | Carpetas de investigación, víctimas o personas desaparecidas en el mes. | Aditiva |
-| `fact_violencia` | `conteo_mujeres` | El mismo conteo, solo mujeres; existe donde la fuente distingue el sexo. | Aditiva |
-| `fact_consumo_musical` | `streams` | Reproducciones en el mes. | Aditiva |
-| `fact_consumo_musical` | `dias_en_chart` | Días del mes en que la canción estuvo en el chart. | Aditiva |
-| `fact_consumo_musical` | `mejor_posicion` | Mejor posición alcanzada en el mes. | No aditiva |
-| `fact_consumo_musical` | `popularidad_promedio` | Índice de popularidad de Spotify del Top 73. | No aditiva |
-| `fact_consumo_musical` | `interes_busqueda` | Interés de búsqueda de Google Trends, de 0 a 100. | No aditiva |
-| `fact_consumo_musical` | `interes_ancla` | Interés del término de referencia en la misma consulta, para comparar consultas. | No aditiva |
+| `fact_consumo_musical` | `streams_estimados` | Streams nacionales del mes (chart semanal de Kworb repartido por días) por el peso de la entidad. 2015–2025. | Aditiva |
+| `fact_consumo_musical` | `peso_entidad` | Participación estimada de la entidad en el consumo de la canción; suma 1 entre las 32. | No aditiva |
+| `fact_consumo_musical` | `interes_busqueda` | Valor de Trends, 0–100, relativo a su descarga. | No aditiva |
+| `fact_consumo_musical` | `semanas_en_chart_nacional` | Semanas del chart semanal nacional que terminan en el mes. | Aditiva en el tiempo y entre canciones; **no entre entidades** |
+| `fact_consumo_musical` | `mejor_posicion_nacional` | Mejor posición semanal nacional entre esas semanas. | No aditiva |
+| `fact_violencia` | `carpetas` | Carpetas de investigación del archivo de delitos. | Aditiva |
+| `fact_violencia` | `victimas_mujeres` | Víctimas mujeres del archivo de víctimas del SESNSP, o mujeres desaparecidas del RNPDNO; vacía donde la fuente no lo reporta. | Aditiva |
+| `fact_violencia` | `victimas_mujeres_menores` | La parte de `victimas_mujeres` menor de 18 años (rango de edad del SESNSP, edad del RNPDNO). | Aditiva |
+| `fact_violencia` | `victimas_hombres` | Víctimas hombres del archivo de víctimas del SESNSP, para comparar con las mujeres. | Aditiva |
+
+Las dos medidas con terminación `_nacional` son datos del chart nacional que se repiten igual en las 32 filas de
+entidad de cada canción y mes. No se reparten porque no son cantidades de consumo. Las vistas del DataMart las
+toman una sola vez por canción y mes, nunca las suman entre entidades.
+
+Además, cada hecho guarda la columna `fuente` con el código del catálogo (F1, F13, F4), y el consumo guarda
+`origen_peso`. Son atributos degenerados: dan la trazabilidad a la fuente que pide el criterio de éxito de E0 sin
+crear una dimensión que no responde ninguna pregunta.
+
+**De semanas a meses.** Cada semana del chart de Kworb termina en jueves y cubre de viernes a jueves. Sus streams
+se reparten entre los meses según cuántos de sus 7 días caen en cada uno; por ejemplo, una semana del 27 de
+febrero al 5 de marzo aporta 2/7 a febrero y 5/7 a marzo. El supuesto es que el consumo es parejo dentro de la
+semana.
 
 ## Dimensiones
 
@@ -50,134 +126,170 @@ Cinco dimensiones, todas con llave sustituta entera.
 
 | Dimensión | Llave sustituta | Atributos principales | Tipo de SCD y por qué |
 |---|---|---|---|
-| `dim_fecha` | `fecha_key`, año-mes-01 | fecha, año, semestre, trimestre, mes, nombre del mes | **Tipo 0:** es un calendario generado que no cambia. |
-| `dim_entidad` | `entidad_key`, una por entidad y año | clave INEGI, nombre, región, código ISO, geometría; población de mujeres, internet, pobreza, impunidad, prevalencias de la ENDIREH, feminicidios en prensa | **Tipo 2:** el contexto de cada entidad cambia cada año; una versión por año conserva el valor vigente en el momento de cada hecho. |
-| `dim_contenido_musical` | `contenido_key`, una por contenido y versión del modelo | tipo de contenido, ID de Spotify, título, artistas, género, país del artista, término de búsqueda, si tiene letra, etiqueta de MiSonGyny, si es misógina, categoría y probabilidad del clasificador, versión del modelo | **Tipo 2:** la clasificación cambia cuando se reentrena el clasificador; guardar cada versión permite medir precisión y recall por periodo, como pide el criterio técnico de E0. |
-| `dim_tipo_violencia` | `tipo_violencia_key`; -1 = no aplica | tipo según la LGAMVLV, origen de la clasificación, categoría original, bien jurídico, tipo, subtipo y modalidad de delito | **Tipo 1:** el mapeo hacia la LGAMVLV se corrige sobrescribiendo; no interesa conservar mapeos anteriores. |
-| `dim_fuente` | `fuente_key` | código del catálogo, dataset, institución, tipo, granularidad original, nivel geográfico, fecha de corte | **Tipo 1:** describe el origen de cada fila; si cambia el corte se actualiza. |
+| `dim_fecha` | `fecha_key`, AAAAMM01 | fecha, año, semestre, trimestre, mes, nombre del mes, índice del mes | **Tipo 0:** es un calendario generado que no cambia. |
+| `dim_entidad` | `entidad_key` | clave INEGI, nombre, nombre en Google Trends, código ISO, región del Banco de México, geometría de Natural Earth | **Tipo 0:** las 32 entidades no cambian en la ventana. |
+| `dim_cancion` | `cancion_key` | ID de Spotify, clave normalizada, título, artistas, tema de Trends, país del artista, género, macrogénero, etiquetas crudas de MusicBrainz o Last.fm, si tiene letra, etiqueta de MiSonGyny, si es misógina, categoría, probabilidad, origen de la etiqueta (MiSonGyny o clasificador) y versión del clasificador | **Tipo 1:** al reentrenar el clasificador se reclasifica toda la historia y se sobrescribe. Las métricas de cada versión (precisión y recall por periodo) se guardan en la evaluación del modelo, no en el almacén. |
+| `dim_tipo_violencia` | `tipo_violencia_key`; -1 = no aplica | tipo según la LGAMVLV, ámbito, origen, categoría de la fuente, bien jurídico, tipo, subtipo y modalidad del delito, si lo mide el SESNSP, si es control | **Tipo 1:** el mapeo a la LGAMVLV es una regla del equipo y se corrige sobrescribiendo. |
+| `dim_contexto_entidad` | `contexto_key`, una por entidad y año | población total, de mujeres (total y de 15 años y más) y de hombres, usuarios de internet, viviendas con internet, pobreza, impunidad, prevalencias de la ENDIREH; fila nacional (`cve_ent = 0`) solo para las prevalencias nacionales | **Tipo 1:** CONAPO y las encuestas revisan sus cifras y se sobrescriben. |
 
-`dim_contenido_musical` reúne en una sola dimensión desnormalizada a la canción, su artista y los términos
-de búsqueda de Google Trends, para mantener el esquema en estrella y dentro de cinco dimensiones.
-`dim_tipo_violencia` es la dimensión conformada que permite comparar los tipos de violencia de la música
-con los de las estadísticas oficiales.
+### Mapeo inicial a la LGAMVLV
+
+| Origen | Categoría de la fuente | `tipo_lgamvlv` | Ámbito |
+|---|---|---|---|
+| SESNSP | Feminicidio | feminicida | |
+| SESNSP | Violación simple y equiparada, abuso sexual, acoso y hostigamiento sexual, incesto, otros contra la libertad y la seguridad sexual | sexual | |
+| SESNSP | Lesiones dolosas (con víctimas mujeres en el archivo de víctimas) | física | |
+| SESNSP | Violencia familiar | sin distinguir | familiar |
+| SESNSP | Violencia de género en todas sus modalidades distinta a la violencia familiar | sin distinguir | otro |
+| SESNSP | Homicidio doloso (total) | control | |
+| RNPDNO | Mujer sin localizar | desaparición (no es un tipo de la LGAMVLV; entra en P2, no en P4) | |
+| RNPDNO | Mujer localizada con vida | desaparición | |
+| RNPDNO | Mujer localizada sin vida | desaparición | |
+| Clasificador | Sexualización | sexual | |
+| Clasificador | Violencia | física | |
+| Clasificador | Odio | psicológica | |
+| Sin fuente | — | económica o patrimonial, mediática | |
+
+El mapeo de las categorías del clasificador se apoya en las definiciones del artículo 6 de la LGAMVLV
+[[1]](referencias.qmd):
+
+- **Sexualización → sexual.** La fracción V define la violencia sexual como cualquier acto que degrada o daña el
+  cuerpo o la sexualidad de la víctima; cosificar a una mujer en la letra entra ahí.
+- **Violencia → física.** La fracción II se refiere al daño o la agresión contra el cuerpo. Es aproximado, porque
+  algunas letras de esta categoría describen violencia sexual.
+- **Odio → psicológica.** La fracción I incluye insultos, humillaciones y devaluación, que es lo que hace el
+  discurso de odio en una letra.
+
+Las fracciones III (patrimonial) y IV (económica) se reúnen en un solo tipo porque ninguna fuente las separa. Es
+el mapeo del equipo y se ajusta si el clasificador entrenado lo requiere.
 
 ## Diagrama
 
 ```{mermaid}
 %%{init: {'theme': 'neutral'}}%%
 erDiagram
+    DIM_FECHA ||--o{ FACT_CONSUMO_MUSICAL : fecha_key
+    DIM_ENTIDAD ||--o{ FACT_CONSUMO_MUSICAL : entidad_key
+    DIM_CANCION ||--o{ FACT_CONSUMO_MUSICAL : cancion_key
+    DIM_TIPO_VIOLENCIA ||--o{ FACT_CONSUMO_MUSICAL : tipo_violencia_key
+    DIM_CONTEXTO_ENTIDAD ||--o{ FACT_CONSUMO_MUSICAL : contexto_key
     DIM_FECHA ||--o{ FACT_VIOLENCIA : fecha_key
     DIM_ENTIDAD ||--o{ FACT_VIOLENCIA : entidad_key
     DIM_TIPO_VIOLENCIA ||--o{ FACT_VIOLENCIA : tipo_violencia_key
-    DIM_FUENTE ||--o{ FACT_VIOLENCIA : fuente_key
-    DIM_FECHA ||--o{ FACT_CONSUMO_MUSICAL : fecha_key
-    DIM_ENTIDAD ||--o{ FACT_CONSUMO_MUSICAL : entidad_key
-    DIM_CONTENIDO_MUSICAL ||--o{ FACT_CONSUMO_MUSICAL : contenido_key
-    DIM_TIPO_VIOLENCIA ||--o{ FACT_CONSUMO_MUSICAL : tipo_violencia_key
-    DIM_FUENTE ||--o{ FACT_CONSUMO_MUSICAL : fuente_key
+    DIM_CONTEXTO_ENTIDAD ||--o{ FACT_VIOLENCIA : contexto_key
 
-    FACT_VIOLENCIA {
-        INT64 fecha_key FK
-        INT64 entidad_key FK
-        INT64 tipo_violencia_key FK
-        INT64 fuente_key FK
-        INT64 conteo "aditiva"
-        INT64 conteo_mujeres "aditiva"
-    }
     FACT_CONSUMO_MUSICAL {
-        INT64 fecha_key FK
-        INT64 entidad_key FK
-        INT64 contenido_key FK
+        INT64 fecha_key PK,FK
+        INT64 entidad_key PK,FK
+        INT64 cancion_key PK,FK
         INT64 tipo_violencia_key FK
-        INT64 fuente_key FK
-        INT64 streams "aditiva"
-        INT64 dias_en_chart "aditiva"
-        INT64 mejor_posicion "no aditiva"
-        FLOAT64 popularidad_promedio "no aditiva"
-        FLOAT64 interes_busqueda "no aditiva"
-        FLOAT64 interes_ancla "no aditiva"
+        INT64 contexto_key FK
+        FLOAT64 streams_estimados "aditiva"
+        FLOAT64 peso_entidad "no aditiva"
+        INT64 interes_busqueda "no aditiva"
+        INT64 semanas_en_chart_nacional "no entre entidades"
+        INT64 mejor_posicion_nacional "no aditiva"
+        STRING origen_peso "degenerada"
+        STRING fuente "degenerada"
+    }
+    FACT_VIOLENCIA {
+        INT64 fecha_key PK,FK
+        INT64 entidad_key PK,FK
+        INT64 tipo_violencia_key PK,FK
+        INT64 contexto_key FK
+        INT64 carpetas "aditiva"
+        INT64 victimas_mujeres "aditiva"
+        INT64 victimas_mujeres_menores "aditiva"
+        INT64 victimas_hombres "aditiva"
+        STRING fuente "degenerada"
     }
     DIM_FECHA {
-        INT64 fecha_key PK
+        INT64 fecha_key PK "SCD 0"
         DATE fecha
         INT64 anio
         INT64 semestre
         INT64 trimestre
         INT64 mes
         STRING nombre_mes
+        INT64 indice_mes
     }
     DIM_ENTIDAD {
-        INT64 entidad_key PK "SCD 2"
+        INT64 entidad_key PK "SCD 0"
         INT64 cve_ent
         STRING entidad
-        STRING region
+        STRING nombre_trends
         STRING iso_3166_2
+        STRING region
         STRING geometry_wkt
-        INT64 anio
-        DATE valido_desde
-        DATE valido_hasta
-        BOOL es_actual
-        INT64 poblacion_mujeres
-        INT64 poblacion_mujeres_15_mas
-        FLOAT64 pct_viviendas_internet
-        FLOAT64 pct_usuarios_internet
-        FLOAT64 pct_pobreza
-        FLOAT64 indice_impunidad
-        FLOAT64 prevalencia_violencia_total
-        FLOAT64 prevalencia_psicologica
-        FLOAT64 prevalencia_fisica
-        FLOAT64 prevalencia_sexual
-        FLOAT64 prevalencia_economica_patrimonial
-        INT64 feminicidios_prensa
     }
-    DIM_CONTENIDO_MUSICAL {
-        INT64 contenido_key PK "SCD 2"
-        STRING tipo_contenido
+    DIM_CANCION {
+        INT64 cancion_key PK "SCD 1"
         STRING spotify_id
+        STRING clave_cancion
         STRING titulo
         STRING artista_principal
         STRING artistas
-        STRING genero
+        STRING termino_trends
         STRING pais_artista
-        STRING termino_busqueda
+        STRING genero
+        STRING macrogenero
+        STRING etiquetas_fuente
         BOOL tiene_letra
         BOOL en_corpus_misongyny
         STRING etiqueta_misongyny
         BOOL es_misogina
         STRING categoria_misoginia
         FLOAT64 score_misoginia
+        STRING origen_etiqueta
         STRING version_modelo
-        DATE valido_desde
-        DATE valido_hasta
-        BOOL es_actual
     }
     DIM_TIPO_VIOLENCIA {
         INT64 tipo_violencia_key PK "SCD 1"
         STRING tipo_lgamvlv
-        STRING origen_clasificacion
+        STRING ambito_lgamvlv
+        STRING origen
         STRING categoria_origen
         STRING bien_juridico
         STRING tipo_delito
         STRING subtipo_delito
         STRING modalidad
+        BOOL medido_en_sesnsp
+        BOOL es_control
     }
-    DIM_FUENTE {
-        INT64 fuente_key PK "SCD 1"
-        STRING codigo_catalogo
-        STRING dataset
-        STRING institucion
-        STRING tipo_fuente
-        STRING granularidad_original
-        STRING nivel_geografico
-        DATE fecha_corte
-        STRING url
+    DIM_CONTEXTO_ENTIDAD {
+        INT64 contexto_key PK "SCD 1"
+        INT64 cve_ent
+        INT64 anio
+        BOOL es_nacional
+        INT64 poblacion_total
+        INT64 poblacion_mujeres
+        INT64 poblacion_mujeres_15_mas
+        INT64 poblacion_hombres
+        FLOAT64 pct_usuarios_internet
+        INT64 usuarios_internet_estimados
+        FLOAT64 pct_viviendas_internet
+        FLOAT64 pct_pobreza
+        FLOAT64 indice_impunidad
+        FLOAT64 prevalencia_total
+        FLOAT64 prevalencia_psicologica
+        FLOAT64 prevalencia_fisica
+        FLOAT64 prevalencia_sexual
+        FLOAT64 prevalencia_economica_patrimonial
     }
+    classDef hecho fill:#fde2c8,stroke:#c0662b,color:#1b1f24
+    class FACT_CONSUMO_MUSICAL,FACT_VIOLENCIA hecho
+    style DIM_FECHA fill:#dbeafe,stroke:#3b6fb6,color:#1b1f24
+    style DIM_ENTIDAD fill:#dcf3e3,stroke:#3a8a55,color:#1b1f24
+    style DIM_CANCION fill:#ede0f7,stroke:#7b4fa8,color:#1b1f24
+    style DIM_TIPO_VIOLENCIA fill:#fbdada,stroke:#b54545,color:#1b1f24
+    style DIM_CONTEXTO_ENTIDAD fill:#fff3c4,stroke:#a8861b,color:#1b1f24
 ```
 
-## DDL ejecutado en BigQuery
+## DDL
 
-El código también está en [`sql/ddl_dw.sql`](sql/ddl_dw.sql). Las llaves primarias y foráneas se declaran
-como `NOT ENFORCED`, porque BigQuery no las impone, y cada tabla indica en su descripción qué preguntas responde.
+El código también está en [`sql/ddl_dw.sql`](sql/ddl_dw.sql). Las llaves primarias y foráneas se declaran como
+`NOT ENFORCED`, porque BigQuery no las impone, y cada tabla indica en su descripción qué preguntas responde. La
+captura del esquema de cada tabla está en [Arquitectura · Evidencia en BigQuery](arquitectura.qmd#evidencia).
 
 ```sql
 -- =====================================================================
@@ -185,6 +297,7 @@ como `NOT ENFORCED`, porque BigQuery no las impone, y cada tabla indica en su de
 -- Misoginia en la música consumida en México y violencia de género
 -- Ejecutar en BigQuery con el proyecto del equipo seleccionado.
 -- Los tres datasets deben quedar en la misma ubicación (US).
+-- Orden: datasets, dimensiones y al final hechos (las FK citan PK ya creadas).
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
@@ -192,145 +305,147 @@ como `NOT ENFORCED`, porque BigQuery no las impone, y cada tabla indica en su de
 -- ---------------------------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS misoginia_staging
   OPTIONS (location = 'US',
-           description = 'Bronze: datos crudos, tal como vienen de cada fuente del catálogo');
+           description = 'Staging (bronze): datos crudos, tal como vienen de cada fuente del catálogo');
 
 CREATE SCHEMA IF NOT EXISTS misoginia_dw
   OPTIONS (location = 'US',
-           description = 'Gold: esquema estrella (hechos y dimensiones)');
+           description = 'DW (gold): esquema estrella con dos hechos y cinco dimensiones');
 
 CREATE SCHEMA IF NOT EXISTS misoginia_mart
   OPTIONS (location = 'US',
-           description = 'Gold: vistas del DataMart, una por pregunta de E0');
+           description = 'DataMart (gold): vistas que responden P1 a P4');
 
 -- ---------------------------------------------------------------------
 -- 2. Dimensiones
 -- ---------------------------------------------------------------------
 CREATE OR REPLACE TABLE misoginia_dw.dim_fecha (
-  fecha_key   INT64  NOT NULL OPTIONS (description = 'Llave sustituta AAAAMM01, primer día del mes'),
-  fecha       DATE   NOT NULL OPTIONS (description = 'Primer día del mes'),
-  anio        INT64  NOT NULL,
-  semestre    INT64,
-  trimestre   INT64,
-  mes         INT64  NOT NULL,
-  nombre_mes  STRING,
+  fecha_key            INT64  NOT NULL OPTIONS (description = 'Llave sustituta AAAAMM01: primer día del mes'),
+  fecha                DATE   NOT NULL OPTIONS (description = 'Primer día del mes'),
+  anio                 INT64  NOT NULL,
+  semestre             INT64,
+  trimestre            INT64,
+  mes                  INT64  NOT NULL,
+  nombre_mes           STRING,
+  indice_mes           INT64  NOT NULL OPTIONS (description = 'anio * 12 + mes; ordena los meses aunque falten algunos'),
   PRIMARY KEY (fecha_key) NOT ENFORCED
 )
 OPTIONS (description = 'Tiempo a nivel mes, calendario generado. SCD tipo 0. Responde: P1, P2, P3');
 
 CREATE OR REPLACE TABLE misoginia_dw.dim_entidad (
-  entidad_key                  INT64  NOT NULL OPTIONS (description = 'Llave sustituta: una por entidad y año'),
-  cve_ent                      INT64  NOT NULL OPTIONS (description = 'Clave INEGI 1-32; 0 = Nacional'),
-  entidad                      STRING NOT NULL,
-  region                       STRING OPTIONS (description = 'Jerarquía entidad -> región'),
-  iso_3166_2                   STRING OPTIONS (description = 'Código ISO del estado, liga con Google Trends y Natural Earth'),
-  geometry_wkt                 STRING OPTIONS (description = 'Natural Earth (F18)'),
-  anio                         INT64  NOT NULL OPTIONS (description = 'Año de vigencia de la versión'),
-  valido_desde                 DATE,
-  valido_hasta                 DATE,
-  es_actual                    BOOL,
-  poblacion_mujeres            INT64  OPTIONS (description = 'CONAPO (F3), mitad de año'),
-  poblacion_mujeres_15_mas     INT64  OPTIONS (description = 'CONAPO (F3), mitad de año'),
-  pct_viviendas_internet       FLOAT64 OPTIONS (description = 'Censo 2020 ITER (F14)'),
+  entidad_key    INT64  NOT NULL OPTIONS (description = 'Llave sustituta'),
+  cve_ent        INT64  NOT NULL OPTIONS (description = 'Clave INEGI de la entidad, 1 a 32'),
+  entidad        STRING NOT NULL OPTIONS (description = 'Nombre del catálogo INEGI'),
+  nombre_trends  STRING OPTIONS (description = 'Nombre tal como lo escribe Google Trends en español (Estado de México, Coahuila de Zaragoza...); el catálogo de silver guarda también la versión en inglés'),
+  iso_3166_2     STRING OPTIONS (description = 'Código ISO de la subregión (MX-CMX, MX-YUC...)'),
+  region         STRING OPTIONS (description = 'Región del Banco de México: norte, centro norte, centro o sur. Jerarquía entidad -> región'),
+  geometry_wkt   STRING OPTIONS (description = 'Natural Earth (F18), para mapas'),
+  PRIMARY KEY (entidad_key) NOT ENFORCED
+)
+OPTIONS (description = 'Entidad federativa. SCD tipo 0: las 32 entidades no cambian en la ventana. Conformada entre ambos hechos. Responde: P1, P2');
+
+CREATE OR REPLACE TABLE misoginia_dw.dim_cancion (
+  cancion_key          INT64  NOT NULL OPTIONS (description = 'Llave sustituta'),
+  spotify_id           STRING OPTIONS (description = 'Llave natural: ID de Spotify que usa Kworb (F4); Kaggle (F5) puede tener otro ID para la misma canción'),
+  clave_cancion        STRING OPTIONS (description = 'Artista y título normalizados; une con LRCLIB (F7) y MiSonGyny (F6)'),
+  titulo               STRING,
+  artista_principal    STRING,
+  artistas             STRING OPTIONS (description = 'Todos los artistas acreditados'),
+  termino_trends       STRING OPTIONS (description = 'Tema de Google Trends (F11) del artista, o su término más común si no tiene tema'),
+  pais_artista         STRING OPTIONS (description = 'País del artista, MusicBrainz (F8)'),
+  genero               STRING OPTIONS (description = 'Género principal del artista: MusicBrainz (F8) o Last.fm (F19), revisado a mano'),
+  macrogenero          STRING OPTIONS (description = 'Agrupación de las etiquetas más frecuentes de los artistas principales (urbano, regional mexicano, pop...). Jerarquía genero -> macrogenero'),
+  etiquetas_fuente     STRING OPTIONS (description = 'Etiquetas crudas de MusicBrainz (F8) o Last.fm (F19), separadas por coma'),
+  tiene_letra          BOOL   OPTIONS (description = 'Letra encontrada en LRCLIB (F7); la letra no se guarda'),
+  en_corpus_misongyny  BOOL   OPTIONS (description = 'La canción está etiquetada en MiSonGyny (F6)'),
+  etiqueta_misongyny   STRING OPTIONS (description = 'Etiqueta de referencia de MiSonGyny, para validar'),
+  es_misogina          BOOL   OPTIONS (description = 'Salida del clasificador; NULL si no hay letra'),
+  categoria_misoginia  STRING OPTIONS (description = 'sexualización, violencia, odio o no relacionada (categorías de MiSonGyny)'),
+  score_misoginia      FLOAT64 OPTIONS (description = 'Probabilidad del clasificador'),
+  origen_etiqueta      STRING OPTIONS (description = 'misongyny (etiqueta humana del corpus F6) o clasificador; NULL si no hay letra'),
+  version_modelo       STRING OPTIONS (description = 'Versión del clasificador que asignó la etiqueta'),
+  PRIMARY KEY (cancion_key) NOT ENFORCED
+)
+OPTIONS (description = 'Canción consumida, con su artista, género y clasificación. SCD tipo 1: al reentrenar el clasificador se reclasifica toda la historia. Responde: P1, P2, P3, P4');
+
+CREATE OR REPLACE TABLE misoginia_dw.dim_tipo_violencia (
+  tipo_violencia_key  INT64  NOT NULL OPTIONS (description = 'Llave sustituta; -1 = no aplica (canción no misógina o sin letra)'),
+  tipo_lgamvlv        STRING NOT NULL OPTIONS (description = 'psicológica, física, sexual, económica o patrimonial, feminicida, mediática, sin distinguir, desaparición, control, no aplica'),
+  ambito_lgamvlv      STRING OPTIONS (description = 'familiar, comunitario u otro, cuando el delito lo define'),
+  origen              STRING NOT NULL OPTIONS (description = 'SESNSP, RNPDNO o clasificador'),
+  categoria_origen    STRING OPTIONS (description = 'Categoría tal como la nombra la fuente: delito del SESNSP, estatus del RNPDNO (sin localizar, localizada con vida, localizada sin vida) o categoría de MiSonGyny'),
+  bien_juridico       STRING OPTIONS (description = 'SESNSP: bien jurídico afectado'),
+  tipo_delito         STRING OPTIONS (description = 'SESNSP'),
+  subtipo_delito      STRING OPTIONS (description = 'SESNSP'),
+  modalidad           STRING OPTIONS (description = 'SESNSP'),
+  medido_en_sesnsp    BOOL   OPTIONS (description = 'FALSE para tipos sin delito equivalente (económica o patrimonial, mediática) y para el RNPDNO'),
+  es_control          BOOL   OPTIONS (description = 'TRUE para homicidio doloso total, control de violencia general'),
+  PRIMARY KEY (tipo_violencia_key) NOT ENFORCED
+)
+OPTIONS (description = 'Tipos de violencia mapeados a la LGAMVLV. Conformada entre ambos hechos por tipo_lgamvlv. SCD tipo 1: el mapeo se corrige sobrescribiendo. Responde: P2, P3, P4');
+
+CREATE OR REPLACE TABLE misoginia_dw.dim_contexto_entidad (
+  contexto_key                 INT64  NOT NULL OPTIONS (description = 'Llave sustituta: una por entidad y año'),
+  cve_ent                      INT64  NOT NULL OPTIONS (description = 'Clave INEGI 1-32; 0 = fila nacional de referencia, sin hechos'),
+  anio                         INT64  NOT NULL,
+  es_nacional                  BOOL   NOT NULL,
+  poblacion_total              INT64  OPTIONS (description = 'CONAPO (F3), mitad de año'),
+  poblacion_mujeres            INT64  OPTIONS (description = 'CONAPO (F3), mitad de año; denominador de tasas'),
+  poblacion_mujeres_15_mas     INT64  OPTIONS (description = 'CONAPO (F3); denominador de la ENDIREH'),
+  poblacion_hombres            INT64  OPTIONS (description = 'CONAPO (F3), mitad de año; denominador de la tasa de víctimas hombres'),
   pct_usuarios_internet        FLOAT64 OPTIONS (description = 'ENDUTIH (F16)'),
-  pct_pobreza                  FLOAT64 OPTIONS (description = 'CONEVAL (F15)'),
+  usuarios_internet_estimados  INT64  OPTIONS (description = 'poblacion_total * pct_usuarios_internet; escala el interés de búsqueda'),
+  pct_viviendas_internet       FLOAT64 OPTIONS (description = 'Censo 2020 ITER (F14); solo 2020'),
+  pct_pobreza                  FLOAT64 OPTIONS (description = 'CONEVAL (F15); años pares'),
   indice_impunidad             FLOAT64 OPTIONS (description = 'México Evalúa (F17)'),
-  prevalencia_violencia_total  FLOAT64 OPTIONS (description = 'ENDIREH (F2), % de mujeres de 15 años y más'),
+  prevalencia_total            FLOAT64 OPTIONS (description = 'ENDIREH (F2), % de mujeres de 15 años y más, últimos 12 meses; solo años de levantamiento'),
   prevalencia_psicologica      FLOAT64 OPTIONS (description = 'ENDIREH (F2)'),
   prevalencia_fisica           FLOAT64 OPTIONS (description = 'ENDIREH (F2)'),
   prevalencia_sexual           FLOAT64 OPTIONS (description = 'ENDIREH (F2)'),
   prevalencia_economica_patrimonial FLOAT64 OPTIONS (description = 'ENDIREH (F2)'),
-  feminicidios_prensa          INT64  OPTIONS (description = 'Mapa de Salguero (F10)'),
-  PRIMARY KEY (entidad_key) NOT ENFORCED
+  PRIMARY KEY (contexto_key) NOT ENFORCED
 )
-OPTIONS (description = 'Entidad federativa con contexto anual. SCD tipo 2: una versión por entidad y año. Responde: P1, P2, P4');
-
-CREATE OR REPLACE TABLE misoginia_dw.dim_contenido_musical (
-  contenido_key        INT64  NOT NULL OPTIONS (description = 'Llave sustituta: una por contenido y versión del modelo'),
-  tipo_contenido       STRING NOT NULL OPTIONS (description = 'cancion, termino_genero o termino_artista'),
-  spotify_id           STRING OPTIONS (description = 'ID de canción de Spotify (Kworb, Kaggle)'),
-  titulo               STRING,
-  artista_principal    STRING,
-  artistas             STRING,
-  genero               STRING OPTIONS (description = 'MusicBrainz (F8) o Last.fm (F19)'),
-  pais_artista         STRING OPTIONS (description = 'MusicBrainz (F8)'),
-  termino_busqueda     STRING OPTIONS (description = 'Término consultado en Google Trends (F11)'),
-  tiene_letra          BOOL   OPTIONS (description = 'Letra encontrada en LRCLIB (F7)'),
-  en_corpus_misongyny  BOOL   OPTIONS (description = 'La canción está etiquetada en MiSonGyny (F6)'),
-  etiqueta_misongyny   STRING OPTIONS (description = 'Etiqueta de referencia de MiSonGyny'),
-  es_misogina          BOOL   OPTIONS (description = 'Salida del clasificador'),
-  categoria_misoginia  STRING OPTIONS (description = 'Sexualización, violencia, odio o no relacionada'),
-  score_misoginia      FLOAT64 OPTIONS (description = 'Probabilidad del clasificador'),
-  version_modelo       STRING,
-  valido_desde         DATE,
-  valido_hasta         DATE,
-  es_actual            BOOL,
-  PRIMARY KEY (contenido_key) NOT ENFORCED
-)
-OPTIONS (description = 'Canción o término de búsqueda. SCD tipo 2 por versión del clasificador. Responde: P1, P3, P4');
-
-CREATE OR REPLACE TABLE misoginia_dw.dim_tipo_violencia (
-  tipo_violencia_key    INT64  NOT NULL OPTIONS (description = 'Llave sustituta; -1 = no aplica'),
-  tipo_lgamvlv          STRING NOT NULL OPTIONS (description = 'psicológica, física, patrimonial, económica, sexual, interpósita persona, feminicida, mediática, otra, no aplica'),
-  origen_clasificacion  STRING OPTIONS (description = 'SESNSP, RNPDNO o clasificador de música'),
-  categoria_origen      STRING OPTIONS (description = 'Categoría tal como la nombra la fuente'),
-  bien_juridico         STRING,
-  tipo_delito           STRING,
-  subtipo_delito        STRING,
-  modalidad             STRING,
-  PRIMARY KEY (tipo_violencia_key) NOT ENFORCED
-)
-OPTIONS (description = 'Tipos de violencia mapeados a la LGAMVLV; conformada entre ambos hechos. SCD tipo 1. Responde: P2, P3, P4');
-
-CREATE OR REPLACE TABLE misoginia_dw.dim_fuente (
-  fuente_key             INT64  NOT NULL,
-  codigo_catalogo        STRING NOT NULL OPTIONS (description = 'F1 a F19'),
-  dataset                STRING NOT NULL,
-  institucion            STRING,
-  tipo_fuente            STRING,
-  granularidad_original  STRING OPTIONS (description = 'dia, semana, mes, anio'),
-  nivel_geografico       STRING OPTIONS (description = 'nacional, estado'),
-  fecha_corte            DATE,
-  url                    STRING,
-  PRIMARY KEY (fuente_key) NOT ENFORCED
-)
-OPTIONS (description = 'Origen de cada fila de hechos. SCD tipo 1. Responde: P1, P2, P3, P4');
+OPTIONS (description = 'Contexto anual de cada entidad (mini-dimensión). SCD tipo 1: las fuentes revisan sus cifras y se sobrescriben. Responde: P1, P2, P4');
 
 -- ---------------------------------------------------------------------
 -- 3. Hechos
 -- ---------------------------------------------------------------------
+CREATE OR REPLACE TABLE misoginia_dw.fact_consumo_musical (
+  fecha_key               INT64 NOT NULL,
+  entidad_key             INT64 NOT NULL,
+  cancion_key             INT64 NOT NULL,
+  tipo_violencia_key      INT64 NOT NULL OPTIONS (description = 'Tipo principal de la letra; -1 si no aplica'),
+  contexto_key            INT64 NOT NULL OPTIONS (description = 'Contexto de la entidad en el año del mes'),
+  streams_estimados       FLOAT64 OPTIONS (description = 'Streams nacionales del mes (chart semanal de Kworb, F4, repartido por días) x peso_entidad. Aditiva. 2015-2025'),
+  peso_entidad            FLOAT64 OPTIONS (description = 'Participación estimada de la entidad en el consumo de la canción; suma 1 entre las 32. No aditiva'),
+  interes_busqueda        INT64   OPTIONS (description = 'Google Trends (F11): interés del tema en la entidad durante el año, 0-100, relativo a su descarga. No aditiva'),
+  semanas_en_chart_nacional INT64 OPTIONS (description = 'Semanas del chart semanal nacional que terminan en el mes. Dato nacional repetido en las 32 entidades: no se suma entre entidades'),
+  mejor_posicion_nacional INT64   OPTIONS (description = 'Mejor posición semanal nacional entre las semanas que terminan en el mes. Dato nacional repetido. No aditiva'),
+  origen_peso             STRING  OPTIONS (description = 'De dónde salió el peso, en orden de preferencia: artista_anio, genero_anio o usuarios_internet'),
+  fuente                  STRING  OPTIONS (description = 'Código del catálogo de la fila de consumo: F4 (Kworb)'),
+  PRIMARY KEY (fecha_key, entidad_key, cancion_key) NOT ENFORCED,
+  FOREIGN KEY (fecha_key) REFERENCES misoginia_dw.dim_fecha (fecha_key) NOT ENFORCED,
+  FOREIGN KEY (entidad_key) REFERENCES misoginia_dw.dim_entidad (entidad_key) NOT ENFORCED,
+  FOREIGN KEY (cancion_key) REFERENCES misoginia_dw.dim_cancion (cancion_key) NOT ENFORCED,
+  FOREIGN KEY (tipo_violencia_key) REFERENCES misoginia_dw.dim_tipo_violencia (tipo_violencia_key) NOT ENFORCED,
+  FOREIGN KEY (contexto_key) REFERENCES misoginia_dw.dim_contexto_entidad (contexto_key) NOT ENFORCED
+)
+OPTIONS (description = 'Grano: una fila por canción, entidad y mes. El consumo por entidad es una estimación: el consumo nacional del mes se reparte con el interés de búsqueda del artista por entidad. Responde: P1, P2, P3, P4');
+
 CREATE OR REPLACE TABLE misoginia_dw.fact_violencia (
   fecha_key           INT64 NOT NULL,
   entidad_key         INT64 NOT NULL,
-  tipo_violencia_key  INT64 NOT NULL,
-  fuente_key          INT64 NOT NULL,
-  conteo              INT64 OPTIONS (description = 'Carpetas, víctimas o personas desaparecidas. Aditiva'),
-  conteo_mujeres      INT64 OPTIONS (description = 'Solo donde la fuente distingue sexo. Aditiva'),
-  PRIMARY KEY (fecha_key, entidad_key, tipo_violencia_key, fuente_key) NOT ENFORCED,
+  tipo_violencia_key  INT64 NOT NULL OPTIONS (description = 'Delito del SESNSP al nivel de modalidad, o desaparición del RNPDNO'),
+  contexto_key        INT64 NOT NULL OPTIONS (description = 'Contexto de la entidad en el año del mes'),
+  carpetas            INT64 OPTIONS (description = 'Carpetas de investigación, archivo de delitos del SESNSP (F1). Aditiva'),
+  victimas_mujeres    INT64 OPTIONS (description = 'Víctimas mujeres del SESNSP (F1) o mujeres desaparecidas del RNPDNO (F13); NULL si la fuente no lo reporta. Aditiva'),
+  victimas_mujeres_menores INT64 OPTIONS (description = 'Parte de victimas_mujeres menores de 18 años (rango de edad del SESNSP, edad del RNPDNO). Aditiva'),
+  victimas_hombres    INT64 OPTIONS (description = 'Víctimas hombres del archivo de víctimas del SESNSP (F1), para comparar. Aditiva'),
+  fuente              STRING OPTIONS (description = 'Código del catálogo: F1 o F13'),
+  PRIMARY KEY (fecha_key, entidad_key, tipo_violencia_key) NOT ENFORCED,
   FOREIGN KEY (fecha_key) REFERENCES misoginia_dw.dim_fecha (fecha_key) NOT ENFORCED,
   FOREIGN KEY (entidad_key) REFERENCES misoginia_dw.dim_entidad (entidad_key) NOT ENFORCED,
   FOREIGN KEY (tipo_violencia_key) REFERENCES misoginia_dw.dim_tipo_violencia (tipo_violencia_key) NOT ENFORCED,
-  FOREIGN KEY (fuente_key) REFERENCES misoginia_dw.dim_fuente (fuente_key) NOT ENFORCED
+  FOREIGN KEY (contexto_key) REFERENCES misoginia_dw.dim_contexto_entidad (contexto_key) NOT ENFORCED
 )
-OPTIONS (description = 'Grano: una fila por entidad, mes, tipo de violencia y fuente. Fuentes: SESNSP (F1), RNPDNO (F13). Responde: P2, P4');
-
-CREATE OR REPLACE TABLE misoginia_dw.fact_consumo_musical (
-  fecha_key             INT64 NOT NULL,
-  entidad_key           INT64 NOT NULL,
-  contenido_key         INT64 NOT NULL,
-  tipo_violencia_key    INT64 NOT NULL,
-  fuente_key            INT64 NOT NULL,
-  streams               INT64   OPTIONS (description = 'Reproducciones en el mes. Aditiva'),
-  dias_en_chart         INT64   OPTIONS (description = 'Días del mes en el chart. Aditiva'),
-  mejor_posicion        INT64   OPTIONS (description = 'Mejor posición del mes. No aditiva'),
-  popularidad_promedio  FLOAT64 OPTIONS (description = 'Índice de popularidad de Spotify, Top 73 (F12). No aditiva'),
-  interes_busqueda      FLOAT64 OPTIONS (description = 'Google Trends (F11), 0-100. No aditiva'),
-  interes_ancla         FLOAT64 OPTIONS (description = 'Interés del término ancla en la misma consulta. No aditiva'),
-  PRIMARY KEY (fecha_key, entidad_key, contenido_key, fuente_key) NOT ENFORCED,
-  FOREIGN KEY (fecha_key) REFERENCES misoginia_dw.dim_fecha (fecha_key) NOT ENFORCED,
-  FOREIGN KEY (entidad_key) REFERENCES misoginia_dw.dim_entidad (entidad_key) NOT ENFORCED,
-  FOREIGN KEY (contenido_key) REFERENCES misoginia_dw.dim_contenido_musical (contenido_key) NOT ENFORCED,
-  FOREIGN KEY (tipo_violencia_key) REFERENCES misoginia_dw.dim_tipo_violencia (tipo_violencia_key) NOT ENFORCED,
-  FOREIGN KEY (fuente_key) REFERENCES misoginia_dw.dim_fuente (fuente_key) NOT ENFORCED
-)
-OPTIONS (description = 'Grano: una fila por contenido musical, entidad, mes y fuente. Fuentes: Kaggle (F5), Kworb (F4), Top 73 (F12), Google Trends (F11). Responde: P1, P2, P3, P4');
+OPTIONS (description = 'Grano: una fila por entidad, delito o registro (modalidad del SESNSP o desaparición del RNPDNO) y mes. Responde: P2, P3, P4');
 ```

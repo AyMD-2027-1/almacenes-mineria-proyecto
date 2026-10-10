@@ -8,7 +8,8 @@ su uso a continuación, tal como lo pide el instructivo de la entrega.
 
 ## 1. Herramienta utilizada
 
-Claude (Anthropic), modelo Opus, mediante Claude Code (asistente con acceso a terminal y navegador).
+Claude (Anthropic), modelo Opus, mediante Claude Code (asistente con acceso a terminal y navegador), Claude con
+búsqueda web y la app de Claude con acceso a archivos.
 
 ## 2. Tareas para las cuales lo usamos
 
@@ -37,11 +38,38 @@ Le compartimos el esquema estrella que diseñó el equipo y le pedimos revisarlo
 instructivo. Con sus observaciones ajustamos el diseño a cinco dimensiones y un grano mensual, y le pedimos
 redactar el DDL, las consultas del DataMart y el borrador de la matriz de trazabilidad.
 
+### f) Búsqueda de fuentes de consumo musical por entidad
+
+Le pedimos buscar fuentes con consumo musical por estado (radio, YouTube, televisión, streaming, encuestas,
+Google Trends) y proponer alternativas. Las fuentes que propuso y su decisión están en
+[Fuentes descartadas](fuentes.qmd#descartadas). Las descargas de Google Trends y la medición de cobertura en Kaggle las hicimos
+nosotros.
+
+### g) Revisión de la arquitectura
+
+Le compartimos nuestros borradores de la arquitectura y le pedimos revisarlos contra el instructivo. Señaló
+problemas (grano mezclado, doble conteo en una consulta, uso del SCD tipo 2), propuso ajustes que discutimos y
+aprobamos uno por uno, y nos ayudó a redactar el DDL, las vistas y estas páginas. Probó las vistas con datos de
+prueba en DuckDB, una base de datos local, para revisar que el reparto sume el total nacional.
+
+### h) Verificación de Kworb
+
+Nos sugirió revisar si el historial por canción de Kworb cubría los años que Kaggle no tiene, y escribió un script
+para Colab que nosotros corrimos. Los resultados están en la [ficha de Kworb](fuentes/f04_kworb.qmd#evidencia-kworb).
+
 ## 3. Prompts empleados (resumen fiel)
 
 Le dimos el instructivo de E1 y las preguntas de E0 y le pedimos evaluar al menos cinco fuentes,
 comprobar que cada una existiera y tuviera datos de México, y documentar formato, grano, cobertura,
 licencia y llaves de integración, sin incluir nada que no se pudiera abrir.
+
+Para el consumo por entidad le pedimos que nos ayudara a encontrar datos abiertos de qué música se escucha en cada
+estado de México, de cualquier tipo (streaming, radio, YouTube, encuestas o búsquedas en Google), con su liga, los
+años que cubren y qué trae cada fila, y que si no existía algo así nos propusiera alternativas.
+
+Para la arquitectura le pedimos mejorar el diseño que teníamos, con los archivos adjuntos, y después
+explicaciones y comparaciones antes de aprobar cada cambio: cuántas dimensiones convenían, si respondían las preguntas con el mismo detalle que E0, qué es el término
+ancla, cuál es la mejor práctica para el contexto anual de cada entidad y cómo integrar el enfoque medallion.
 
 ## 4. Qué hicimos con la salida obtenida
 
@@ -56,8 +84,19 @@ licencia y llaves de integración, sin incluir nada que no se pudiera abrir.
 - Decidimos no guardar ni publicar letras de canciones por derechos de autor.
 - Diseñamos el esquema estrella original y validamos los ajustes propuestos; el DDL y las consultas se
   ejecutan en nuestro proyecto de BigQuery, donde tomamos las capturas de evidencia.
+- Corregimos a la herramienta cuando afirmó que Google Trends solo da un valor por estado para todo el periodo:
+  le mostramos que se puede descargar por mes. Descargamos nosotros los
+  archivos de prueba (Tones And I y Bobby Pulido, 2021 y tres meses de 2026), que mostraron que en periodos
+  cortos un artista de poco volumen queda en cero en la mayoría de los estados.
+- Decidimos nosotros: grano por canción y no por artista; descartar el mapa de Salguero; incluir
+  las desaparecidas del RNPDNO; conservar cinco dimensiones con la mini-dimensión de contexto; usar el peso
+  anual por artista como caso principal; usar las regiones del Banco de México; sacar el macrogénero de las etiquetas de las fuentes; y descargar Trends por tema y no por término, después de comparar descargas con y sin acento.
+- La prueba en Colab con MusicBrainz, hecha por el equipo, mostró una coincidencia falsa (Sebastián Yatra con
+  etiquetas de un compositor clásico alemán); por eso las coincidencias se validan en silver.
 
 ## 5. Revisión y validación de nuestra parte
 
 Las decisiones de alcance, los criterios y la elección de fuentes fueron nuestras; la herramienta nos
 ayudó a hacer la búsqueda y la verificación más rápido.
+
+

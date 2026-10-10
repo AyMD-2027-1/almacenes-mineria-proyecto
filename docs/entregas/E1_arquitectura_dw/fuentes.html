@@ -130,6 +130,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/e0_v2.html">
+ <span class="dropdown-text">E0 v2 · Secciones actualizadas</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -154,8 +158,16 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/pivote.html">
+ <span class="dropdown-text">Pivote</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/glosario.html">
+ <span class="dropdown-text">Glosario</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/referencias.html">
@@ -191,15 +203,14 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#glosario" id="toc-glosario" class="nav-link active" data-scroll-target="#glosario">Glosario</a></li>
-  <li><a href="#criterios-de-selección" id="toc-criterios-de-selección" class="nav-link" data-scroll-target="#criterios-de-selección">Criterios de selección</a>
+  <li><a href="#criterios-de-selección" id="toc-criterios-de-selección" class="nav-link active" data-scroll-target="#criterios-de-selección">Criterios de selección</a>
   <ul class="collapse">
   <li><a href="#marco" id="toc-marco" class="nav-link" data-scroll-target="#marco">Marco de referencia: tipos de violencia</a></li>
   </ul></li>
   <li><a href="#proceso-de-búsqueda" id="toc-proceso-de-búsqueda" class="nav-link" data-scroll-target="#proceso-de-búsqueda">Proceso de búsqueda</a>
   <ul class="collapse">
-  <li><a href="#fuentes-evaluadas" id="toc-fuentes-evaluadas" class="nav-link" data-scroll-target="#fuentes-evaluadas">Fuentes evaluadas</a></li>
-  <li><a href="#resultado-por-tipo-de-fuente" id="toc-resultado-por-tipo-de-fuente" class="nav-link" data-scroll-target="#resultado-por-tipo-de-fuente">Resultado por tipo de fuente</a></li>
+  <li><a href="#fuentes-aceptadas" id="toc-fuentes-aceptadas" class="nav-link" data-scroll-target="#fuentes-aceptadas">Fuentes aceptadas</a></li>
+  <li><a href="#descartadas" id="toc-descartadas" class="nav-link" data-scroll-target="#descartadas">Fuentes descartadas</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -227,136 +238,26 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="glosario" class="level2">
-<h2 class="anchored" data-anchor-id="glosario">Glosario</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Término</th>
-<th>Significado</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>SESNSP</td>
-<td>Secretariado Ejecutivo del Sistema Nacional de Seguridad Pública.</td>
-</tr>
-<tr class="even">
-<td>RNID</td>
-<td>Registro Nacional de Incidencia Delictiva: metodología del SESNSP vigente desde enero de 2026.</td>
-</tr>
-<tr class="odd">
-<td>INEGI</td>
-<td>Instituto Nacional de Estadística y Geografía.</td>
-</tr>
-<tr class="even">
-<td>ENDIREH</td>
-<td>Encuesta Nacional sobre la Dinámica de las Relaciones en los Hogares (INEGI).</td>
-</tr>
-<tr class="odd">
-<td>LGAMVLV</td>
-<td>Ley General de Acceso de las Mujeres a una Vida Libre de Violencias (antes “…de Violencia”); ver <a href="#marco">marco de referencia</a>.</td>
-</tr>
-<tr class="even">
-<td>CONAPO</td>
-<td>Consejo Nacional de Población.</td>
-</tr>
-<tr class="odd">
-<td>MiSonGyny</td>
-<td>Corpus de letras de canciones en español etiquetadas por misoginia.</td>
-</tr>
-<tr class="even">
-<td>LRCLIB</td>
-<td>Biblioteca de letras de canciones libre y abierta, con API y descargas de su base de datos.</td>
-</tr>
-<tr class="odd">
-<td>RNPDNO</td>
-<td>Registro Nacional de Personas Desaparecidas y No Localizadas (Comisión Nacional de Búsqueda).</td>
-</tr>
-<tr class="even">
-<td>ITER</td>
-<td>Principales resultados por localidad del Censo de Población y Vivienda 2020 (INEGI).</td>
-</tr>
-<tr class="odd">
-<td>CONEVAL</td>
-<td>Consejo Nacional de Evaluación de la Política de Desarrollo Social.</td>
-</tr>
-<tr class="even">
-<td>ENDUTIH</td>
-<td>Encuesta Nacional sobre Disponibilidad y Uso de Tecnologías de la Información en los Hogares (INEGI).</td>
-</tr>
-</tbody>
-</table>
-</section>
 <section id="criterios-de-selección" class="level2">
 <h2 class="anchored" data-anchor-id="criterios-de-selección">Criterios de selección</h2>
-<p>Una fuente se acepta en el catálogo si cumple los cuatro criterios:</p>
+<p>Una fuente se acepta si cumple los cuatro criterios:</p>
 <ul>
-<li><strong>C1. Relevancia:</strong> alimenta al menos una pregunta de E0 (P1–P4).</li>
-<li><strong>C2. Cobertura temporal</strong> que se cruza con la ventana 2017–2025 y contiene información de México.</li>
+<li><strong>C1. Relevancia:</strong> alimenta al menos una pregunta de E0 (P1–P4, en su <a href="../../entregas/E1_arquitectura_dw/pivote.html#e0-v2">versión ajustada</a>).</li>
+<li><strong>C2. Cobertura temporal</strong> que se cruza con la ventana 2015–2025 y contiene información de México.</li>
 <li><strong>C3. Llave de integración</strong> explícita: clave INEGI de entidad, fecha, o canción/artista.</li>
 <li><strong>C4. Licencia o términos de uso</strong> que permiten el uso académico que requiere el proyecto.</li>
 </ul>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 8%">
-<col style="width: 92%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>ID</th>
-<th>Pregunta de E0 (resumen)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>P1</td>
-<td>Proporción de contenido misógino en la música consumida en México, por género musical y entidad.</td>
-</tr>
-<tr class="even">
-<td>P2</td>
-<td>Correlación entre la misoginia musical por entidad y los indicadores oficiales de violencia de género (SESNSP).</td>
-</tr>
-<tr class="odd">
-<td>P3</td>
-<td>Evolución de la misoginia musical en la última década, por tipo de violencia.</td>
-</tr>
-<tr class="even">
-<td>P4</td>
-<td>Tipos de violencia que predominan en la música y si coinciden con los más reportados oficialmente.</td>
-</tr>
-</tbody>
-</table>
 <section id="marco" class="level3">
 <h3 class="anchored" data-anchor-id="marco">Marco de referencia: tipos de violencia</h3>
-<p>Para comparar fuentes que clasifican la violencia de forma distinta usamos como taxonomía común la LGAMVLV (última reforma DOF 15-01-2026) <a href="../../entregas/E1_arquitectura_dw/referencias.html">[1]</a>. Su <strong>artículo 6</strong> define los tipos de violencias contra las mujeres: I. psicológica, II. física, III. patrimonial, IV. económica, V. sexual, VI. a través de interpósita persona (actos dirigidos contra hijas, hijos, familiares o personas allegadas con el objetivo de dañar a la mujer) y VII. cualquier otra forma análoga. Además, su <strong>artículo 20 Quinquies</strong> define la <strong>violencia mediática</strong>: todo acto a través de cualquier medio de comunicación que promueva estereotipos sexistas, haga apología de la violencia contra las mujeres o difunda discurso de odio sexista. Es el marco legal más cercano al contenido misógino en la música.</p>
+<p>Para comparar fuentes que clasifican la violencia de forma distinta usamos como taxonomía común la LGAMVLV (última reforma DOF 15-01-2026) <a href="../../entregas/E1_arquitectura_dw/referencias.html">[1]</a>. Su <strong>artículo 6</strong> define los tipos de violencias contra las mujeres: I. psicológica, II. física, III. patrimonial, IV. económica, V. sexual, VI. a través de interpósita persona y VII. cualquier otra forma análoga. Su <strong>artículo 20 Quinquies</strong> define la <strong>violencia mediática</strong>: todo acto a través de cualquier medio de comunicación que promueva estereotipos sexistas, haga apología de la violencia contra las mujeres o difunda discurso de odio sexista. Es el marco legal más cercano al contenido misógino en la música.</p>
 </section>
 </section>
 <section id="proceso-de-búsqueda" class="level2">
 <h2 class="anchored" data-anchor-id="proceso-de-búsqueda">Proceso de búsqueda</h2>
-<p>Partimos de las fuentes que ya habíamos identificado en E0 (Kworb, SESNSP, ENDIREH, mapa de Salguero, MiSonGyny) y de la propuesta de modelo integrado del equipo. Para ampliar la búsqueda y, sobre todo, para entender rápido datasets muy grandes, nos apoyamos en Claude (ver <a href="../../entregas/E1_arquitectura_dw/uso_ia.html">uso de herramientas de IA</a>).</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 75%">
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><strong>Fecha de verificación</strong></td>
-<td>26 de septiembre de 2026. Las capturas de Kworb y las vistas previas se actualizaron el 9 de octubre de 2026.</td>
-</tr>
-<tr class="even">
-<td><strong>Portales revisados</strong></td>
-<td>Datos abiertos del SESNSP (gob.mx), INEGI (5 ediciones de la ENDIREH), datos.gob.mx (CONAPO), Kaggle, Kworb, Spotify Charts, GitHub (MiSonGyny), MusicBrainz, LRCLIB, Google Trends, Google My Maps, Data Cívica (RNPDNO), INEGI (Censo 2020 y ENDUTIH), CONEVAL, México Evalúa, Natural Earth y Last.fm.</td>
-</tr>
-<tr class="odd">
-<td><strong>Datos que se buscaron</strong></td>
-<td>(A) consumo musical en México en el tiempo; (B) letras de esas canciones; (C) género musical y etiquetas de misoginia para el clasificador; (D) violencia de género por entidad y periodo, y población para calcular tasas.</td>
-</tr>
-</tbody>
-</table>
-<section id="fuentes-evaluadas" class="level3">
-<h3 class="anchored" data-anchor-id="fuentes-evaluadas">Fuentes evaluadas</h3>
+<p>Del 26 de septiembre al 10 de octubre de 2026 partimos de las fuentes de E0 (Kworb, SESNSP, ENDIREH, mapa de Salguero, MiSonGyny) y buscamos cuatro clases de datos: (A) consumo musical en México en el tiempo; (B) letras de esas canciones; (C) género musical y etiquetas de misoginia para el clasificador; (D) violencia de género por entidad y periodo, y población para calcular tasas. Revisamos portales institucionales (SESNSP, INEGI, datos.gob.mx, CONEVAL), Kaggle, Kworb, Spotify Charts, GitHub, las APIs de MusicBrainz, LRCLIB y Last.fm, Google Trends, Google My Maps, Data Cívica, México Evalúa y Natural Earth.</p>
+<p>Ninguna fuente abierta da consumo musical <strong>por entidad</strong>; eso llevó al <a href="../../entregas/E1_arquitectura_dw/pivote.html">pivote</a>.</p>
+<section id="fuentes-aceptadas" class="level3">
+<h3 class="anchored" data-anchor-id="fuentes-aceptadas">Fuentes aceptadas</h3>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -434,22 +335,6 @@ ul.task-list li input[type="checkbox"] {
 <td>C1–C4</td>
 </tr>
 <tr class="odd">
-<td>F9</td>
-<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html">Spotify Charts (por ciudad)</a></td>
-<td>Portal web con cuenta</td>
-<td style="text-align: center;">A</td>
-<td><strong>Aceptada con limitaciones</strong></td>
-<td>C1–C3; C4 parcial</td>
-</tr>
-<tr class="even">
-<td>F10</td>
-<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f10_salguero.html">Mapa de feminicidios (M. Salguero)</a></td>
-<td>Mapa en Google My Maps</td>
-<td style="text-align: center;">D</td>
-<td><strong>Aceptada con limitaciones</strong></td>
-<td>C1, C3; C2 y C4 parciales</td>
-</tr>
-<tr class="odd">
 <td>F11</td>
 <td><a href="../../entregas/E1_arquitectura_dw/fuentes/f11_google_trends.html">Google Trends, interés por estado</a></td>
 <td>Servicio web de Google</td>
@@ -458,14 +343,6 @@ ul.task-list li input[type="checkbox"] {
 <td>C1–C4</td>
 </tr>
 <tr class="even">
-<td>F12</td>
-<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f12_kaggle_top73.html">Kaggle, <em>Top Spotify Songs in 73 Countries</em></a></td>
-<td>Dataset de Kaggle</td>
-<td style="text-align: center;">A</td>
-<td><strong>Aceptada</strong></td>
-<td>C1–C4</td>
-</tr>
-<tr class="odd">
 <td>F13</td>
 <td><a href="../../entregas/E1_arquitectura_dw/fuentes/f13_rnpdno.html">RNPDNO, personas desaparecidas (Data Cívica)</a></td>
 <td>Archivo CSV de organización civil</td>
@@ -473,7 +350,7 @@ ul.task-list li input[type="checkbox"] {
 <td><strong>Aceptada con limitaciones</strong></td>
 <td>C3; C1, C2 y C4 parciales</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>F14</td>
 <td><a href="../../entregas/E1_arquitectura_dw/fuentes/f14_censo_iter.html">INEGI, Censo 2020 ITER</a></td>
 <td>Archivo CSV de portal abierto</td>
@@ -481,7 +358,7 @@ ul.task-list li input[type="checkbox"] {
 <td><strong>Aceptada</strong></td>
 <td>C1–C4</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>F15</td>
 <td><a href="../../entregas/E1_arquitectura_dw/fuentes/f15_coneval.html">CONEVAL, pobreza por entidad</a></td>
 <td>Archivo Excel institucional</td>
@@ -489,7 +366,7 @@ ul.task-list li input[type="checkbox"] {
 <td><strong>Aceptada</strong></td>
 <td>C1–C4</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>F16</td>
 <td><a href="../../entregas/E1_arquitectura_dw/fuentes/f16_endutih.html">INEGI, ENDUTIH 2024</a></td>
 <td>Microdatos institucionales</td>
@@ -497,7 +374,7 @@ ul.task-list li input[type="checkbox"] {
 <td><strong>Aceptada</strong></td>
 <td>C1–C4</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>F17</td>
 <td><a href="../../entregas/E1_arquitectura_dw/fuentes/f17_mexico_evalua.html">México Evalúa, índice de impunidad</a></td>
 <td>Reporte en PDF</td>
@@ -505,7 +382,7 @@ ul.task-list li input[type="checkbox"] {
 <td><strong>Aceptada con limitaciones</strong></td>
 <td>C1, C3; C2 y C4 parciales</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>F18</td>
 <td><a href="../../entregas/E1_arquitectura_dw/fuentes/f18_natural_earth.html">Natural Earth, límites de estados</a></td>
 <td>Archivo geográfico (shapefile)</td>
@@ -513,7 +390,7 @@ ul.task-list li input[type="checkbox"] {
 <td><strong>Aceptada</strong></td>
 <td>C1, C3, C4</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>F19</td>
 <td><a href="../../entregas/E1_arquitectura_dw/fuentes/f19_lastfm.html">Last.fm, etiquetas de género</a></td>
 <td>API REST con llave</td>
@@ -523,100 +400,78 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+<p>Son <strong>16 fuentes aceptadas de 12 tipos distintos</strong>; tres de ellas con limitaciones (F13, F17 y F19). Son las que usan el <a href="../../entregas/E1_arquitectura_dw/estrella.html#ddl">DDL</a> y el <a href="../../entregas/E1_arquitectura_dw/arquitectura.html#linaje">linaje</a>.</p>
 </section>
-<section id="resultado-por-tipo-de-fuente" class="level3">
-<h3 class="anchored" data-anchor-id="resultado-por-tipo-de-fuente">Resultado por tipo de fuente</h3>
+<section id="descartadas" class="level3">
+<h3 class="anchored" data-anchor-id="descartadas">Fuentes descartadas</h3>
+<p>Las tres primeras tienen ficha porque se revisaron a fondo; las demás se evaluaron al buscar consumo musical por entidad.</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Tipo de fuente</th>
-<th>Fuentes</th>
-<th>Decisión</th>
+<th>Fuente</th>
+<th>Tipo</th>
+<th>Motivo del descarte</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Archivo CSV de portal abierto</td>
-<td>SESNSP (F1), CONAPO (F3), Censo 2020 ITER (F14)</td>
-<td>Aceptadas</td>
-</tr>
-<tr class="even">
-<td>Microdatos institucionales</td>
-<td>ENDIREH (F2), ENDUTIH (F16)</td>
-<td>Aceptadas</td>
-</tr>
-<tr class="odd">
-<td>Página web</td>
-<td>Kworb (F4)</td>
-<td>Aceptada</td>
-</tr>
-<tr class="even">
-<td>Dataset de Kaggle</td>
-<td><em>Spotify Charts</em> (F5), <em>Top Spotify Songs in 73 Countries</em> (F12)</td>
-<td>Aceptadas</td>
-</tr>
-<tr class="odd">
-<td>Repositorio académico</td>
-<td>MiSonGyny (F6)</td>
-<td>Aceptada</td>
-</tr>
-<tr class="even">
-<td>API REST</td>
-<td>LRCLIB (F7), MusicBrainz (F8)</td>
-<td>Aceptadas</td>
-</tr>
-<tr class="odd">
-<td>Servicio web de Google</td>
-<td>Google Trends (F11)</td>
-<td>Aceptada</td>
-</tr>
-<tr class="even">
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f09_spotify_charts.html">F9. Spotify Charts por ciudad</a></td>
 <td>Portal web con cuenta</td>
-<td>Spotify Charts por ciudad (F9)</td>
-<td>Aceptada con limitaciones</td>
+<td>Sus términos de uso prohíben extraer los datos (C4)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f10_salguero.html">F10. Mapa de feminicidios (M. Salguero)</a></td>
 <td>Mapa en Google My Maps</td>
-<td>Mapa de Salguero (F10)</td>
-<td>Aceptada con limitaciones</td>
-</tr>
-<tr class="even">
-<td>Archivo CSV de organización civil</td>
-<td>RNPDNO vía Data Cívica (F13)</td>
-<td>Aceptada con limitaciones</td>
+<td>El mapa no permite exportar los datos; cubre solo 2016–2020</td>
 </tr>
 <tr class="odd">
-<td>Archivo Excel institucional</td>
-<td>CONEVAL (F15)</td>
-<td>Aceptada</td>
+<td><a href="../../entregas/E1_arquitectura_dw/fuentes/f12_kaggle_top73.html">F12. Kaggle, <em>Top Spotify Songs in 73 Countries</em></a></td>
+<td>Dataset de Kaggle</td>
+<td>Sin streams; Kworb (F4) ya cubre su periodo</td>
 </tr>
 <tr class="even">
-<td>Reporte en PDF</td>
-<td>México Evalúa (F17)</td>
-<td>Aceptada con limitaciones</td>
+<td><a href="https://cloud.google.com/blog/products/data-analytics/top-25-google-search-terms-now-in-bigquery/">Google Trends en BigQuery</a> (<code>google_trends</code>)</td>
+<td>Dataset público de BigQuery</td>
+<td>Solo publica los 25 términos más buscados y los 25 en ascenso de cada día; un artista aparece cuando es noticia, no por cuánto se escucha</td>
 </tr>
 <tr class="odd">
-<td>Archivo geográfico (shapefile)</td>
-<td>Natural Earth (F18)</td>
-<td>Aceptada</td>
+<td><a href="https://developers.google.com/search/apis/trends">Google Trends API (alfa)</a></td>
+<td>API</td>
+<td>Acceso anticipado por solicitud, restringido a pocos desarrolladores</td>
 </tr>
 <tr class="even">
-<td>API REST con llave</td>
-<td>Last.fm (F19)</td>
-<td>Aceptada con limitaciones</td>
+<td><a href="https://www.shazam.com/charts/top-50/mexico">Shazam, charts de México y por ciudad</a></td>
+<td>Portal web</td>
+<td>Muestra seis ciudades de México, pero solo la semana actual, sin historial descargable</td>
 </tr>
 <tr class="odd">
-<td><strong>Total</strong></td>
-<td><strong>19 evaluadas y aceptadas, de 14 tipos distintos; cinco de ellas con limitaciones</strong></td>
-<td></td>
+<td><a href="https://charts.youtube.com/charts/TopSongs/mx">YouTube Charts México</a></td>
+<td>Página web</td>
+<td>Nacional, sin desagregación por estado</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.monitorlatino.com">Monitor Latino</a></td>
+<td>Plataforma comercial</td>
+<td>Monitoreo de radio de pago; sus charts públicos son nacionales</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.inegi.org.mx/programas/enccum/2012/">INEGI, ENCCUM 2012</a></td>
+<td>Encuesta de hogares</td>
+<td>Mide el gasto de los hogares en cultura y es de 2012, fuera de la ventana (C2)</td>
+</tr>
+<tr class="even">
+<td><a href="https://somosaudiencias.ift.org.mx/archivos/01reportefinalencca2022_vpa.pdf">IFT, ENCCA 2022</a></td>
+<td>Encuesta</td>
+<td>Consumo de contenidos audiovisuales con resultados nacionales, sin nivel estatal</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.inegi.org.mx/temas/cultura/">INEGI, Cuenta Satélite de la Cultura</a></td>
+<td>Estadística oficial</td>
+<td>Mide el valor económico de la cultura, no qué música se escucha (C1)</td>
 </tr>
 </tbody>
 </table>
+<p>En total se evaluaron <strong>27 fuentes: 16 aceptadas y 11 descartadas</strong>.</p>
 
 
 </section>

@@ -130,6 +130,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../../entregas/E0_comprension_negocio/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../entregas/E0_comprension_negocio/e0_v2.html">
+ <span class="dropdown-text">E0 v2 · Secciones actualizadas</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -154,8 +158,16 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/pivote.html">
+ <span class="dropdown-text">Pivote</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/glosario.html">
+ <span class="dropdown-text">Glosario</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/referencias.html">
@@ -191,7 +203,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#problemas-anticipados-para-la-integración" id="toc-problemas-anticipados-para-la-integración" class="nav-link active" data-scroll-target="#problemas-anticipados-para-la-integración">Problemas anticipados para la integración</a></li>
+  <li><a href="#carga-y-verificación-en-bigquery" id="toc-carga-y-verificación-en-bigquery" class="nav-link active" data-scroll-target="#carga-y-verificación-en-bigquery">Carga y verificación en BigQuery</a></li>
+  <li><a href="#problemas-anticipados-para-la-integración" id="toc-problemas-anticipados-para-la-integración" class="nav-link" data-scroll-target="#problemas-anticipados-para-la-integración">Problemas anticipados para la integración</a></li>
   </ul>
 </nav>
     </div>
@@ -240,7 +253,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td><strong>Formato y tamaño</strong></td>
-<td>CSV UTF-8, 150 MB, 195,662 filas; incluye diccionario de datos.</td>
+<td>CSV UTF-8 con BOM, 142.73 MiB, 195,662 filas y 286 columnas; incluye diccionario de datos. La carga a BigQuery usa Cloud Storage y no elimina localidades.</td>
 </tr>
 <tr class="odd">
 <td><strong>Grano</strong></td>
@@ -280,6 +293,10 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Filas a nivel entidad</figcaption>
 </figure>
 </div>
+<section id="carga-y-verificación-en-bigquery" class="level2">
+<h2 class="anchored" data-anchor-id="carga-y-verificación-en-bigquery">Carga y verificación en BigQuery</h2>
+<p>El ZIP nacional se extrajo en Colab sin filtrar registros. Se verificaron <strong>195,662 filas y 286 columnas</strong> en el CSV original, que se subió a Cloud Storage y se cargó a una tabla temporal. La carga temporal conservó las mismas dimensiones. Luego se sustituyó la tabla definitiva <code>misoginia_staging.stg_censo_iter</code>. No se utilizó la muestra técnica inicial de 675 filas.</p>
+</section>
 <section id="problemas-anticipados-para-la-integración" class="level2">
 <h2 class="anchored" data-anchor-id="problemas-anticipados-para-la-integración">Problemas anticipados para la integración</h2>
 <ul>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F13. RNPDNO — Personas desaparecidas (vía Data Cívica) – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F13. RNPDNO — versión pública difundida por Data Cívica – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -130,6 +130,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../../entregas/E0_comprension_negocio/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../entregas/E0_comprension_negocio/e0_v2.html">
+ <span class="dropdown-text">E0 v2 · Secciones actualizadas</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -154,8 +158,16 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/pivote.html">
+ <span class="dropdown-text">Pivote</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/glosario.html">
+ <span class="dropdown-text">Glosario</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/referencias.html">
@@ -191,7 +203,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#problemas-anticipados-para-la-integración" id="toc-problemas-anticipados-para-la-integración" class="nav-link active" data-scroll-target="#problemas-anticipados-para-la-integración">Problemas anticipados para la integración</a></li>
+  <li><a href="#evidencia-y-consideraciones-de-calidad" id="toc-evidencia-y-consideraciones-de-calidad" class="nav-link active" data-scroll-target="#evidencia-y-consideraciones-de-calidad">Evidencia y consideraciones de calidad</a></li>
   </ul>
 </nav>
     </div>
@@ -200,7 +212,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F13. RNPDNO — Personas desaparecidas (vía Data Cívica)</h1>
+<h1 class="title">F13. RNPDNO — versión pública difundida por Data Cívica</h1>
 </div>
 
 
@@ -217,7 +229,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Registro oficial de personas desaparecidas y no localizadas, en la versión pública que reúne y republica Data Cívica. Aporta un indicador de violencia contra las mujeres que no está en el SESNSP: las mujeres desaparecidas.</p>
+<p>La versión pública del Registro Nacional de Personas Desaparecidas y No Localizadas (RNPDNO) difundida por Data Cívica se incorporó como información complementaria del contexto de violencia en México. Su interpretación requiere diferenciar la fecha de desaparición del corte del registro y evitar equiparar, sin validación, el número de filas al número de personas únicas.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -227,78 +239,51 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Nombre y dueño</strong></td>
-<td>Versión Pública del Registro Nacional de Personas Desaparecidas y No Localizadas (RNPDNO), publicada por la Comisión Nacional de Búsqueda; republicada por Data Cívica (organización de la sociedad civil) en su proyecto <em>Volver a desaparecer</em>.</td>
+<td><strong>Responsable</strong></td>
+<td>Comisión Nacional de Búsqueda; versión pública difundida por Data Cívica.</td>
 </tr>
 <tr class="even">
-<td><strong>URL</strong></td>
-<td><a href="https://volveradesaparecer.datacivica.org/datos-abiertos" class="uri">https://volveradesaparecer.datacivica.org/datos-abiertos</a></td>
+<td><strong>Procedencia</strong></td>
+<td><a href="https://volveradesaparecer.datacivica.org/datos-abiertos" class="uri">https://volveradesaparecer.datacivica.org/datos-abiertos</a>. Publicación identificada en la página como 22/09/2023; el archivo descargado se denomina <code>RNPDNO-22-08-2023.csv</code>. Ambas fechas se conservan diferenciadas.</td>
 </tr>
 <tr class="odd">
-<td><strong>Acceso</strong></td>
-<td>Descarga directa de CSV desde Google Drive. Se revisaron la versión pública del RNPDNO (22/09/2023) y la reconstrucción de Data Cívica “registros de 2017 a 2024”.</td>
+<td><strong>Formato original</strong></td>
+<td>CSV, 11 columnas: datos demográficos, nominales, fechas, entidad y campos administrativos.</td>
 </tr>
 <tr class="even">
-<td><strong>Formato y tamaño</strong></td>
-<td>Versión pública: CSV latin-1, 13 MB, 116,945 filas, 11 columnas (edad, sexo, nacionalidad, fecha y entidad de desaparición, autoridad, nombre). Reconstrucción: CSV, 337 MB, 89,720 filas, 13 columnas, sin sexo.</td>
+<td><strong>Bronze</strong></td>
+<td><code>stg_rnpdno</code>, ocho columnas <code>STRING</code>. El proceso generó 116,945 filas y la misma cifra fue confirmada por <code>COUNT(*)</code> en BigQuery. La comparación independiente con el CSV original aún no se ha documentado.</td>
 </tr>
 <tr class="odd">
-<td><strong>Grano</strong></td>
-<td>Una fila por reporte de persona desaparecida.</td>
+<td><strong>Minimización de datos</strong></td>
+<td>Se excluyeron <code>Nombre</code>, <code>Primer Apellido</code> y <code>Segundo Apellido</code> antes de cargar a BigQuery por no ser necesarios para los indicadores agregados. No se aplicó eliminación automática de duplicados.</td>
 </tr>
 <tr class="even">
-<td><strong>Cobertura</strong></td>
-<td>Versión pública: fechas hasta el 20 de agosto de 2023. La reconstrucción también termina en agosto de 2023 aunque su título dice 2024.</td>
+<td><strong>Granularidad</strong></td>
+<td>Registro de la fuente pública. No se presupone que cada fila identifique una persona distinta; los campos <code>consecutivo_reportes_por_persona</code> y <code>consecutivo_registro</code> no se utilizan como identificadores únicos sin diccionario verificado.</td>
 </tr>
 <tr class="odd">
-<td><strong>Información de México</strong></td>
-<td>32 entidades. 18,770 registros de mujeres; de ellos, 3,311 tienen fecha de desaparición entre 2017 y 2023.</td>
-</tr>
-<tr class="even">
-<td><strong>Licencia y restricciones</strong></td>
-<td>Información publicada por el Estado; Data Cívica la difunde con fines de memoria y rendición de cuentas. <strong>Contiene nombres de personas:</strong> solo se usan conteos agregados y los nombres no se cargan ni se publican.</td>
-</tr>
-<tr class="odd">
-<td><strong>Llaves de integración</strong></td>
-<td>Entidad de desaparición: nombre en mayúsculas, que se relaciona con la clave INEGI. Fecha de desaparición: se relaciona con el mes de SESNSP. Sexo y edad: permiten contar solo mujeres.</td>
-</tr>
-<tr class="even">
-<td><strong>Preguntas de E0</strong></td>
-<td>P2.</td>
-</tr>
-<tr class="odd">
-<td><strong>Decisión</strong></td>
-<td><strong>Aceptada con limitaciones:</strong> cumple el criterio C3. Cumple C1 de forma parcial, porque las preguntas de E0 no mencionan la desaparición de personas, aunque es un indicador de violencia contra las mujeres útil para P2. Cumple C2 de forma parcial, porque termina en 2023 y muchos registros no tienen fecha. Cumple C4 de forma parcial, porque incluye datos personales.</td>
+<td><strong>Integración</strong></td>
+<td>Fecha, sexo y entidad permitirán una lectura temporal y geográfica con limitaciones de cobertura, ausencia de datos y posible registro múltiple.</td>
 </tr>
 </tbody>
 </table>
+<section id="evidencia-y-consideraciones-de-calidad" class="level2">
+<h2 class="anchored" data-anchor-id="evidencia-y-consideraciones-de-calidad">Evidencia y consideraciones de calidad</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/origen_datacivica.png" class="img-fluid figure-img" style="width:55.0%"></p>
-<figcaption>Página de datos abiertos de Data Cívica</figcaption>
+<p><img src="../img/bq_final_rn_esquema.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Esquema de ocho columnas de RNPDNO en BigQuery</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/vista_rnpdno.png" class="img-fluid figure-img" style="width:55.0%"></p>
-<figcaption>Registros por año de desaparición y sexo, 2017–2023 (conteos agregados)</figcaption>
+<p><img src="../img/bq_final_rn_vista.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Vista previa de registros de RNPDNO</figcaption>
 </figure>
 </div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../img/vista_rnpdno_sexo.png" class="img-fluid figure-img" style="width:40.0%"></p>
-<figcaption>Registros por valor de Sexo</figcaption>
-</figure>
-</div>
-<section id="problemas-anticipados-para-la-integración" class="level2">
-<h2 class="anchored" data-anchor-id="problemas-anticipados-para-la-integración">Problemas anticipados para la integración</h2>
-<ul>
-<li>Una tercera parte de los registros tiene ocultos el sexo y la entidad, y la mayoría no tiene una fecha de desaparición válida.</li>
-<li>Termina en agosto de 2023, por lo que no cubre 2024 ni 2025.</li>
-<li>La entidad está escrita con su nombre y sin acentos, en lugar de usar la clave del INEGI.</li>
-<li>Contiene nombres de personas, por lo que solo pueden usarse conteos agregados.</li>
-<li>La reconstrucción de Data Cívica no indica el sexo de las personas.</li>
-</ul>
+<p>En la vista previa aparecen edades nulas y posibles inconsistencias en categorías textuales de nacionalidad. Tales valores permanecen en Bronze para no alterar el archivo preparado; se examinarán en Silver, con comprobaciones de codificación, nulidad y granularidad. Los identificadores administrativos tampoco se expondrán en las vistas públicas del DataMart.</p>
+<p>El proceso de minimización y exportación se documenta en el bloque C del <a href="../datos/staging/preparar_staging_colab.ipynb"><code>notebook de preparación</code></a>.</p>
 <p><a href="../../../entregas/E1_arquitectura_dw/fuentes.html">← Volver a fuentes de datos</a></p>
 
 

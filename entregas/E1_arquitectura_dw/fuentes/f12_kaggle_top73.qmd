@@ -2,7 +2,7 @@
 title: "F12. Kaggle — Top Spotify Songs in 73 Countries (2023–2025)"
 ---
 
-Top 50 diario de Spotify en más de 70 países; da continuidad a la serie de consumo después de 2021, con características de audio de cada canción.
+Top 50 diario de Spotify en más de 70 países, con características de audio de cada canción. Se evaluó para continuar la serie después de 2021. **Se descartó**: el historial semanal de Kworb (F4) cubre esos años con streams, y este dataset solo trae posición y popularidad.
 
 | Campo | Descripción |
 |---|---|
@@ -15,7 +15,7 @@ Top 50 diario de Spotify en más de 70 países; da continuidad a la serie de con
 | **Información de México** | La columna `country` incluye `MX`: 29,106 filas, 582 fechas y 495 canciones distintas. |
 | **Licencia y restricciones** | ODC Attribution License (ODC-By). |
 | **Llaves de integración** | `spotify_id`: ID de canción de Spotify, el mismo que en Kworb y en la columna `url` de Kaggle *Spotify Charts* (F5). `snapshot_date`: se relaciona con el mes de SESNSP. `name` y `artists`: se relacionan con MiSonGyny y LRCLIB. |
-| **Preguntas de E0** | P1, P3. |
+| **Decisión** | **Descartada:** cumple C1 a C4, pero no aporta streams y Kworb (F4) ya cubre su periodo. |
 
 ![Página del dataset en Kaggle](../img/origen_top73.png){width=55% fig-align="center"}
 

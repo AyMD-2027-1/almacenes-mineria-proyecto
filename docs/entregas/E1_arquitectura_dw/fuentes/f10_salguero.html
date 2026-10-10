@@ -130,6 +130,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../../entregas/E0_comprension_negocio/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../entregas/E0_comprension_negocio/e0_v2.html">
+ <span class="dropdown-text">E0 v2 · Secciones actualizadas</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -154,8 +158,16 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/pivote.html">
+ <span class="dropdown-text">Pivote</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/glosario.html">
+ <span class="dropdown-text">Glosario</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/referencias.html">
@@ -217,7 +229,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Mapa ciudadano de feminicidios reportados por la prensa. Se acepta como <strong>contraste del subregistro oficial</strong> del SESNSP (riesgo 2 de E0): permite comparar, por estado y año, los feminicidios reportados en prensa contra las carpetas de investigación oficiales.</p>
+<p>Mapa ciudadano de feminicidios reportados por la prensa. En E0 se planteó como contraste del subregistro del SESNSP. <strong>Se descartó</strong> porque el mapa no permite exportar los datos.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -236,7 +248,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><strong>Acceso</strong></td>
-<td>Visualización en Google My Maps; sin exportación de datos.</td>
+<td>Visualización en Google My Maps; la descarga está restringida. Se intentaron tres vías: el menú del mapa no ofrece descarga; en Google Earth, “Exportar como archivo KML” no descarga nada; y el enlace de exportación de My Maps responde 403 (acceso denegado). El sitio de la autora (feminicidios.mx) ya no responde.</td>
 </tr>
 <tr class="even">
 <td><strong>Formato y tamaño</strong></td>
@@ -263,12 +275,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Ubicación geográfica (habría que asignarla a entidad) y año.</td>
 </tr>
 <tr class="even">
-<td><strong>Preguntas de E0</strong></td>
-<td>P2.</td>
-</tr>
-<tr class="odd">
 <td><strong>Decisión</strong></td>
-<td><strong>Aceptada con limitaciones:</strong> cumple los criterios C1 y C3. Cumple C2 solo de forma parcial, porque sus datos de 2016 a 2020 se cruzan con la ventana del proyecto únicamente de 2017 a 2020. Cumple C4 solo de forma parcial, porque los datos son públicos pero no tienen una licencia declarada; se usan con fines académicos y citando a la autora.</td>
+<td><strong>Descartada:</strong> cumple C1 y C3, pero no hay archivo que cargar: las tres vías de descarga fallaron (ver Acceso). Además cubre solo 2016–2020 y no declara licencia.</td>
 </tr>
 </tbody>
 </table>
@@ -278,10 +286,30 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Mapa en Google My Maps con capas por año</figcaption>
 </figure>
 </div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/origen_salguero_earth.png" class="img-fluid figure-img"></p>
+<figcaption>El mapa en Google Earth: “Exportar como archivo KML” no descarga</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/origen_salguero_403.png" class="img-fluid figure-img"></p>
+<figcaption>Enlace de exportación de My Maps: acceso denegado (403)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
 <section id="problemas-anticipados-para-la-integración" class="level2">
 <h2 class="anchored" data-anchor-id="problemas-anticipados-para-la-integración">Problemas anticipados para la integración</h2>
 <ul>
-<li>El mapa no permite exportar los datos; habría que solicitarlos a la autora o usar los totales que ella publica.</li>
+<li>El mapa no permite exportar los datos; habría que solicitarlos a la autora.</li>
 <li>Solo cubre de 2016 a 2020.</li>
 <li>Los casos están ubicados como puntos en el mapa y no asignados a una entidad.</li>
 <li>Se basa en notas de prensa, con criterios distintos a los de los registros oficiales.</li>

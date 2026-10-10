@@ -130,6 +130,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../../entregas/E0_comprension_negocio/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../entregas/E0_comprension_negocio/e0_v2.html">
+ <span class="dropdown-text">E0 v2 · Secciones actualizadas</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -154,8 +158,16 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/pivote.html">
+ <span class="dropdown-text">Pivote</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/glosario.html">
+ <span class="dropdown-text">Glosario</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/referencias.html">
@@ -191,7 +203,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#problemas-anticipados-para-la-integración" id="toc-problemas-anticipados-para-la-integración" class="nav-link active" data-scroll-target="#problemas-anticipados-para-la-integración">Problemas anticipados para la integración</a></li>
+  <li><a href="#verificación-de-la-carga" id="toc-verificación-de-la-carga" class="nav-link active" data-scroll-target="#verificación-de-la-carga">Verificación de la carga</a></li>
+  <li><a href="#problemas-anticipados-para-la-integración" id="toc-problemas-anticipados-para-la-integración" class="nav-link" data-scroll-target="#problemas-anticipados-para-la-integración">Problemas anticipados para la integración</a></li>
   </ul>
 </nav>
     </div>
@@ -280,6 +293,10 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Vista previa de la tabla de usuarios</figcaption>
 </figure>
 </div>
+<section id="verificación-de-la-carga" class="level2">
+<h2 class="anchored" data-anchor-id="verificación-de-la-carga">Verificación de la carga</h2>
+<p>Se comprobó directamente la tabla <code>tic_2024_usuarios.dbf</code>: <strong>58,080 filas y 232 columnas</strong>, idénticas dimensiones a las del CSV preparado y la tabla BigQuery <code>stg_endutih_usuarios</code>. Se representan las 32 entidades; no se aplicó muestreo ni eliminación de columnas. Esta validación no implica una comparación campo por campo. El notebook se actualizó para eliminar cualquier reducción condicional por tamaño.</p>
+</section>
 <section id="problemas-anticipados-para-la-integración" class="level2">
 <h2 class="anchored" data-anchor-id="problemas-anticipados-para-la-integración">Problemas anticipados para la integración</h2>
 <ul>

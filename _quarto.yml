@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
 
 website:
   title: "Proyecto Integrador — Almacenes y Minería de Datos"
@@ -34,6 +36,8 @@ website:
             text: "Riesgos y supuestos"
           - href: entregas/E0_comprension_negocio/uso_ia.qmd
             text: "Uso de herramientas de IA"
+          - href: entregas/E0_comprension_negocio/e0_v2.qmd
+            text: "E0 v2 · Secciones actualizadas"
       - text: "E1 · Arquitectura del DW"
         menu:
           - href: entregas/E1_arquitectura_dw/fuentes.qmd
@@ -44,8 +48,12 @@ website:
             text: "Esquema estrella"
           - href: entregas/E1_arquitectura_dw/trazabilidad.qmd
             text: "Trazabilidad a E0"
+          - href: entregas/E1_arquitectura_dw/pivote.qmd
+            text: "Pivote"
           - href: entregas/E1_arquitectura_dw/uso_ia.qmd
             text: "Uso de herramientas de IA"
+          - href: entregas/E1_arquitectura_dw/glosario.qmd
+            text: "Glosario"
           - href: entregas/E1_arquitectura_dw/referencias.qmd
             text: "Referencias"
     right:

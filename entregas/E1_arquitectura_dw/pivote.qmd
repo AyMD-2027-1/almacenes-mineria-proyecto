@@ -1,0 +1,40 @@
+---
+title: "Pivote"
+subtitle: "Del consumo por entidad al consumo estimado por entidad"
+---
+
+## Qué cambia
+
+En E0 planteamos medir la misoginia de la música consumida **en cada entidad** durante 10 años. No existe una fuente
+abierta de consumo musical por estado: Spotify, Kworb y Kaggle solo publican datos nacionales (ver
+[fuentes descartadas](fuentes.qmd#descartadas)). Por eso el consumo por entidad pasa a ser una **estimación**: el
+consumo nacional de cada canción se reparte entre los estados con el interés de búsqueda de su artista en
+[Google Trends](fuentes/f11_google_trends.qmd) ([fórmula](estrella.qmd#estimacion)). La ventana queda en
+**2015–2025**, donde se cruzan los streams semanales de [Kworb](fuentes/f04_kworb.qmd) (desde 2013) y el SESNSP
+(desde 2015). El tema, el stakeholder, las cuatro preguntas y los dos entregables de E0 se mantienen; las páginas de
+E0 se conservan sin cambios y el resumen está en [E0 v2](../E0_comprension_negocio/e0_v2.qmd).
+
+## Preguntas ajustadas {#e0-v2}
+
+| Pregunta | En E0 | Ajuste |
+|---|---|---|
+| **P1** | Proporción de misoginia en la música consumida, por género musical y entidad | Se mide en el Top 200 de Spotify México; la variación por entidad es una estimación con Google Trends |
+| **P2** | Correlación entre la misoginia por entidad y los indicadores del SESNSP | Dos niveles: serie mensual nacional y panel por entidad y año, con tasas por 100 mil mujeres; el RNPDNO se suma como indicador |
+| **P3** | Evolución en la última década, por tipo de violencia | 2015–2025; los tipos son los que distingue el clasificador (sexual, física y psicológica) |
+| **P4** | Tipos predominantes en la música frente a los oficiales | Cobertura parcial: el SESNSP no mide violencia económica, patrimonial ni simbólica; se compara con el SESNSP y la ENDIREH 2021 |
+
+## Impacto en el Canvas
+
+- **1. Objetivos de negocio:** el diagnóstico se desagrega por entidad con una estimación, no con datos medidos.
+- **2. Criterio de éxito:** el enunciado no cambia; se verifica en 2015–2025, mensual a nivel nacional y anual por
+  entidad, y todo resultado por entidad se marca como estimación.
+- **3. Evaluación de la situación:** el histórico sale de Kworb, validado con Kaggle; se agregan Google Trends y el
+  RNPDNO, y el mapa de Salguero se descarta porque no permite exportar datos. Supuesto nuevo: el consumo de un
+  artista se reparte entre estados como su interés de búsqueda, escalado por los usuarios de internet. Riesgo nuevo:
+  el interés de búsqueda no es escucha, por lo que cada resultado por entidad se reporta también solo con los pesos
+  del propio artista.
+- **4. Objetivos de minería de datos:** el índice es por canción, agregable por género, tipo de violencia y mes a
+  nivel nacional, y por entidad y año como estimación; el chart semanal se reparte a meses para cruzarlo con el
+  SESNSP.
+- **6. Plan del proyecto:** la fase 1 extrae Kworb, Kaggle, Google Trends, SESNSP, RNPDNO y ENDIREH y los carga en
+  staging. Las fases 2 a 4 no cambian.

@@ -130,6 +130,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/e0_v2.html">
+ <span class="dropdown-text">E0 v2 · Secciones actualizadas</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -154,8 +158,16 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/pivote.html">
+ <span class="dropdown-text">Pivote</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/glosario.html">
+ <span class="dropdown-text">Glosario</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/referencias.html">
@@ -192,10 +204,6 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#matriz-de-trazabilidad" id="toc-matriz-de-trazabilidad" class="nav-link active" data-scroll-target="#matriz-de-trazabilidad">Matriz de trazabilidad</a></li>
-  <li><a href="#justificación-de-cada-dimensión" id="toc-justificación-de-cada-dimensión" class="nav-link" data-scroll-target="#justificación-de-cada-dimensión">Justificación de cada dimensión</a></li>
-  <li><a href="#justificación-de-cada-métrica" id="toc-justificación-de-cada-métrica" class="nav-link" data-scroll-target="#justificación-de-cada-métrica">Justificación de cada métrica</a></li>
-  <li><a href="#fuentes-que-no-alimentan-directamente-los-hechos" id="toc-fuentes-que-no-alimentan-directamente-los-hechos" class="nav-link" data-scroll-target="#fuentes-que-no-alimentan-directamente-los-hechos">Fuentes que no alimentan directamente los hechos</a></li>
-  <li><a href="#ajustes-y-relación-con-el-criterio-de-éxito-de-e0" id="toc-ajustes-y-relación-con-el-criterio-de-éxito-de-e0" class="nav-link" data-scroll-target="#ajustes-y-relación-con-el-criterio-de-éxito-de-e0">Ajustes y relación con el criterio de éxito de E0</a></li>
   </ul>
 </nav>
     </div>
@@ -205,7 +213,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Trazabilidad a E0</h1>
-<p class="subtitle lead">Matriz pregunta → tarea de minería → métrica → dimensión → fuente → estado</p>
+<p class="subtitle lead">Matriz pregunta → tarea de minería → métrica → dimensión → vista → fuente → estado</p>
 </div>
 
 
@@ -224,220 +232,67 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="matriz-de-trazabilidad" class="level2">
 <h2 class="anchored" data-anchor-id="matriz-de-trazabilidad">Matriz de trazabilidad</h2>
+<p>Las preguntas son las de la <a href="../../entregas/E1_arquitectura_dw/pivote.html#e0-v2">versión ajustada de E0</a>. Cada métrica y cada dimensión responde al menos una pregunta, y cada fuente aceptada aparece en al menos una fila.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Pregunta</th>
 <th>Tarea de minería</th>
-<th>Métrica</th>
+<th>Métricas</th>
 <th>Dimensiones</th>
+<th>Vistas del DataMart</th>
 <th>Fuentes</th>
 <th>Estado</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>P1 (ajustada):</strong> proporción de contenido misógino en la música consumida en México, por género musical y por entidad. La entidad se aproxima con el interés de búsqueda por estado.</td>
+<td><strong>P1:</strong> proporción de contenido misógino en la música más escuchada en Spotify México, por género musical y por entidad (estimada).</td>
 <td>Clasificación de texto y agregación</td>
-<td>Proporción misógina de <code>streams</code> y de <code>dias_en_chart</code>; <code>popularidad_promedio</code>; índice de exposición por entidad con <code>interes_busqueda</code> e <code>interes_ancla</code></td>
-<td><code>dim_contenido_musical</code>, <code>dim_fecha</code>, <code>dim_entidad</code>, <code>dim_fuente</code></td>
-<td>Kworb (F4), Kaggle <em>Spotify Charts</em> (F5), Top 73 (F12), Google Trends (F11), MiSonGyny (F6), LRCLIB (F7), MusicBrainz (F8), Last.fm (F19)</td>
-<td><strong>Parcial:</strong> el consumo real solo está a nivel nacional; por entidad se usa el interés de búsqueda, que mide búsquedas y no reproducciones.</td>
+<td>Proporción misógina de <code>streams_estimados</code> y de <code>semanas_en_chart_nacional</code>; <code>peso_entidad</code>, auditado con <code>interes_busqueda</code> y <code>origen_peso</code></td>
+<td><code>dim_cancion</code>, <code>dim_fecha</code>, <code>dim_entidad</code>, <code>dim_contexto_entidad</code></td>
+<td><code>p1_proporcion_misogina_genero</code>, <code>p1_proporcion_misogina_entidad</code></td>
+<td>Kworb (F4), Kaggle <em>Spotify Charts</em> (F5, validación), Google Trends (F11), ENDUTIH (F16), CONAPO (F3), MiSonGyny (F6), LRCLIB (F7), MusicBrainz (F8), Last.fm (F19), Natural Earth (F18, mapas)</td>
+<td><strong>Parcial:</strong> el consumo por entidad se reparte con búsquedas, que no son reproducciones. Solo cuenta canciones con letra clasificada.</td>
 </tr>
 <tr class="even">
-<td><strong>P2 (ajustada):</strong> correlación entre la misoginia musical y los indicadores oficiales de violencia de género, en una serie mensual nacional y en un panel por entidad y año.</td>
-<td>Correlación y regresión</td>
-<td>Tasa por 100 mil mujeres con <code>conteo</code>, <code>conteo_mujeres</code> y la población de mujeres; proporción misógina de <code>streams</code>; índice de exposición por entidad</td>
-<td><code>dim_fecha</code>, <code>dim_entidad</code>, <code>dim_tipo_violencia</code>, <code>dim_fuente</code>, <code>dim_contenido_musical</code></td>
-<td>SESNSP (F1), RNPDNO (F13), CONAPO (F3), Google Trends (F11), Salguero (F10), Censo (F14), CONEVAL (F15), ENDUTIH (F16), México Evalúa (F17), Natural Earth (F18)</td>
-<td><strong>Parcial:</strong> la correlación nacional usa 2017–2025; la de entidades depende del proxy de búsquedas. El diseño es asociativo, no causal.</td>
+<td><strong>P2:</strong> correlación entre la misoginia musical y los indicadores oficiales de violencia de género, mensual nacional y por entidad y año.</td>
+<td>Correlación</td>
+<td>Proporción misógina; tasas por 100 mil mujeres con <code>carpetas</code> y <code>victimas_mujeres</code>; <code>victimas_mujeres_menores</code>; <code>victimas_hombres</code> para comparar; variables de control</td>
+<td><code>dim_fecha</code>, <code>dim_entidad</code>, <code>dim_tipo_violencia</code>, <code>dim_contexto_entidad</code>, <code>dim_cancion</code></td>
+<td><code>p2_serie_mensual_nacional</code>, <code>p2_correlacion_nacional</code>, <code>p2_panel_entidad_anio</code></td>
+<td>SESNSP (F1), RNPDNO (F13), Kworb (F4), CONAPO (F3), Google Trends (F11), ENDUTIH (F16), CONEVAL (F15), México Evalúa (F17), Censo ITER (F14)</td>
+<td><strong>Parcial:</strong> el panel por entidad depende del reparto y es anual. El diseño es asociativo, no causal. El RNPDNO termina en agosto de 2023.</td>
 </tr>
 <tr class="odd">
-<td><strong>P3:</strong> evolución de la misoginia en la música consumida en la última década, por tipo de violencia.</td>
-<td>Análisis de series de tiempo</td>
-<td>Participación mensual de cada categoría en <code>streams</code>, media móvil de 12 meses, cambio anual; <code>mejor_posicion</code></td>
-<td><code>dim_fecha</code>, <code>dim_contenido_musical</code>, <code>dim_entidad</code></td>
-<td>Kworb (F4), Kaggle <em>Spotify Charts</em> (F5), Top 73 (F12), MiSonGyny (F6), LRCLIB (F7)</td>
-<td><strong>Parcial:</strong> la serie empieza en 2017, no en 2014; los tipos son las categorías del clasificador (sexualización, violencia y odio), no los tipos física, sexual, simbólica y psicológica que plantea E0.</td>
+<td><strong>P3:</strong> evolución de la misoginia en la música consumida, 2015–2025, por tipo de violencia.</td>
+<td>Series de tiempo</td>
+<td>Participación mensual de cada tipo en <code>streams_estimados</code>, media móvil de 12 meses, cambio anual; <code>mejor_posicion_nacional</code></td>
+<td><code>dim_fecha</code>, <code>dim_cancion</code>, <code>dim_tipo_violencia</code></td>
+<td><code>p3_tendencia_tipo_violencia</code></td>
+<td>Kworb (F4), MiSonGyny (F6), LRCLIB (F7)</td>
+<td><strong>Parcial:</strong> los tipos son los que distingue el clasificador (sexual, física y psicológica).</td>
 </tr>
 <tr class="even">
 <td><strong>P4:</strong> tipos de violencia que predominan en la música y si coinciden con los más reportados oficialmente.</td>
-<td>Clasificación multiclase</td>
-<td>Participación por tipo de violencia en <code>streams</code> de canciones misóginas, en <code>conteo</code> del SESNSP y prevalencia de la ENDIREH</td>
-<td><code>dim_tipo_violencia</code>, <code>dim_contenido_musical</code>, <code>dim_fuente</code>, <code>dim_entidad</code></td>
+<td>Clasificación multiclase y comparación</td>
+<td>Participación de cada tipo en la música misógina, en <code>carpetas</code> del SESNSP y prevalencia de la ENDIREH 2021</td>
+<td><code>dim_tipo_violencia</code>, <code>dim_cancion</code>, <code>dim_contexto_entidad</code></td>
+<td><code>p4_tipos_musica_vs_oficial</code></td>
 <td>SESNSP (F1), ENDIREH (F2), MiSonGyny (F6), LRCLIB (F7)</td>
-<td><strong>Parcial:</strong> las categorías de la música se mapean a la LGAMVLV; la violencia mediática no tiene contraparte en los registros oficiales y la ENDIREH solo aporta 2021.</td>
+<td><strong>Parcial:</strong> el SESNSP no mide violencia económica, patrimonial ni mediática; el mapeo del clasificador a la LGAMVLV es aproximado.</td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="justificación-de-cada-dimensión" class="level2">
-<h2 class="anchored" data-anchor-id="justificación-de-cada-dimensión">Justificación de cada dimensión</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Dimensión</th>
-<th>Preguntas</th>
-<th>Para qué se usa</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>dim_fecha</code></td>
-<td>P1, P2, P3</td>
-<td>Serie mensual de consumo y violencia; subtotales por año en P1.</td>
-</tr>
-<tr class="even">
-<td><code>dim_entidad</code></td>
-<td>P1, P2, P4</td>
-<td>Análisis por entidad; población para las tasas; variables de control de P2; prevalencias de la ENDIREH en P4.</td>
-</tr>
-<tr class="odd">
-<td><code>dim_contenido_musical</code></td>
-<td>P1, P2, P3, P4</td>
-<td>Clasificación de cada canción, su género musical y los términos de búsqueda.</td>
-</tr>
-<tr class="even">
-<td><code>dim_tipo_violencia</code></td>
-<td>P2, P4</td>
-<td>Tipos de violencia comparables entre la música y las fuentes oficiales.</td>
-</tr>
-<tr class="odd">
-<td><code>dim_fuente</code></td>
-<td>P1, P2, P3, P4</td>
-<td>Distingue el origen de cada fila: delitos o víctimas del SESNSP, RNPDNO, charts o Google Trends.</td>
-</tr>
-</tbody>
-</table>
-<p>Ninguna dimensión queda sin pregunta.</p>
-</section>
-<section id="justificación-de-cada-métrica" class="level2">
-<h2 class="anchored" data-anchor-id="justificación-de-cada-métrica">Justificación de cada métrica</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Métrica</th>
-<th>Hecho</th>
-<th>Preguntas</th>
-<th>Vista del DataMart</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>conteo</code></td>
-<td><code>fact_violencia</code></td>
-<td>P2, P4</td>
-<td><code>p2_serie_mensual_nacional</code>, <code>p2_panel_entidad_anio</code>, <code>p4_tipos_musica_vs_oficial</code></td>
-</tr>
-<tr class="even">
-<td><code>conteo_mujeres</code></td>
-<td><code>fact_violencia</code></td>
-<td>P2</td>
-<td><code>p2_panel_entidad_anio</code></td>
-</tr>
-<tr class="odd">
-<td><code>streams</code></td>
-<td><code>fact_consumo_musical</code></td>
-<td>P1, P2, P3, P4</td>
-<td>Todas las vistas de consumo</td>
-</tr>
-<tr class="even">
-<td><code>dias_en_chart</code></td>
-<td><code>fact_consumo_musical</code></td>
-<td>P1</td>
-<td><code>p1_proporcion_misogina_genero</code></td>
-</tr>
-<tr class="odd">
-<td><code>mejor_posicion</code></td>
-<td><code>fact_consumo_musical</code></td>
-<td>P3</td>
-<td><code>p3_tendencia_categoria</code></td>
-</tr>
-<tr class="even">
-<td><code>popularidad_promedio</code></td>
-<td><code>fact_consumo_musical</code></td>
-<td>P1</td>
-<td><code>p1_proporcion_misogina_genero</code></td>
-</tr>
-<tr class="odd">
-<td><code>interes_busqueda</code></td>
-<td><code>fact_consumo_musical</code></td>
-<td>P1, P2</td>
-<td><code>p1_exposicion_misogina_entidad</code>, <code>p2_panel_entidad_anio</code></td>
-</tr>
-<tr class="even">
-<td><code>interes_ancla</code></td>
-<td><code>fact_consumo_musical</code></td>
-<td>P1, P2</td>
-<td><code>p1_exposicion_misogina_entidad</code>, <code>p2_panel_entidad_anio</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="fuentes-que-no-alimentan-directamente-los-hechos" class="level2">
-<h2 class="anchored" data-anchor-id="fuentes-que-no-alimentan-directamente-los-hechos">Fuentes que no alimentan directamente los hechos</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Fuente</th>
-<th>Cómo llega al esquema</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>MiSonGyny (F6)</td>
-<td>Entrena y valida el clasificador; sus resultados llegan a <code>dim_contenido_musical</code>.</td>
-</tr>
-<tr class="even">
-<td>LRCLIB (F7)</td>
-<td>Aporta las letras que clasifica el modelo; las letras no se guardan en el almacén.</td>
-</tr>
-<tr class="odd">
-<td>MusicBrainz (F8) y Last.fm (F19)</td>
-<td>Asignan el género musical en <code>dim_contenido_musical</code>.</td>
-</tr>
-<tr class="even">
-<td>CONAPO, ENDIREH, Censo, CONEVAL, ENDUTIH, México Evalúa, Salguero y Natural Earth</td>
-<td>Atributos anuales de <code>dim_entidad</code>.</td>
-</tr>
-<tr class="odd">
-<td>Spotify Charts (F9)</td>
-<td>Solo consulta de referencia; sus datos no se cargan.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="ajustes-y-relación-con-el-criterio-de-éxito-de-e0" class="level2">
-<h2 class="anchored" data-anchor-id="ajustes-y-relación-con-el-criterio-de-éxito-de-e0">Ajustes y relación con el criterio de éxito de E0</h2>
-<ul>
-<li><strong>P1 y P2 se ajustan</strong> porque ninguna fuente aceptada da reproducciones por entidad. La aproximación con Google Trends mantiene la desagregación por entidad que pide el criterio de éxito, aunque mide interés de búsqueda y no consumo.</li>
-<li><strong>La ventana se ajusta a 2017–2025</strong>, que es la intersección real entre las fuentes de música y de violencia. El criterio de éxito de E0 ya preveía ajustar la ventana a esa intersección.</li>
-<li><strong>Los tipos de violencia de la música</strong> salen del clasificador entrenado con MiSonGyny y se mapean a la LGAMVLV; la comparación con los registros oficiales es posible para los tipos física y sexual, y queda limitada para la violencia psicológica y la mediática.</li>
-<li>Estos ajustes no cambian el objetivo de minería de datos ni el criterio de éxito, por lo que no se hizo pivote.</li>
-</ul>
 
 
 </section>

@@ -1,0 +1,18 @@
+---
+title: "E0 v2 · Secciones actualizadas"
+subtitle: "Cambios a E0 después del pivote de E1"
+---
+
+Durante E1 confirmamos que no existe una fuente abierta de consumo musical por entidad, por eso pivotamos (ver
+[página de pivote](../E1_arquitectura_dw/pivote.qmd)). Esta tabla recoge **solo las secciones de E0 que cambian**.
+
+| Sección de E0 | Antes | Ahora (v2) |
+|---|---|---|
+| Preguntas P1 y P2 | Consumo medido por entidad | Consumo por entidad **estimado** con Google Trends |
+| Pregunta P3 | Última década | 2015–2025, con streams semanales de Kworb; los tipos de violencia son los que distingue el clasificador |
+| Pregunta P4 | Tipos física, sexual, económica, patrimonial y simbólica | Los tipos que miden las fuentes; cobertura parcial |
+| Criterio de éxito | Ventana de 10 años | 2015–2025; resultados por entidad marcados como estimación |
+| Canvas 1. Objetivos de negocio | Desagregación por entidad directa | Desagregación por entidad estimada |
+| Canvas 3. Evaluación de la situación | Histórico de 10 años vía Kworb; mapa de Salguero como contraste | Histórico semanal de Kworb desde 2013, validado con Kaggle; mapa de Salguero descartado; supuestos y riesgos nuevos |
+| Canvas 4. Objetivos de minería de datos | Índice agregable por entidad | Índice por canción, con la entidad como estimación |
+| Canvas 6. Plan del proyecto | Fase 1 con Kworb a 10 años y mapa de Salguero | Fase 1 con las fuentes del catálogo de E1 |

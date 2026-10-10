@@ -130,6 +130,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../../entregas/E0_comprension_negocio/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../entregas/E0_comprension_negocio/e0_v2.html">
+ <span class="dropdown-text">E0 v2 · Secciones actualizadas</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -154,8 +158,16 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/pivote.html">
+ <span class="dropdown-text">Pivote</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/glosario.html">
+ <span class="dropdown-text">Glosario</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../../entregas/E1_arquitectura_dw/referencias.html">
@@ -191,7 +203,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#problemas-anticipados-para-la-integración" id="toc-problemas-anticipados-para-la-integración" class="nav-link active" data-scroll-target="#problemas-anticipados-para-la-integración">Problemas anticipados para la integración</a></li>
+  <li><a href="#evidencia-trends" id="toc-evidencia-trends" class="nav-link active" data-scroll-target="#evidencia-trends">Verificación de las descargas</a>
+  <ul class="collapse">
+  <li><a href="#qué-artistas-se-consultan" id="toc-qué-artistas-se-consultan" class="nav-link" data-scroll-target="#qué-artistas-se-consultan">Qué artistas se consultan</a></li>
+  </ul></li>
+  <li><a href="#problemas-anticipados-para-la-integración" id="toc-problemas-anticipados-para-la-integración" class="nav-link" data-scroll-target="#problemas-anticipados-para-la-integración">Problemas anticipados para la integración</a></li>
   </ul>
 </nav>
     </div>
@@ -236,7 +252,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><strong>Acceso</strong></td>
-<td>Consulta por término, periodo y región mediante la biblioteca <code>pytrends</code> (no oficial); Google limita el número de consultas.</td>
+<td>Descarga de CSV desde el sitio, un <strong>tema</strong> por descarga (“Bad Bunny — Cantante”, “Reguetón — Género musical”); si no hay tema, el término más común, con el sitio en español (ver la <a href="#evidencia-trends">verificación</a>). También con la biblioteca <code>pytrends</code>, que no es oficial; Google limita el número de consultas.</td>
 </tr>
 <tr class="even">
 <td><strong>Formato y tamaño</strong></td>
@@ -270,6 +286,12 @@ ul.task-list li input[type="checkbox"] {
 </table>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
+<p><img src="../img/origen_trends.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Consulta en el sitio: México, 2021, interés por subregión y botón de descarga</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
 <p><img src="../img/vista_trends_region.png" class="img-fluid figure-img" style="width:70.0%"></p>
 <figcaption>Interés por estado de “corridos tumbados”, 2017–2025</figcaption>
 </figure>
@@ -280,13 +302,120 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Interés mensual nacional de “corridos tumbados”, 2017–2025</figcaption>
 </figure>
 </div>
+<section id="evidencia-trends" class="level2">
+<h2 class="anchored" data-anchor-id="evidencia-trends">Verificación de las descargas</h2>
+<p>Se descargaron estos archivos desde el sitio (México, desglose por subregión). Están en <code>datos/trends/</code> y se cargan sin cambios en staging.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Archivo</th>
+<th>Qué se descargó</th>
+<th>Periodo</th>
+<th>Estados con valor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>geoMap_regueton_tema_genero_2021.csv</code></td>
+<td>Reguetón como <strong>tema</strong> (“Género musical”)</td>
+<td>2021</td>
+<td>32 de 32</td>
+</tr>
+<tr class="even">
+<td><code>by_region_MX_20210101-0000_20261009-2251.csv</code></td>
+<td>Reguetón, descarga anterior</td>
+<td>2021</td>
+<td>32 de 32</td>
+</tr>
+<tr class="odd">
+<td><code>geoMap_regueton_sin_acento_2021.csv</code></td>
+<td>“Regueton” como <strong>término</strong></td>
+<td>2021</td>
+<td>32 de 32</td>
+</tr>
+<tr class="even">
+<td><code>geoMap_regueton_con_acento_2021.csv</code></td>
+<td>“Reguetón” como <strong>término</strong></td>
+<td>2021</td>
+<td>17 de 32</td>
+</tr>
+<tr class="odd">
+<td><code>by_region_MX_20201231-1800_20261010-0031.csv</code></td>
+<td>Tones And I y Bobby Pulido en la misma descarga</td>
+<td>2021</td>
+<td>32 de 32 (Tones And I en cero en 3)</td>
+</tr>
+<tr class="even">
+<td><code>by_region_MX_20260710-0032_20261010-0032.csv</code></td>
+<td>Tones And I y Bobby Pulido en la misma descarga</td>
+<td>10 de julio a 10 de octubre de 2026</td>
+<td>32 de 32 (Tones And I en cero en 25)</td>
+</tr>
+</tbody>
+</table>
+<p>Comparación de las descargas de 2021 contra la del tema:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Descarga</th>
+<th>Correlación de rangos (Spearman)</th>
+<th>Correlación de valores (Pearson)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Descarga anterior</td>
+<td>0.99</td>
+<td>0.99</td>
+</tr>
+<tr class="even">
+<td>“Regueton”, término</td>
+<td>0.60</td>
+<td>0.83</td>
+</tr>
+<tr class="odd">
+<td>“Reguetón”, término (17 estados)</td>
+<td>0.64</td>
+<td>0.39</td>
+</tr>
+</tbody>
+</table>
+<p>El tema reúne todas las formas de escribir un nombre y es estable: difiere 1 punto en promedio (máximo 5) de la descarga anterior. Los términos cambian mucho con el acento. Con periodos cortos un artista de poco volumen queda en cero (Tones And I tiene valor en 29 estados en 2021 y en 7 en tres meses de 2026), por eso las descargas son por año. El 100 es la ubicación con mayor frecuencia de búsquedas en proporción al total de búsquedas de esa ubicación <a href="../../../entregas/E1_arquitectura_dw/referencias.html">[5]</a>.</p>
+<section id="qué-artistas-se-consultan" class="level3">
+<h3 class="anchored" data-anchor-id="qué-artistas-se-consultan">Qué artistas se consultan</h3>
+<p>Con Kaggle <em>Spotify Charts</em> (Top 200 diario de México) se midió qué parte de los streams cubren los artistas más escuchados de cada año:</p>
+<pre class="text"><code>Parte de los streams del Top 200 que explican los artistas principales de cada año
+
+2017   Top 50: 66.4%   Top 100: 87.0%
+2018   Top 50: 69.9%   Top 100: 88.1%
+2019   Top 50: 67.3%   Top 100: 86.7%
+2020   Top 50: 73.9%   Top 100: 90.6%
+2021   Top 50: 72.1%   Top 100: 89.3%</code></pre>
+<p>Se consultan los <strong>50 artistas con más streams de cada año</strong> (66–74 % de los streams); con 100 se llegaría al 87–91 %, con el doble de descargas. La selección es por consumo, sin preseleccionar géneros, como pide la regla operativa de E0. Los demás artistas se reparten con el tema de su género y, si no hay, con los usuarios de internet.</p>
+</section>
+</section>
 <section id="problemas-anticipados-para-la-integración" class="level2">
 <h2 class="anchored" data-anchor-id="problemas-anticipados-para-la-integración">Problemas anticipados para la integración</h2>
 <ul>
 <li>Los valores son relativos, de 0 a 100, y se recalculan en cada consulta, por lo que dos consultas distintas no pueden compararse directamente.</li>
-<li>El interés por estado se obtiene para todo el periodo consultado y no mes por mes.</li>
+<li>Cada descarga da un solo valor por estado para todo el periodo consultado; para tener un valor por año hay que hacer una descarga por año.</li>
 <li>Mide búsquedas en Google, no reproducciones de música.</li>
-<li>Algunos nombres de estados no coinciden con los del catálogo del INEGI.</li>
+<li>Algunos nombres de estados no coinciden con los del catálogo del INEGI, y cambian con el idioma del sitio (“Mexico City” en inglés, “Ciudad de México” en español).</li>
+<li>Si una descarga trae varios términos, en la vista por estado los valores de cada estado suman 100 entre los términos y ya no se pueden comparar estados.</li>
+<li>En periodos cortos, los artistas con poco volumen quedan en cero en muchos estados.</li>
+<li>Algunos nombres de artistas son también palabras comunes o nombres de otras personas (Matisse, Aleman, Intocable).</li>
+<li>Un mismo término con y sin acento da resultados distintos (“reguetón” y “regueton”). Descargar el <strong>tema</strong> del artista o del género, y no el término, resuelve la ortografía y la ambigüedad; el término más común queda solo como respaldo cuando no hay tema.</li>
 </ul>
 <p><a href="../../../entregas/E1_arquitectura_dw/fuentes.html">← Volver a fuentes de datos</a></p>
 

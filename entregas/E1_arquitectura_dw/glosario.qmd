@@ -1,0 +1,20 @@
+---
+title: "Glosario"
+subtitle: "Siglas y términos de la entrega E1"
+---
+
+| Término | Significado |
+|---|---|
+| CONAPO | Consejo Nacional de Población. |
+| CONEVAL | Consejo Nacional de Evaluación de la Política de Desarrollo Social. |
+| ENDIREH | Encuesta Nacional sobre la Dinámica de las Relaciones en los Hogares (INEGI). |
+| ENDUTIH | Encuesta Nacional sobre Disponibilidad y Uso de Tecnologías de la Información en los Hogares (INEGI). |
+| INEGI | Instituto Nacional de Estadística y Geografía. |
+| ITER | Principales resultados por localidad del Censo de Población y Vivienda 2020 (INEGI). |
+| LGAMVLV | Ley General de Acceso de las Mujeres a una Vida Libre de Violencias (antes "…de Violencia"); ver [marco de referencia](fuentes.qmd#marco). |
+| LRCLIB | Biblioteca de letras de canciones libre y abierta, con API y descargas de su base de datos. |
+| MiSonGyny | Corpus de letras de canciones en español etiquetadas por misoginia. |
+| RNID | Registro Nacional de Incidencia Delictiva: metodología del SESNSP vigente desde enero de 2026. |
+| RNPDNO | Registro Nacional de Personas Desaparecidas y No Localizadas (Comisión Nacional de Búsqueda). |
+| SESNSP | Secretariado Ejecutivo del Sistema Nacional de Seguridad Pública. |
+| SCD | *Slowly Changing Dimension*: regla para manejar los cambios en los atributos de una dimensión. |

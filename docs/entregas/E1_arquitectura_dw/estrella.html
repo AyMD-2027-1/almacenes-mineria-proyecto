@@ -111,6 +111,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -168,6 +197,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/e0_v2.html">
+ <span class="dropdown-text">E0 v2 · Secciones actualizadas</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -192,8 +225,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Trazabilidad a E0</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/pivote.html">
+ <span class="dropdown-text">Pivote</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/uso_ia.html">
  <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/glosario.html">
+ <span class="dropdown-text">Glosario</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/referencias.html">
@@ -229,14 +270,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#granos-candidatos" id="toc-granos-candidatos" class="nav-link active" data-scroll-target="#granos-candidatos">Granos candidatos</a></li>
+  <li><a href="#el-diseño-en-pocas-palabras" id="toc-el-diseño-en-pocas-palabras" class="nav-link active" data-scroll-target="#el-diseño-en-pocas-palabras">El diseño en pocas palabras</a></li>
+  <li><a href="#granos-candidatos" id="toc-granos-candidatos" class="nav-link" data-scroll-target="#granos-candidatos">Granos candidatos</a>
+  <ul class="collapse">
+  <li><a href="#consumo-musical" id="toc-consumo-musical" class="nav-link" data-scroll-target="#consumo-musical">Consumo musical</a></li>
+  <li><a href="#violencia" id="toc-violencia" class="nav-link" data-scroll-target="#violencia">Violencia</a></li>
+  </ul></li>
+  <li><a href="#estimacion" id="toc-estimacion" class="nav-link" data-scroll-target="#estimacion">Cómo se estima el consumo por entidad</a></li>
   <li><a href="#tablas-de-hechos" id="toc-tablas-de-hechos" class="nav-link" data-scroll-target="#tablas-de-hechos">Tablas de hechos</a>
   <ul class="collapse">
   <li><a href="#medidas" id="toc-medidas" class="nav-link" data-scroll-target="#medidas">Medidas</a></li>
   </ul></li>
-  <li><a href="#dimensiones" id="toc-dimensiones" class="nav-link" data-scroll-target="#dimensiones">Dimensiones</a></li>
+  <li><a href="#dimensiones" id="toc-dimensiones" class="nav-link" data-scroll-target="#dimensiones">Dimensiones</a>
+  <ul class="collapse">
+  <li><a href="#mapeo-inicial-a-la-lgamvlv" id="toc-mapeo-inicial-a-la-lgamvlv" class="nav-link" data-scroll-target="#mapeo-inicial-a-la-lgamvlv">Mapeo inicial a la LGAMVLV</a></li>
+  </ul></li>
   <li><a href="#diagrama" id="toc-diagrama" class="nav-link" data-scroll-target="#diagrama">Diagrama</a></li>
-  <li><a href="#ddl-ejecutado-en-bigquery" id="toc-ddl-ejecutado-en-bigquery" class="nav-link" data-scroll-target="#ddl-ejecutado-en-bigquery">DDL ejecutado en BigQuery</a></li>
+  <li><a href="#ddl" id="toc-ddl" class="nav-link" data-scroll-target="#ddl">DDL</a></li>
   </ul>
 </nav>
     </div>
@@ -263,45 +313,117 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="el-diseño-en-pocas-palabras" class="level2">
+<h2 class="anchored" data-anchor-id="el-diseño-en-pocas-palabras">El diseño en pocas palabras</h2>
+<ul>
+<li><strong>Dos hechos:</strong> <code>fact_consumo_musical</code>, con <strong>una fila por canción, entidad y mes</strong>, y <code>fact_violencia</code>, con <strong>una fila por entidad, delito o registro (modalidad del SESNSP o desaparición del RNPDNO) y mes</strong>.</li>
+<li><strong>Cinco dimensiones:</strong> cuándo (<code>dim_fecha</code>), dónde (<code>dim_entidad</code>), qué canción (<code>dim_cancion</code>), qué tipo de violencia (<code>dim_tipo_violencia</code>) y cómo estaba ese estado ese año (<code>dim_contexto_entidad</code>, una mini-dimensión). Los dos hechos comparten todas menos <code>dim_cancion</code>.</li>
+<li><strong>El consumo por estado es una estimación</strong> (<a href="#estimacion">cómo se calcula</a>): la suma de los estados da el total nacional, y toda salida por entidad lo indica.</li>
+</ul>
+</section>
 <section id="granos-candidatos" class="level2">
 <h2 class="anchored" data-anchor-id="granos-candidatos">Granos candidatos</h2>
-<p>Las fuentes tienen granos muy distintos: los charts de Spotify son diarios y nacionales, el SESNSP es mensual por entidad, Google Trends se puede consultar por estado y mes, y CONAPO, ENDIREH y las fuentes de contexto son anuales o de un solo levantamiento. Consideramos tres granos:</p>
+<p>Las fuentes tienen granos muy distintos. Los charts de Spotify son nacionales: semanales en el historial de Kworb (F4, desde 2013) y diarios en Kaggle (F5, 2017–2021). El SESNSP es mensual por entidad (F1) y el RNPDNO registra la fecha y la entidad de cada desaparición (F13). Google Trends da un valor por entidad para el periodo que se descargue, sea un año o un mes (F11). CONAPO, ENDIREH y las fuentes de contexto son anuales o de un solo levantamiento.</p>
+<section id="consumo-musical" class="level3">
+<h3 class="anchored" data-anchor-id="consumo-musical">Consumo musical</h3>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
 </colgroup>
 <thead>
 <tr class="header">
+<th>#</th>
 <th>Grano candidato</th>
+<th>Qué lo sustenta</th>
 <th>Qué permite</th>
 <th>Qué no permite</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Una fila por canción por día, a nivel nacional</td>
-<td>Máximo detalle del consumo musical.</td>
-<td>No se cruza con la violencia, que no existe por día, ni con la entidad.</td>
+<td>C1</td>
+<td><strong>Una fila por canción, entidad y mes</strong></td>
+<td>Streams semanales por canción del historial de Kworb (F4), repartidos a mes; interés de búsqueda del artista por entidad en Trends (F11), descargado por año</td>
+<td>P1–P4. La misoginia se mide por canción, que es lo que se clasifica, y el mes coincide con el SESNSP</td>
+<td>Medir reproducciones reales por entidad: se estiman</td>
 </tr>
 <tr class="even">
-<td><strong>Una fila por entidad por mes</strong></td>
-<td>Es el grano nativo del SESNSP y el común denominador entre consumo y violencia; permite la serie mensual 2017–2025 para P2 y P3.</td>
-<td>Los datos diarios se agregan a mes; las fuentes anuales entran como contexto de la entidad.</td>
+<td>C2</td>
+<td>Una fila por artista, entidad y año</td>
+<td>Los mismos datos, agregados</td>
+<td>P1 y P2 con menos filas</td>
+<td>Ver categorías y tipos de violencia por canción (P3, P4) y la serie mensual</td>
 </tr>
 <tr class="odd">
-<td>Una fila por entidad por año</td>
-<td>Todas las fuentes caben sin ajustes.</td>
-<td>Solo nueve puntos en el tiempo: se pierde la serie mensual de P3 y la mayor parte de la potencia de P2.</td>
+<td>C3</td>
+<td>Una fila por canción y semana, nacional</td>
+<td>Kworb (F4) tal como viene</td>
+<td>P3 con el mayor detalle</td>
+<td>Llegar a la entidad (P1, P2); el SESNSP no existe por semana</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Elegimos el mes</strong> como grano común porque es el nivel más fino que comparten la música y la violencia oficial, y conserva suficientes observaciones para la correlación de P2. Los charts diarios se agregan a mes; el consumo de Spotify es nacional, por lo que se registra en la entidad 0, Nacional; el consumo por entidad se aproxima con Google Trends. Las fuentes anuales (CONAPO, ENDIREH, Censo, CONEVAL, ENDUTIH, México Evalúa y Salguero) entran como atributos de la entidad para cada año. Este ajuste no cambia el objetivo de minería ni el criterio de éxito de E0, por lo que no requiere pivote.</p>
+<p><strong>Elegimos C1.</strong> La letra se clasifica por canción, así que bajar a artista perdería la desagregación por tipo de violencia que piden P3 y P4. El mes es el grano nativo del SESNSP y de la serie nacional de streams, así que los dos hechos se cruzan sin convertir fechas. C3 se agrega hacia arriba en la preparación: cada semana se reparte entre los meses según cuántos de sus 7 días caen en cada uno.</p>
 </section>
-<section id="tablas-de-hechos" class="level2">
-<h2 class="anchored" data-anchor-id="tablas-de-hechos">Tablas de hechos</h2>
-<p>Hay dos tablas de hechos que comparten las dimensiones de fecha, entidad, tipo de violencia y fuente.</p>
+<section id="violencia" class="level3">
+<h3 class="anchored" data-anchor-id="violencia">Violencia</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Grano candidato</th>
+<th>Qué lo sustenta</th>
+<th>Qué permite</th>
+<th>Qué no permite</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>V1</td>
+<td><strong>Una fila por entidad, delito o registro y mes</strong></td>
+<td>Archivos de delitos y de víctimas del SESNSP (F1), mensuales por entidad, con bien jurídico, tipo, subtipo y modalidad; registros del RNPDNO (F13) contados por entidad y mes de desaparición</td>
+<td>P2, P3 y P4; subir a tipo de la LGAMVLV o a año con <code>ROLLUP</code></td>
+<td>Casos individuales: el SESNSP publica conteos</td>
+</tr>
+<tr class="even">
+<td>V2</td>
+<td>Una fila por entidad, tipo de la LGAMVLV y año</td>
+<td>El mismo archivo, agregado</td>
+<td>El cruce anual por entidad de P2</td>
+<td>Corregir el mapeo a la LGAMVLV sin recargar; la serie mensual</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Elegimos V1.</strong> Guardar el delito y dejar el tipo de la LGAMVLV como atributo de la dimensión permite corregir el mapeo sin recargar los hechos.</p>
+</section>
+</section>
+<section id="estimacion" class="level2">
+<h2 class="anchored" data-anchor-id="estimacion">Cómo se estima el consumo por entidad</h2>
+<p>Ninguna fuente abierta publica reproducciones por entidad (<a href="../../entregas/E1_arquitectura_dw/pivote.html">pivote</a>). El consumo nacional de cada canción se <strong>reparte</strong> entre las 32 entidades con un peso que sale de Google Trends.</p>
+<p>Google Trends divide cada dato entre el total de búsquedas de la región y del periodo, y lo escala de 0 a 100 <a href="../../entregas/E1_arquitectura_dw/referencias.html">[5]</a>. Su ayuda lo dice así: 100 indica la ubicación con mayor frecuencia de búsquedas “en proporción al total de búsquedas realizadas en esa ubicación”. Por eso el valor de una entidad dice qué tanto pesa el artista <strong>dentro</strong> de las búsquedas de esa entidad, no cuántas búsquedas hubo. Para acercarlo a un volumen se multiplica por los usuarios de internet de la entidad:</p>
+<p><span class="math display">\[
+\text{peso}(e, t, p) = \frac{\text{Trends}(e, t, p) \times \text{usuarios}(e, a)}{\sum_{e'=1}^{32} \text{Trends}(e', t, p) \times \text{usuarios}(e', a)}
+\]</span></p>
+<p><span class="math display">\[
+\text{streams\_estimados}(c, e, m) = \text{streams\_nacionales}(c, m) \times \text{peso}(e, t, p)
+\]</span></p>
+<p>donde <span class="math inline">\(e\)</span> es la entidad, <span class="math inline">\(c\)</span> la canción, <span class="math inline">\(t\)</span> el tema de Trends de su artista, <span class="math inline">\(m\)</span> el mes, <span class="math inline">\(a\)</span> el año de ese mes y <span class="math inline">\(p\)</span> el periodo de la descarga de Trends, que es el año <span class="math inline">\(a\)</span>.</p>
+<ul>
+<li><p><strong>Los pesos suman 1</strong>, así que la suma de las 32 entidades devuelve el consumo nacional. Las medidas estimadas siguen siendo aditivas y la serie nacional se conserva sin cambios.</p></li>
+<li><p><strong>No se necesita un término ancla.</strong> Cada descarga se normaliza por separado, pero el peso solo usa cómo se reparte el interés entre entidades dentro de la misma descarga.</p></li>
+<li><p><strong>Se descarga el tema, no el término.</strong> Trends ofrece “temas” (por ejemplo, “Bad Bunny — Cantante” o “Reguetón — Género musical”) que reúnen todas las formas de escribir un nombre. Las descargas como término cambian mucho según la escritura, y el tema es estable entre descargas (ver <a href="../../entregas/E1_arquitectura_dw/fuentes/f11_google_trends.html#evidencia-trends">verificación de Trends</a>). Si un artista no tiene tema, se usa su término más común. <code>termino_trends</code> guarda cuál se usó.</p></li>
+<li><p><strong>El peso sale de una sola descarga por año, en este orden:</strong></p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -310,21 +432,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </colgroup>
 <thead>
 <tr class="header">
+<th><code>origen_peso</code></th>
+<th>De dónde sale</th>
+<th>Cuándo se usa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>artista_anio</code></td>
+<td>Tema del artista en ese año</td>
+<td><strong>Caso principal</strong>: los 50 artistas con más streams de cada año</td>
+</tr>
+<tr class="even">
+<td><code>genero_anio</code></td>
+<td>Tema del género del artista en ese año</td>
+<td>Artistas fuera de esos 50 o con menos de 28 entidades con valor</td>
+</tr>
+<tr class="odd">
+<td><code>usuarios_internet</code></td>
+<td>Solo los usuarios de internet de cada entidad</td>
+<td>Si tampoco hay dato del género</td>
+</tr>
+</tbody>
+</table>
+<p>Se toma el vector completo de las 32 entidades de un solo nivel, sin mezclar niveles entre entidades, para que los pesos sigan sumando 1. Todo resultado por entidad se puede reportar también solo con pesos del artista.</p></li>
+</ul>
+<p>Ejemplo con un archivo ya descargado (tema “Reguetón — Género musical”, 2021, 32 de 32 entidades con valor): Chiapas vale 100 y Baja California 53. Con el mismo número de usuarios de internet, Chiapas recibiría 1.89 veces el peso de Baja California. Con los usuarios reales, la diferencia se ajusta al tamaño de cada entidad.</p>
+</section>
+<section id="tablas-de-hechos" class="level2">
+<h2 class="anchored" data-anchor-id="tablas-de-hechos">Tablas de hechos</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
 <th>Hecho</th>
-<th>Grano</th>
 <th>Fuentes</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>fact_violencia</code></td>
-<td><strong>Una fila por entidad, por mes, por tipo de violencia y por fuente.</strong></td>
-<td>SESNSP delitos y víctimas (F1), RNPDNO (F13).</td>
+<td><code>fact_consumo_musical</code></td>
+<td>Kworb (F4), Google Trends (F11), ENDUTIH (F16) y CONAPO (F3) para el peso. Kaggle (F5) valida 2017–2021.</td>
 </tr>
 <tr class="even">
-<td><code>fact_consumo_musical</code></td>
-<td><strong>Una fila por contenido musical, por entidad, por mes y por fuente.</strong></td>
-<td>Kaggle <em>Spotify Charts</em> (F5), Kworb (F4), Kaggle Top 73 (F12), Google Trends (F11).</td>
+<td><code>fact_violencia</code></td>
+<td>SESNSP, archivos de delitos y de víctimas (F1); RNPDNO, mujeres desaparecidas (F13).</td>
 </tr>
 </tbody>
 </table>
@@ -347,55 +502,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>fact_violencia</code></td>
-<td><code>conteo</code></td>
-<td>Carpetas de investigación, víctimas o personas desaparecidas en el mes.</td>
-<td>Aditiva</td>
-</tr>
-<tr class="even">
-<td><code>fact_violencia</code></td>
-<td><code>conteo_mujeres</code></td>
-<td>El mismo conteo, solo mujeres; existe donde la fuente distingue el sexo.</td>
-<td>Aditiva</td>
-</tr>
-<tr class="odd">
 <td><code>fact_consumo_musical</code></td>
-<td><code>streams</code></td>
-<td>Reproducciones en el mes.</td>
+<td><code>streams_estimados</code></td>
+<td>Streams nacionales del mes (chart semanal de Kworb repartido por días) por el peso de la entidad. 2015–2025.</td>
 <td>Aditiva</td>
 </tr>
 <tr class="even">
 <td><code>fact_consumo_musical</code></td>
-<td><code>dias_en_chart</code></td>
-<td>Días del mes en que la canción estuvo en el chart.</td>
-<td>Aditiva</td>
-</tr>
-<tr class="odd">
-<td><code>fact_consumo_musical</code></td>
-<td><code>mejor_posicion</code></td>
-<td>Mejor posición alcanzada en el mes.</td>
-<td>No aditiva</td>
-</tr>
-<tr class="even">
-<td><code>fact_consumo_musical</code></td>
-<td><code>popularidad_promedio</code></td>
-<td>Índice de popularidad de Spotify del Top 73.</td>
+<td><code>peso_entidad</code></td>
+<td>Participación estimada de la entidad en el consumo de la canción; suma 1 entre las 32.</td>
 <td>No aditiva</td>
 </tr>
 <tr class="odd">
 <td><code>fact_consumo_musical</code></td>
 <td><code>interes_busqueda</code></td>
-<td>Interés de búsqueda de Google Trends, de 0 a 100.</td>
+<td>Valor de Trends, 0–100, relativo a su descarga.</td>
 <td>No aditiva</td>
 </tr>
 <tr class="even">
 <td><code>fact_consumo_musical</code></td>
-<td><code>interes_ancla</code></td>
-<td>Interés del término de referencia en la misma consulta, para comparar consultas.</td>
+<td><code>semanas_en_chart_nacional</code></td>
+<td>Semanas del chart semanal nacional que terminan en el mes.</td>
+<td>Aditiva en el tiempo y entre canciones; <strong>no entre entidades</strong></td>
+</tr>
+<tr class="odd">
+<td><code>fact_consumo_musical</code></td>
+<td><code>mejor_posicion_nacional</code></td>
+<td>Mejor posición semanal nacional entre esas semanas.</td>
 <td>No aditiva</td>
+</tr>
+<tr class="even">
+<td><code>fact_violencia</code></td>
+<td><code>carpetas</code></td>
+<td>Carpetas de investigación del archivo de delitos.</td>
+<td>Aditiva</td>
+</tr>
+<tr class="odd">
+<td><code>fact_violencia</code></td>
+<td><code>victimas_mujeres</code></td>
+<td>Víctimas mujeres del archivo de víctimas del SESNSP, o mujeres desaparecidas del RNPDNO; vacía donde la fuente no lo reporta.</td>
+<td>Aditiva</td>
+</tr>
+<tr class="even">
+<td><code>fact_violencia</code></td>
+<td><code>victimas_mujeres_menores</code></td>
+<td>La parte de <code>victimas_mujeres</code> menor de 18 años (rango de edad del SESNSP, edad del RNPDNO).</td>
+<td>Aditiva</td>
+</tr>
+<tr class="odd">
+<td><code>fact_violencia</code></td>
+<td><code>victimas_hombres</code></td>
+<td>Víctimas hombres del archivo de víctimas del SESNSP, para comparar con las mujeres.</td>
+<td>Aditiva</td>
 </tr>
 </tbody>
 </table>
+<p>Las dos medidas con terminación <code>_nacional</code> son datos del chart nacional que se repiten igual en las 32 filas de entidad de cada canción y mes. No se reparten porque no son cantidades de consumo. Las vistas del DataMart las toman una sola vez por canción y mes, nunca las suman entre entidades.</p>
+<p>Además, cada hecho guarda la columna <code>fuente</code> con el código del catálogo (F1, F13, F4), y el consumo guarda <code>origen_peso</code>. Son atributos degenerados: dan la trazabilidad a la fuente que pide el criterio de éxito de E0 sin crear una dimensión que no responde ninguna pregunta.</p>
+<p><strong>De semanas a meses.</strong> Cada semana del chart de Kworb termina en jueves y cubre de viernes a jueves. Sus streams se reparten entre los meses según cuántos de sus 7 días caen en cada uno; por ejemplo, una semana del 27 de febrero al 5 de marzo aporta 2/7 a febrero y 5/7 a marzo. El supuesto es que el consumo es parejo dentro de la semana.</p>
 </section>
 </section>
 <section id="dimensiones" class="level2">
@@ -419,37 +583,142 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td><code>dim_fecha</code></td>
-<td><code>fecha_key</code>, año-mes-01</td>
-<td>fecha, año, semestre, trimestre, mes, nombre del mes</td>
+<td><code>fecha_key</code>, AAAAMM01</td>
+<td>fecha, año, semestre, trimestre, mes, nombre del mes, índice del mes</td>
 <td><strong>Tipo 0:</strong> es un calendario generado que no cambia.</td>
 </tr>
 <tr class="even">
 <td><code>dim_entidad</code></td>
-<td><code>entidad_key</code>, una por entidad y año</td>
-<td>clave INEGI, nombre, región, código ISO, geometría; población de mujeres, internet, pobreza, impunidad, prevalencias de la ENDIREH, feminicidios en prensa</td>
-<td><strong>Tipo 2:</strong> el contexto de cada entidad cambia cada año; una versión por año conserva el valor vigente en el momento de cada hecho.</td>
+<td><code>entidad_key</code></td>
+<td>clave INEGI, nombre, nombre en Google Trends, código ISO, región del Banco de México, geometría de Natural Earth</td>
+<td><strong>Tipo 0:</strong> las 32 entidades no cambian en la ventana.</td>
 </tr>
 <tr class="odd">
-<td><code>dim_contenido_musical</code></td>
-<td><code>contenido_key</code>, una por contenido y versión del modelo</td>
-<td>tipo de contenido, ID de Spotify, título, artistas, género, país del artista, término de búsqueda, si tiene letra, etiqueta de MiSonGyny, si es misógina, categoría y probabilidad del clasificador, versión del modelo</td>
-<td><strong>Tipo 2:</strong> la clasificación cambia cuando se reentrena el clasificador; guardar cada versión permite medir precisión y recall por periodo, como pide el criterio técnico de E0.</td>
+<td><code>dim_cancion</code></td>
+<td><code>cancion_key</code></td>
+<td>ID de Spotify, clave normalizada, título, artistas, tema de Trends, país del artista, género, macrogénero, etiquetas crudas de MusicBrainz o Last.fm, si tiene letra, etiqueta de MiSonGyny, si es misógina, categoría, probabilidad, origen de la etiqueta (MiSonGyny o clasificador) y versión del clasificador</td>
+<td><strong>Tipo 1:</strong> al reentrenar el clasificador se reclasifica toda la historia y se sobrescribe. Las métricas de cada versión (precisión y recall por periodo) se guardan en la evaluación del modelo, no en el almacén.</td>
 </tr>
 <tr class="even">
 <td><code>dim_tipo_violencia</code></td>
 <td><code>tipo_violencia_key</code>; -1 = no aplica</td>
-<td>tipo según la LGAMVLV, origen de la clasificación, categoría original, bien jurídico, tipo, subtipo y modalidad de delito</td>
-<td><strong>Tipo 1:</strong> el mapeo hacia la LGAMVLV se corrige sobrescribiendo; no interesa conservar mapeos anteriores.</td>
+<td>tipo según la LGAMVLV, ámbito, origen, categoría de la fuente, bien jurídico, tipo, subtipo y modalidad del delito, si lo mide el SESNSP, si es control</td>
+<td><strong>Tipo 1:</strong> el mapeo a la LGAMVLV es una regla del equipo y se corrige sobrescribiendo.</td>
 </tr>
 <tr class="odd">
-<td><code>dim_fuente</code></td>
-<td><code>fuente_key</code></td>
-<td>código del catálogo, dataset, institución, tipo, granularidad original, nivel geográfico, fecha de corte</td>
-<td><strong>Tipo 1:</strong> describe el origen de cada fila; si cambia el corte se actualiza.</td>
+<td><code>dim_contexto_entidad</code></td>
+<td><code>contexto_key</code>, una por entidad y año</td>
+<td>población total, de mujeres (total y de 15 años y más) y de hombres, usuarios de internet, viviendas con internet, pobreza, impunidad, prevalencias de la ENDIREH; fila nacional (<code>cve_ent = 0</code>) solo para las prevalencias nacionales</td>
+<td><strong>Tipo 1:</strong> CONAPO y las encuestas revisan sus cifras y se sobrescriben.</td>
 </tr>
 </tbody>
 </table>
-<p><code>dim_contenido_musical</code> reúne en una sola dimensión desnormalizada a la canción, su artista y los términos de búsqueda de Google Trends, para mantener el esquema en estrella y dentro de cinco dimensiones. <code>dim_tipo_violencia</code> es la dimensión conformada que permite comparar los tipos de violencia de la música con los de las estadísticas oficiales.</p>
+<section id="mapeo-inicial-a-la-lgamvlv" class="level3">
+<h3 class="anchored" data-anchor-id="mapeo-inicial-a-la-lgamvlv">Mapeo inicial a la LGAMVLV</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Origen</th>
+<th>Categoría de la fuente</th>
+<th><code>tipo_lgamvlv</code></th>
+<th>Ámbito</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SESNSP</td>
+<td>Feminicidio</td>
+<td>feminicida</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>SESNSP</td>
+<td>Violación simple y equiparada, abuso sexual, acoso y hostigamiento sexual, incesto, otros contra la libertad y la seguridad sexual</td>
+<td>sexual</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>SESNSP</td>
+<td>Lesiones dolosas (con víctimas mujeres en el archivo de víctimas)</td>
+<td>física</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>SESNSP</td>
+<td>Violencia familiar</td>
+<td>sin distinguir</td>
+<td>familiar</td>
+</tr>
+<tr class="odd">
+<td>SESNSP</td>
+<td>Violencia de género en todas sus modalidades distinta a la violencia familiar</td>
+<td>sin distinguir</td>
+<td>otro</td>
+</tr>
+<tr class="even">
+<td>SESNSP</td>
+<td>Homicidio doloso (total)</td>
+<td>control</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>RNPDNO</td>
+<td>Mujer sin localizar</td>
+<td>desaparición (no es un tipo de la LGAMVLV; entra en P2, no en P4)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>RNPDNO</td>
+<td>Mujer localizada con vida</td>
+<td>desaparición</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>RNPDNO</td>
+<td>Mujer localizada sin vida</td>
+<td>desaparición</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Clasificador</td>
+<td>Sexualización</td>
+<td>sexual</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Clasificador</td>
+<td>Violencia</td>
+<td>física</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Clasificador</td>
+<td>Odio</td>
+<td>psicológica</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Sin fuente</td>
+<td>—</td>
+<td>económica o patrimonial, mediática</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>El mapeo de las categorías del clasificador se apoya en las definiciones del artículo 6 de la LGAMVLV <a href="../../entregas/E1_arquitectura_dw/referencias.html">[1]</a>:</p>
+<ul>
+<li><strong>Sexualización → sexual.</strong> La fracción V define la violencia sexual como cualquier acto que degrada o daña el cuerpo o la sexualidad de la víctima; cosificar a una mujer en la letra entra ahí.</li>
+<li><strong>Violencia → física.</strong> La fracción II se refiere al daño o la agresión contra el cuerpo. Es aproximado, porque algunas letras de esta categoría describen violencia sexual.</li>
+<li><strong>Odio → psicológica.</strong> La fracción I incluye insultos, humillaciones y devaluación, que es lo que hace el discurso de odio en una letra.</li>
+</ul>
+<p>Las fracciones III (patrimonial) y IV (económica) se reúnen en un solo tipo porque ninguna fuente las separa. Es el mapeo del equipo y se ajusta si el clasificador entrenado lo requiere.</p>
+</section>
 </section>
 <section id="diagrama" class="level2">
 <h2 class="anchored" data-anchor-id="diagrama">Diagrama</h2>
@@ -460,112 +729,121 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div>
 <pre class="mermaid mermaid-js">%%{init: {'theme': 'neutral'}}%%
 erDiagram
+    DIM_FECHA ||--o{ FACT_CONSUMO_MUSICAL : fecha_key
+    DIM_ENTIDAD ||--o{ FACT_CONSUMO_MUSICAL : entidad_key
+    DIM_CANCION ||--o{ FACT_CONSUMO_MUSICAL : cancion_key
+    DIM_TIPO_VIOLENCIA ||--o{ FACT_CONSUMO_MUSICAL : tipo_violencia_key
+    DIM_CONTEXTO_ENTIDAD ||--o{ FACT_CONSUMO_MUSICAL : contexto_key
     DIM_FECHA ||--o{ FACT_VIOLENCIA : fecha_key
     DIM_ENTIDAD ||--o{ FACT_VIOLENCIA : entidad_key
     DIM_TIPO_VIOLENCIA ||--o{ FACT_VIOLENCIA : tipo_violencia_key
-    DIM_FUENTE ||--o{ FACT_VIOLENCIA : fuente_key
-    DIM_FECHA ||--o{ FACT_CONSUMO_MUSICAL : fecha_key
-    DIM_ENTIDAD ||--o{ FACT_CONSUMO_MUSICAL : entidad_key
-    DIM_CONTENIDO_MUSICAL ||--o{ FACT_CONSUMO_MUSICAL : contenido_key
-    DIM_TIPO_VIOLENCIA ||--o{ FACT_CONSUMO_MUSICAL : tipo_violencia_key
-    DIM_FUENTE ||--o{ FACT_CONSUMO_MUSICAL : fuente_key
+    DIM_CONTEXTO_ENTIDAD ||--o{ FACT_VIOLENCIA : contexto_key
 
-    FACT_VIOLENCIA {
-        INT64 fecha_key FK
-        INT64 entidad_key FK
-        INT64 tipo_violencia_key FK
-        INT64 fuente_key FK
-        INT64 conteo "aditiva"
-        INT64 conteo_mujeres "aditiva"
-    }
     FACT_CONSUMO_MUSICAL {
-        INT64 fecha_key FK
-        INT64 entidad_key FK
-        INT64 contenido_key FK
+        INT64 fecha_key PK,FK
+        INT64 entidad_key PK,FK
+        INT64 cancion_key PK,FK
         INT64 tipo_violencia_key FK
-        INT64 fuente_key FK
-        INT64 streams "aditiva"
-        INT64 dias_en_chart "aditiva"
-        INT64 mejor_posicion "no aditiva"
-        FLOAT64 popularidad_promedio "no aditiva"
-        FLOAT64 interes_busqueda "no aditiva"
-        FLOAT64 interes_ancla "no aditiva"
+        INT64 contexto_key FK
+        FLOAT64 streams_estimados "aditiva"
+        FLOAT64 peso_entidad "no aditiva"
+        INT64 interes_busqueda "no aditiva"
+        INT64 semanas_en_chart_nacional "no entre entidades"
+        INT64 mejor_posicion_nacional "no aditiva"
+        STRING origen_peso "degenerada"
+        STRING fuente "degenerada"
+    }
+    FACT_VIOLENCIA {
+        INT64 fecha_key PK,FK
+        INT64 entidad_key PK,FK
+        INT64 tipo_violencia_key PK,FK
+        INT64 contexto_key FK
+        INT64 carpetas "aditiva"
+        INT64 victimas_mujeres "aditiva"
+        INT64 victimas_mujeres_menores "aditiva"
+        INT64 victimas_hombres "aditiva"
+        STRING fuente "degenerada"
     }
     DIM_FECHA {
-        INT64 fecha_key PK
+        INT64 fecha_key PK "SCD 0"
         DATE fecha
         INT64 anio
         INT64 semestre
         INT64 trimestre
         INT64 mes
         STRING nombre_mes
+        INT64 indice_mes
     }
     DIM_ENTIDAD {
-        INT64 entidad_key PK "SCD 2"
+        INT64 entidad_key PK "SCD 0"
         INT64 cve_ent
         STRING entidad
-        STRING region
+        STRING nombre_trends
         STRING iso_3166_2
+        STRING region
         STRING geometry_wkt
-        INT64 anio
-        DATE valido_desde
-        DATE valido_hasta
-        BOOL es_actual
-        INT64 poblacion_mujeres
-        INT64 poblacion_mujeres_15_mas
-        FLOAT64 pct_viviendas_internet
-        FLOAT64 pct_usuarios_internet
-        FLOAT64 pct_pobreza
-        FLOAT64 indice_impunidad
-        FLOAT64 prevalencia_violencia_total
-        FLOAT64 prevalencia_psicologica
-        FLOAT64 prevalencia_fisica
-        FLOAT64 prevalencia_sexual
-        FLOAT64 prevalencia_economica_patrimonial
-        INT64 feminicidios_prensa
     }
-    DIM_CONTENIDO_MUSICAL {
-        INT64 contenido_key PK "SCD 2"
-        STRING tipo_contenido
+    DIM_CANCION {
+        INT64 cancion_key PK "SCD 1"
         STRING spotify_id
+        STRING clave_cancion
         STRING titulo
         STRING artista_principal
         STRING artistas
-        STRING genero
+        STRING termino_trends
         STRING pais_artista
-        STRING termino_busqueda
+        STRING genero
+        STRING macrogenero
+        STRING etiquetas_fuente
         BOOL tiene_letra
         BOOL en_corpus_misongyny
         STRING etiqueta_misongyny
         BOOL es_misogina
         STRING categoria_misoginia
         FLOAT64 score_misoginia
+        STRING origen_etiqueta
         STRING version_modelo
-        DATE valido_desde
-        DATE valido_hasta
-        BOOL es_actual
     }
     DIM_TIPO_VIOLENCIA {
         INT64 tipo_violencia_key PK "SCD 1"
         STRING tipo_lgamvlv
-        STRING origen_clasificacion
+        STRING ambito_lgamvlv
+        STRING origen
         STRING categoria_origen
         STRING bien_juridico
         STRING tipo_delito
         STRING subtipo_delito
         STRING modalidad
+        BOOL medido_en_sesnsp
+        BOOL es_control
     }
-    DIM_FUENTE {
-        INT64 fuente_key PK "SCD 1"
-        STRING codigo_catalogo
-        STRING dataset
-        STRING institucion
-        STRING tipo_fuente
-        STRING granularidad_original
-        STRING nivel_geografico
-        DATE fecha_corte
-        STRING url
+    DIM_CONTEXTO_ENTIDAD {
+        INT64 contexto_key PK "SCD 1"
+        INT64 cve_ent
+        INT64 anio
+        BOOL es_nacional
+        INT64 poblacion_total
+        INT64 poblacion_mujeres
+        INT64 poblacion_mujeres_15_mas
+        INT64 poblacion_hombres
+        FLOAT64 pct_usuarios_internet
+        INT64 usuarios_internet_estimados
+        FLOAT64 pct_viviendas_internet
+        FLOAT64 pct_pobreza
+        FLOAT64 indice_impunidad
+        FLOAT64 prevalencia_total
+        FLOAT64 prevalencia_psicologica
+        FLOAT64 prevalencia_fisica
+        FLOAT64 prevalencia_sexual
+        FLOAT64 prevalencia_economica_patrimonial
     }
+    classDef hecho fill:#fde2c8,stroke:#c0662b,color:#1b1f24
+    class FACT_CONSUMO_MUSICAL,FACT_VIOLENCIA hecho
+    style DIM_FECHA fill:#dbeafe,stroke:#3b6fb6,color:#1b1f24
+    style DIM_ENTIDAD fill:#dcf3e3,stroke:#3a8a55,color:#1b1f24
+    style DIM_CANCION fill:#ede0f7,stroke:#7b4fa8,color:#1b1f24
+    style DIM_TIPO_VIOLENCIA fill:#fbdada,stroke:#b54545,color:#1b1f24
+    style DIM_CONTEXTO_ENTIDAD fill:#fff3c4,stroke:#a8861b,color:#1b1f24
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -573,162 +851,165 @@ erDiagram
 </div>
 </div>
 </section>
-<section id="ddl-ejecutado-en-bigquery" class="level2">
-<h2 class="anchored" data-anchor-id="ddl-ejecutado-en-bigquery">DDL ejecutado en BigQuery</h2>
-<p>El código también está en <a href="sql/ddl_dw.sql"><code>sql/ddl_dw.sql</code></a>. Las llaves primarias y foráneas se declaran como <code>NOT ENFORCED</code>, porque BigQuery no las impone, y cada tabla indica en su descripción qué preguntas responde.</p>
+<section id="ddl" class="level2">
+<h2 class="anchored" data-anchor-id="ddl">DDL</h2>
+<p>El código también está en <a href="sql/ddl_dw.sql"><code>sql/ddl_dw.sql</code></a>. Las llaves primarias y foráneas se declaran como <code>NOT ENFORCED</code>, porque BigQuery no las impone, y cada tabla indica en su descripción qué preguntas responde. La captura del esquema de cada tabla está en <a href="../../entregas/E1_arquitectura_dw/arquitectura.html#evidencia">Arquitectura · Evidencia en BigQuery</a>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- =====================================================================</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- E1 · Arquitectura del DW — DDL</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- Misoginia en la música consumida en México y violencia de género</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- Ejecutar en BigQuery con el proyecto del equipo seleccionado.</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- Los tres datasets deben quedar en la misma ubicación (US).</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- =====================================================================</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Datasets (capas)</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">SCHEMA</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> misoginia_staging</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  OPTIONS (location <span class="op">=</span> <span class="st">'US'</span>,</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>           description <span class="op">=</span> <span class="st">'Bronze: datos crudos, tal como vienen de cada fuente del catálogo'</span>);</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">SCHEMA</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> misoginia_dw</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  OPTIONS (location <span class="op">=</span> <span class="st">'US'</span>,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>           description <span class="op">=</span> <span class="st">'Gold: esquema estrella (hechos y dimensiones)'</span>);</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">SCHEMA</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> misoginia_mart</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  OPTIONS (location <span class="op">=</span> <span class="st">'US'</span>,</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>           description <span class="op">=</span> <span class="st">'Gold: vistas del DataMart, una por pregunta de E0'</span>);</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Dimensiones</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.dim_fecha (</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  fecha_key   INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Llave sustituta AAAAMM01, primer día del mes'</span>),</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  fecha       <span class="dt">DATE</span>   <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Primer día del mes'</span>),</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  anio        INT64  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  semestre    INT64,</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  trimestre   INT64,</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  mes         INT64  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  nombre_mes  STRING,</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (fecha_key) <span class="kw">NOT</span> ENFORCED</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Tiempo a nivel mes, calendario generado. SCD tipo 0. Responde: P1, P2, P3'</span>);</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.dim_entidad (</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  entidad_key                  INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Llave sustituta: una por entidad y año'</span>),</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  cve_ent                      INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Clave INEGI 1-32; 0 = Nacional'</span>),</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  entidad                      STRING <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  region                       STRING OPTIONS (description <span class="op">=</span> <span class="st">'Jerarquía entidad -&gt; región'</span>),</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  iso_3166_2                   STRING OPTIONS (description <span class="op">=</span> <span class="st">'Código ISO del estado, liga con Google Trends y Natural Earth'</span>),</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  geometry_wkt                 STRING OPTIONS (description <span class="op">=</span> <span class="st">'Natural Earth (F18)'</span>),</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  anio                         INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Año de vigencia de la versión'</span>),</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  valido_desde                 <span class="dt">DATE</span>,</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  valido_hasta                 <span class="dt">DATE</span>,</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  es_actual                    BOOL,</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  poblacion_mujeres            INT64  OPTIONS (description <span class="op">=</span> <span class="st">'CONAPO (F3), mitad de año'</span>),</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>  poblacion_mujeres_15_mas     INT64  OPTIONS (description <span class="op">=</span> <span class="st">'CONAPO (F3), mitad de año'</span>),</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>  pct_viviendas_internet       FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'Censo 2020 ITER (F14)'</span>),</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>  pct_usuarios_internet        FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDUTIH (F16)'</span>),</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  pct_pobreza                  FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'CONEVAL (F15)'</span>),</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  indice_impunidad             FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'México Evalúa (F17)'</span>),</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  prevalencia_violencia_total  FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDIREH (F2), % de mujeres de 15 años y más'</span>),</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>  prevalencia_psicologica      FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDIREH (F2)'</span>),</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  prevalencia_fisica           FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDIREH (F2)'</span>),</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  prevalencia_sexual           FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDIREH (F2)'</span>),</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  prevalencia_economica_patrimonial FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDIREH (F2)'</span>),</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  feminicidios_prensa          INT64  OPTIONS (description <span class="op">=</span> <span class="st">'Mapa de Salguero (F10)'</span>),</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (entidad_key) <span class="kw">NOT</span> ENFORCED</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Entidad federativa con contexto anual. SCD tipo 2: una versión por entidad y año. Responde: P1, P2, P4'</span>);</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.dim_contenido_musical (</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>  contenido_key        INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Llave sustituta: una por contenido y versión del modelo'</span>),</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>  tipo_contenido       STRING <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'cancion, termino_genero o termino_artista'</span>),</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>  spotify_id           STRING OPTIONS (description <span class="op">=</span> <span class="st">'ID de canción de Spotify (Kworb, Kaggle)'</span>),</span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>  titulo               STRING,</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>  artista_principal    STRING,</span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>  artistas             STRING,</span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>  genero               STRING OPTIONS (description <span class="op">=</span> <span class="st">'MusicBrainz (F8) o Last.fm (F19)'</span>),</span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>  pais_artista         STRING OPTIONS (description <span class="op">=</span> <span class="st">'MusicBrainz (F8)'</span>),</span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>  termino_busqueda     STRING OPTIONS (description <span class="op">=</span> <span class="st">'Término consultado en Google Trends (F11)'</span>),</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>  tiene_letra          BOOL   OPTIONS (description <span class="op">=</span> <span class="st">'Letra encontrada en LRCLIB (F7)'</span>),</span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>  en_corpus_misongyny  BOOL   OPTIONS (description <span class="op">=</span> <span class="st">'La canción está etiquetada en MiSonGyny (F6)'</span>),</span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>  etiqueta_misongyny   STRING OPTIONS (description <span class="op">=</span> <span class="st">'Etiqueta de referencia de MiSonGyny'</span>),</span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>  es_misogina          BOOL   OPTIONS (description <span class="op">=</span> <span class="st">'Salida del clasificador'</span>),</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>  categoria_misoginia  STRING OPTIONS (description <span class="op">=</span> <span class="st">'Sexualización, violencia, odio o no relacionada'</span>),</span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>  score_misoginia      FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'Probabilidad del clasificador'</span>),</span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>  version_modelo       STRING,</span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>  valido_desde         <span class="dt">DATE</span>,</span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>  valido_hasta         <span class="dt">DATE</span>,</span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>  es_actual            BOOL,</span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (contenido_key) <span class="kw">NOT</span> ENFORCED</span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Canción o término de búsqueda. SCD tipo 2 por versión del clasificador. Responde: P1, P3, P4'</span>);</span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.dim_tipo_violencia (</span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>  tipo_violencia_key    INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Llave sustituta; -1 = no aplica'</span>),</span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  tipo_lgamvlv          STRING <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'psicológica, física, patrimonial, económica, sexual, interpósita persona, feminicida, mediática, otra, no aplica'</span>),</span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>  origen_clasificacion  STRING OPTIONS (description <span class="op">=</span> <span class="st">'SESNSP, RNPDNO o clasificador de música'</span>),</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>  categoria_origen      STRING OPTIONS (description <span class="op">=</span> <span class="st">'Categoría tal como la nombra la fuente'</span>),</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>  bien_juridico         STRING,</span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  tipo_delito           STRING,</span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>  subtipo_delito        STRING,</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  modalidad             STRING,</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (tipo_violencia_key) <span class="kw">NOT</span> ENFORCED</span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Tipos de violencia mapeados a la LGAMVLV; conformada entre ambos hechos. SCD tipo 1. Responde: P2, P3, P4'</span>);</span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.dim_fuente (</span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>  fuente_key             INT64  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>  codigo_catalogo        STRING <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'F1 a F19'</span>),</span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>  dataset                STRING <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>  institucion            STRING,</span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>  tipo_fuente            STRING,</span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>  granularidad_original  STRING OPTIONS (description <span class="op">=</span> <span class="st">'dia, semana, mes, anio'</span>),</span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>  nivel_geografico       STRING OPTIONS (description <span class="op">=</span> <span class="st">'nacional, estado'</span>),</span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>  fecha_corte            <span class="dt">DATE</span>,</span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>  url                    STRING,</span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (fuente_key) <span class="kw">NOT</span> ENFORCED</span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Origen de cada fila de hechos. SCD tipo 1. Responde: P1, P2, P3, P4'</span>);</span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a><span class="co">-- 3. Hechos</span></span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.fact_violencia (</span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>  fecha_key           INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>  entidad_key         INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>  tipo_violencia_key  INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>  fuente_key          INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>  conteo              INT64 OPTIONS (description <span class="op">=</span> <span class="st">'Carpetas, víctimas o personas desaparecidas. Aditiva'</span>),</span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>  conteo_mujeres      INT64 OPTIONS (description <span class="op">=</span> <span class="st">'Solo donde la fuente distingue sexo. Aditiva'</span>),</span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (fecha_key, entidad_key, tipo_violencia_key, fuente_key) <span class="kw">NOT</span> ENFORCED,</span>
-<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (fecha_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_fecha (fecha_key) <span class="kw">NOT</span> ENFORCED,</span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (entidad_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_entidad (entidad_key) <span class="kw">NOT</span> ENFORCED,</span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (tipo_violencia_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_tipo_violencia (tipo_violencia_key) <span class="kw">NOT</span> ENFORCED,</span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (fuente_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_fuente (fuente_key) <span class="kw">NOT</span> ENFORCED</span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Grano: una fila por entidad, mes, tipo de violencia y fuente. Fuentes: SESNSP (F1), RNPDNO (F13). Responde: P2, P4'</span>);</span>
-<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.fact_consumo_musical (</span>
-<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>  fecha_key             INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>  entidad_key           INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>  contenido_key         INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>  tipo_violencia_key    INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>  fuente_key            INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>  streams               INT64   OPTIONS (description <span class="op">=</span> <span class="st">'Reproducciones en el mes. Aditiva'</span>),</span>
-<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>  dias_en_chart         INT64   OPTIONS (description <span class="op">=</span> <span class="st">'Días del mes en el chart. Aditiva'</span>),</span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>  mejor_posicion        INT64   OPTIONS (description <span class="op">=</span> <span class="st">'Mejor posición del mes. No aditiva'</span>),</span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>  popularidad_promedio  FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'Índice de popularidad de Spotify, Top 73 (F12). No aditiva'</span>),</span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>  interes_busqueda      FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'Google Trends (F11), 0-100. No aditiva'</span>),</span>
-<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>  interes_ancla         FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'Interés del término ancla en la misma consulta. No aditiva'</span>),</span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (fecha_key, entidad_key, contenido_key, fuente_key) <span class="kw">NOT</span> ENFORCED,</span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (fecha_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_fecha (fecha_key) <span class="kw">NOT</span> ENFORCED,</span>
-<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (entidad_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_entidad (entidad_key) <span class="kw">NOT</span> ENFORCED,</span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (contenido_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_contenido_musical (contenido_key) <span class="kw">NOT</span> ENFORCED,</span>
-<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (tipo_violencia_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_tipo_violencia (tipo_violencia_key) <span class="kw">NOT</span> ENFORCED,</span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (fuente_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_fuente (fuente_key) <span class="kw">NOT</span> ENFORCED</span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Grano: una fila por contenido musical, entidad, mes y fuente. Fuentes: Kaggle (F5), Kworb (F4), Top 73 (F12), Google Trends (F11). Responde: P1, P2, P3, P4'</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- Orden: datasets, dimensiones y al final hechos (las FK citan PK ya creadas).</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- =====================================================================</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Datasets (capas)</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">SCHEMA</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> misoginia_staging</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  OPTIONS (location <span class="op">=</span> <span class="st">'US'</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>           description <span class="op">=</span> <span class="st">'Staging (bronze): datos crudos, tal como vienen de cada fuente del catálogo'</span>);</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">SCHEMA</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> misoginia_dw</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  OPTIONS (location <span class="op">=</span> <span class="st">'US'</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>           description <span class="op">=</span> <span class="st">'DW (gold): esquema estrella con dos hechos y cinco dimensiones'</span>);</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">SCHEMA</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> misoginia_mart</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  OPTIONS (location <span class="op">=</span> <span class="st">'US'</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>           description <span class="op">=</span> <span class="st">'DataMart (gold): vistas que responden P1 a P4'</span>);</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Dimensiones</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.dim_fecha (</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  fecha_key            INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Llave sustituta AAAAMM01: primer día del mes'</span>),</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  fecha                <span class="dt">DATE</span>   <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Primer día del mes'</span>),</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  anio                 INT64  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  semestre             INT64,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  trimestre            INT64,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  mes                  INT64  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  nombre_mes           STRING,</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  indice_mes           INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'anio * 12 + mes; ordena los meses aunque falten algunos'</span>),</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (fecha_key) <span class="kw">NOT</span> ENFORCED</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Tiempo a nivel mes, calendario generado. SCD tipo 0. Responde: P1, P2, P3'</span>);</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.dim_entidad (</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  entidad_key    INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Llave sustituta'</span>),</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  cve_ent        INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Clave INEGI de la entidad, 1 a 32'</span>),</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  entidad        STRING <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Nombre del catálogo INEGI'</span>),</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  nombre_trends  STRING OPTIONS (description <span class="op">=</span> <span class="st">'Nombre tal como lo escribe Google Trends en español (Estado de México, Coahuila de Zaragoza...); el catálogo de silver guarda también la versión en inglés'</span>),</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  iso_3166_2     STRING OPTIONS (description <span class="op">=</span> <span class="st">'Código ISO de la subregión (MX-CMX, MX-YUC...)'</span>),</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  region         STRING OPTIONS (description <span class="op">=</span> <span class="st">'Región del Banco de México: norte, centro norte, centro o sur. Jerarquía entidad -&gt; región'</span>),</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  geometry_wkt   STRING OPTIONS (description <span class="op">=</span> <span class="st">'Natural Earth (F18), para mapas'</span>),</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (entidad_key) <span class="kw">NOT</span> ENFORCED</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Entidad federativa. SCD tipo 0: las 32 entidades no cambian en la ventana. Conformada entre ambos hechos. Responde: P1, P2'</span>);</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.dim_cancion (</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  cancion_key          INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Llave sustituta'</span>),</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  spotify_id           STRING OPTIONS (description <span class="op">=</span> <span class="st">'Llave natural: ID de Spotify que usa Kworb (F4); Kaggle (F5) puede tener otro ID para la misma canción'</span>),</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  clave_cancion        STRING OPTIONS (description <span class="op">=</span> <span class="st">'Artista y título normalizados; une con LRCLIB (F7) y MiSonGyny (F6)'</span>),</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>  titulo               STRING,</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  artista_principal    STRING,</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  artistas             STRING OPTIONS (description <span class="op">=</span> <span class="st">'Todos los artistas acreditados'</span>),</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  termino_trends       STRING OPTIONS (description <span class="op">=</span> <span class="st">'Tema de Google Trends (F11) del artista, o su término más común si no tiene tema'</span>),</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  pais_artista         STRING OPTIONS (description <span class="op">=</span> <span class="st">'País del artista, MusicBrainz (F8)'</span>),</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  genero               STRING OPTIONS (description <span class="op">=</span> <span class="st">'Género principal del artista: MusicBrainz (F8) o Last.fm (F19), revisado a mano'</span>),</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>  macrogenero          STRING OPTIONS (description <span class="op">=</span> <span class="st">'Agrupación de las etiquetas más frecuentes de los artistas principales (urbano, regional mexicano, pop...). Jerarquía genero -&gt; macrogenero'</span>),</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>  etiquetas_fuente     STRING OPTIONS (description <span class="op">=</span> <span class="st">'Etiquetas crudas de MusicBrainz (F8) o Last.fm (F19), separadas por coma'</span>),</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  tiene_letra          BOOL   OPTIONS (description <span class="op">=</span> <span class="st">'Letra encontrada en LRCLIB (F7); la letra no se guarda'</span>),</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  en_corpus_misongyny  BOOL   OPTIONS (description <span class="op">=</span> <span class="st">'La canción está etiquetada en MiSonGyny (F6)'</span>),</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>  etiqueta_misongyny   STRING OPTIONS (description <span class="op">=</span> <span class="st">'Etiqueta de referencia de MiSonGyny, para validar'</span>),</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>  es_misogina          BOOL   OPTIONS (description <span class="op">=</span> <span class="st">'Salida del clasificador; NULL si no hay letra'</span>),</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>  categoria_misoginia  STRING OPTIONS (description <span class="op">=</span> <span class="st">'sexualización, violencia, odio o no relacionada (categorías de MiSonGyny)'</span>),</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>  score_misoginia      FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'Probabilidad del clasificador'</span>),</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>  origen_etiqueta      STRING OPTIONS (description <span class="op">=</span> <span class="st">'misongyny (etiqueta humana del corpus F6) o clasificador; NULL si no hay letra'</span>),</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>  version_modelo       STRING OPTIONS (description <span class="op">=</span> <span class="st">'Versión del clasificador que asignó la etiqueta'</span>),</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (cancion_key) <span class="kw">NOT</span> ENFORCED</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Canción consumida, con su artista, género y clasificación. SCD tipo 1: al reentrenar el clasificador se reclasifica toda la historia. Responde: P1, P2, P3, P4'</span>);</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.dim_tipo_violencia (</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>  tipo_violencia_key  INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Llave sustituta; -1 = no aplica (canción no misógina o sin letra)'</span>),</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>  tipo_lgamvlv        STRING <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'psicológica, física, sexual, económica o patrimonial, feminicida, mediática, sin distinguir, desaparición, control, no aplica'</span>),</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>  ambito_lgamvlv      STRING OPTIONS (description <span class="op">=</span> <span class="st">'familiar, comunitario u otro, cuando el delito lo define'</span>),</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>  origen              STRING <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'SESNSP, RNPDNO o clasificador'</span>),</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>  categoria_origen    STRING OPTIONS (description <span class="op">=</span> <span class="st">'Categoría tal como la nombra la fuente: delito del SESNSP, estatus del RNPDNO (sin localizar, localizada con vida, localizada sin vida) o categoría de MiSonGyny'</span>),</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>  bien_juridico       STRING OPTIONS (description <span class="op">=</span> <span class="st">'SESNSP: bien jurídico afectado'</span>),</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>  tipo_delito         STRING OPTIONS (description <span class="op">=</span> <span class="st">'SESNSP'</span>),</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>  subtipo_delito      STRING OPTIONS (description <span class="op">=</span> <span class="st">'SESNSP'</span>),</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>  modalidad           STRING OPTIONS (description <span class="op">=</span> <span class="st">'SESNSP'</span>),</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>  medido_en_sesnsp    BOOL   OPTIONS (description <span class="op">=</span> <span class="st">'FALSE para tipos sin delito equivalente (económica o patrimonial, mediática) y para el RNPDNO'</span>),</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>  es_control          BOOL   OPTIONS (description <span class="op">=</span> <span class="st">'TRUE para homicidio doloso total, control de violencia general'</span>),</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (tipo_violencia_key) <span class="kw">NOT</span> ENFORCED</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Tipos de violencia mapeados a la LGAMVLV. Conformada entre ambos hechos por tipo_lgamvlv. SCD tipo 1: el mapeo se corrige sobrescribiendo. Responde: P2, P3, P4'</span>);</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.dim_contexto_entidad (</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>  contexto_key                 INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Llave sustituta: una por entidad y año'</span>),</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>  cve_ent                      INT64  <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Clave INEGI 1-32; 0 = fila nacional de referencia, sin hechos'</span>),</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  anio                         INT64  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>  es_nacional                  BOOL   <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  poblacion_total              INT64  OPTIONS (description <span class="op">=</span> <span class="st">'CONAPO (F3), mitad de año'</span>),</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  poblacion_mujeres            INT64  OPTIONS (description <span class="op">=</span> <span class="st">'CONAPO (F3), mitad de año; denominador de tasas'</span>),</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>  poblacion_mujeres_15_mas     INT64  OPTIONS (description <span class="op">=</span> <span class="st">'CONAPO (F3); denominador de la ENDIREH'</span>),</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>  poblacion_hombres            INT64  OPTIONS (description <span class="op">=</span> <span class="st">'CONAPO (F3), mitad de año; denominador de la tasa de víctimas hombres'</span>),</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>  pct_usuarios_internet        FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDUTIH (F16)'</span>),</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>  usuarios_internet_estimados  INT64  OPTIONS (description <span class="op">=</span> <span class="st">'poblacion_total * pct_usuarios_internet; escala el interés de búsqueda'</span>),</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>  pct_viviendas_internet       FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'Censo 2020 ITER (F14); solo 2020'</span>),</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>  pct_pobreza                  FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'CONEVAL (F15); años pares'</span>),</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>  indice_impunidad             FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'México Evalúa (F17)'</span>),</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>  prevalencia_total            FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDIREH (F2), % de mujeres de 15 años y más, últimos 12 meses; solo años de levantamiento'</span>),</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>  prevalencia_psicologica      FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDIREH (F2)'</span>),</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>  prevalencia_fisica           FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDIREH (F2)'</span>),</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>  prevalencia_sexual           FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDIREH (F2)'</span>),</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>  prevalencia_economica_patrimonial FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'ENDIREH (F2)'</span>),</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (contexto_key) <span class="kw">NOT</span> ENFORCED</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Contexto anual de cada entidad (mini-dimensión). SCD tipo 1: las fuentes revisan sus cifras y se sobrescriben. Responde: P1, P2, P4'</span>);</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="co">-- 3. Hechos</span></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a><span class="co">-- ---------------------------------------------------------------------</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.fact_consumo_musical (</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>  fecha_key               INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>  entidad_key             INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>  cancion_key             INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>  tipo_violencia_key      INT64 <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Tipo principal de la letra; -1 si no aplica'</span>),</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>  contexto_key            INT64 <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Contexto de la entidad en el año del mes'</span>),</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>  streams_estimados       FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'Streams nacionales del mes (chart semanal de Kworb, F4, repartido por días) x peso_entidad. Aditiva. 2015-2025'</span>),</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>  peso_entidad            FLOAT64 OPTIONS (description <span class="op">=</span> <span class="st">'Participación estimada de la entidad en el consumo de la canción; suma 1 entre las 32. No aditiva'</span>),</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>  interes_busqueda        INT64   OPTIONS (description <span class="op">=</span> <span class="st">'Google Trends (F11): interés del tema en la entidad durante el año, 0-100, relativo a su descarga. No aditiva'</span>),</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>  semanas_en_chart_nacional INT64 OPTIONS (description <span class="op">=</span> <span class="st">'Semanas del chart semanal nacional que terminan en el mes. Dato nacional repetido en las 32 entidades: no se suma entre entidades'</span>),</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>  mejor_posicion_nacional INT64   OPTIONS (description <span class="op">=</span> <span class="st">'Mejor posición semanal nacional entre las semanas que terminan en el mes. Dato nacional repetido. No aditiva'</span>),</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>  origen_peso             STRING  OPTIONS (description <span class="op">=</span> <span class="st">'De dónde salió el peso, en orden de preferencia: artista_anio, genero_anio o usuarios_internet'</span>),</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>  fuente                  STRING  OPTIONS (description <span class="op">=</span> <span class="st">'Código del catálogo de la fila de consumo: F4 (Kworb)'</span>),</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (fecha_key, entidad_key, cancion_key) <span class="kw">NOT</span> ENFORCED,</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (fecha_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_fecha (fecha_key) <span class="kw">NOT</span> ENFORCED,</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (entidad_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_entidad (entidad_key) <span class="kw">NOT</span> ENFORCED,</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (cancion_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_cancion (cancion_key) <span class="kw">NOT</span> ENFORCED,</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (tipo_violencia_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_tipo_violencia (tipo_violencia_key) <span class="kw">NOT</span> ENFORCED,</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (contexto_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_contexto_entidad (contexto_key) <span class="kw">NOT</span> ENFORCED</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Grano: una fila por canción, entidad y mes. El consumo por entidad es una estimación: el consumo nacional del mes se reparte con el interés de búsqueda del artista por entidad. Responde: P1, P2, P3, P4'</span>);</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TABLE</span> misoginia_dw.fact_violencia (</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>  fecha_key           INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>  entidad_key         INT64 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>  tipo_violencia_key  INT64 <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Delito del SESNSP al nivel de modalidad, o desaparición del RNPDNO'</span>),</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>  contexto_key        INT64 <span class="kw">NOT</span> <span class="kw">NULL</span> OPTIONS (description <span class="op">=</span> <span class="st">'Contexto de la entidad en el año del mes'</span>),</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>  carpetas            INT64 OPTIONS (description <span class="op">=</span> <span class="st">'Carpetas de investigación, archivo de delitos del SESNSP (F1). Aditiva'</span>),</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>  victimas_mujeres    INT64 OPTIONS (description <span class="op">=</span> <span class="st">'Víctimas mujeres del SESNSP (F1) o mujeres desaparecidas del RNPDNO (F13); NULL si la fuente no lo reporta. Aditiva'</span>),</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>  victimas_mujeres_menores INT64 OPTIONS (description <span class="op">=</span> <span class="st">'Parte de victimas_mujeres menores de 18 años (rango de edad del SESNSP, edad del RNPDNO). Aditiva'</span>),</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>  victimas_hombres    INT64 OPTIONS (description <span class="op">=</span> <span class="st">'Víctimas hombres del archivo de víctimas del SESNSP (F1), para comparar. Aditiva'</span>),</span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>  fuente              STRING OPTIONS (description <span class="op">=</span> <span class="st">'Código del catálogo: F1 o F13'</span>),</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (fecha_key, entidad_key, tipo_violencia_key) <span class="kw">NOT</span> ENFORCED,</span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (fecha_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_fecha (fecha_key) <span class="kw">NOT</span> ENFORCED,</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (entidad_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_entidad (entidad_key) <span class="kw">NOT</span> ENFORCED,</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (tipo_violencia_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_tipo_violencia (tipo_violencia_key) <span class="kw">NOT</span> ENFORCED,</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (contexto_key) <span class="kw">REFERENCES</span> misoginia_dw.dim_contexto_entidad (contexto_key) <span class="kw">NOT</span> ENFORCED</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>OPTIONS (description <span class="op">=</span> <span class="st">'Grano: una fila por entidad, delito o registro (modalidad del SESNSP o desaparición del RNPDNO) y mes. Responde: P2, P3, P4'</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
