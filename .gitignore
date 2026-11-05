@@ -5,3 +5,15 @@
 **/*.quarto_ipynb
 # CSV de datos: no se suben al repositorio
 *.csv
+
+# Pipeline
+pipeline/.venv/
+pipeline/data/data-raw/
+pipeline/data/data-processed/
+pipeline/data/kworb_html/
+pipeline/data/descargas/
+pipeline/logs/
+__pycache__/
+*.parquet
+!pipeline/data/sample/*.csv
+*.json
