@@ -1,0 +1,196 @@
+proyecto_gcp: proyecto-511216
+ubicacion: US
+datasets:
+  staging: misoginia_staging
+  silver: misoginia_silver
+  dw: misoginia_dw
+  mart: misoginia_mart
+
+bigquery:
+  max_bytes_billed: 1000000000
+  usar_cache_local: true
+
+semilla: 42
+ventana:
+  inicio: 2015-01-01
+  fin: 2025-12-01
+
+ingesta:
+  stg_sesnsp_delitos:
+    columnas: [ano, clave_ent, entidad, bien_juridico_afectado, tipo_de_delito, subtipo_de_delito, modalidad,
+               enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre]
+  stg_sesnsp_victimas:
+    columnas: [ano, clave_ent, entidad, bien_juridico_afectado, tipo_de_delito, subtipo_de_delito, modalidad,
+               sexo, rango_de_edad,
+               enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre]
+  stg_rnpdno:
+    columnas: [consecutivo_reportes_por_persona, consecutivo_registro, edad, sexo, nacionalidad,
+               fecha_de_desaparicion, entidad_de_desaparicion, autoridad_que_reporto]
+  stg_kworb_mx_semanal:
+    columnas: [track_id, semana, valor]
+  stg_kworb_catalogo_canciones:
+    columnas: [track_id, artista, titulo]
+  stg_kaggle_charts_mx:
+    columnas: [title, artist, url, date, rank, streams, chart]
+  stg_misongyny:
+    columnas: [id, song_title, song_artist, archivo_origen, label]
+  stg_musicbrainz_tags:
+    columnas: [artista_buscado, respuesta_json]
+  stg_trends_regueton_tema_2021:
+    columnas: [region, valor]
+  stg_conapo_poblacion:
+    columnas: [anio, cve_geo, entidad, edad, sexo, poblacion]
+    filtro: "SAFE_CAST(anio AS INT64) BETWEEN 2015 AND 2025"
+  stg_endutih_usuarios:
+    columnas: [cve_ent, sexo, edad, fac_per, p7_1]
+  stg_coneval_pobreza:
+    columnas: [hoja, fila, c03, c04, c05, c06, c07]
+  stg_mexico_evalua_12_indices:
+    columnas: [delito, entidad, anio, indice_impunidad]
+  stg_naturalearth_mx:
+    columnas: [name, name_es, iso_3166_2, geometry_wkt]
+  stg_trends_macrogenero_anio:
+    columnas: [macrogenero, tema_mid, anio, geo_code, region_trends, interes, tiene_dato, fecha_descarga]
+  stg_trends_artista_anio:
+    columnas: [artista, tema_trends, titulo_tema, tipo_tema, anio, geo_code, region_trends, interes, tiene_dato,
+               fecha_descarga]
+  stg_kworb_catalogo_completo:
+    columnas: [track_id, artista, titulo]
+  stg_kworb_mx_semanal_completo:
+    columnas: [track_id, semana, valor]
+  stg_musicbrainz_tags_completo:
+    columnas: [artista_buscado, respuesta_json]
+  stg_endutih_usuarios_entidad_anio:
+    columnas: [anio, entidad, usuarios_internet, archivo]
+  stg_endireh_2021_prevalencias:
+    columnas: [entidad, persona_agresora, medida, levantamiento, tipo_violencia, valor]
+  stg_censo_iter:
+    columnas: [ENTIDAD, NOM_ENT, MUN, LOC, POBTOT, POBFEM, POBMAS, TVIVPARHAB, VPH_INTER]
+    filtro: "MUN = '000' AND LOC = '0000'"
+
+# Tablas de staging del consumo. Las de E1 traen solo las 300 canciones con más
+# streams; las "completo" traen todo el Top 200 semanal (src/ingestion/kworb.py).
+# Las búsquedas de MusicBrainz pueden venir de varias tablas y se juntan.
+consumo:
+  semanal: stg_kworb_mx_semanal
+  catalogo: stg_kworb_catalogo_canciones
+  musicbrainz: [stg_musicbrainz_tags]
+
+# Identificación ante MusicBrainz (lo pide su política de uso). El contacto
+# puede ser un correo o la URL del repositorio; si queda vacío se omite.
+musicbrainz:
+  aplicacion: misoginia-dw-unam
+  version: "2.0"
+  contacto: null
+
+# Archivos descargados a mano que se suben a staging, con la tabla que les
+# corresponde (rutas dentro de pipeline/data/descargas/).
+archivos_staging:
+  stg_trends_macrogenero_anio: trends/trends_macrogenero_mx_2015_2025.csv
+  stg_trends_artista_anio: trends/trends_artista_mx_2015_2025.csv
+  stg_endireh_2021_prevalencias: endireh/endireh_2021_prevalencias.csv
+  stg_kworb_catalogo_completo: kworb/kworb_catalogo_completo.csv
+  stg_kworb_mx_semanal_completo: kworb/kworb_mx_semanal_completo.csv
+  stg_musicbrainz_tags_completo: musicbrainz/musicbrainz_tags_completo.csv
+  stg_endutih_usuarios_entidad_anio: endutih/endutih_usuarios_entidad_anio.csv
+
+# Tabulados de la ENDUTIH "Usuarios de internet, por entidad federativa, según sexo"
+# (INEGI), un archivo por año. INEGI no publica tabulados de 2019; ese año se
+# interpola en la limpieza.
+endutih_tabulados:
+  carpeta: endutih
+  patron: "*_uedo662.xlsx"
+
+# Tabulado de la ENDIREH 2021 con la prevalencia en los últimos 12 meses por
+# entidad, tipo de persona agresora y tipo de violencia (INEGI, cuadro 21.2).
+endireh:
+  archivo: endireh/xxi_prevalencia_de_la_violencia_estimaciones_endireh2021.xlsx
+  hoja: "21.2"
+
+# Formas de escribir una entidad que difieren del SESNSP, ya en mayúsculas y sin
+# acentos, con el nombre del SESNSP al que corresponden. Las que equivalen al
+# total del país llevan la clave 0.
+equivalencias_entidad:
+  ESTADO DE MEXICO: MEXICO
+  VERACRUZ: VERACRUZ DE IGNACIO DE LA LLAVE
+  ESTADO DE VERACRUZ: VERACRUZ DE IGNACIO DE LA LLAVE
+  MICHOACAN: MICHOACAN DE OCAMPO
+  COAHUILA: COAHUILA DE ZARAGOZA
+  DISTRITO FEDERAL: CIUDAD DE MEXICO
+nombres_nacionales: [TOTAL NACIONAL, NACIONAL, ESTADOS UNIDOS MEXICANOS]
+
+# Mapeo de E1 del subtipo de delito del SESNSP al tipo de violencia de la LGAMVLV.
+# Los subtipos que no aparecen aquí quedan sin tipo y no entran a fact_violencia.
+mapeo_lgamvlv:
+  Feminicidio: feminicida
+  Violación simple: sexual
+  Violación equiparada: sexual
+  Abuso sexual: sexual
+  Acoso sexual: sexual
+  Hostigamiento sexual: sexual
+  Incesto: sexual
+  Otros delitos que atentan contra la libertad y la seguridad sexual: sexual
+  Lesiones dolosas: física
+  Violencia familiar: sin distinguir
+  Violencia de género en todas sus modalidades distinta a la violencia familiar: sin distinguir
+  Homicidio doloso: control
+
+# Macrogénero a partir de las etiquetas de MusicBrainz. Se revisan en este orden y
+# gana el primero con alguna etiqueta que contenga una de sus palabras; las
+# etiquetas genéricas como "latin" no deciden nada por sí solas.
+macrogeneros:
+  regional mexicano: [regional mexicano, norteño, corrido, sierreño, banda, ranchera, mariachi, grupero, campirano, tumbado]
+  urbano latino: [reggaeton, latin urban, trap latino, dembow, urbano, latin trap]
+  hip hop y rap: [hip hop, rap, trap]
+  cumbia y tropical: [cumbia, salsa, bachata, merengue, tropical]
+  rock: [rock, metal, punk]
+  electrónica: [electronic, edm, house, techno, electro]
+  pop: [pop, ballad, r&b, soul, singer-songwriter]
+
+# Correcciones por artista cuando MusicBrainz devuelve a otro artista con el mismo
+# nombre. Plan B: el primer resultado es el rapero británico; en el chart de
+# México es el dúo de reguetón de Puerto Rico.
+macrogenero_corregido:
+  Plan B: urbano latino
+
+# Indicador de México Evalúa que se usa como impunidad de cada entidad.
+delito_impunidad: feminicidio
+
+limpieza:
+  z_robusto_umbral: 3.5
+  iqr_factor: 1.5
+  # Si un estado empieza la serie de feminicidio con al menos tantos meses en cero,
+  # esos meses se toman como "todavía no se registraba" y no como cero real.
+  meses_cero_inicial_min: 12
+  # Edad máxima creíble en el RNPDNO; las mayores se vuelven nulas.
+  edad_maxima: 110
+
+# Regiones del Banco de México (Reporte sobre las Economías Regionales), por clave INEGI.
+regiones_banxico:
+  norte: [2, 5, 8, 19, 26, 28]
+  centro norte: [1, 3, 6, 10, 14, 16, 18, 24, 25, 32]
+  centro: [9, 11, 13, 15, 17, 21, 22, 29]
+  sur: [4, 7, 12, 20, 23, 27, 30, 31]
+
+# Categorías de MiSonGyny y su tipo de la LGAMVLV (mapeo de E1, artículo 6).
+categorias_misongyny:
+  S: {categoria: sexualización, tipo_lgamvlv: sexual}
+  V: {categoria: violencia, tipo_lgamvlv: física}
+  H: {categoria: odio, tipo_lgamvlv: psicológica}
+  NR: {categoria: no relacionada, tipo_lgamvlv: no aplica}
+
+# Reparto del consumo nacional entre entidades (E1). Se usa Trends del artista si es
+# de los más escuchados del año y tiene valor en suficientes entidades; si no, el
+# tema de su macrogénero con la misma regla; si tampoco, los usuarios de internet.
+pesos:
+  artistas_por_anio: 50
+  entidades_minimas: 28
+
+# Una asociación entre categóricas cuenta si su p ajustada por Holm es menor que
+# alfa y además su V de Cramér llega al mínimo. Dos numéricas son redundantes
+# si |rho de Spearman| llega al umbral. El PCA busca la varianza acumulada objetivo.
+reduccion:
+  alfa: 0.05
+  cramer_v_min: 0.10
+  rho_redundancia: 0.85
+  pca_varianza_objetivo: 0.85

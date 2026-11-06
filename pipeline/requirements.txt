@@ -1,0 +1,13 @@
+db-dtypes==1.8.0
+fastexcel==0.21.0
+google-cloud-bigquery==3.46.0
+matplotlib==3.11.2
+musicbrainzngs==0.7.1
+numpy==2.5.4
+pandas==3.0.6
+polars==2.0.0
+pyarrow==26.0.0
+pyyaml==6.0.3
+scikit-learn==1.9.1
+scipy==1.18.1
+seaborn==0.13.2
