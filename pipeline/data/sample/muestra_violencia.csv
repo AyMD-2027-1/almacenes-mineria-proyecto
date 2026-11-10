@@ -1,0 +1,520 @@
+cve_ent,fecha,origen,bien_juridico_afectado,tipo_de_delito,subtipo_de_delito,modalidad,tipo_lgamvlv,carpetas,victimas_mujeres,victimas_mujeres_menores,victimas_hombres
+7,2023-01-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,3,1,
+7,2023-01-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-01-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,119,,,
+7,2023-01-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,13,,,
+7,2023-01-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,7,,,
+7,2023-01-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+7,2023-01-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+7,2023-01-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,54,,,
+7,2023-01-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,0,,,
+7,2023-01-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,32,,,
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,1,1,0,0
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,0,0,0,0
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,9,0,0,9
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,26,0,0,26
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,6,0,0,6
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,12,0,0,12
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,6,0,0,7
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,68,33,0,38
+7,2023-01-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+7,2023-02-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,2,2,
+7,2023-02-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-02-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,94,,,
+7,2023-02-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,13,,,
+7,2023-02-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,9,,,
+7,2023-02-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,1,,,
+7,2023-02-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+7,2023-02-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,60,,,
+7,2023-02-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,2,,,
+7,2023-02-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,27,,,
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,0,0,0,0
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,2,2,1,0
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,3,3,1,0
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,4,0,0,4
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,14,1,0,13
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,5,0,0,7
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,12,7,0,10
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,2,0,0,2
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,82,51,5,57
+7,2023-02-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+7,2023-03-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-03-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,110,,,
+7,2023-03-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,11,,,
+7,2023-03-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,12,,,
+7,2023-03-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,2,,,
+7,2023-03-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+7,2023-03-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,54,,,
+7,2023-03-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,2,,,
+7,2023-03-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,40,,,
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,0,0,0,0
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,2,2,0,0
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,2,2,0,0
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,9,1,0,9
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,20,1,0,21
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,9,3,1,7
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,12,1,0,12
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,5,0,0,5
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,99,58,4,58
+7,2023-03-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+7,2023-04-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,1,1,
+7,2023-04-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-04-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,74,,,
+7,2023-04-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,15,,,
+7,2023-04-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,9,,,
+7,2023-04-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,2,,,
+7,2023-04-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+7,2023-04-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,45,,,
+7,2023-04-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,2,,,
+7,2023-04-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,20,,,
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,0,0,0,0
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,1,1,0,0
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,1,1,0,0
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,10,0,0,10
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,23,1,0,26
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,10,0,0,10
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,16,4,0,15
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,4,1,0,5
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,82,56,0,33
+7,2023-04-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+7,2023-05-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,1,1,
+7,2023-05-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-05-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,81,,,
+7,2023-05-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,13,,,
+7,2023-05-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,4,,,
+7,2023-05-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,1,,,
+7,2023-05-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+7,2023-05-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,58,,,
+7,2023-05-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,2,,,
+7,2023-05-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,35,,,
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,0,0,0,0
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,3,3,0,0
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,3,3,2,0
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,4,0,0,4
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,24,1,0,26
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,8,0,0,8
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,11,3,0,12
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,9,3,0,11
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,88,41,0,58
+7,2023-05-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+7,2023-06-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,1,1,
+7,2023-06-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-06-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,89,,,
+7,2023-06-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,16,,,
+7,2023-06-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,7,,,
+7,2023-06-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,1,,,
+7,2023-06-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+7,2023-06-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,48,,,
+7,2023-06-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,1,,,
+7,2023-06-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,31,,,
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,0,0,0,0
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,3,3,0,0
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,4,0,0,4
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,20,3,0,27
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,6,1,0,6
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,25,15,0,16
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,3,1,0,4
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,89,37,0,58
+7,2023-06-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+7,2023-07-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,5,3,
+7,2023-07-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-07-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,93,,,
+7,2023-07-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,15,,,
+7,2023-07-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,15,,,
+7,2023-07-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,7,,,
+7,2023-07-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+7,2023-07-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,53,,,
+7,2023-07-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,1,,,
+7,2023-07-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,15,,,
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,0,0,0,0
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,2,2,0,0
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,15,1,0,16
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,24,1,0,25
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,9,0,0,9
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,19,4,0,15
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,2,0,0,5
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,81,40,0,43
+7,2023-07-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+7,2023-08-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,6,4,
+7,2023-08-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-08-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,106,,,
+7,2023-08-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,14,,,
+7,2023-08-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,12,,,
+7,2023-08-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,1,,,
+7,2023-08-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,1,,,
+7,2023-08-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,50,,,
+7,2023-08-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,3,,,
+7,2023-08-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,23,,,
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,1,1,0,0
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,0,0,0,0
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,7,0,0,7
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,28,3,3,33
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,15,1,1,13
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,17,4,0,14
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,6,0,0,6
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,95,39,0,58
+7,2023-08-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+7,2023-09-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-09-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,54,,,
+7,2023-09-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,13,,,
+7,2023-09-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,6,,,
+7,2023-09-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,1,,,
+7,2023-09-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+7,2023-09-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,37,,,
+7,2023-09-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,0,,,
+7,2023-09-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,23,,,
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,0,0,0,0
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,1,1,0,0
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,9,0,0,9
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,23,1,0,26
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,10,0,0,10
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,4,1,0,4
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,3,0,0,4
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,53,26,0,28
+7,2023-09-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+7,2023-10-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-10-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,57,,,
+7,2023-10-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,11,,,
+7,2023-10-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,9,,,
+7,2023-10-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,1,,,
+7,2023-10-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+7,2023-10-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,43,,,
+7,2023-10-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,1,,,
+7,2023-10-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,17,,,
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,0,0,0,0
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,2,2,0,0
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,16,1,0,16
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,26,1,0,32
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,18,0,0,17
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,5,4,0,3
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,4,0,0,4
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,58,23,3,39
+7,2023-10-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+7,2023-11-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-11-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,55,,,
+7,2023-11-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,20,,,
+7,2023-11-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,7,,,
+7,2023-11-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,1,,,
+7,2023-11-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+7,2023-11-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,48,,,
+7,2023-11-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,0,,,
+7,2023-11-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,20,,,
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,4,4,0,0
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,2,2,2,0
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,1,1,0,0
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,3,0,0,3
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,33,4,0,34
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,10,0,0,12
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,12,3,0,14
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,7,2,0,6
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,60,29,0,39
+7,2023-11-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+7,2023-12-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+7,2023-12-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,40,,,
+7,2023-12-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,15,,,
+7,2023-12-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,5,,,
+7,2023-12-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,2,,,
+7,2023-12-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+7,2023-12-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,21,,,
+7,2023-12-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,1,,,
+7,2023-12-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,10,,,
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,0,0,0,0
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,1,1,0,0
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,9,0,0,13
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,32,2,0,37
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,2,0,0,2
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,10,1,0,9
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,4,1,0,5
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,53,23,2,33
+7,2023-12-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-01-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,6,0,
+9,2023-01-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-01-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,2874,,,
+9,2023-01-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,329,,,
+9,2023-01-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,140,,,
+9,2023-01-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-01-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+9,2023-01-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,130,,,
+9,2023-01-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,154,,,
+9,2023-01-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,62,,,
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,3,3,0,0
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,1,1,0,0
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,3,3,0,0
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,11,0,0,11
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,41,3,0,47
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,10,1,0,9
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,55,8,0,50
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,39,4,0,46
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,297,91,20,219
+9,2023-01-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-02-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,4,2,
+9,2023-02-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-02-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,3067,,,
+9,2023-02-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,385,,,
+9,2023-02-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,109,,,
+9,2023-02-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-02-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+9,2023-02-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,146,,,
+9,2023-02-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,152,,,
+9,2023-02-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,62,,,
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,1,1,0,0
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,1,1,0,0
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,1,1,0,0
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,3,3,1,0
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,11,0,0,12
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,32,4,1,32
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,11,1,0,10
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,65,3,1,63
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,40,4,0,41
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,288,95,15,216
+9,2023-02-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-03-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,5,1,
+9,2023-03-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-03-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,3668,,,
+9,2023-03-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,510,,,
+9,2023-03-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,207,,,
+9,2023-03-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-03-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,1,,,
+9,2023-03-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,184,,,
+9,2023-03-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,199,,,
+9,2023-03-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,70,,,
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,1,1,0,0
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,0,0,0,0
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,2,2,0,0
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,2,3,0,0
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,12,1,0,11
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,51,4,1,57
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,19,6,0,18
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,71,7,1,65
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,47,7,3,45
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,361,138,15,256
+9,2023-03-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-04-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,2,2,
+9,2023-04-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-04-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,3255,,,
+9,2023-04-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,352,,,
+9,2023-04-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,158,,,
+9,2023-04-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-04-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+9,2023-04-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,155,,,
+9,2023-04-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,168,,,
+9,2023-04-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,64,,,
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,1,1,0,0
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,2,2,0,0
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,8,0,0,8
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,43,1,0,48
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,8,1,0,8
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,82,15,0,77
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,50,10,2,51
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,278,98,17,204
+9,2023-04-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-05-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,5,0,
+9,2023-05-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-05-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,3387,,,
+9,2023-05-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,426,,,
+9,2023-05-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,136,,,
+9,2023-05-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-05-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+9,2023-05-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,189,,,
+9,2023-05-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,188,,,
+9,2023-05-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,73,,,
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,0,0,0,0
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,1,1,0,0
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,3,3,1,0
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,11,0,0,11
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,48,6,1,51
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,6,0,0,8
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,74,9,1,65
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,40,3,0,42
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,309,111,12,218
+9,2023-05-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-06-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,8,2,
+9,2023-06-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-06-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,3487,,,
+9,2023-06-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,456,,,
+9,2023-06-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,166,,,
+9,2023-06-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-06-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+9,2023-06-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,150,,,
+9,2023-06-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,196,,,
+9,2023-06-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,65,,,
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,2,2,0,0
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,2,2,0,0
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,1,1,1,0
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,2,2,0,0
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,15,2,0,14
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,47,3,0,52
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,12,1,0,10
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,79,7,0,78
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,44,6,2,47
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,338,120,18,238
+9,2023-06-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-07-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,3,0,
+9,2023-07-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-07-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,3189,,,
+9,2023-07-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,376,,,
+9,2023-07-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,141,,,
+9,2023-07-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-07-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+9,2023-07-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,167,,,
+9,2023-07-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,168,,,
+9,2023-07-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,48,,,
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,5,5,0,0
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,0,0,0,0
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,0,0,0,0
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,8,0,0,8
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,42,6,0,46
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,9,1,0,8
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,72,5,1,69
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,49,7,1,53
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,295,100,11,216
+9,2023-07-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-08-01,RNPDNO,Desaparición,Desaparición,Mujer desaparecida,Mujer desaparecida,desaparición,,1,0,
+9,2023-08-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-08-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,3225,,,
+9,2023-08-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,394,,,
+9,2023-08-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,163,,,
+9,2023-08-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-08-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+9,2023-08-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,149,,,
+9,2023-08-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,158,,,
+9,2023-08-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,63,,,
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,2,2,0,0
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,1,2,0,0
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,2,2,0,0
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,6,0,0,6
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,46,5,1,46
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,10,3,0,7
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,70,7,0,65
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,48,4,1,45
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,290,91,8,224
+9,2023-08-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-09-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-09-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,3177,,,
+9,2023-09-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,373,,,
+9,2023-09-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,137,,,
+9,2023-09-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-09-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+9,2023-09-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,164,,,
+9,2023-09-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,137,,,
+9,2023-09-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,61,,,
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,0,0,0,0
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,0,0,0,0
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,0,0,0,0
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,3,3,1,0
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,12,0,0,12
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,33,2,0,33
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,13,2,0,11
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,92,17,0,79
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,40,2,1,40
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,339,137,20,232
+9,2023-09-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-10-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-10-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,3116,,,
+9,2023-10-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,433,,,
+9,2023-10-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,137,,,
+9,2023-10-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-10-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+9,2023-10-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,150,,,
+9,2023-10-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,178,,,
+9,2023-10-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,66,,,
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,1,1,0,0
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,0,0,0,0
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,2,2,0,0
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,2,2,0,0
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,5,0,0,6
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,51,5,0,55
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,5,1,0,4
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,98,10,1,91
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,53,10,2,49
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,403,136,28,294
+9,2023-10-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-11-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-11-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,2817,,,
+9,2023-11-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,350,,,
+9,2023-11-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,127,,,
+9,2023-11-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-11-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+9,2023-11-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,159,,,
+9,2023-11-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,118,,,
+9,2023-11-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,51,,,
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,1,1,0,0
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,0,0,0,0
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,1,1,0,0
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,2,2,1,0
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,8,0,0,8
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,46,0,0,49
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,15,3,0,11
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,94,12,2,86
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,71,6,0,72
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,304,114,15,218
+9,2023-11-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0
+9,2023-12-01,SESNSP,La familia,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,Violencia de género en todas sus modalidades distinta a la violencia familiar,sin distinguir,0,,,
+9,2023-12-01,SESNSP,La familia,Violencia familiar,Violencia familiar,Violencia familiar,sin distinguir,2316,,,
+9,2023-12-01,SESNSP,La libertad y la seguridad sexual,Abuso sexual,Abuso sexual,Abuso sexual,sexual,358,,,
+9,2023-12-01,SESNSP,La libertad y la seguridad sexual,Acoso sexual,Acoso sexual,Acoso sexual,sexual,112,,,
+9,2023-12-01,SESNSP,La libertad y la seguridad sexual,Hostigamiento sexual,Hostigamiento sexual,Hostigamiento sexual,sexual,0,,,
+9,2023-12-01,SESNSP,La libertad y la seguridad sexual,Incesto,Incesto,Incesto,sexual,0,,,
+9,2023-12-01,SESNSP,La libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,Otros delitos que atentan contra la libertad y la seguridad sexual,sexual,124,,,
+9,2023-12-01,SESNSP,La libertad y la seguridad sexual,Violación equiparada,Violación equiparada,Violación equiparada,sexual,132,,,
+9,2023-12-01,SESNSP,La libertad y la seguridad sexual,Violación simple,Violación simple,Violación simple,sexual,49,,,
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma blanca,feminicida,2,2,0,0
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con arma de fuego,feminicida,0,0,0,0
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,Con otro elemento,feminicida,1,1,1,0
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Feminicidio,Feminicidio,No especificado,feminicida,2,2,1,0
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma blanca,control,12,0,0,13
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con arma de fuego,control,44,4,0,46
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,Con otro elemento,control,19,0,0,20
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Homicidio,Homicidio doloso,No especificado,control,0,0,0,0
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma blanca,física,81,15,0,71
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con arma de fuego,física,54,6,0,52
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,Con otro elemento,física,267,96,12,191
+9,2023-12-01,SESNSP,La vida y la Integridad corporal,Lesiones,Lesiones dolosas,No especificado,física,0,0,0,0

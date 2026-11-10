@@ -1,0 +1,21 @@
+track_id,artista,titulo,pais_artista,macrogenero,origen_genero,etiquetas_fuente,etiqueta_tarea_1,etiqueta_tarea_2,en_corpus_misongyny,es_misogina,origen_etiqueta
+6Pur3hWy6Nzc27ilmsp5HA,Los Enanitos Verdes,Lamento Boliviano,AR,rock,musicbrainz,"rock, pop rock, latin, argentina, rock en espanol",,,false,,
+2Vw8vOliCmBOAys8Q2xzJZ,Neton Vega,Mi Vida Mi Muerte,,regional mexicano,musicbrainz,"regional mexicano, corrido tumbado",,,false,,
+7qXptgpZGo8AFPhJCBVLFE,Tito Double P,LINDA,,sin etiqueta,sin dato,"",,,false,,
+5GTBdEjZe7zEDp1N0eCZE4,Peso Pluma,HOLLYWOOD,MX,regional mexicano,musicbrainz,"regional mexicano, corrido tumbado",,,false,,
+6DUdDIRgLqCGq1DwkNWQTN,Maluma,Borro Cassette,CO,urbano latino,musicbrainz,"reggaeton, latin, latin urban, latin pop, trap latino",M,S,true,true,misongyny
+4ZOkfHC38nxSeSqzGE5HFr,Junior H,PIÉNSALO,,sin etiqueta,sin dato,"",,,false,,
+1O2pcBJGej0pmH2Y9XZMs6,Cris MJ,Una Noche en Medellín,CL,sin etiqueta,sin dato,"",,,false,,
+4loIMejzvt11s97SGVEat8,Xavi,Poco A Poco,,sin etiqueta,sin dato,"",,,false,,
+1rgnBhdG2JDFTbYkYRZAku,Tones And I,Dance Monkey,AU,electrónica,musicbrainz,"dance-pop, electropop, female vocals, indie pop, english",,,false,,
+7ABLbnD53cQK00mhcaOUVG,Myke Towers,LALA,PR,urbano latino,musicbrainz,"reggaeton, latin urban, latin, trap latino",,,false,,
+4Nf5EZ40JenjMUKXOiyRU5,Peso Pluma,NUEVA VIDA,MX,regional mexicano,musicbrainz,"regional mexicano, corrido tumbado",,,false,,
+6XaJfhwof7qIgbbXO5tIQI,Kali Uchis,Igual Que Un Ángel,US,pop,musicbrainz,"neo soul, latin pop, r&b, alternative r&b",,,false,,
+5EJ2THuhAapEIeQOtXUQ0x,Maná,Oye Mi Amor,MX,rock,musicbrainz,"latin, rock, pop, pop rock, latin pop",NM,NR,true,false,misongyny
+136BeIIoBGrrU9fI1jbcDR,Peso Pluma,daño,MX,regional mexicano,musicbrainz,"regional mexicano, corrido tumbado",,,false,,
+3IEvQ1CzszUJtTRLmmMJ2X,Tito Double P,5-7,,sin etiqueta,sin dato,"",,,false,,
+4NUt1fcnO9aQAELBgXq3Kr,Alejandro Fernández,Me Dediqué a Perderte,MX,regional mexicano,musicbrainz,"mariachi, ranchera, pop, latin pop, latin",NM,,true,false,misongyny
+24teIhDYO2RocTA2v5dY0r,Junior H,Extssy Model,,sin etiqueta,sin dato,"",,,false,,
+127UT7AiWflJwjXWUBBVTQ,Natanael Cano,O Me Voy O Te Vas,,regional mexicano,musicbrainz,"regional mexicano, trap latino, corrido tumbado",,,false,,
+4bw8mcDUSRWfQo63ZTYRnU,Maluma,Según Quién,CO,urbano latino,musicbrainz,"reggaeton, latin, latin urban, latin pop, trap latino",,,false,,
+3qdeRGn9erK9sjs1kUtBys,Fuerza Regida,CHAVALITAS,MX,regional mexicano,musicbrainz,regional mexicano,,,false,,
