@@ -1,0 +1,24 @@
+---
+title: "Calidad de los datos por fuente"
+---
+
+Diagnóstico de cada tabla de staging tal como llega de BigQuery, antes de limpiar, y lo que se decidió en cada
+caso. El diagnóstico lo produce `python -m src.eda.inspeccion` y cada tratamiento queda con su conteo en el
+registro de limpieza (`pipeline/logs/registro_limpieza.csv`).
+
+| Fuente | Tablas en staging | Filas | Problema principal | Decisión principal |
+|---|---|---|---|---|
+| [F1. SESNSP](calidad/f01_sesnsp.qmd) | 2 | 115,456 | Feminicidio en cero antes de que los estados lo registraran; víctimas sin sexo o edad | Ceros iniciales a nulo; no se imputan sexo ni edad |
+| [F2. ENDIREH 2021](calidad/f02_endireh.qmd) | 1 (nueva en E2) | 3,960 | Solo 2016 y 2021 | Nulo fuera de los levantamientos |
+| [F3. CONAPO](calidad/f03_conapo.qmd) | 1 | 77,440 | Nombres de entidad cortos | Equivalencias |
+| [F4. Kworb](calidad/f04_kworb.qmd) | 2 (+2 en E2) | 42,717 | Muestra de 300 canciones con cobertura baja ([detalle](datos_nuevos.qmd)) | Ampliar al Top 200 completo |
+| [F5. Kaggle](calidad/f05_kaggle.qmd) | 1 | 448,832 | Viral 50 sin streams; solo 2017–2021 | Solo para validar |
+| [F6. MiSonGyny](calidad/f06_misongyny.qmd) | 1 | 4,913 | Encabezado como dato; etiquetas de prueba aparte | Eliminar el encabezado; unir por id |
+| [F8. MusicBrainz](calidad/f08_musicbrainz.qmd) | 1 (+1 en E2) | 112 | 18 búsquedas devuelven a otro artista | Descartar; "sin etiqueta" |
+| [F11. Google Trends](calidad/f11_google_trends.qmd) | 1 (+2 en E2) | 14,336 | Solo había reguetón 2021 | Descargar género y artista por año |
+| [F13. RNPDNO](calidad/f13_rnpdno.qmd) | 1 | 116,945 | 32 % testado, 80 % sin fecha, sin identificador de persona | Fuente secundaria; no se eliminan filas iguales |
+| [F14. Censo 2020](calidad/f14_censo_iter.qmd) | 1 | 33 | Un solo año | Se repite; fuera del análisis por redundante |
+| [F15. CONEVAL](calidad/f15_coneval.qmd) | 1 | 1,062 | Formato de presentación | Solo la fila 9; interpolar |
+| [F16. ENDUTIH](calidad/f16_endutih.qmd) | 1 (+1 en E2) | 58,410 | En E1 solo 2024; falta 2019 en INEGI | Tabulados 2015–2025; 2019 interpolado |
+| [F17. México Evalúa](calidad/f17_mexico_evalua.qmd) | 1 | 314 | 9 estados sin dato; un solo año | Nulo; repetir 2023 |
+| [F18. Natural Earth](calidad/f18_natural_earth.qmd) | 1 | 33 | Fila `MX-X01~` sin estado | Eliminar |

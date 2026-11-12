@@ -1,0 +1,27 @@
+---
+title: "F18. Natural Earth — geometrías"
+---
+
+Polígonos de las entidades para los mapas.
+
+| Tabla | Filas | Columnas leídas | Llave natural | Filas idénticas | Llave repetida |
+|---|---|---|---|---|---|
+| `stg_naturalearth_mx` | 33 | 4 | código ISO | 0 | 0 |
+
+## Qué encontró la inspección
+
+- **Una fila de más:** código `MX-X01~`, sin nombre. Es un polígono menor sin estado asignado.
+- **Nombres distintos:** Estado de México, Michoacán, "Estado de Veracruz" y "Distrito Federal" para la Ciudad de México.
+- **Código anterior de la Ciudad de México:** `MX-DIF`.
+
+## Qué se decidió
+
+| Problema | Afecta | Decisión | Por qué |
+|---|---|---|---|
+| Fila `MX-X01~` | 1 | Eliminar | No es una entidad |
+| Nombres distintos | 4 entidades | Equivalencias, incluida `DISTRITO FEDERAL` | Une con la clave INEGI |
+| `MX-DIF` | 1 | `MX-CMX` en `dim_entidad` | Es el código ISO vigente |
+
+Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+
+[← Volver a calidad por fuente](../calidad.qmd)

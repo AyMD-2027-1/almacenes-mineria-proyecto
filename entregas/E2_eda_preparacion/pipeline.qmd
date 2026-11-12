@@ -1,0 +1,174 @@
+---
+title: "Parte C · Pipeline y carga al DW"
+---
+
+## Arquitectura
+
+```{mermaid}
+%%{init: {'theme': 'neutral'}}%%
+flowchart LR
+  A["Fuentes descargadas<br/>Kworb, Trends, INEGI,<br/>MusicBrainz"] -->|carga_staging| B[("misoginia_staging<br/>BigQuery, datos crudos")]
+  B -->|ingesta| C["data-raw/<br/>copia local en Parquet"]
+  C --> D["calidad<br/>ensamblado · eda"]
+  D --> E["limpieza · reducción<br/>muestreo · verificación"]
+  E --> F["pesos · estrella<br/>7 tablas del DDL"]
+  F -->|carga| G[("misoginia_dw<br/>esquema estrella")]
+  G --> H[("misoginia_mart<br/>7 vistas P1–P4")]
+```
+
+El pipeline vive en `pipeline/` y tiene un solo punto de entrada. Lee staging **una sola vez** y guarda una copia
+local; todas las transformaciones se hacen en local con polars, y al final carga el esquema estrella al DW con
+*load jobs*. La capa de staging nunca se modifica.
+
+```bash
+cd pipeline
+python run_pipeline.py              # todas las etapas, de staging al DataMart
+python run_pipeline.py --sin-carga  # todo menos la escritura en BigQuery
+python run_pipeline.py --desde limpieza
+python run_pipeline.py --solo eda
+```
+
+## Etapas
+
+| Etapa | Módulo | Qué hace | Entrada | Salida |
+|---|---|---|---|---|
+| ingesta | `src/ingestion/ingesta.py` | Copia cada tabla de staging a Parquet, solo las columnas declaradas, con *dry run* previo y tope de bytes facturados | Tablas declaradas en `config.yaml`; las que aún no existen en staging se omiten con aviso | `data/data-raw/` |
+| calidad | `src/eda/inspeccion.py` | Diagnóstico de cada tabla antes de limpiar: faltantes, marcadores, duplicados, cobertura y nombres de entidad | `data-raw/` | consola ([Calidad por fuente](calidad.qmd)) |
+| ensamblado | `src/ingestion/ensamblado.py` | Dataset analítico al grano de E1: violencia, consumo y contexto | `data-raw/` | 415,065 · 9,046 · 352 filas |
+| eda | `src/eda/` | Descriptiva, Gini, entropía, cobertura y figuras | dataset analítico | tablas `eda/` y figuras `img/` |
+| limpieza | `src/cleaning/limpieza.py` | Tratamientos y registro de limpieza | dataset analítico | 89,817 · 7,429 · 300 · 352 filas; `logs/registro_limpieza.csv` |
+| reducción | `src/reduction/reduccion.py` | χ², correlación, PCA y tabla de decisión | dataset limpio | `reduccion/` |
+| muestreo | `src/sampling/muestreo.py` | Comprueba que no hace falta muestrear y escribe la muestra del repositorio | dataset limpio | `data/sample/` |
+| verificación | `src/verification/verificacion.py` | Antes contra después; falla si un hallazgo cambia de dirección | analítico y limpio | `verificacion/` |
+| pesos | `src/loading/pesos.py` | Peso de cada entidad para repartir el consumo nacional (Trends × usuarios de internet) | limpio, Trends, ENDUTIH | 15,104 pesos |
+| estrella | `src/loading/estrella.py` | Las 5 dimensiones y los 2 hechos con las columnas y tipos exactos del DDL | limpio y pesos | `estrella/` |
+| carga | `src/loading/carga_dw.py` | Carga al DW, valida sumas y consistencia, recrea y ejecuta el DataMart | `estrella/` | DW y `mart/` |
+: Etapas del pipeline, en orden {#tbl-etapas}
+
+Cada etapa escribe en `logs/registro_etapas.csv` cuántas filas entran y salen de cada tabla; el registro se
+reinicia cuando el pipeline corre desde el principio.
+
+### Reproducibilidad
+
+- **Configuración en un solo archivo.** `config.yaml` guarda el proyecto y los datasets de BigQuery, el tope de
+  bytes, la semilla, la ventana, las columnas que se leen de cada tabla, las equivalencias de entidad, el mapeo
+  LGAMVLV, las reglas de macrogénero, los umbrales de limpieza y de reducción, y la regla de los pesos. Las rutas
+  están en `config/rutas.py` y son relativas a la carpeta del proyecto.
+- **Semilla fija** (42), usada por el pipeline y por la muestra del repositorio.
+- **Versiones fijadas** en `requirements.txt`.
+- **Idempotente.** La ingesta reutiliza la copia local; la carga vacía las tablas del DW (`TRUNCATE TABLE`) y las
+  vuelve a llenar, y las vistas se crean con `CREATE OR REPLACE VIEW`. Correr el pipeline dos veces deja el mismo
+  resultado.
+- **Sin pasos manuales** entre staging y el DW. Las fuentes que se descargan de un sitio se suben a staging una
+  sola vez con scripts guardados en `src/ingestion/` (ver el README).
+- **Credenciales** por *Application Default Credentials* de `gcloud`; ningún archivo de llaves en el repositorio
+  (`*.json` está en `.gitignore`).
+
+### Validaciones automáticas
+
+El pipeline se detiene si alguna falla:
+
+| Dónde | Qué se comprueba |
+|---|---|
+| ingesta | Cada consulta devuelve filas |
+| ensamblado | El grano no se repite en ninguna tabla; ninguna víctima queda sin delito; las 32 entidades están en cada fuente; las sumas de carpetas, víctimas, streams y semanas coinciden con lo crudo |
+| limpieza | Grano único; ninguna fila de violencia sin tipo; ninguna canción del corpus sin etiqueta; las 32 entidades de Natural Earth tienen clave |
+| muestreo | Ninguna tabla pasa de 5 millones de filas |
+| verificación | Ningún hallazgo del EDA cambia de dirección |
+| pesos | Las 32 entidades por artista y año; los pesos suman 1 |
+| estrella | Columnas y tipos del DDL; llaves primarias únicas; ningún hecho sin su dimensión; el reparto conserva los streams nacionales; pesos en [0, 1]; conteos y streams no negativos; porcentajes en [0, 100]; meses de 1 a 12 |
+| carga | Esquema igual al del DW; sin nulos en columnas obligatorias; filas cargadas = filas locales; sumas iguales; grano único y sin llaves huérfanas en el DW |
+: Validaciones del pipeline {#tbl-validaciones}
+
+### Tiempo
+
+| Paso | Tiempo aproximado |
+|---|---|
+| Ingesta desde cero (unos 130 MB escaneados) | 1 a 2 minutos |
+| Ingesta con copia local | segundos |
+| De `calidad` a `estrella` | unos 10 segundos |
+| Carga, validación y DataMart | alrededor de 1 minuto |
+
+## DW poblado
+
+La carga usa *load jobs* `WRITE_APPEND` sobre las tablas que dejó el DDL de E1, para conservar sus descripciones y
+llaves; antes de cargar se comprueba que el Parquet local tenga exactamente las mismas columnas y tipos.
+
+| Tabla | Filas | Llave sustituta |
+|---|---|---|
+| `dim_fecha` | 132 | `fecha_key` (AAAAMM01) |
+| `dim_entidad` | 32 | `entidad_key` |
+| `dim_cancion` | 300 | `cancion_key` |
+| `dim_tipo_violencia` | 28 | `tipo_violencia_key` (−1 = no aplica) |
+| `dim_contexto_entidad` | 363 | `contexto_key` (32 × 11 más 11 filas nacionales) |
+| `fact_violencia` | 89,817 | grano: fecha × entidad × tipo de violencia |
+| `fact_consumo_musical` | 237,728 | grano: fecha × entidad × canción |
+: Filas por tabla en `misoginia_dw` {#tbl-filas}
+
+**Consistencia** (consultas ejecutadas en BigQuery por `carga_dw`; resultado en
+`pipeline/data/data-processed/mart/consistencia_dw.parquet`):
+
+| Revisión | `fact_violencia` | `fact_consumo_musical` |
+|---|---|---|
+| Filas | 89,817 | 237,728 |
+| Combinaciones distintas del grano | 89,817 | 237,728 |
+| Llaves nulas | 0 | 0 |
+| Llaves huérfanas en `dim_fecha` | 0 | 0 |
+| Llaves huérfanas en `dim_entidad` | 0 | 0 |
+| Llaves huérfanas en `dim_cancion` | — | 0 |
+| Llaves huérfanas en `dim_tipo_violencia` | 0 | 0 |
+| Llaves huérfanas en `dim_contexto_entidad` | 0 | 0 |
+: Consistencia del DW {#tbl-consistencia}
+
+El grano es único en los dos hechos (filas = combinaciones distintas de llaves) y no hay llaves nulas ni huérfanas.
+Las sumas en el DW son iguales a las locales: 5,115,477 carpetas, 767,029 víctimas mujeres y 69,008,475,449 streams
+estimados.
+
+## DataMart: consultas ejecutadas
+
+Las siete vistas de E1 se ejecutaron sobre el DW poblado (resultados completos en
+`pipeline/data/data-processed/mart/`). Los resultados de música salen todavía de las 300 canciones de E1.
+
+**P1a · Proporción misógina por año y género** (`ROLLUP` con `GROUPING`). Entre los streams de canciones con
+etiqueta, el 39 % es de canciones misóginas en toda la ventana, entre 11 % (2018) y 48 % (2020). La lectura más
+importante es la columna de cobertura: solo el 13 % de los streams tiene etiqueta, y en 2025 apenas el 7 %, así que
+la proporción es todavía muy inestable.
+
+**P1b · Proporción misógina por entidad** (`RANK`, promedio con ventana). En 2025 va de 33 % (Guanajuato) a 51 %
+(Sonora). Es una estimación: el 96 % del consumo de cada estado se repartió con Trends del propio artista.
+
+**P2a y P2b · Serie mensual y correlación nacional** (funciones de ventana y `CORR`). Con 132 meses, la proporción
+misógina se correlaciona positivamente con las tasas de violencia familiar (0.35), sexual (0.31) y de feminicidio
+(0.23), y casi nada con el homicidio de control (0.07). Con la física y las desapariciones la correlación es
+negativa (−0.15 y −0.36); la física ya se mide solo con víctimas mujeres (hallazgo H3). Las dos series crecen en el tiempo, así que buena parte de
+esa correlación puede venir de la tendencia común y no de una relación entre ellas; el modelado tendrá que quitar
+la tendencia antes de concluir.
+
+**P2c · Panel entidad × año** (`CORR` como función de ventana). Entre estados la correlación es débil (0.22 sexual,
+0.15 familiar, 0.05 feminicidio). Por el hallazgo H4, la comparación entre estados también refleja cómo registra
+cada fiscalía.
+
+**P3 · Tendencia por tipo** (media móvil de 12 meses con marco `RANGE` y cambio anual). Entre las canciones
+misóginas etiquetadas, la sexualización domina en todos los años; la psicológica (odio) y la física (violencia)
+aparecen poco.
+
+**P4 · Tipos en la música frente a los oficiales** (`RANK` y `UNPIVOT`). En la música misógina etiquetada domina la
+violencia sexual (89 %), seguida de la psicológica (7 %) y la física (5 %). En el SESNSP domina la familiar (51 %) y
+la sexual es tercera (14 %); en la ENDIREH 2021 la más frecuente es la psicológica (29.4 %), luego la sexual (23.3 %).
+La sexual es el único tipo que ocupa un lugar alto en las tres fuentes.
+
+## Prueba externa
+
+Un integrante que no escribió el pipeline lo ejecuta desde un clon limpio siguiendo el
+[README](https://github.com/jzarcoo/almacenes-mineria-proyecto/blob/main/pipeline/README.md) y anota aquí el
+resultado.
+
+| Campo | Resultado |
+|---|---|
+| Integrante | *(por llenar)* |
+| Fecha | *(por llenar)* |
+| Sistema y versión de Python | *(por llenar)* |
+| Comando | `python run_pipeline.py --sin-carga` |
+| ¿Terminó sin errores? | *(por llenar)* |
+| Tiempo | *(por llenar)* |
+| Problemas y cómo se resolvieron | *(por llenar)* |

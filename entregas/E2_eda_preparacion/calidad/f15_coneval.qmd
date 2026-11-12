@@ -1,0 +1,26 @@
+---
+title: "F15. CONEVAL — pobreza por entidad"
+---
+
+Anexo estadístico de pobreza; una hoja por entidad con el formato del documento.
+
+| Tabla | Filas | Columnas leídas | Llave natural | Filas idénticas | Llave repetida |
+|---|---|---|---|---|---|
+| `stg_coneval_pobreza` | 1,062 | 7 | hoja y fila | 0 | 0 |
+
+## Qué encontró la inspección
+
+- **Formato de presentación:** 34 hojas (32 entidades, la nacional y "Contenido") y 39 filas por hoja, con títulos, notas y celdas vacías. De ahí el 31 a 47 % de nulos en las columnas de valores: es estructura del documento, no faltantes.
+- **33 celdas con el texto "Porcentaje"** en las columnas numéricas: son encabezados.
+- **La fila 9 es el porcentaje de población en pobreza;** las columnas `c04` a `c07` son 2016, 2018, 2020 y 2022.
+
+## Qué se decidió
+
+| Problema | Afecta | Decisión | Por qué |
+|---|---|---|---|
+| Títulos, notas y encabezados | La mayor parte de las filas | Usar solo la fila 9 de cada entidad | Es el indicador que define E1 |
+| Solo años pares hasta 2022 | 224 de 352 celdas | Interpolar 2017, 2019 y 2021; repetir el más cercano en 2015 y 2023–2025 | La pobreza cambia despacio |
+
+Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+
+[← Volver a calidad por fuente](../calidad.qmd)

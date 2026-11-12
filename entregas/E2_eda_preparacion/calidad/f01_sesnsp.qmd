@@ -1,0 +1,35 @@
+---
+title: "F1. SESNSP — carpetas y víctimas"
+---
+
+Incidencia delictiva del fuero común por entidad, delito y mes. Es la fuente principal de violencia para P2 y P4.
+
+| Tabla | Filas | Columnas leídas | Llave natural | Filas idénticas | Llave repetida |
+|---|---|---|---|---|---|
+| `stg_sesnsp_delitos` | 34,496 | 19 | año, entidad, bien jurídico, tipo, subtipo y modalidad | 0 | 0 |
+| `stg_sesnsp_victimas` | 80,960 | 21 | la misma, más sexo y rango de edad | 0 | 0 |
+
+## Qué encontró la inspección
+
+- **Completa en el tiempo y en territorio:** 2015 a 2025, 11 años, y los 32 nombres de entidad coinciden con el catálogo. El SESNSP es la referencia de nombres para las demás fuentes.
+- **Sin duplicados** en ninguna de las dos tablas.
+- **Modalidad "No especificado":** 5.1 % de las filas de carpetas y 13.5 % de las de víctimas. Es una categoría válida del delito (por ejemplo, homicidio "con otro elemento" o "no especificado"), no un faltante.
+- **Víctimas de sexo "No identificado":** 13.9 % de las filas. Son 251,413 víctimas, el 11.3 % de las de los delitos que se analizan.
+- **Edad no especificada:** 42.6 % de las filas de víctimas tienen rango "No especificado" o "No identificado". Entre las mujeres son 77,637 víctimas, el 10.2 %.
+- **El archivo de víctimas no cubre todos los delitos.** Solo trae homicidio, feminicidio, lesiones y otros contra la vida; los delitos sexuales y la violencia familiar solo tienen carpetas.
+- **Feminicidio en cero al inicio de la serie** en 8 estados: Aguascalientes hasta 2018-04, Baja California Sur hasta 2019-10, Chihuahua hasta 2017-11, Nayarit hasta 2017-06, Quintana Roo hasta 2017-03, Hidalgo y Zacatecas hasta 2016-02 y Tamaulipas hasta 2016-03.
+
+## Qué se decidió
+
+| Problema | Afecta | Decisión | Por qué |
+|---|---|---|---|
+| Delitos sin tipo de la LGAMVLV (robo, fraude…) | 325,248 de 413,952 filas (78.6 %) | Excluir | No responden P2; el mapeo de E1 conserva 12 subtipos |
+| Delito sin archivo de víctimas | 38,016 de 88,704 filas | Dejar nulo | Es un faltante estructural, no un cero |
+| Víctimas de sexo no identificado | 11.3 % de las víctimas | No asignarlas a ningún sexo | Repartirlas inventaría víctimas; el conteo de mujeres es un mínimo |
+| Mujeres sin edad | 10.2 % | No imputar | La falta de edad depende de la fiscalía de cada estado |
+| Feminicidio en cero antes de registrarse | 900 de 16,896 celdas (5.3 %) | Volver nulo | La fiscalía aún no clasificaba el delito; no es que no hubiera |
+| Meses atípicos | 320 dentro de su estado; 625 entre estados | Conservar | Son picos reales de denuncias: el fenómeno de P2 |
+
+Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+
+[← Volver a calidad por fuente](../calidad.qmd)

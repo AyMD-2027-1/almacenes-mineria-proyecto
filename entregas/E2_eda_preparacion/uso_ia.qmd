@@ -1,0 +1,68 @@
+---
+title: "Documentación de uso de herramientas de IA"
+subtitle: "Entrega E2"
+---
+
+## 1. Herramienta
+
+Claude (Anthropic), modelo Opus 5.5, mediante **Claude Code**: un asistente con acceso a la terminal, a los
+archivos del proyecto y, cuando lo autorizamos, a nuestro navegador. Las operaciones que escriben en BigQuery
+(subir tablas a staging y cargar el DW) las ejecutamos nosotros desde la terminal.
+
+## 2. Tareas
+
+| Tarea | Qué hizo la IA | Qué hicimos nosotros |
+|---|---|---|
+| Plan de trabajo | Propuso un plan a partir del instructivo de E2 y de la documentación de E1 | Decidimos el alcance: ignorar la fecha original por la prórroga, llenar `es_misogina` solo con MiSonGyny, usar polars, ampliar Kworb |
+| Código del pipeline | Escribió los módulos de `pipeline/src/` (ingesta, ensamblado, EDA, limpieza, reducción, muestreo, verificación, pesos, estrella y carga) y `run_pipeline.py`, siguiendo la estructura de la práctica 5 del laboratorio | Pedimos las convenciones (estructura del laboratorio, docstrings con Args y Returns, comentarios sin "pasos"), corrimos cada etapa con nuestros datos y revisamos las salidas |
+| Descarga de fuentes | Escribió los scripts de Kworb, MusicBrainz, ENDIREH y ENDUTIH; descargó Google Trends desde nuestro navegador y los tabulados de INEGI | Autorizamos el uso del navegador, revisamos las tablas resultantes y subimos las tablas a staging |
+| Estadística y figuras | Calculó las medidas, Gini, entropía, χ², correlación y PCA, y generó las figuras | Revisamos cada figura y pedimos cambios |
+| Interpretación | Propuso lecturas de los resultados y borradores de hallazgos | Elegimos los hallazgos y cuestionamos los que no se sostenían (sección 4) |
+| Páginas Quarto | Redactó borradores de las páginas de E2 | Revisamos, pedimos reorganizar (por ejemplo, separar los hallazgos y no repetir la limitación de Kworb en cada página) |
+
+## 3. Prompts (resumen fiel)
+
+- "Vamos a comenzar E2 [...] plan de trabajo para hacerlo juntos tú y yo; no abuses de BigQuery, no tenemos muchos
+  créditos; no puedes hacer commits."
+- "El código tiene que seguir las mismas convenciones que vimos en laboratorio [...] cuando documentes no pongas
+  pasos ni flechas en comentarios, que se vea lo más humano posible, todas las funciones con documentación, Args y
+  Returns."
+- "Escríbelo" (para cada módulo, después de revisar lo que proponía).
+- "¿Realmente son repetidos?", "dame un ejemplo", "¿por qué habías dicho que era duplicado?" (sobre el RNPDNO).
+- "Haz una página por cada fuente con lo que encontró la inspección", "los hallazgos ponlos en otra página",
+  "realiza las páginas de Quarto de la parte A [texto del instructivo]".
+- "Amplía Kworb", "baja Trends", "ENDIREH: busca los tabulados de INEGI".
+- "Necesito que me digas qué quitaste, cómo uniste, cómo imputaste, ¿vale la pena el PCA?"
+
+## 4. Verificación
+
+**Lo que se ejecutó y se comprobó con los datos:**
+
+- El pipeline completo corre de principio a fin (`python run_pipeline.py`) y se detiene si falla alguna de sus
+  validaciones (ver [Pipeline](pipeline.qmd)).
+- Las fórmulas de Gini, entropía y η² se compararon con los ejemplos resueltos de los apuntes del curso y dieron el
+  mismo resultado.
+- Las sumas se comprobaron en cada paso: las carpetas, víctimas, streams y semanas del dataset analítico son las
+  mismas que las de staging; el reparto por entidad conserva el consumo nacional; las sumas del DW son iguales a
+  las locales.
+- Contrastamos cifras con fuentes publicadas: la prevalencia nacional de la ENDIREH 2021 (42.8 %) y el porcentaje de
+  usuarios de internet de la ENDUTIH 2024 (83.1 %) coinciden con lo que publica INEGI; Trends de reguetón 2021
+  coincide con la descarga de E1 (Spearman 0.99); los streams de Kworb coinciden con Kaggle para las mismas canciones.
+- Las vistas del DataMart se probaron en seco en BigQuery antes de crearlas.
+
+**Lo que la IA hizo mal y corregimos:**
+
+- Afirmó que 4,354 registros del RNPDNO eran duplicados y los eliminó. Al pedirle ejemplos vimos que son personas
+  distintas: no hay identificador porque al cargar staging se quitaron los nombres. Se cambió la decisión a
+  conservarlos.
+- Varios títulos de figuras decían algo que la figura no mostraba; se reescribieron contra los datos.
+- El mapa tapaba la Ciudad de México con el Estado de México; los colores de cada tipo de violencia cambiaban entre
+  figuras.
+- En una tabla de cobertura escribió cifras de 2021 que no correspondían a los datos; se corrigieron contra la tabla
+  que genera el pipeline.
+- Al ampliar el pipeline agregó tablas a la configuración que todavía no existían y la inspección dejó de correr.
+- No había detectado que las carpetas de lesiones incluyen víctimas hombres hasta que revisamos la violencia física
+  por sexo.
+
+**Interpretaciones.** Solo se publicaron las que se respaldan con una cifra o figura del propio dataset. Las que no
+se sostuvieron (por ejemplo, que un género musical es más misógino que otro) se reportan como no significativas.

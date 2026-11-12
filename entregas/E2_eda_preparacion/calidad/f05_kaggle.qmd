@@ -1,0 +1,31 @@
+---
+title: "F5. Kaggle — Spotify Charts de México"
+---
+
+Charts diarios de Spotify (Top 200 y Viral 50) de 2017 a 2021. Se usa para **validar** Kworb y medir su cobertura, no en el almacén.
+
+| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llave repetida |
+|---|---|---|---|---|---|
+| `stg_kaggle_charts_mx` | 448,832 | 7 | chart, fecha y posición | 0 | 0 |
+
+## Qué encontró la inspección
+
+| Chart | Filas | Sin streams | Desde | Hasta |
+|---|---|---|---|---|
+| top200 | 358,343 | 0 | 2017-01-01 | 2021-11-30 |
+| viral50 | 90,489 | 90,489 | 2017-01-01 | 2021-12-31 |
+
+- **Viral 50 no publica streams:** de ahí sale el 20.2 % de nulos en `streams`.
+- **El Top 200 termina el 30 de noviembre de 2021.**
+- El ID de Spotify viene dentro de la URL de la canción.
+
+## Qué se decidió
+
+| Problema | Afecta | Decisión | Por qué |
+|---|---|---|---|
+| Viral 50 sin streams | 90,489 filas | Excluir | No sirve para medir consumo |
+| Solo 2017–2021 | — | Usar solo para validar y medir cobertura | No cubre la ventana; mezclarla con Kworb rompería la serie |
+
+Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+
+[← Volver a calidad por fuente](../calidad.qmd)

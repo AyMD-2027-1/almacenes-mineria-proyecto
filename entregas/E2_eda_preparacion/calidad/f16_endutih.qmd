@@ -1,0 +1,43 @@
+---
+title: "F16. ENDUTIH — usuarios de internet"
+---
+
+Encuesta de disponibilidad y uso de tecnologías de la información. Da los usuarios de internet de cada entidad, que
+entran en el peso del reparto del consumo.
+
+| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Origen |
+|---|---|---|---|---|---|
+| `stg_endutih_usuarios` | 58,080 | 5 leídas (entidad, sexo, edad, factor de expansión, uso de internet) | No está entre las columnas leídas | 1,146 | E1, microdato 2024 |
+| `stg_endutih_usuarios_entidad_anio` | 330 | 4 | año y entidad | 0 | **E2**, tabulados 2015–2025 |
+
+## Por qué se agregó una tabla en E2
+
+En E1 solo estaba el microdato de 2024, y el reparto usaba esos usuarios para toda la década. Pero el acceso creció
+de 56 % (2015) a 87 % (2025) y de forma desigual: Chiapas pasó de 33 % a 74 % y la Ciudad de México de 73 % a 96 %.
+Con 2024 para todo, en 2015 el peso de Chiapas quedaba 36 % inflado y el de la Ciudad de México 27 % por debajo.
+
+Se tomaron los tabulados de INEGI "Usuarios de internet, por entidad federativa, según sexo" de cada año
+(`src/ingestion/endutih.py`, columna "Total, Absolutos"). **INEGI no publica tabulados de 2019.**
+
+## Qué encontró la inspección
+
+- **Microdato 2024:** sin nulos ni marcadores. Las 1,146 filas idénticas son personas distintas: el identificador
+  (vivienda, hogar y persona) no se leyó y el factor de expansión lo comparten las personas de una misma unidad de
+  muestreo. El porcentaje ponderado da 83.1 %, la cifra de INEGI.
+- **Tabulados:** 10 años × 33 filas (32 entidades y la nacional), sin nulos. En cada año la suma de los estados da el
+  total nacional; los usuarios pasan de 61.4 millones en 2015 a 104.9 millones en 2025.
+- **Validación cruzada:** en 2024, el porcentaje de los tabulados (sobre la población de 6 años y más de CONAPO)
+  difiere en promedio 1.7 puntos del microdato, por la diferencia entre la población de CONAPO y la estimación de INEGI.
+
+## Qué se decidió
+
+| Problema | Afecta | Decisión | Por qué |
+|---|---|---|---|
+| Filas idénticas en el microdato | 1,146 | Conservar | No son duplicados; quitarlas cambiaría el 83.1 % validado |
+| Un solo año en E1 | Toda la década | Usar los tabulados 2015–2025 | El reparto necesita los usuarios de cada año |
+| Falta 2019 | 32 de 352 celdas | Interpolar entre 2018 y 2020 | INEGI no lo publica; el crecimiento entre años es gradual |
+| Porcentaje | — | Usuarios / población de 6 años y más de CONAPO | Es el universo de la encuesta |
+
+Las cifras se reproducen con `python -m src.ingestion.endutih`, `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+
+[← Volver a calidad por fuente](../calidad.qmd)

@@ -1,0 +1,50 @@
+---
+title: "Datos agregados en E2"
+---
+
+Durante el EDA aparecieron huecos en los datos de E1 que limitaban las respuestas a P1–P4. Esta página reúne las
+fuentes que se agregaron o ampliaron en E2: por qué hicieron falta, cómo se obtuvieron y cómo se validaron. Todas
+se suben a staging como **tablas nuevas**; las de E1 no se modifican.
+
+## Por qué hizo falta ampliar Kworb
+
+El staging de E1 trae el historial de **300 canciones**: las de más streams acumulados del chart semanal de
+México. Al compararlas con el Top 200 diario de Kaggle (2017–2021) resultó que cubren muy poco del consumo:
+
+| Año | Canciones del Top 200 | En la muestra | Parte de las canciones | Parte de los streams |
+|---|---|---|---|---|
+| 2017 | 1,041 | 19 | 1.8 % | 5.7 % |
+| 2018 | 1,163 | 27 | 2.3 % | 6.5 % |
+| 2019 | 949 | 39 | 4.1 % | 16.6 % |
+| 2020 | 1,051 | 53 | 5.0 % | 23.0 % |
+| 2021 | 905 | 63 | 7.0 % | 26.4 % |
+
+Además, la muestra se inclina a los años recientes (15 canciones con streams en 2015 y 246 en 2025), así que
+cualquier medida de música de los primeros años sale de muy pocas canciones. Los streams de Kworb sí son
+confiables: para las mismas canciones coinciden con Kaggle (razón de 0.98 a 1.12 desde 2018). El problema es
+cuántas canciones hay, no cómo se miden. Por eso se descarga el Top 200 semanal completo, como E1 ya había
+planeado para la preparación.
+
+## Tablas nuevas de staging
+
+| Tabla | Filas | Para qué | Cómo se obtuvo | Validación | Estado |
+|---|---|---|---|---|---|
+| `stg_kworb_catalogo_completo` | 5,177 | Todas las canciones del Top 200 semanal de México, 2013–2026 | `src/ingestion/kworb.py`, lista `mx_weekly_totals` | Reproduce exactamente las 300 canciones de E1 | Descargando |
+| `stg_kworb_mx_semanal_completo` | — | Historial semanal de todas esas canciones | `src/ingestion/kworb.py`, página de cada canción, columna MX, 1.5 s entre páginas | Mismo formato que la tabla de E1 | Descargando |
+| `stg_musicbrainz_tags_completo` | 1,120 | Género de los artistas nuevos | `src/ingestion/musicbrainz.py`, mismo método que E1 | Mismo formato que la tabla de E1 | Descargando |
+| `stg_trends_macrogenero_anio` | 2,464 | Peso por género para repartir el consumo entre entidades | Google Trends, un tema por macrogénero (7) y una descarga por año 2015–2025 | Reguetón 2021 contra E1: Spearman 0.99 | En staging |
+| `stg_trends_artista_anio` | 11,840 | Peso por artista, caso principal del reparto de E1 | Google Trends, tema de cada artista del top 50 de cada año (109 artistas, 370 descargas) | 356 de 370 descargas con valor en 28 estados o más | En staging |
+| `stg_endireh_2021_prevalencias` | 3,960 | Prevalencias oficiales por tipo de violencia para P4 | Tabulados de INEGI, cuadro 21.2, pasado a formato largo sin cambiar valores (`src/ingestion/endireh.py`) | Prevalencia nacional 2021 = 42.8 %, la publicada | En staging |
+| `stg_endutih_usuarios_entidad_anio` | 330 | Usuarios de internet de cada año para el reparto (E1 solo tenía 2024) | Tabulados de INEGI 2015–2025 (`src/ingestion/endutih.py`); 2019 no existe y se interpola | La suma de estados da el total nacional cada año | Por subir |
+
+Las tablas de Trends y de artistas nuevos de Kworb se amplían cuando termina la descarga de Kworb, porque cambia el
+top 50 de artistas de cada año.
+
+## Efecto en el reparto del consumo por entidad
+
+Con los usuarios de internet de cada año, en lugar de los de 2024 para toda la década, cambian los pesos de los
+primeros años: en 2015, el peso de Chiapas bajaba 27 % y el de la Ciudad de México subía 27 % respecto de usar 2024.
+Con Trends por artista, el 95 % de los streams se reparte con el interés del propio artista, el 2.8 % con el de su
+género y el 2.3 % solo con los usuarios de internet.
+
+El detalle de calidad de cada fuente está en [Calidad por fuente](calidad.qmd).

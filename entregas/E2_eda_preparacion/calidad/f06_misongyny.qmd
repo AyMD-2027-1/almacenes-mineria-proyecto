@@ -1,0 +1,38 @@
+---
+title: "F6. MiSonGyny — etiquetas de misoginia"
+---
+
+Corpus de letras en español etiquetadas a mano: tarea 1, misógina o no (M/NM); tarea 2, categoría (H odio, S sexualización, V violencia, NR no relacionada).
+
+| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llave repetida |
+|---|---|---|---|---|---|
+| `stg_misongyny` | 4,913 | 5 | archivo de origen e id | 0 | 0 |
+
+## Qué encontró la inspección
+
+| Archivo | Filas | Sin etiqueta | Etiquetas |
+|---|---|---|---|
+| TRAIN_Task_1 | 2,104 | 0 | M, NM |
+| TRAIN_Task_2 | 1,168 | 0 | H, NR, S, V |
+| TEST_Task_1 | 527 | 527 | — |
+| TEST_Task_2 | 293 | 293 | — |
+| TEST_LABELS_Task_1 | 527 | 0 | M, NM |
+| TEST_LABELS_Task_2 | 293 | 0 | H, NR, S, V |
+| archivo_origen | 1 | 0 | label |
+
+- **La fila de encabezados se cargó como dato** (la última de la tabla).
+- **Las canciones de prueba no traen etiqueta:** está en los archivos TEST_LABELS, ligada por `id`. De ahí el 16.7 % de nulos.
+
+## Qué se decidió
+
+| Problema | Afecta | Decisión | Por qué |
+|---|---|---|---|
+| Encabezado como dato | 1 fila | Eliminar | No es una canción |
+| Etiquetas de prueba en otro archivo | 820 canciones | Unir por id | El corpus publica las respuestas por separado |
+| Canciones del chart que no están en el corpus | 258 de 300 | `es_misogina` nulo | Solo se usa la etiqueta humana; el clasificador es modelado |
+
+El emparejamiento es por título y artista, simplificados. Quedan 42 canciones (16 misóginas, 26 no), el 13 % de los streams; 19 títulos iguales de otro artista se descartaron.
+
+Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+
+[← Volver a calidad por fuente](../calidad.qmd)

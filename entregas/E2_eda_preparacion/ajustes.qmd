@@ -1,0 +1,22 @@
+---
+title: "Ajustes a E1"
+---
+
+El EDA no cambió el grano, las dimensiones ni el DDL de E1: las siete tablas del esquema estrella se poblaron tal
+como se diseñaron. Sí cambiaron algunas fuentes y dos consultas del DataMart. La versión original de E1 se conserva
+sin cambios en `entregas/E1_arquitectura_dw/`; la versión vigente (E1 v2) está en `sql/` y en `pipeline/`.
+
+**No hay pivote.** El objetivo de minería de datos, las preguntas P1–P4 y el criterio de éxito de E0 siguen iguales.
+
+| # | Qué se encontró | Antes (E1) | Después (E2) | Por qué sigue en la línea de E0 |
+|---|---|---|---|---|
+| 1 | Las 300 canciones de Kworb cubrían del 6 al 26 % de los streams del Top 200 | `stg_kworb_mx_semanal` y `stg_kworb_catalogo_canciones` con 300 canciones | Top 200 semanal completo (5,177 canciones) en `stg_kworb_*_completo` y búsqueda de 1,120 artistas más en `stg_musicbrainz_tags_completo`; las tablas de E1 no se modifican | P1 habla de "la música más escuchada"; con 300 canciones se medía una parte pequeña. E1 ya preveía la descarga completa en la preparación |
+| 2 | Google Trends solo tenía reguetón de 2021 | `stg_trends_regueton_tema_2021` | `stg_trends_macrogenero_anio` (7 géneros × 11 años) y `stg_trends_artista_anio` (top 50 de artistas por año) | Es el reparto por entidad que E1 definió (`artista_anio`, `genero_anio`, `usuarios_internet`); faltaban los datos |
+| 3 | Los usuarios de internet solo eran de 2024 y el acceso creció de 56 % a 87 % | `stg_endutih_usuarios` (microdato 2024) | Además `stg_endutih_usuarios_entidad_anio` con tabulados 2015–2025; 2019 interpolado | Con 2024 para toda la década, el peso de Chiapas en 2015 quedaba 36 % inflado |
+| 4 | La ENDIREH estaba en el catálogo pero no en staging | — | `stg_endireh_2021_prevalencias` (tabulados de INEGI, cuadro 21.2) | Llena las columnas `prevalencia_*` que el DDL de E1 ya tenía para P4 |
+| 5 | La vista `p3_tendencia_tipo_violencia` no se podía ejecutar: la CTE y la columna se llamaban `participacion` | `FROM participacion` | La CTE se llama `con_participacion` | Corrección de un error; la lógica no cambia |
+| 6 | Las carpetas de lesiones son 56 % de víctimas hombres (hallazgo H3) | En P2 el indicador de todos los tipos era `carpetas` | En `p2_serie_mensual_nacional` y `p2_panel_entidad_anio` la física usa `victimas_mujeres` | P2 es sobre violencia contra las mujeres |
+| 7 | Las vistas del DataMart en BigQuery eran de una versión anterior a la final de E1 (usaban la columna `evento_restriccion_musical`, que ya no existe) | Vistas creadas el 10 de octubre | Se recrean desde `sql/consultas_mart.sql` en cada carga | El repositorio es la fuente de verdad |
+| 8 | El RNPDNO tiene 70 % de mujeres sin fecha o entidad | Indicador de P2 | Fuente secundaria de contraste | P2 sigue cubierta por el SESNSP; se documenta la limitación |
+| 9 | Natural Earth y Trends usan el código anterior de la Ciudad de México | — | `dim_entidad.iso_3166_2` guarda `MX-CMX`, el código vigente | El DDL lo pedía así (`MX-CMX`, `MX-YUC`…) |
+| 10 | El sitio no tenía idioma declarado y las referencias salían en inglés | — | `lang: es` en `_quarto.yml` | Formato del sitio |

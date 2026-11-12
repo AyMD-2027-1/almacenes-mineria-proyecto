@@ -1,0 +1,26 @@
+---
+title: "F3. CONAPO — población a mitad de año"
+---
+
+Proyecciones de población por entidad, año, sexo y edad. Da el denominador de todas las tasas y la base del contexto por entidad y año.
+
+| Tabla | Filas | Columnas leídas | Llave natural | Filas idénticas | Llave repetida |
+|---|---|---|---|---|---|
+| `stg_conapo_poblacion` | 77,440 | 6 | año, entidad, edad y sexo | 0 | 0 |
+
+## Qué encontró la inspección
+
+- **Completa:** sin nulos ni marcadores. Las 77,440 filas son 11 años × 32 entidades × 2 sexos × 110 edades.
+- **Se leyó filtrada** en BigQuery a 2015–2025 para no escanear años que no se usan.
+- **Tres nombres cortos:** COAHUILA, VERACRUZ y MICHOACAN, en lugar de los nombres completos del SESNSP.
+
+## Qué se decidió
+
+| Problema | Afecta | Decisión | Por qué |
+|---|---|---|---|
+| Nombres de entidad distintos al SESNSP | 3 entidades | Tabla de equivalencias en `config.yaml` | Une con la clave INEGI sin perder filas |
+| — | — | Base del contexto: 32 × 11 = 352 filas | Es la única fuente con todas las entidades en todos los años |
+
+Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+
+[← Volver a calidad por fuente](../calidad.qmd)

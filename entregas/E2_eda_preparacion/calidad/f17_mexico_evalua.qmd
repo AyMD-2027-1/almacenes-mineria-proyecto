@@ -1,0 +1,27 @@
+---
+title: "F17. México Evalúa — impunidad"
+---
+
+Índices de impunidad por delito y entidad del reporte Hallazgos 2023, extraídos del PDF.
+
+| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llave repetida |
+|---|---|---|---|---|---|
+| `stg_mexico_evalua_12_indices` | 314 | 4 | delito, entidad y año | 0 | 0 |
+
+## Qué encontró la inspección
+
+- **12 delitos;** para feminicidio hay 24 filas: la nacional y 23 estados. **9 estados no tienen dato.**
+- **Nombres de entidad cortos** (ESTADO DE MEXICO, MICHOACAN, VERACRUZ, COAHUILA) y "NACIONAL".
+- **Un solo año:** 2023.
+
+## Qué se decidió
+
+| Problema | Afecta | Decisión | Por qué |
+|---|---|---|---|
+| Nombres distintos | 4 entidades | Tabla de equivalencias | Une sin perder filas |
+| Estados sin medición | 9 de 32 | Dejar nulo | No hay forma de estimarlo |
+| Solo 2023 | 230 de 352 celdas | Repetir 2023 en los demás años | **Es la decisión más débil**; la impunidad puede cambiar más que la pobreza |
+
+Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+
+[← Volver a calidad por fuente](../calidad.qmd)

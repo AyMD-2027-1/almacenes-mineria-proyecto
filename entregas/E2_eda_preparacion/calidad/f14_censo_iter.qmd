@@ -1,0 +1,26 @@
+---
+title: "F14. Censo 2020 ITER — viviendas con internet"
+---
+
+Principales resultados por localidad del Censo 2020. Se leyeron solo los totales estatales (`MUN = 000`, `LOC = 0000`).
+
+| Tabla | Filas | Columnas leídas | Llave natural | Filas idénticas | Llave repetida |
+|---|---|---|---|---|---|
+| `stg_censo_iter` | 33 | 9 | entidad | 0 | 0 |
+
+## Qué encontró la inspección
+
+- **Completa a nivel estatal:** 32 entidades y el total nacional, sin nulos. Las celdas confidenciales (`*`) del ITER solo aparecen en localidades pequeñas, que no se leyeron.
+- **Un solo año:** 2020.
+
+## Qué se decidió
+
+| Problema | Afecta | Decisión | Por qué |
+|---|---|---|---|
+| Fila del total nacional | 1 | Excluir del contexto estatal | No es una entidad |
+| Solo 2020 | 320 de 352 celdas del contexto | Repetir el valor de 2020 en los demás años | El indicador cambia despacio |
+| Redundante con la pobreza (ρ = −0.86) | — | Fuera del análisis; se conserva en la dimensión | La pobreza se mide en más años |
+
+Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+
+[← Volver a calidad por fuente](../calidad.qmd)

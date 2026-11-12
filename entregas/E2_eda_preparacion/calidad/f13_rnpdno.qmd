@@ -1,0 +1,43 @@
+---
+title: "F13. RNPDNO — personas desaparecidas"
+---
+
+Versión pública del Registro Nacional de Personas Desaparecidas y No Localizadas. En staging se quitaron las columnas de nombre y apellido para proteger la identidad.
+
+| Tabla | Filas | Columnas | Llave natural | Filas idénticas |
+|---|---|---|---|---|
+| `stg_rnpdno` | 116,945 | 8 | **No hay** | 4,354 |
+
+## Qué encontró la inspección
+
+| Columna | Nulos | Marcadores | % | Cuáles |
+|---|---|---|---|---|
+| consecutivo_reportes_por_persona | 5,980 | 0 | 5.1 | |
+| edad | 8,275 | 33,747 | 35.9 | ELIMINADO N |
+| sexo | 0 | 38,076 | 32.6 | ELIMINADO N, INDETERMINADO |
+| nacionalidad | 2 | 45,979 | 39.3 | ELIMINADO N, SE DESCONOCE |
+| fecha_de_desaparicion | 59,597 | 33,945 | 80.0 | ELIMINADO N |
+| entidad_de_desaparicion | 0 | 38,261 | 32.7 | ELIMINADO N, SE DESCONOCE |
+| autoridad_que_reporto | 0 | 38,024 | 32.5 | ELIMINADO N, SE DESCONOCE |
+
+- **No hay identificador de persona.** `consecutivo_registro` solo toma 8 valores. Las 4,354 filas idénticas **no son duplicados**: 3,749 tienen todos sus datos testados y se ven iguales aunque sean personas distintas.
+- **37,460 registros (32 %)** tienen el sexo, la entidad y la autoridad reservados a la vez.
+- **Solo el 20 % tiene fecha válida** (23,403), del 1968-05-01 al 2023-08-20. La fuente termina en agosto de 2023.
+- **De las 18,770 mujeres, 13,151 (70 %)** no tienen fecha o entidad.
+- **7 edades mayores a 110 años** (máxima: 1832).
+- **Nombres de entidad cortos** (ESTADO DE MEXICO, VERACRUZ, MICHOACAN, COAHUILA) y 801 con entidad "SE DESCONOCE".
+
+## Qué se decidió
+
+| Problema | Afecta | Decisión | Por qué |
+|---|---|---|---|
+| Filas idénticas | 4,354 | **Conservar** | Sin identificador de persona no se puede afirmar que sean la misma |
+| Edad imposible | 7 | Volver nula | Error de captura; la fecha y la entidad sí sirven |
+| Datos testados | 37,460 | Excluir del conteo de mujeres | No se sabe si son mujeres ni dónde desaparecieron |
+| Mujeres sin fecha o entidad | 13,151 | Excluir y reportar como límite | No se pueden ubicar en el grano |
+| Meses después de agosto de 2023 | 28 meses | No rellenar con cero | Un cero diría que no hubo desapariciones |
+| Calidad general | — | **Fuente secundaria de P2** | Con 260 a 640 mujeres por año no sirve como indicador principal |
+
+Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+
+[← Volver a calidad por fuente](../calidad.qmd)

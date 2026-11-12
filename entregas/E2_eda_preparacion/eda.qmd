@@ -1,0 +1,53 @@
+---
+title: "Parte A · Análisis exploratorio"
+---
+
+El análisis exploratorio se hace sobre el **dataset analítico** ensamblado al grano declarado en E1, **antes de
+limpiar**: solo se convirtieron tipos y fechas. Así lo que se describe es el dato tal como llega, y la limpieza
+(Parte B) se decide a partir de lo que aquí se encuentra.
+
+| Página | Qué contiene |
+|---|---|
+| [Estadística descriptiva](eda_descriptiva.qmd) | Localización, variabilidad y forma de las variables numéricas; comparación entre años, regiones y géneros; heterogeneidad de las categóricas |
+| [Concentración y heterogeneidad](eda_concentracion.qmd) | Gini con curva de Lorenz y entropía normalizada, comparados por año y por entidad |
+| [Hallazgos](hallazgos.qmd) | Hallazgos con su evidencia, tipo, pregunta de E0 y consecuencia para la preparación |
+| [Calidad por fuente](calidad.qmd) | Cada fuente a su granularidad original: faltantes, duplicados, marcadores y decisiones |
+| [Datos agregados en E2](datos_nuevos.qmd) | Fuentes que se agregaron o ampliaron, entre ellas la ampliación de Kworb |
+
+Todo se reproduce con `python run_pipeline.py --solo eda` desde `pipeline/`; las tablas completas quedan en
+`pipeline/data/data-processed/eda/` y las figuras en `img/`.
+
+## Datos de partida
+
+El dataset analítico tiene tres tablas, una por grano de E1. Todas cubren las **32 entidades federativas** (el
+consumo es nacional) y la ventana **enero de 2015 a diciembre de 2025**.
+
+| Tabla | Grano | Filas | Variables | Fuentes | Periodo con dato |
+|---|---|---|---|---|---|
+| `analitico_violencia` | entidad × delito o registro × mes | 415,065 | 12 | SESNSP (F1), RNPDNO (F13) | 2015-01 a 2025-12; RNPDNO hasta 2023-08 |
+| `analitico_consumo` | canción × mes, nacional | 9,046 | 11 | Kworb (F4), MusicBrainz (F8) | 2015-01 a 2025-12 |
+| `analitico_contexto` | entidad × año | 352 | 17 | CONAPO (F3), Censo (F14), ENDUTIH (F16), CONEVAL (F15), México Evalúa (F17), ENDIREH (F2) | 2015 a 2025; cada indicador solo en sus años de medición |
+
+### Variables, fuente y regla de agregación
+
+| Tabla | Variable | Fuente | Granularidad original | Cómo llega al grano |
+|---|---|---|---|---|
+| violencia | `cve_ent` | SESNSP, RNPDNO | entidad | Clave INEGI; los nombres del RNPDNO pasan por la tabla de equivalencias |
+| violencia | `fecha` | SESNSP, RNPDNO | mes (SESNSP); día (RNPDNO) | El SESNSP trae una columna por mes; el RNPDNO se lleva al primer día del mes de desaparición |
+| violencia | `origen` | — | — | Marca SESNSP o RNPDNO |
+| violencia | `bien_juridico_afectado`, `tipo_de_delito`, `subtipo_de_delito`, `modalidad` | SESNSP | delito | Sin cambio; el RNPDNO recibe "Desaparición" |
+| violencia | `tipo_lgamvlv` | Mapeo de E1 (`config.yaml`) | subtipo de delito | Regla de mapeo del subtipo al tipo de la LGAMVLV |
+| violencia | `carpetas` | SESNSP, archivo de delitos | entidad × delito × mes | Sin agregación |
+| violencia | `victimas_mujeres`, `victimas_mujeres_menores`, `victimas_hombres` | SESNSP, archivo de víctimas; RNPDNO | víctimas por sexo y rango de edad; registro por persona | SESNSP: suma de las filas de cada sexo (menores = rango 0–17). RNPDNO: conteo de registros de mujeres por entidad y mes |
+| consumo | `track_id`, `artista`, `titulo` | Kworb | canción | Sin cambio |
+| consumo | `fecha`, `streams` | Kworb | semana (termina en jueves) | Cada semana se reparte entre los meses según cuántos de sus 7 días caen en cada uno; se conserva la suma |
+| consumo | `semanas_en_chart`, `mejor_posicion` | Kworb | semana | Se cuentan en el mes en que termina la semana |
+| consumo | `pais_artista`, `macrogenero`, `origen_genero`, `etiquetas_fuente` | MusicBrainz | artista | Primer resultado si el nombre coincide; macrogénero con las 5 etiquetas más votadas |
+| contexto | `poblacion_*` | CONAPO | entidad × año × sexo × edad | Suma por sexo y grupo de edad |
+| contexto | `usuarios_internet`, `pct_usuarios_internet` | ENDUTIH | entidad × año (tabulados) | Sin agregación; el porcentaje es sobre la población de 6 años y más |
+| contexto | `pct_viviendas_internet` | Censo 2020 | localidad | Se usa el total estatal publicado |
+| contexto | `pct_pobreza` | CONEVAL | entidad, años pares | Fila de pobreza del anexo estadístico |
+| contexto | `indice_impunidad` | México Evalúa | entidad, 2023 | Índice del feminicidio |
+| contexto | `prevalencia_*` | ENDIREH | entidad, 2016 y 2021 | Estimación con agresor "total" del cuadro 21.2 |
+
+
