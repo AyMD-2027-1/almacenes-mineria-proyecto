@@ -775,5 +775,747 @@
     "title": "Documentación de uso de herramientas de IA",
     "section": "5. Revisión y validación de nuestra parte",
     "text": "5. Revisión y validación de nuestra parte\nLas decisiones de alcance, los criterios y la elección de fuentes fueron nuestras; la herramienta nos ayudó a hacer la búsqueda y la verificación más rápido."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad.html",
+    "href": "entregas/E2_eda_preparacion/calidad.html",
+    "title": "Calidad de los datos por fuente",
+    "section": "",
+    "text": "Diagnóstico de cada tabla de staging tal como llega de BigQuery, antes de limpiar, y lo que se decidió en cada caso. El diagnóstico lo produce python -m src.eda.inspeccion y cada tratamiento queda con su conteo en el registro de limpieza (pipeline/logs/registro_limpieza.csv).\n\n\n\nFuente\nTablas en staging\nFilas\nProblema principal\nDecisión principal\n\n\n\n\nF1. SESNSP\n2\n115,456\nFeminicidio en cero antes de que los estados lo registraran; víctimas sin sexo o edad\nCeros iniciales a nulo; no se imputan sexo ni edad\n\n\nF2. ENDIREH 2021\n1 (nueva en E2)\n3,960\nSolo 2016 y 2021\nNulo fuera de los levantamientos\n\n\nF3. CONAPO\n1\n77,440\nNombres de entidad cortos\nEquivalencias\n\n\nF4. Kworb\n2 (+2 en E2)\n42,717\nMuestra de 300 canciones con cobertura baja (detalle)\nAmpliar al Top 200 completo\n\n\nF5. Kaggle\n1\n448,832\nViral 50 sin streams; solo 2017–2021\nSolo para validar\n\n\nF6. MiSonGyny\n1\n4,913\nEncabezado como dato; etiquetas de prueba aparte\nEliminar el encabezado; unir por id\n\n\nF8. MusicBrainz\n1 (+1 en E2)\n112\n18 búsquedas devuelven a otro artista\nDescartar; “sin etiqueta”\n\n\nF11. Google Trends\n1 (+2 en E2)\n14,336\nSolo había reguetón 2021\nDescargar género y artista por año\n\n\nF13. RNPDNO\n1\n116,945\n32 % testado, 80 % sin fecha, sin identificador de persona\nFuente secundaria; no se eliminan filas iguales\n\n\nF14. Censo 2020\n1\n33\nUn solo año\nSe repite; fuera del análisis por redundante\n\n\nF15. CONEVAL\n1\n1,062\nFormato de presentación\nSolo la fila 9; interpolar\n\n\nF16. ENDUTIH\n1 (+1 en E2)\n58,410\nEn E1 solo 2024; falta 2019 en INEGI\nTabulados 2015–2025; 2019 interpolado\n\n\nF17. México Evalúa\n1\n314\n9 estados sin dato; un solo año\nNulo; repetir 2023\n\n\nF18. Natural Earth\n1\n33\nFila MX-X01~ sin estado\nEliminar\n\n\n\n\n\n\n Volver arriba"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda.html",
+    "href": "entregas/E2_eda_preparacion/eda.html",
+    "title": "Parte A · Análisis exploratorio",
+    "section": "",
+    "text": "El análisis exploratorio se hace sobre el dataset analítico ensamblado al grano declarado en E1, antes de limpiar: solo se convirtieron tipos y fechas. Así lo que se describe es el dato tal como llega, y la limpieza (Parte B) se decide a partir de lo que aquí se encuentra.\nTodo se reproduce con python run_pipeline.py --solo eda desde pipeline/; las tablas completas quedan en pipeline/data/data-processed/eda/ y las figuras en img/."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda.html#datos-de-partida",
+    "href": "entregas/E2_eda_preparacion/eda.html#datos-de-partida",
+    "title": "Parte A · Análisis exploratorio",
+    "section": "Datos de partida",
+    "text": "Datos de partida\nEl dataset analítico tiene tres tablas, una por grano de E1. Todas cubren las 32 entidades federativas (el consumo es nacional) y la ventana enero de 2015 a diciembre de 2025.\n\n\n\n\n\n\n\n\n\n\n\nTabla\nGrano\nFilas\nVariables\nFuentes\nPeriodo con dato\n\n\n\n\nanalitico_violencia\nentidad × delito o registro × mes\n415,065\n12\nSESNSP (F1), RNPDNO (F13)\n2015-01 a 2025-12; RNPDNO hasta 2023-08\n\n\nanalitico_consumo\ncanción × mes, nacional\n9,046\n11\nKworb (F4), MusicBrainz (F8)\n2015-01 a 2025-12\n\n\nanalitico_contexto\nentidad × año\n352\n17\nCONAPO (F3), Censo (F14), ENDUTIH (F16), CONEVAL (F15), México Evalúa (F17), ENDIREH (F2)\n2015 a 2025; cada indicador solo en sus años de medición\n\n\n\n\nVariables, fuente y regla de agregación\n\n\n\n\n\n\n\n\n\n\nTabla\nVariable\nFuente\nGranularidad original\nCómo llega al grano\n\n\n\n\nviolencia\ncve_ent\nSESNSP, RNPDNO\nentidad\nClave INEGI; los nombres del RNPDNO pasan por la tabla de equivalencias\n\n\nviolencia\nfecha\nSESNSP, RNPDNO\nmes (SESNSP); día (RNPDNO)\nEl SESNSP trae una columna por mes; el RNPDNO se lleva al primer día del mes de desaparición\n\n\nviolencia\norigen\n—\n—\nMarca SESNSP o RNPDNO\n\n\nviolencia\nbien_juridico_afectado, tipo_de_delito, subtipo_de_delito, modalidad\nSESNSP\ndelito\nSin cambio; el RNPDNO recibe “Desaparición”\n\n\nviolencia\ntipo_lgamvlv\nMapeo de E1 (config.yaml)\nsubtipo de delito\nRegla de mapeo del subtipo al tipo de la LGAMVLV\n\n\nviolencia\ncarpetas\nSESNSP, archivo de delitos\nentidad × delito × mes\nSin agregación\n\n\nviolencia\nvictimas_mujeres, victimas_mujeres_menores, victimas_hombres\nSESNSP, archivo de víctimas; RNPDNO\nvíctimas por sexo y rango de edad; registro por persona\nSESNSP: suma de las filas de cada sexo (menores = rango 0–17). RNPDNO: conteo de registros de mujeres por entidad y mes\n\n\nconsumo\ntrack_id, artista, titulo\nKworb\ncanción\nSin cambio\n\n\nconsumo\nfecha, streams\nKworb\nsemana (termina en jueves)\nCada semana se reparte entre los meses según cuántos de sus 7 días caen en cada uno; se conserva la suma\n\n\nconsumo\nsemanas_en_chart, mejor_posicion\nKworb\nsemana\nSe cuentan en el mes en que termina la semana\n\n\nconsumo\npais_artista, macrogenero, origen_genero, etiquetas_fuente\nMusicBrainz\nartista\nPrimer resultado si el nombre coincide; macrogénero con las 5 etiquetas más votadas\n\n\ncontexto\npoblacion_*\nCONAPO\nentidad × año × sexo × edad\nSuma por sexo y grupo de edad\n\n\ncontexto\nusuarios_internet, pct_usuarios_internet\nENDUTIH\nentidad × año (tabulados)\nSin agregación; el porcentaje es sobre la población de 6 años y más\n\n\ncontexto\npct_viviendas_internet\nCenso 2020\nlocalidad\nSe usa el total estatal publicado\n\n\ncontexto\npct_pobreza\nCONEVAL\nentidad, años pares\nFila de pobreza del anexo estadístico\n\n\ncontexto\nindice_impunidad\nMéxico Evalúa\nentidad, 2023\nÍndice del feminicidio\n\n\ncontexto\nprevalencia_*\nENDIREH\nentidad, 2016 y 2021\nEstimación con agresor “total” del cuadro 21.2"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda.html#variables-numéricas",
+    "href": "entregas/E2_eda_preparacion/eda.html#variables-numéricas",
+    "title": "Análisis exploratorio (EDA)",
+    "section": "Variables numéricas",
+    "text": "Variables numéricas\n\nLocalización\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable\nUnidad\nn\nMedia\nMediana\nModa\nMedia recortada 10 %\nQ1\nQ3\n\n\n\n\nstreams_mes\ncanción y mes en el chart\n7,429\n9,289,067\n6,957,488\n11,725\n7,646,970\n3,614,964\n11,282,393\n\n\nsemanas_en_chart_mes\ncanción y mes en el chart\n7,429\n3.88\n4.00\n4.00\n4.11\n4.00\n5.00\n\n\nstreams_anio\ncanción y año en el chart\n922\n74,846,503\n54,673,178\n77,196\n63,955,775\n20,270,639\n105,957,612\n\n\ntasa_feminicida\nentidad y año\n352\n1.28\n1.14\n0.00\n1.18\n0.68\n1.63\n\n\ntasa_sexual\nentidad y año\n352\n93.96\n80.43\n3.29\n88.19\n51.02\n125.26\n\n\ntasa_física\nentidad y año\n352\n221.40\n204.87\n9.35\n211.66\n121.60\n304.19\n\n\ntasa_sin_distinguir\nentidad y año\n352\n367.08\n348.34\n0.89\n356.00\n166.75\n547.68\n\n\npct_pobreza\nentidad, año medido\n128\n39.77\n38.73\n13.33\n38.98\n27.04\n50.28\n\n\npct_viviendas_internet\nentidad, año medido\n32\n50.38\n51.57\n21.63\n50.57\n42.77\n58.91\n\n\npct_usuarios_internet\nentidad, año medido\n320\n72.25\n75.08\n31.63\n73.35\n62.74\n83.49\n\n\nindice_impunidad\nentidad, año medido\n23\n79.86\n90.58\n100.00\n83.45\n62.82\n99.10\n\n\n\n\n\nVariabilidad\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable\nP10\nP90\nMínimo\nMáximo\nDE\nIQR\nMAD\nCV\n\n\n\n\nstreams_mes\n1,580,045\n19,643,033\n11,725\n99,818,809\n9,054,149\n7,667,430\n3,643,356\n0.97\n\n\nsemanas_en_chart_mes\n2.00\n5.00\n0.00\n5.00\n1.16\n1.00\n0.00\n0.30\n\n\nstreams_anio\n5,255,842\n166,653,672\n77,196\n402,863,955\n70,595,553\n85,686,973\n39,859,490\n0.94\n\n\ntasa_feminicida\n0.36\n2.34\n0.00\n5.99\n0.91\n0.95\n0.48\n0.71\n\n\ntasa_sexual\n31.54\n173.41\n3.29\n288.86\n57.57\n74.24\n35.17\n0.61\n\n\ntasa_física\n34.77\n415.91\n9.35\n687.97\n137.71\n182.59\n88.58\n0.62\n\n\ntasa_sin_distinguir\n57.54\n673.04\n0.89\n1,159\n239.03\n380.93\n187.81\n0.65\n\n\npct_pobreza\n22.31\n60.22\n13.33\n78.00\n14.99\n23.24\n11.70\n0.38\n\n\npct_viviendas_internet\n34.58\n64.08\n21.63\n75.61\n12.53\n16.14\n8.48\n0.25\n\n\npct_usuarios_internet\n52.33\n87.52\n31.63\n95.99\n13.54\n20.76\n9.70\n0.19\n\n\nindice_impunidad\n45.55\n100.00\n21.21\n100.00\n24.46\n36.28\n9.42\n0.31\n\n\n\n\n\nForma\nMedia/mediana mayor que 1 indica cola a la derecha; DE/(IQR/1.349) mayor que 1 indica colas más pesadas que una normal.\n\n\n\n\n\n\n\n\n\n\nVariable\nAsimetría\nCurtosis (exceso)\nMedia / mediana\nDE / (IQR/1.349)\n\n\n\n\nstreams_mes\n2.61\n10.39\n1.34\n1.59\n\n\nsemanas_en_chart_mes\n-1.64\n2.40\n0.97\n1.57\n\n\nstreams_anio\n1.47\n2.37\n1.37\n1.11\n\n\ntasa_feminicida\n1.68\n4.86\n1.12\n1.29\n\n\ntasa_sexual\n0.99\n0.89\n1.17\n1.05\n\n\ntasa_física\n0.64\n0.10\n1.08\n1.02\n\n\ntasa_sin_distinguir\n0.51\n0.05\n1.05\n0.85\n\n\npct_pobreza\n0.44\n-0.58\n1.03\n0.87\n\n\npct_viviendas_internet\n-0.18\n-0.40\n0.98\n1.05\n\n\npct_usuarios_internet\n-0.65\n-0.34\n0.96\n0.88\n\n\nindice_impunidad\n-1.10\n-0.06\n0.88\n0.91\n\n\n\n\n\n\nDistribución de los streams por canción y año"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda.html#comparación-entre-grupos",
+    "href": "entregas/E2_eda_preparacion/eda.html#comparación-entre-grupos",
+    "title": "Análisis exploratorio (EDA)",
+    "section": "Comparación entre grupos",
+    "text": "Comparación entre grupos\nMediana por grupo y qué parte de la variación explica el grupo (η² y ω²).\ntasa_feminicida · η² = 0.088 · ω² = 0.062\n\n\n\nGrupo\nn\nMediana\nQ1\nQ3\nIQR\n\n\n\n\n2015\n32\n0.50\n0.04\n0.92\n0.88\n\n\n2016\n32\n0.68\n0.11\n1.33\n1.22\n\n\n2017\n32\n0.81\n0.58\n1.33\n0.74\n\n\n2018\n32\n1.16\n0.74\n2.10\n1.36\n\n\n2019\n32\n1.35\n0.89\n1.76\n0.87\n\n\n2020\n32\n1.50\n0.96\n1.67\n0.71\n\n\n2021\n32\n1.38\n1.06\n1.72\n0.66\n\n\n2022\n32\n1.41\n0.98\n1.76\n0.78\n\n\n2023\n32\n1.05\n0.80\n1.70\n0.89\n\n\n2024\n32\n1.18\n0.90\n1.63\n0.73\n\n\n2025\n32\n0.93\n0.68\n1.50\n0.81\n\n\n\ntasa_sexual · η² = 0.237 · ω² = 0.214\n\n\n\nGrupo\nn\nMediana\nQ1\nQ3\nIQR\n\n\n\n\n2015\n32\n46.50\n35.57\n62.52\n26.95\n\n\n2016\n32\n55.27\n44.55\n66.09\n21.54\n\n\n2017\n32\n60.58\n42.77\n78.03\n35.25\n\n\n2018\n32\n72.83\n50.06\n91.34\n41.28\n\n\n2019\n32\n77.02\n64.65\n112.00\n47.36\n\n\n2020\n32\n72.95\n62.29\n112.60\n50.31\n\n\n2021\n32\n100.63\n76.55\n136.86\n60.31\n\n\n2022\n32\n127.44\n79.93\n174.85\n94.92\n\n\n2023\n32\n123.01\n86.65\n169.04\n82.39\n\n\n2024\n32\n117.01\n85.06\n150.42\n65.36\n\n\n2025\n32\n111.47\n80.58\n147.27\n66.69\n\n\n\ntasa_física · η² = 0.006 · ω² = -0.023\n\n\n\nGrupo\nn\nMediana\nQ1\nQ3\nIQR\n\n\n\n\n2015\n32\n206.97\n128.71\n314.52\n185.81\n\n\n2016\n32\n180.77\n128.31\n284.29\n155.98\n\n\n2017\n32\n200.85\n137.61\n348.57\n210.96\n\n\n2018\n32\n211.28\n115.40\n327.49\n212.09\n\n\n2019\n32\n224.29\n131.88\n319.06\n187.18\n\n\n2020\n32\n189.01\n107.72\n267.47\n159.74\n\n\n2021\n32\n192.52\n118.41\n273.40\n154.99\n\n\n2022\n32\n210.77\n145.59\n292.43\n146.84\n\n\n2023\n32\n214.26\n142.61\n300.15\n157.54\n\n\n2024\n32\n194.52\n141.85\n276.72\n134.86\n\n\n2025\n32\n196.24\n117.73\n284.42\n166.70\n\n\n\ntasa_sin_distinguir · η² = 0.116 · ω² = 0.089\n\n\n\nGrupo\nn\nMediana\nQ1\nQ3\nIQR\n\n\n\n\n2015\n32\n152.11\n88.11\n337.22\n249.11\n\n\n2016\n32\n198.04\n118.67\n384.29\n265.62\n\n\n2017\n32\n232.23\n156.63\n481.33\n324.70\n\n\n2018\n32\n260.95\n163.76\n484.94\n321.19\n\n\n2019\n32\n315.20\n241.83\n563.45\n321.62\n\n\n2020\n32\n341.86\n262.60\n529.09\n266.49\n\n\n2021\n32\n362.86\n273.70\n610.44\n336.74\n\n\n2022\n32\n419.02\n318.24\n594.15\n275.91\n\n\n2023\n32\n460.31\n347.10\n619.38\n272.28\n\n\n2024\n32\n451.34\n316.54\n610.73\n294.19\n\n\n2025\n32\n422.39\n288.06\n609.97\n321.91\n\n\n\nlog10_streams_anio · η² = 0.046 · ω² = 0.039\n\n\n\nGrupo\nn\nMediana\nQ1\nQ3\nIQR\n\n\n\n\ncumbia y tropical\n19\n7.25\n6.61\n7.60\n0.99\n\n\nelectrónica\n11\n7.71\n7.48\n8.07\n0.58\n\n\notro\n10\n8.00\n7.36\n8.33\n0.97\n\n\npop\n50\n7.49\n7.13\n7.69\n0.56\n\n\nregional mexicano\n310\n7.77\n7.23\n8.06\n0.83\n\n\nrock\n50\n7.51\n7.26\n7.60\n0.34\n\n\nsin etiqueta\n270\n7.85\n7.48\n8.12\n0.64\n\n\nurbano latino\n202\n7.75\n7.30\n8.01\n0.71"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda.html#variables-categóricas-heterogeneidad",
+    "href": "entregas/E2_eda_preparacion/eda.html#variables-categóricas-heterogeneidad",
+    "title": "Análisis exploratorio (EDA)",
+    "section": "Variables categóricas (heterogeneidad)",
+    "text": "Variables categóricas (heterogeneidad)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable\nBase\nModa\nK\nProp. moda\nGini–Simpson norm.\nEntropía (bits)\nEntropía norm.\nHill 1\nHill 2\n\n\n\n\nmacrogenero\nstreams\nregional mexicano\n8\n0.36\n0.81\n2.02\n0.67\n4.05\n3.38\n\n\nmacrogenero\ncanciones\nregional mexicano\n8\n0.35\n0.83\n2.11\n0.70\n4.33\n3.60\n\n\npais_artista\ncanciones\nsin dato\n12\n0.39\n0.79\n2.26\n0.63\n4.79\n3.61\n\n\ntipo_lgamvlv\ncarpetas\nsin distinguir\n4\n0.51\n0.80\n1.44\n0.72\n2.70\n2.49\n\n\nsubtipo_de_delito\ncarpetas\nViolencia familiar\n55\n0.11\n0.96\n4.50\n0.78\n22.58\n16.32"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda.html#concentración-gini-y-curva-de-lorenz",
+    "href": "entregas/E2_eda_preparacion/eda.html#concentración-gini-y-curva-de-lorenz",
+    "title": "Análisis exploratorio (EDA)",
+    "section": "Concentración: Gini y curva de Lorenz",
+    "text": "Concentración: Gini y curva de Lorenz\nGini por año de cada masa. En las entidades cuentan las 32, también las que tienen cero.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable\n2015\n2016\n2017\n2018\n2019\n2020\n2021\n2022\n2023\n2024\n2025\n\n\n\n\nfamiliar_conteo\n0.54\n0.50\n0.45\n0.42\n0.41\n0.43\n0.45\n0.46\n0.45\n0.46\n0.47\n\n\nfamiliar_tasa\n0.45\n0.41\n0.37\n0.35\n0.34\n0.33\n0.33\n0.30\n0.29\n0.31\n0.34\n\n\nfeminicidio_conteo\n0.66\n0.55\n0.52\n0.46\n0.47\n0.48\n0.46\n0.45\n0.40\n0.40\n0.40\n\n\nfeminicidio_tasa\n0.54\n0.57\n0.44\n0.34\n0.28\n0.23\n0.23\n0.30\n0.34\n0.27\n0.33\n\n\nstreams_artistas\n0.49\n0.33\n0.50\n0.45\n0.47\n0.50\n0.46\n0.57\n0.59\n0.67\n0.66\n\n\nstreams_canciones\n0.48\n0.31\n0.49\n0.42\n0.44\n0.37\n0.34\n0.44\n0.45\n0.44\n0.49\n\n\n\nDetalle del último año (2025):\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable\nUnidad\nUnidades\nGini\nGini norm.\nTop 10 %\nCR10\nHHI\nUnidades efectivas\n\n\n\n\nstreams_canciones\ncanción\n205\n0.49\n0.49\n0.29\n0.16\n0.01\n113.46\n\n\nstreams_artistas\nartista\n71\n0.66\n0.67\n0.54\n0.59\n0.05\n18.95\n\n\nfeminicidio_conteo\nentidad\n32\n0.40\n0.41\n0.30\n0.60\n0.05\n20.92\n\n\nfeminicidio_tasa\nentidad\n32\n0.33\n0.34\n0.31\n0.56\n0.05\n21.63\n\n\nfamiliar_conteo\nentidad\n32\n0.47\n0.48\n0.36\n0.65\n0.06\n17.53\n\n\nfamiliar_tasa\nentidad\n32\n0.34\n0.35\n0.25\n0.53\n0.04\n23.44"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda.html#heterogeneidad-entropía-normalizada",
+    "href": "entregas/E2_eda_preparacion/eda.html#heterogeneidad-entropía-normalizada",
+    "title": "Análisis exploratorio (EDA)",
+    "section": "Heterogeneidad: entropía normalizada",
+    "text": "Heterogeneidad: entropía normalizada\nPor año. En el macrogénero no cuentan los artistas sin etiqueta; cobertura es la parte de los streams que sí la tiene.\nmacrogenero_streams\n\n\n\nAño\nCobertura\nK\nProp. moda\nEntropía norm.\nHill 1\nHill 2\n\n\n\n\n2,015\n0.61\n4\n0.50\n0.75\n2.81\n2.60\n\n\n2,016\n0.63\n4\n0.35\n0.95\n3.75\n3.55\n\n\n2,017\n0.63\n5\n0.46\n0.85\n3.90\n3.35\n\n\n2,018\n0.82\n5\n0.35\n0.88\n4.14\n3.77\n\n\n2,019\n0.82\n6\n0.41\n0.84\n4.47\n3.74\n\n\n2,020\n0.85\n6\n0.51\n0.76\n3.90\n3.00\n\n\n2,021\n0.73\n6\n0.45\n0.71\n3.60\n2.88\n\n\n2,022\n0.76\n7\n0.58\n0.54\n2.87\n2.29\n\n\n2,023\n0.69\n7\n0.58\n0.53\n2.82\n2.24\n\n\n2,024\n0.58\n7\n0.64\n0.55\n2.92\n2.14\n\n\n2,025\n0.56\n7\n0.75\n0.43\n2.33\n1.68\n\n\n\ntipo_violencia_carpetas\n\n\n\nAño\nCobertura\nK\nProp. moda\nEntropía norm.\nHill 1\nHill 2\n\n\n\n\n2,015\n1.00\n4\n0.47\n0.69\n2.62\n2.43\n\n\n2,016\n1.00\n4\n0.47\n0.70\n2.64\n2.44\n\n\n2,017\n1.00\n4\n0.47\n0.69\n2.62\n2.42\n\n\n2,018\n1.00\n4\n0.48\n0.71\n2.66\n2.46\n\n\n2,019\n1.00\n4\n0.49\n0.71\n2.69\n2.48\n\n\n2,020\n1.00\n4\n0.53\n0.71\n2.67\n2.43\n\n\n2,021\n1.00\n4\n0.53\n0.72\n2.70\n2.45\n\n\n2,022\n1.00\n4\n0.53\n0.72\n2.73\n2.49\n\n\n2,023\n1.00\n4\n0.53\n0.72\n2.73\n2.49\n\n\n2,024\n1.00\n4\n0.53\n0.72\n2.71\n2.48\n\n\n2,025\n1.00\n4\n0.53\n0.72\n2.71\n2.47\n\n\n\n\n\n\nEntropía normalizada por año\n\n\n\nTipo de violencia por entidad, 2025\n\n\n\n\n\n\n\n\n\nEntidad\nTipo predominante\nProp. del predominante\nEntropía norm.\n\n\n\n\nMorelos\nsin distinguir\n0.73\n0.57\n\n\nNuevo León\nsin distinguir\n0.71\n0.58\n\n\nCiudad de México\nsin distinguir\n0.71\n0.58\n\n\nColima\nsin distinguir\n0.70\n0.59\n\n\nCoahuila de Zaragoza\nsin distinguir\n0.68\n0.60\n\n\nSonora\nsin distinguir\n0.69\n0.61\n\n\nTamaulipas\nsin distinguir\n0.67\n0.63\n\n\nMichoacán de Ocampo\nfísica\n0.65\n0.65\n\n\nSan Luis Potosí\nsin distinguir\n0.62\n0.65\n\n\nDurango\nsin distinguir\n0.62\n0.66\n\n\nTabasco\nsin distinguir\n0.59\n0.67\n\n\nGuanajuato\nfísica\n0.46\n0.67\n\n\nBaja California\nsin distinguir\n0.62\n0.68\n\n\nSinaloa\nsin distinguir\n0.58\n0.69\n\n\nZacatecas\nsin distinguir\n0.57\n0.70\n\n\nChihuahua\nsin distinguir\n0.59\n0.70\n\n\nMéxico\nfísica\n0.53\n0.70\n\n\nVeracruz de Ignacio de la Llave\nsin distinguir\n0.57\n0.70\n\n\nNayarit\nsin distinguir\n0.59\n0.70\n\n\nBaja California Sur\nsin distinguir\n0.54\n0.72\n\n\nHidalgo\nsin distinguir\n0.52\n0.72\n\n\nQuintana Roo\nsin distinguir\n0.55\n0.73\n\n\nAguascalientes\nfísica\n0.47\n0.73\n\n\nGuerrero\nsin distinguir\n0.45\n0.73\n\n\nPuebla\nsin distinguir\n0.54\n0.73\n\n\nQuerétaro\nsin distinguir\n0.48\n0.74\n\n\nOaxaca\nsin distinguir\n0.48\n0.75\n\n\nJalisco\nsin distinguir\n0.43\n0.78\n\n\nChiapas\nsexual\n0.43\n0.80\n\n\nCampeche\nfísica\n0.37\n0.81\n\n\nYucatán\nsin distinguir\n0.38\n0.82\n\n\nTlaxcala\nfísica\n0.44\n0.86"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda.html#cobertura-de-la-muestra-de-kworb",
+    "href": "entregas/E2_eda_preparacion/eda.html#cobertura-de-la-muestra-de-kworb",
+    "title": "Análisis exploratorio (EDA)",
+    "section": "Cobertura de la muestra de Kworb",
+    "text": "Cobertura de la muestra de Kworb\nContra el Top 200 diario de Kaggle (2017–2021).\n\n\n\n\n\n\n\n\n\n\nAño\nCanciones Top 200\nEn la muestra\nCobertura canciones\nCobertura streams\n\n\n\n\n2,017\n1,041\n19\n0.02\n0.06\n\n\n2,018\n1,163\n27\n0.02\n0.07\n\n\n2,019\n949\n39\n0.04\n0.17\n\n\n2,020\n1,051\n53\n0.05\n0.23\n\n\n2,021\n905\n63\n0.07\n0.26\n\n\n\nMismas canciones en las dos fuentes:\n\n\n\nAño\nCanciones\nSpearman\nKworb / Kaggle\n\n\n\n\n2,017\n17\n0.85\n0.75\n\n\n2,018\n20\n0.86\n1.12\n\n\n2,019\n36\n0.85\n1.02\n\n\n2,020\n48\n0.80\n0.98\n\n\n2,021\n58\n0.87\n1.09\n\n\n\n\n\n\nCobertura de la muestra de Kworb\n\n\nLos hallazgos que salen de estas tablas están en Hallazgos."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda.html#hallazgos",
+    "href": "entregas/E2_eda_preparacion/eda.html#hallazgos",
+    "title": "Análisis exploratorio (EDA)",
+    "section": "Hallazgos",
+    "text": "Hallazgos\nPor definir con el equipo a partir de las tablas anteriores: al menos tres, uno inesperado, cada uno ligado a P1–P4."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f01_sesnsp.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f01_sesnsp.html",
+    "title": "F1. SESNSP — carpetas y víctimas",
+    "section": "",
+    "text": "Incidencia delictiva del fuero común por entidad, delito y mes. Es la fuente principal de violencia para P2 y P4."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f01_sesnsp.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f01_sesnsp.html#qué-encontró-la-inspección",
+    "title": "F1. SESNSP — carpetas y víctimas",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\nCompleta en el tiempo y en territorio: 2015 a 2025, 11 años, y los 32 nombres de entidad coinciden con el catálogo. El SESNSP es la referencia de nombres para las demás fuentes.\nSin duplicados en ninguna de las dos tablas.\nModalidad “No especificado”: 5.1 % de las filas de carpetas y 13.5 % de las de víctimas. Es una categoría válida del delito (por ejemplo, homicidio “con otro elemento” o “no especificado”), no un faltante.\nVíctimas de sexo “No identificado”: 13.9 % de las filas. Son 251,413 víctimas, el 11.3 % de las de los delitos que se analizan.\nEdad no especificada: 42.6 % de las filas de víctimas tienen rango “No especificado” o “No identificado”. Entre las mujeres son 77,637 víctimas, el 10.2 %.\nEl archivo de víctimas no cubre todos los delitos. Solo trae homicidio, feminicidio, lesiones y otros contra la vida; los delitos sexuales y la violencia familiar solo tienen carpetas.\nFeminicidio en cero al inicio de la serie en 8 estados: Aguascalientes hasta 2018-04, Baja California Sur hasta 2019-10, Chihuahua hasta 2017-11, Nayarit hasta 2017-06, Quintana Roo hasta 2017-03, Hidalgo y Zacatecas hasta 2016-02 y Tamaulipas hasta 2016-03."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f01_sesnsp.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f01_sesnsp.html#qué-se-decidió",
+    "title": "F1. SESNSP — carpetas y víctimas",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nDelitos sin tipo de la LGAMVLV (robo, fraude…)\n325,248 de 413,952 filas (78.6 %)\nExcluir\nNo responden P2; el mapeo de E1 conserva 12 subtipos\n\n\nDelito sin archivo de víctimas\n38,016 de 88,704 filas\nDejar nulo\nEs un faltante estructural, no un cero\n\n\nVíctimas de sexo no identificado\n11.3 % de las víctimas\nNo asignarlas a ningún sexo\nRepartirlas inventaría víctimas; el conteo de mujeres es un mínimo\n\n\nMujeres sin edad\n10.2 %\nNo imputar\nLa falta de edad depende de la fiscalía de cada estado\n\n\nFeminicidio en cero antes de registrarse\n900 de 16,896 celdas (5.3 %)\nVolver nulo\nLa fiscalía aún no clasificaba el delito; no es que no hubiera\n\n\nMeses atípicos\n320 dentro de su estado; 625 entre estados\nConservar\nSon picos reales de denuncias: el fenómeno de P2\n\n\n\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f02_endireh.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f02_endireh.html",
+    "title": "F2. ENDIREH 2021 — prevalencias tabuladas",
+    "section": "",
+    "text": "Prevalencia de violencia contra las mujeres de 15 años y más. Fuente agregada en E2: E1 la tenía en el catálogo, pero no en staging."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f02_endireh.html#cómo-se-obtuvo",
+    "href": "entregas/E2_eda_preparacion/calidad/f02_endireh.html#cómo-se-obtuvo",
+    "title": "F2. ENDIREH 2021 — prevalencias tabuladas",
+    "section": "Cómo se obtuvo",
+    "text": "Cómo se obtuvo\nTabulados de INEGI, archivo “XXI. Prevalencia de la violencia”, cuadro 21.2: últimos 12 meses, por entidad, tipo de persona agresora y tipo de violencia. src/ingestion/endireh.py solo pasa el cuadro de formato de presentación a formato largo, sin cambiar valores: 33 entidades (32 y la nacional) × 3 tipos de agresor × 4 medidas (estimación, coeficiente de variación, error estándar, observaciones) × 2 levantamientos (2016 y 2021) × 5 tipos de violencia."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f02_endireh.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f02_endireh.html#qué-encontró-la-inspección",
+    "title": "F2. ENDIREH 2021 — prevalencias tabuladas",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\nCompleta: sin nulos, sin marcadores, sin duplicados, y las 32 entidades más la nacional.\nValidación: la prevalencia nacional de 2021 da 42.8 %, la cifra que publica INEGI.\nSolo dos años de dato: 2016 y 2021."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f02_endireh.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f02_endireh.html#qué-se-decidió",
+    "title": "F2. ENDIREH 2021 — prevalencias tabuladas",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nSolo existe en los años de levantamiento\n1,440 de 1,760 celdas del contexto\nDejar nulo los demás años\nEs una encuesta por levantamiento; P4 la compara en su año, no como serie\n\n\nVarias medidas y agresores\n—\nUsar la estimación con agresor “total”\nEs la cifra que corresponde a prevalencia_* en el DDL de E1; los coeficientes de variación quedan disponibles\n\n\n\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f03_conapo.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f03_conapo.html",
+    "title": "F3. CONAPO — población a mitad de año",
+    "section": "",
+    "text": "Proyecciones de población por entidad, año, sexo y edad. Da el denominador de todas las tasas y la base del contexto por entidad y año."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f03_conapo.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f03_conapo.html#qué-encontró-la-inspección",
+    "title": "F3. CONAPO — población a mitad de año",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\nCompleta: sin nulos ni marcadores. Las 77,440 filas son 11 años × 32 entidades × 2 sexos × 110 edades.\nSe leyó filtrada en BigQuery a 2015–2025 para no escanear años que no se usan.\nTres nombres cortos: COAHUILA, VERACRUZ y MICHOACAN, en lugar de los nombres completos del SESNSP."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f03_conapo.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f03_conapo.html#qué-se-decidió",
+    "title": "F3. CONAPO — población a mitad de año",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nNombres de entidad distintos al SESNSP\n3 entidades\nTabla de equivalencias en config.yaml\nUne con la clave INEGI sin perder filas\n\n\n—\n—\nBase del contexto: 32 × 11 = 352 filas\nEs la única fuente con todas las entidades en todos los años\n\n\n\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f04_kworb.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f04_kworb.html",
+    "title": "F4. Kworb — chart semanal de Spotify México",
+    "section": "",
+    "text": "Historial semanal de las canciones del Top 200 de Spotify México. Es la fuente de streams de toda la ventana (P1 y P3)."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f04_kworb.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f04_kworb.html#qué-encontró-la-inspección",
+    "title": "F4. Kworb — chart semanal de Spotify México",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\nCeldas --: 8,359 (19.7 %). Indican una semana en que la canción no estuvo en el chart: son ceros, no faltantes.\n600 filas de resumen (“Total” y “Peak”) mezcladas con las semanas.\nSemanas fuera de la ventana: 2013–2014 (las semanas terminaban en domingo) y 2026.\nLa muestra se inclina a los años recientes: 15 canciones con streams en 2015 y 246 en 2025, porque son las 300 con más streams acumulados.\nCobertura contra Kaggle Top 200: las 300 canciones son el 5.7 % de los streams en 2017 y el 26.4 % en 2021.\nConsistencia: para las mismas canciones, los streams de Kworb y Kaggle coinciden (razón de 0.98 a 1.12 desde 2018; Spearman de 0.80 a 0.87)."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f04_kworb.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f04_kworb.html#qué-se-decidió",
+    "title": "F4. Kworb — chart semanal de Spotify México",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nFilas Total y Peak\n600 filas\nExcluir al ensamblar\nNo son semanas\n\n\nSemanas que cruzan de mes\nTodas\nRepartir los streams por días\nConserva exacta la suma de streams\n\n\nCanción y mes con 0 streams\n1,617 de 9,046 filas\nEliminar\nCero estructural: la canción no estaba en el chart\n\n\nStreams muy altos\n553 fuera de las cercas de Tukey\nConservar y usar log10\nSon los éxitos, el centro de P1\n\n\nCobertura de 6 a 26 %\nToda la serie\nAmpliar al Top 200 completo (5,177 canciones)\nLas 300 canciones no representan el consumo; la descarga completa ya estaba planeada en E1\n\n\n\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f05_kaggle.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f05_kaggle.html",
+    "title": "F5. Kaggle — Spotify Charts de México",
+    "section": "",
+    "text": "Charts diarios de Spotify (Top 200 y Viral 50) de 2017 a 2021. Se usa para validar Kworb y medir su cobertura, no en el almacén."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f05_kaggle.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f05_kaggle.html#qué-encontró-la-inspección",
+    "title": "F5. Kaggle — Spotify Charts de México",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\n\n\nChart\nFilas\nSin streams\nDesde\nHasta\n\n\n\n\ntop200\n358,343\n0\n2017-01-01\n2021-11-30\n\n\nviral50\n90,489\n90,489\n2017-01-01\n2021-12-31\n\n\n\n\nViral 50 no publica streams: de ahí sale el 20.2 % de nulos en streams.\nEl Top 200 termina el 30 de noviembre de 2021.\nEl ID de Spotify viene dentro de la URL de la canción."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f05_kaggle.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f05_kaggle.html#qué-se-decidió",
+    "title": "F5. Kaggle — Spotify Charts de México",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nViral 50 sin streams\n90,489 filas\nExcluir\nNo sirve para medir consumo\n\n\nSolo 2017–2021\n—\nUsar solo para validar y medir cobertura\nNo cubre la ventana; mezclarla con Kworb rompería la serie\n\n\n\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f06_misongyny.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f06_misongyny.html",
+    "title": "F6. MiSonGyny — etiquetas de misoginia",
+    "section": "",
+    "text": "Corpus de letras en español etiquetadas a mano: tarea 1, misógina o no (M/NM); tarea 2, categoría (H odio, S sexualización, V violencia, NR no relacionada)."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f06_misongyny.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f06_misongyny.html#qué-encontró-la-inspección",
+    "title": "F6. MiSonGyny — etiquetas de misoginia",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\n\n\nArchivo\nFilas\nSin etiqueta\nEtiquetas\n\n\n\n\nTRAIN_Task_1\n2,104\n0\nM, NM\n\n\nTRAIN_Task_2\n1,168\n0\nH, NR, S, V\n\n\nTEST_Task_1\n527\n527\n—\n\n\nTEST_Task_2\n293\n293\n—\n\n\nTEST_LABELS_Task_1\n527\n0\nM, NM\n\n\nTEST_LABELS_Task_2\n293\n0\nH, NR, S, V\n\n\narchivo_origen\n1\n0\nlabel\n\n\n\n\nLa fila de encabezados se cargó como dato (la última de la tabla).\nLas canciones de prueba no traen etiqueta: está en los archivos TEST_LABELS, ligada por id. De ahí el 16.7 % de nulos."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f06_misongyny.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f06_misongyny.html#qué-se-decidió",
+    "title": "F6. MiSonGyny — etiquetas de misoginia",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nEncabezado como dato\n1 fila\nEliminar\nNo es una canción\n\n\nEtiquetas de prueba en otro archivo\n820 canciones\nUnir por id\nEl corpus publica las respuestas por separado\n\n\nCanciones del chart que no están en el corpus\n258 de 300\nes_misogina nulo\nSolo se usa la etiqueta humana; el clasificador es modelado\n\n\n\nEl emparejamiento es por título y artista, simplificados. Quedan 42 canciones (16 misóginas, 26 no), el 13 % de los streams; 19 títulos iguales de otro artista se descartaron.\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f08_musicbrainz.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f08_musicbrainz.html",
+    "title": "F8. MusicBrainz — género por artista",
+    "section": "",
+    "text": "Búsqueda de cada artista del catálogo de Kworb en MusicBrainz; se guarda la respuesta completa en JSON."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f08_musicbrainz.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f08_musicbrainz.html#qué-encontró-la-inspección",
+    "title": "F8. MusicBrainz — género por artista",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\nUna búsqueda por artista, sin errores ni nulos.\nEl primer resultado no siempre es el artista correcto. En 18 búsquedas el nombre del resultado no coincide; por ejemplo, “Alemán” devuelve a Oscar Alemán.\nLas etiquetas de pocos votos son ruido. Con todas, Billie Eilish y Ed Sheeran caían en hip hop.\nPlan B: MusicBrainz devuelve al rapero británico, no al dúo de reguetón puertorriqueño."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f08_musicbrainz.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f08_musicbrainz.html#qué-se-decidió",
+    "title": "F8. MusicBrainz — género por artista",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nEl resultado es otro artista\n18 artistas\nDescartar y dejar “sin etiqueta”\nUn género de otro artista sería peor que ninguno\n\n\nEtiquetas ruidosas\nTodas\nUsar solo las 5 más votadas\nCorrige los casos como Billie Eilish\n\n\nPlan B\n1 artista\nCorrección declarada en config.yaml\nEs un error de identidad conocido\n\n\nArtistas sin género\n30.5 % de las filas canción-mes\nDejar la categoría “sin etiqueta”\nAsignarles un género inventaría la composición de P1\n\n\n\nAmpliación: con el catálogo completo de Kworb se buscan 1,120 artistas más con el mismo método (src/ingestion/musicbrainz.py), en stg_musicbrainz_tags_completo.\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f11_google_trends.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f11_google_trends.html",
+    "title": "F11. Google Trends — interés por estado",
+    "section": "",
+    "text": "Interés de búsqueda por estado. Es la base para repartir el consumo nacional entre entidades."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f11_google_trends.html#por-qué-se-agregaron-tablas-en-e2",
+    "href": "entregas/E2_eda_preparacion/calidad/f11_google_trends.html#por-qué-se-agregaron-tablas-en-e2",
+    "title": "F11. Google Trends — interés por estado",
+    "section": "Por qué se agregaron tablas en E2",
+    "text": "Por qué se agregaron tablas en E2\nEl diseño de E1 reparte el consumo con el Trends del artista en cada año y, si no lo hay, con el de su género. En staging solo existía reguetón de 2021. En E2 se descargó un tema por macrogénero (7) y por artista del top 50 de cada año (109 artistas), una descarga por año de 2015 a 2025."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f11_google_trends.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f11_google_trends.html#qué-encontró-la-inspección",
+    "title": "F11. Google Trends — interés por estado",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\nLas 77 descargas por género y las 370 por artista traen los 32 estados. Sin nulos ni duplicados.\nValidación: reguetón 2021 descargado en E2 contra la tabla de E1 da Spearman 0.99, con una diferencia media de 1.1 puntos.\nEstados sin valor: regional mexicano tiene 17 celdas en cero y electrónica 43, en estados con poco volumen. 14 de las 370 descargas por artista tienen menos de 28 estados con valor.\nNombres en español de Trends (Veracruz, Estado de México, Michoacán) distintos al SESNSP. La Ciudad de México usa el código anterior MX-DIF."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f11_google_trends.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f11_google_trends.html#qué-se-decidió",
+    "title": "F11. Google Trends — interés por estado",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nDescargas con pocos estados\n14 de artista, 3 de género\nBajar al siguiente nivel del reparto\nRegla de E1: se necesitan 28 entidades con valor\n\n\nNombres distintos\n3 entidades\nUnir por el código ISO, no por nombre\nEl código es estable entre fuentes\n\n\nMX-DIF\n1 entidad\nGuardar MX-CMX en dim_entidad\nEs el código ISO vigente\n\n\n\nResultado: el 95 % de los streams se reparte con el Trends del artista, el 2.8 % con el del género y el 2.3 % con los usuarios de internet.\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f13_rnpdno.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f13_rnpdno.html",
+    "title": "F13. RNPDNO — personas desaparecidas",
+    "section": "",
+    "text": "Versión pública del Registro Nacional de Personas Desaparecidas y No Localizadas. En staging se quitaron las columnas de nombre y apellido para proteger la identidad."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f13_rnpdno.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f13_rnpdno.html#qué-encontró-la-inspección",
+    "title": "F13. RNPDNO — personas desaparecidas",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\n\n\n\n\n\n\n\n\n\nColumna\nNulos\nMarcadores\n%\nCuáles\n\n\n\n\nconsecutivo_reportes_por_persona\n5,980\n0\n5.1\n\n\n\nedad\n8,275\n33,747\n35.9\nELIMINADO N\n\n\nsexo\n0\n38,076\n32.6\nELIMINADO N, INDETERMINADO\n\n\nnacionalidad\n2\n45,979\n39.3\nELIMINADO N, SE DESCONOCE\n\n\nfecha_de_desaparicion\n59,597\n33,945\n80.0\nELIMINADO N\n\n\nentidad_de_desaparicion\n0\n38,261\n32.7\nELIMINADO N, SE DESCONOCE\n\n\nautoridad_que_reporto\n0\n38,024\n32.5\nELIMINADO N, SE DESCONOCE\n\n\n\n\nNo hay identificador de persona. consecutivo_registro solo toma 8 valores. Las 4,354 filas idénticas no son duplicados: 3,749 tienen todos sus datos testados y se ven iguales aunque sean personas distintas.\n37,460 registros (32 %) tienen el sexo, la entidad y la autoridad reservados a la vez.\nSolo el 20 % tiene fecha válida (23,403), del 1968-05-01 al 2023-08-20. La fuente termina en agosto de 2023.\nDe las 18,770 mujeres, 13,151 (70 %) no tienen fecha o entidad.\n7 edades mayores a 110 años (máxima: 1832).\nNombres de entidad cortos (ESTADO DE MEXICO, VERACRUZ, MICHOACAN, COAHUILA) y 801 con entidad “SE DESCONOCE”."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f13_rnpdno.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f13_rnpdno.html#qué-se-decidió",
+    "title": "F13. RNPDNO — personas desaparecidas",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nFilas idénticas\n4,354\nConservar\nSin identificador de persona no se puede afirmar que sean la misma\n\n\nEdad imposible\n7\nVolver nula\nError de captura; la fecha y la entidad sí sirven\n\n\nDatos testados\n37,460\nExcluir del conteo de mujeres\nNo se sabe si son mujeres ni dónde desaparecieron\n\n\nMujeres sin fecha o entidad\n13,151\nExcluir y reportar como límite\nNo se pueden ubicar en el grano\n\n\nMeses después de agosto de 2023\n28 meses\nNo rellenar con cero\nUn cero diría que no hubo desapariciones\n\n\nCalidad general\n—\nFuente secundaria de P2\nCon 260 a 640 mujeres por año no sirve como indicador principal\n\n\n\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f14_censo_iter.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f14_censo_iter.html",
+    "title": "F14. Censo 2020 ITER — viviendas con internet",
+    "section": "",
+    "text": "Principales resultados por localidad del Censo 2020. Se leyeron solo los totales estatales (MUN = 000, LOC = 0000)."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f14_censo_iter.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f14_censo_iter.html#qué-encontró-la-inspección",
+    "title": "F14. Censo 2020 ITER — viviendas con internet",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\nCompleta a nivel estatal: 32 entidades y el total nacional, sin nulos. Las celdas confidenciales (*) del ITER solo aparecen en localidades pequeñas, que no se leyeron.\nUn solo año: 2020."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f14_censo_iter.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f14_censo_iter.html#qué-se-decidió",
+    "title": "F14. Censo 2020 ITER — viviendas con internet",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nFila del total nacional\n1\nExcluir del contexto estatal\nNo es una entidad\n\n\nSolo 2020\n320 de 352 celdas del contexto\nRepetir el valor de 2020 en los demás años\nEl indicador cambia despacio\n\n\nRedundante con la pobreza (ρ = −0.86)\n—\nFuera del análisis; se conserva en la dimensión\nLa pobreza se mide en más años\n\n\n\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f15_coneval.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f15_coneval.html",
+    "title": "F15. CONEVAL — pobreza por entidad",
+    "section": "",
+    "text": "Anexo estadístico de pobreza; una hoja por entidad con el formato del documento."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f15_coneval.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f15_coneval.html#qué-encontró-la-inspección",
+    "title": "F15. CONEVAL — pobreza por entidad",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\nFormato de presentación: 34 hojas (32 entidades, la nacional y “Contenido”) y 39 filas por hoja, con títulos, notas y celdas vacías. De ahí el 31 a 47 % de nulos en las columnas de valores: es estructura del documento, no faltantes.\n33 celdas con el texto “Porcentaje” en las columnas numéricas: son encabezados.\nLa fila 9 es el porcentaje de población en pobreza; las columnas c04 a c07 son 2016, 2018, 2020 y 2022."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f15_coneval.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f15_coneval.html#qué-se-decidió",
+    "title": "F15. CONEVAL — pobreza por entidad",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nTítulos, notas y encabezados\nLa mayor parte de las filas\nUsar solo la fila 9 de cada entidad\nEs el indicador que define E1\n\n\nSolo años pares hasta 2022\n224 de 352 celdas\nInterpolar 2017, 2019 y 2021; repetir el más cercano en 2015 y 2023–2025\nLa pobreza cambia despacio\n\n\n\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f16_endutih.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f16_endutih.html",
+    "title": "F16. ENDUTIH — usuarios de internet",
+    "section": "",
+    "text": "Encuesta de disponibilidad y uso de tecnologías de la información. Da los usuarios de internet de cada entidad, que entran en el peso del reparto del consumo."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f16_endutih.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f16_endutih.html#qué-encontró-la-inspección",
+    "title": "F16. ENDUTIH — usuarios de internet",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\nMicrodato 2024: sin nulos ni marcadores. Las 1,146 filas idénticas son personas distintas: el identificador (vivienda, hogar y persona) no se leyó y el factor de expansión lo comparten las personas de una misma unidad de muestreo. El porcentaje ponderado da 83.1 %, la cifra de INEGI.\nTabulados: 10 años × 33 filas (32 entidades y la nacional), sin nulos. En cada año la suma de los estados da el total nacional; los usuarios pasan de 61.4 millones en 2015 a 104.9 millones en 2025.\nValidación cruzada: en 2024, el porcentaje de los tabulados (sobre la población de 6 años y más de CONAPO) difiere en promedio 1.7 puntos del microdato, por la diferencia entre la población de CONAPO y la estimación de INEGI."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f16_endutih.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f16_endutih.html#qué-se-decidió",
+    "title": "F16. ENDUTIH — usuarios de internet",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nFilas idénticas en el microdato\n1,146\nConservar\nNo son duplicados; quitarlas cambiaría el 83.1 % validado\n\n\nUn solo año en E1\nToda la década\nUsar los tabulados 2015–2025\nEl reparto necesita los usuarios de cada año\n\n\nFalta 2019\n32 de 352 celdas\nInterpolar entre 2018 y 2020\nINEGI no lo publica; el crecimiento entre años es gradual\n\n\nPorcentaje\n—\nUsuarios / población de 6 años y más de CONAPO\nEs el universo de la encuesta\n\n\n\nLas cifras se reproducen con python -m src.ingestion.endutih, python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f17_mexico_evalua.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f17_mexico_evalua.html",
+    "title": "F17. México Evalúa — impunidad",
+    "section": "",
+    "text": "Índices de impunidad por delito y entidad del reporte Hallazgos 2023, extraídos del PDF."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f17_mexico_evalua.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f17_mexico_evalua.html#qué-encontró-la-inspección",
+    "title": "F17. México Evalúa — impunidad",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\n12 delitos; para feminicidio hay 24 filas: la nacional y 23 estados. 9 estados no tienen dato.\nNombres de entidad cortos (ESTADO DE MEXICO, MICHOACAN, VERACRUZ, COAHUILA) y “NACIONAL”.\nUn solo año: 2023."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f17_mexico_evalua.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f17_mexico_evalua.html#qué-se-decidió",
+    "title": "F17. México Evalúa — impunidad",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nNombres distintos\n4 entidades\nTabla de equivalencias\nUne sin perder filas\n\n\nEstados sin medición\n9 de 32\nDejar nulo\nNo hay forma de estimarlo\n\n\nSolo 2023\n230 de 352 celdas\nRepetir 2023 en los demás años\nEs la decisión más débil; la impunidad puede cambiar más que la pobreza\n\n\n\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f18_natural_earth.html",
+    "href": "entregas/E2_eda_preparacion/calidad/f18_natural_earth.html",
+    "title": "F18. Natural Earth — geometrías",
+    "section": "",
+    "text": "Polígonos de las entidades para los mapas."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f18_natural_earth.html#qué-encontró-la-inspección",
+    "href": "entregas/E2_eda_preparacion/calidad/f18_natural_earth.html#qué-encontró-la-inspección",
+    "title": "F18. Natural Earth — geometrías",
+    "section": "Qué encontró la inspección",
+    "text": "Qué encontró la inspección\n\nUna fila de más: código MX-X01~, sin nombre. Es un polígono menor sin estado asignado.\nNombres distintos: Estado de México, Michoacán, “Estado de Veracruz” y “Distrito Federal” para la Ciudad de México.\nCódigo anterior de la Ciudad de México: MX-DIF."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f18_natural_earth.html#qué-se-decidió",
+    "href": "entregas/E2_eda_preparacion/calidad/f18_natural_earth.html#qué-se-decidió",
+    "title": "F18. Natural Earth — geometrías",
+    "section": "Qué se decidió",
+    "text": "Qué se decidió\n\n\n\n\n\n\n\n\n\nProblema\nAfecta\nDecisión\nPor qué\n\n\n\n\nFila MX-X01~\n1\nEliminar\nNo es una entidad\n\n\nNombres distintos\n4 entidades\nEquivalencias, incluida DISTRITO FEDERAL\nUne con la clave INEGI\n\n\nMX-DIF\n1\nMX-CMX en dim_entidad\nEs el código ISO vigente\n\n\n\nLas cifras se reproducen con python -m src.eda.inspeccion y python -m src.cleaning.limpieza desde pipeline/.\n← Volver a calidad por fuente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/calidad/f16_endutih.html#por-qué-se-agregó-una-tabla-en-e2",
+    "href": "entregas/E2_eda_preparacion/calidad/f16_endutih.html#por-qué-se-agregó-una-tabla-en-e2",
+    "title": "F16. ENDUTIH — usuarios de internet",
+    "section": "Por qué se agregó una tabla en E2",
+    "text": "Por qué se agregó una tabla en E2\nEn E1 solo estaba el microdato de 2024, y el reparto usaba esos usuarios para toda la década. Pero el acceso creció de 56 % (2015) a 87 % (2025) y de forma desigual: Chiapas pasó de 33 % a 74 % y la Ciudad de México de 73 % a 96 %. Con 2024 para todo, en 2015 el peso de Chiapas quedaba 36 % inflado y el de la Ciudad de México 27 % por debajo.\nSe tomaron los tabulados de INEGI “Usuarios de internet, por entidad federativa, según sexo” de cada año (src/ingestion/endutih.py, columna “Total, Absolutos”). INEGI no publica tabulados de 2019."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/hallazgos.html",
+    "href": "entregas/E2_eda_preparacion/hallazgos.html",
+    "title": "Hallazgos",
+    "section": "",
+    "text": "Cada hallazgo se registra con los campos que pide la entrega. Las referencias a tablas y figuras llevan a Estadística descriptiva (D) y Concentración y heterogeneidad (C). Los de música se confirman cuando termine la ampliación de Kworb."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/hallazgos.html#lectura",
+    "href": "entregas/E2_eda_preparacion/hallazgos.html#lectura",
+    "title": "Hallazgos",
+    "section": "Lectura",
+    "text": "Lectura\nViolencia (P2, P4). El volumen de violencia de género registrada crece hasta 2023 y se estabiliza después, empujado por la violencia familiar y la sexual. El feminicidio sube hasta 2021 y baja desde entonces. Para comparar estados hay que usar tasas, y para la violencia física, solo las víctimas mujeres. La baja de 2024–2025 debe revisarse con cuidado: los meses más recientes suelen actualizarse en publicaciones posteriores del SESNSP.\nMúsica (P1, P3). Los hallazgos H7 y H8 apuntan a una música cada vez más concentrada en el regional mexicano y a diferencias de misoginia entre géneros, pero salen de una muestra que se está ampliando; se confirman o se descartan con el Top 200 completo."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/datos_nuevos.html",
+    "href": "entregas/E2_eda_preparacion/datos_nuevos.html",
+    "title": "Datos agregados en E2",
+    "section": "",
+    "text": "Durante el EDA aparecieron huecos en los datos de E1 que limitaban las respuestas a P1–P4. Esta página reúne las fuentes que se agregaron o ampliaron en E2: por qué hicieron falta, cómo se obtuvieron y cómo se validaron. Todas se suben a staging como tablas nuevas; las de E1 no se modifican."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/datos_nuevos.html#por-qué-hizo-falta-ampliar-kworb",
+    "href": "entregas/E2_eda_preparacion/datos_nuevos.html#por-qué-hizo-falta-ampliar-kworb",
+    "title": "Datos agregados en E2",
+    "section": "Por qué hizo falta ampliar Kworb",
+    "text": "Por qué hizo falta ampliar Kworb\nEl staging de E1 trae el historial de 300 canciones: las de más streams acumulados del chart semanal de México. Al compararlas con el Top 200 diario de Kaggle (2017–2021) resultó que cubren muy poco del consumo:\n\n\n\n\n\n\n\n\n\n\nAño\nCanciones del Top 200\nEn la muestra\nParte de las canciones\nParte de los streams\n\n\n\n\n2017\n1,041\n19\n1.8 %\n5.7 %\n\n\n2018\n1,163\n27\n2.3 %\n6.5 %\n\n\n2019\n949\n39\n4.1 %\n16.6 %\n\n\n2020\n1,051\n53\n5.0 %\n23.0 %\n\n\n2021\n905\n63\n7.0 %\n26.4 %\n\n\n\nAdemás, la muestra se inclina a los años recientes (15 canciones con streams en 2015 y 246 en 2025), así que cualquier medida de música de los primeros años sale de muy pocas canciones. Los streams de Kworb sí son confiables: para las mismas canciones coinciden con Kaggle (razón de 0.98 a 1.12 desde 2018). El problema es cuántas canciones hay, no cómo se miden. Por eso se descarga el Top 200 semanal completo, como E1 ya había planeado para la preparación."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/datos_nuevos.html#tablas-nuevas-de-staging",
+    "href": "entregas/E2_eda_preparacion/datos_nuevos.html#tablas-nuevas-de-staging",
+    "title": "Datos agregados en E2",
+    "section": "Tablas nuevas de staging",
+    "text": "Tablas nuevas de staging\n\n\n\n\n\n\n\n\n\n\n\nTabla\nFilas\nPara qué\nCómo se obtuvo\nValidación\nEstado\n\n\n\n\nstg_kworb_catalogo_completo\n5,177\nTodas las canciones del Top 200 semanal de México, 2013–2026\nsrc/ingestion/kworb.py, lista mx_weekly_totals\nReproduce exactamente las 300 canciones de E1\nDescargando\n\n\nstg_kworb_mx_semanal_completo\n—\nHistorial semanal de todas esas canciones\nsrc/ingestion/kworb.py, página de cada canción, columna MX, 1.5 s entre páginas\nMismo formato que la tabla de E1\nDescargando\n\n\nstg_musicbrainz_tags_completo\n1,120\nGénero de los artistas nuevos\nsrc/ingestion/musicbrainz.py, mismo método que E1\nMismo formato que la tabla de E1\nDescargando\n\n\nstg_trends_macrogenero_anio\n2,464\nPeso por género para repartir el consumo entre entidades\nGoogle Trends, un tema por macrogénero (7) y una descarga por año 2015–2025\nReguetón 2021 contra E1: Spearman 0.99\nEn staging\n\n\nstg_trends_artista_anio\n11,840\nPeso por artista, caso principal del reparto de E1\nGoogle Trends, tema de cada artista del top 50 de cada año (109 artistas, 370 descargas)\n356 de 370 descargas con valor en 28 estados o más\nEn staging\n\n\nstg_endireh_2021_prevalencias\n3,960\nPrevalencias oficiales por tipo de violencia para P4\nTabulados de INEGI, cuadro 21.2, pasado a formato largo sin cambiar valores (src/ingestion/endireh.py)\nPrevalencia nacional 2021 = 42.8 %, la publicada\nEn staging\n\n\nstg_endutih_usuarios_entidad_anio\n330\nUsuarios de internet de cada año para el reparto (E1 solo tenía 2024)\nTabulados de INEGI 2015–2025 (src/ingestion/endutih.py); 2019 no existe y se interpola\nLa suma de estados da el total nacional cada año\nPor subir\n\n\n\nLas tablas de Trends y de artistas nuevos de Kworb se amplían cuando termina la descarga de Kworb, porque cambia el top 50 de artistas de cada año."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/datos_nuevos.html#efecto-en-el-reparto-del-consumo-por-entidad",
+    "href": "entregas/E2_eda_preparacion/datos_nuevos.html#efecto-en-el-reparto-del-consumo-por-entidad",
+    "title": "Datos agregados en E2",
+    "section": "Efecto en el reparto del consumo por entidad",
+    "text": "Efecto en el reparto del consumo por entidad\nCon los usuarios de internet de cada año, en lugar de los de 2024 para toda la década, cambian los pesos de los primeros años: en 2015, el peso de Chiapas bajaba 27 % y el de la Ciudad de México subía 27 % respecto de usar 2024. Con Trends por artista, el 95 % de los streams se reparte con el interés del propio artista, el 2.8 % con el de su género y el 2.3 % solo con los usuarios de internet.\nEl detalle de calidad de cada fuente está en Calidad por fuente."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda_descriptiva.html",
+    "href": "entregas/E2_eda_preparacion/eda_descriptiva.html",
+    "title": "Estadística descriptiva",
+    "section": "",
+    "text": "Cada variable relevante se describe en sus cuatro dimensiones. Las tasas de violencia son por 100 mil mujeres (población de CONAPO del mismo año y entidad), con una observación por entidad y año (32 × 11 = 352); los streams son de la muestra de Kworb. Las medidas completas están en pipeline/data/data-processed/eda/descriptiva_*.parquet."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda_descriptiva.html#localización",
+    "href": "entregas/E2_eda_preparacion/eda_descriptiva.html#localización",
+    "title": "Estadística descriptiva",
+    "section": "Localización",
+    "text": "Localización\n\n\n\nTabla 1: Medidas de localización\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable\nUnidad\nn\nMedia\nMediana\nMedia recortada 10 %\nQ1\nQ3\nP90\n\n\n\n\nStreams por canción y año\ncanción-año en el chart\n922\n74.8 M\n54.7 M\n64.0 M\n20.3 M\n106.0 M\n166.7 M\n\n\nTasa de violencia familiar y de género\nentidad-año\n352\n367.1\n348.3\n356.0\n166.8\n547.7\n673.0\n\n\nTasa de violencia sexual\nentidad-año\n352\n94.0\n80.4\n88.2\n51.0\n125.3\n173.4\n\n\nTasa de víctimas mujeres de lesiones\nentidad-año\n352\n92.0\n85.3\n85.9\n44.4\n128.9\n173.1\n\n\nTasa de feminicidio\nentidad-año\n352\n1.28\n1.14\n1.18\n0.68\n1.63\n2.34\n\n\nUsuarios de internet (%)\nentidad-año\n320\n72.3\n75.1\n73.3\n62.7\n83.5\n87.5\n\n\nPobreza (%)\nentidad-año medido\n128\n39.8\n38.7\n39.0\n27.0\n50.3\n60.2\n\n\nImpunidad del feminicidio (%)\nentidad, 2023\n23\n79.9\n90.6\n83.5\n62.8\n99.1\n100.0\n\n\n\n\n\n\nLectura. Una canción que está en el chart suma unos 55 millones de streams en un año típico (mediana), pero la media sube a 75 millones porque unas pocas canciones acumulan cientos de millones. En violencia, la entidad típica registra unas 350 carpetas de violencia familiar por cada 100 mil mujeres al año: es, por mucho, el delito de violencia de género más denunciado, cuatro veces la tasa sexual. La moda no aporta en las tasas (casi no hay valores repetidos), así que no se usa para interpretar; en la impunidad la moda es 100 %: varias entidades no resuelven ningún caso de feminicidio según México Evalúa."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda_descriptiva.html#variabilidad-y-forma",
+    "href": "entregas/E2_eda_preparacion/eda_descriptiva.html#variabilidad-y-forma",
+    "title": "Estadística descriptiva",
+    "section": "Variabilidad y forma",
+    "text": "Variabilidad y forma\n\n\n\nTabla 2: Variabilidad y forma. CV = DE/media; curtosis en exceso (0 en una normal). La última columna compara la DE con la que tendría una normal con el mismo IQR: mayor a 1 indica colas pesadas o atípicos.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable\nDE\nIQR\nMAD\nCV\nAsimetría\nCurtosis\nMedia / mediana\nDE / (IQR/1.349)\n\n\n\n\nStreams por canción y año\n70.6 M\n85.7 M\n39.9 M\n0.94\n1.47\n2.37\n1.37\n1.11\n\n\nStreams por canción y mes\n9.1 M\n7.7 M\n3.6 M\n0.97\n2.61\n10.39\n1.34\n1.59\n\n\nTasa familiar y de género\n239.0\n380.9\n187.8\n0.65\n0.51\n0.05\n1.05\n0.85\n\n\nTasa sexual\n57.6\n74.2\n35.2\n0.61\n0.99\n0.89\n1.17\n1.05\n\n\nTasa de víctimas mujeres de lesiones\n66.8\n84.5\n43.4\n0.73\n0.99\n1.58\n1.08\n1.07\n\n\nTasa de feminicidio\n0.91\n0.95\n0.48\n0.71\n1.68\n4.86\n1.12\n1.29\n\n\nUsuarios de internet (%)\n13.5\n20.8\n9.7\n0.19\n−0.65\n−0.34\n0.96\n0.88\n\n\nPobreza (%)\n15.0\n23.2\n11.7\n0.38\n0.44\n−0.58\n1.03\n0.87\n\n\n\n\n\n\nMedia frente a mediana: ¿hay sesgo? Los streams tienen una media 34–37 % mayor que la mediana y asimetría positiva: la distribución tiene una cola larga a la derecha formada por los grandes éxitos (Figura 1). Las tasas de violencia están mucho más cerca de la simetría (media/mediana de 1.05 a 1.17), salvo el feminicidio, cuya cola derecha son unos pocos estados con tasas de 4 a 6 por 100 mil.\nDesviación estándar frente a IQR: ¿hay atípicos? En los streams mensuales la DE es 1.6 veces la que tendría una normal con el mismo IQR y la curtosis es 10: hay meses atípicos (los estrenos y los picos de un éxito). En el feminicidio la razón es 1.3: algunos estados se separan del resto. En las tasas familiar y sexual la razón es cercana o menor a 1: la dispersión es amplia pero pareja, sin unos pocos valores extremos.\nCoeficiente de variación. Las tasas de violencia varían entre entidades y años alrededor de 60–70 % de su media, mucho más que los indicadores de contexto (19 % internet, 38 % pobreza). La violencia registrada es más desigual entre estados que las condiciones socioeconómicas que la acompañan.\n\n\n\n\n\n\nFigura 1: Distribución de los streams anuales por canción (escala logarítmica, porque abarcan cinco órdenes de magnitud)."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda_descriptiva.html#comparación-entre-grupos",
+    "href": "entregas/E2_eda_preparacion/eda_descriptiva.html#comparación-entre-grupos",
+    "title": "Estadística descriptiva",
+    "section": "Comparación entre grupos",
+    "text": "Comparación entre grupos\n\nPor año\n\n\n\nTabla 3: Mediana entre entidades por año y parte de la variación explicada por el año (η²; ω² corrige el sesgo de η²)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTasa (por 100 mil mujeres)\n2015\n2019\n2023\n2025\nη²\nω²\n\n\n\n\nFamiliar y de género\n152.1\n315.2\n460.3\n422.4\n0.12\n0.09\n\n\nSexual\n46.5\n77.0\n123.0\n111.5\n0.24\n0.21\n\n\nVíctimas mujeres de lesiones\n78.9\n92.6\n93.9\n91.6\n0.01\n−0.02\n\n\nFeminicidio\n0.50\n1.35\n1.05\n0.93\n0.09\n0.06\n\n\n\n\n\n\nLa mediana estatal de violencia familiar se triplicó de 2015 a 2023 y la sexual se multiplicó por 2.6; el año explica el 24 % de la variación de la tasa sexual, lo que la hace la que más cambió en el tiempo (Figura 2, Figura 3). La violencia física contra mujeres, medida con las víctimas, no cambia (η² ≈ 0). El feminicidio sube hasta 2019–2021 y luego baja, pero su valor de 2015 está subestimado por los estados que todavía no registraban el delito (ver calidad del SESNSP). En todos los tipos 2024–2025 queda por debajo de 2023; puede ser una baja real o meses recientes que el SESNSP aún actualiza.\n\n\n\n\n\n\nFigura 2: Tasa por entidad para cada año. Cada caja resume a las 32 entidades.\n\n\n\n\n\n\n\n\n\nFigura 3: Carpetas mensuales a nivel nacional por tipo; cada tipo tiene su propio eje porque sus escalas difieren en tres órdenes de magnitud.\n\n\n\n\n\nPor región del Banco de México (2025)\n\n\n\nTabla 4: Mediana por región y parte de la variación entre estados que explica la región\n\n\n\n\n\nTasa 2025\nSur\nCentro\nCentro norte\nNorte\nη²\n\n\n\n\nFamiliar y de género\n165.5\n449.1\n407.7\n652.3\n0.22\n\n\nSexual\n71.5\n118.0\n119.5\n136.0\n0.11\n\n\nVíctimas mujeres de lesiones\n62.5\n100.0\n102.9\n91.4\n0.11\n\n\nFeminicidio\n1.07\n0.87\n0.84\n1.54\n0.01\n\n\n\n\n\n\nEl sur registra cuatro veces menos violencia familiar que el norte, pero la región explica solo el 22 % de las diferencias: dentro de cada región los estados difieren mucho más (Figura 4). El mapa (Figura 5) y la mezcla de tipos por estado (Figura 7) muestran por qué: los valores más bajos son estados como Tlaxcala (7 carpetas por 100 mil mujeres), Yucatán (23), Chiapas (26) y Michoacán (67), que casi no clasifican denuncias como violencia familiar y las registran como lesiones. Las diferencias entre estados mezclan violencia real con prácticas de registro de cada fiscalía. En el feminicidio la región no explica nada (η² = 0.01).\n\n\n\n\n\n\nFigura 4: Tasa de cada tipo por región, ordenada por mediana. La física usa solo víctimas mujeres.\n\n\n\n\n\n\n\n\n\nFigura 5: Tasa por entidad en 2025. Se usan tasas y no conteos: un mapa de conteos mostraría dónde vive más gente.\n\n\n\n\n\nPor macrogénero\nLos streams anuales por canción (en log10) apenas difieren entre géneros: el macrogénero explica el 4.6 % de la variación (η² = 0.046). Una canción de regional mexicano o de urbano latino no es más escuchada que una de pop; lo que cambia entre géneros es cuántas canciones entran al chart, no cuánto se escucha cada una."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda_descriptiva.html#variables-categóricas",
+    "href": "entregas/E2_eda_preparacion/eda_descriptiva.html#variables-categóricas",
+    "title": "Estadística descriptiva",
+    "section": "Variables categóricas",
+    "text": "Variables categóricas\n\n\n\nTabla 5: Heterogeneidad de las variables categóricas\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable\nMedida sobre\nModa\nK\nProporción de la moda\nEntropía normalizada\nCategorías efectivas (Hill 1)\n\n\n\n\nTipo de violencia (LGAMVLV)\ncarpetas\nfamiliar y de género\n4\n0.51\n0.72\n2.7\n\n\nSubtipo de delito\ncarpetas\nViolencia familiar\n55\n0.11\n0.78\n22.6\n\n\nMacrogénero\nstreams\nregional mexicano\n8\n0.36\n0.67\n4.1\n\n\nMacrogénero\ncanciones\nregional mexicano\n8\n0.35\n0.70\n4.3\n\n\nPaís del artista\ncanciones\nsin dato\n12\n0.39\n0.63\n4.8\n\n\n\n\n\n\nLa violencia familiar es la mitad de las carpetas de violencia de género; con 4 tipos, hay en la práctica 2.7 tipos “efectivos”. El macrogénero se reparte entre unos 4 géneros efectivos en toda la ventana, pero esa cifra global esconde una concentración creciente año con año (ver concentración). El país del artista tiene como moda “sin dato”: el 39 % de las canciones no tiene país en MusicBrainz, así que esa variable sirve poco para el análisis.\n\n\n\n\n\n\nFigura 6: Participación de cada macrogénero en los streams; en gris, los artistas sin género en MusicBrainz.\n\n\n\n\n\n\n\n\n\nFigura 7: Mezcla de tipos de violencia en cada estado, 2025, ordenada por la participación de la violencia familiar.\n\n\n\nLa Figura 6 muestra que el regional mexicano y el urbano latino suman más de la mitad del consumo de la muestra, y que una parte grande no tiene género asignado. La Figura 7 confirma que la violencia familiar es el tipo más frecuente en 25 de los 32 estados. En 6 domina la física (entre ellos Michoacán, Tlaxcala, Campeche y el Estado de México) y en Chiapas la sexual: es la otra cara del problema de clasificación descrito arriba, porque lo que un estado registra como violencia familiar otro lo registra como lesiones."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda_concentracion.html",
+    "href": "entregas/E2_eda_preparacion/eda_concentracion.html",
+    "title": "Concentración y heterogeneidad",
+    "section": "",
+    "text": "Antes de leer los valores hay que declarar cómo se calcularon, porque cambian el resultado:\n\nUnidad de agregación. En violencia la unidad es la entidad (32 unidades); con municipios el Gini sería mayor. En música las unidades son las canciones o los artistas que estuvieron en el chart ese año.\nCeros. Una entidad sin carpetas en un año cuenta como unidad con cero. Las canciones solo cuentan en los años en que tuvieron streams (la muestra no tiene canciones fuera del chart).\nConteos frente a tasas. Se calculan los dos. Para comparar estados se usa la tasa: el conteo mezcla la violencia con el tamaño de la población.\nEntropía. Se normaliza por log₂ K porque crece con el número de categorías. No se agruparon categorías raras en “Otros”. En el macrogénero se excluyen los artistas sin género y se reporta qué parte de los streams cubre.\nEste Gini mide concentración de una cantidad entre unidades; no es el Gini impurity de los árboles de decisión."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda_concentracion.html#decisiones-de-medición",
+    "href": "entregas/E2_eda_preparacion/eda_concentracion.html#decisiones-de-medición",
+    "title": "Concentración y heterogeneidad",
+    "section": "",
+    "text": "Antes de leer los valores hay que declarar cómo se calcularon, porque cambian el resultado:\n\nUnidad de agregación. En violencia la unidad es la entidad (32 unidades); con municipios el Gini sería mayor. En música las unidades son las canciones o los artistas que estuvieron en el chart ese año.\nCeros. Una entidad sin carpetas en un año cuenta como unidad con cero. Las canciones solo cuentan en los años en que tuvieron streams (la muestra no tiene canciones fuera del chart).\nConteos frente a tasas. Se calculan los dos. Para comparar estados se usa la tasa: el conteo mezcla la violencia con el tamaño de la población.\nEntropía. Se normaliza por log₂ K porque crece con el número de categorías. No se agruparon categorías raras en “Otros”. En el macrogénero se excluyen los artistas sin género y se reporta qué parte de los streams cubre.\nEste Gini mide concentración de una cantidad entre unidades; no es el Gini impurity de los árboles de decisión."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda_concentracion.html#gini-y-curva-de-lorenz",
+    "href": "entregas/E2_eda_preparacion/eda_concentracion.html#gini-y-curva-de-lorenz",
+    "title": "Concentración y heterogeneidad",
+    "section": "Gini y curva de Lorenz",
+    "text": "Gini y curva de Lorenz\n\n\n\nTabla 1: Coeficiente de Gini por año (antes de limpiar). La serie completa está en concentracion_gini.parquet.\n\n\n\n\n\nVariable\nUnidad\n2015\n2019\n2025\n\n\n\n\nStreams entre canciones\ncanción\n0.48\n0.44\n0.49\n\n\nStreams entre artistas\nartista\n0.49\n0.47\n0.66\n\n\nFeminicidio, conteo\nentidad\n0.66\n0.47\n0.40\n\n\nFeminicidio, tasa\nentidad\n0.54\n0.28\n0.33\n\n\nViolencia familiar, conteo\nentidad\n0.54\n0.41\n0.47\n\n\nViolencia familiar, tasa\nentidad\n0.45\n0.34\n0.34\n\n\n\n\n\n\n\n\n\n\n\n\nFigura 1: Curvas de Lorenz: streams entre canciones (2019 y 2025) y feminicidio entre entidades en conteo y en tasa (2025). Cuanto más se aleja la curva de la diagonal, más concentrado.\n\n\n\n\n\n\n\n\n\nFigura 2: Gini por año de cada variable.\n\n\n\nMúsica (P1, P3). Entre canciones la concentración es moderada y estable (Gini cercano a 0.45–0.49): las canciones que entran al chart se escuchan de forma parecida entre sí (Figura 1). Entre artistas la concentración sube de 0.49 a 0.66 (Figura 2): cada vez menos artistas reúnen los streams. Para P1 esto significa que la proporción misógina del consumo dependerá cada vez más de lo que canten unos pocos artistas.\nViolencia (P2). El feminicidio está más concentrado en conteo que en tasa (0.40 frente a 0.33 en 2025): una parte de la concentración es que los estados grandes tienen más casos, no más riesgo. Por eso P2 usa tasas. La caída del Gini de 2015 a 2019 hay que leerla con cuidado: en 2015 varios estados aparecían con cero feminicidios porque todavía no registraban el delito, lo que infla la desigualdad de ese año; la Parte B lo corrige. En la violencia familiar la tasa se concentra poco (0.34) y estable desde 2019."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/eda_concentracion.html#entropía-normalizada",
+    "href": "entregas/E2_eda_preparacion/eda_concentracion.html#entropía-normalizada",
+    "title": "Concentración y heterogeneidad",
+    "section": "Entropía normalizada",
+    "text": "Entropía normalizada\n\n\n\nTabla 2: Entropía normalizada por año. La serie completa está en concentracion_entropia.parquet.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAño\n2015\n2016\n2018\n2020\n2022\n2024\n2025\n\n\n\n\nMacrogénero de los streams\n0.75\n0.95\n0.88\n0.76\n0.54\n0.55\n0.44\n\n\nParte de los streams con género\n0.61\n0.63\n0.82\n0.85\n0.76\n0.58\n0.56\n\n\nTipo de violencia de las carpetas\n0.69\n0.70\n0.71\n0.71\n0.72\n0.72\n0.72\n\n\n\n\n\n\n\n\n\n\n\n\nFigura 3: Entropía normalizada por año del macrogénero y del tipo de violencia.\n\n\n\nMacrogénero (P1, P3). La entropía baja de 0.95 en 2016, cuando el consumo se repartía casi por igual entre los géneros, a 0.44 en 2025: el regional mexicano pasó de 35 % a 75 % de los streams con género (Figura 3). El consumo de la muestra se volvió mucho menos diverso. Dos precauciones: según el año solo entre 56 y 85 % de los streams tiene género, y los primeros años salen de pocas canciones.\nTipo de violencia (P4). La mezcla de tipos casi no cambia (0.69 a 0.72) aunque el volumen se haya duplicado: crecen juntos. Entre estados sí hay diferencias: en 2025 la entropía va de 0.57 en Morelos, Nuevo León y la Ciudad de México, donde la violencia familiar es más del 70 % de las carpetas, 0.82 en Yucatán y Campeche y 0.86 en Tlaxcala, donde ningún tipo pasa del 44 %. La violencia familiar es el tipo predominante en 25 estados, la física en 6 y la sexual en uno (Chiapas)."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/hallazgos.html#violencia",
+    "href": "entregas/E2_eda_preparacion/hallazgos.html#violencia",
+    "title": "Hallazgos",
+    "section": "Violencia",
+    "text": "Violencia\nH1. La violencia familiar domina y más que se duplicó de 2015 a 2023.\n\n\n\n\n\n\n\nCampo\nRegistro\n\n\n\n\nEvidencia\nD, tabla y figuras de series y tasas por año: mediana estatal de 152 a 460 por 100 mil mujeres; 290,609 carpetas en 2023; tipo predominante en 25 de 32 estados (D, figura de mezcla por estado)\n\n\nTipo\nEsperado\n\n\nVínculo con E0\nP2 y P4: es el indicador con más volumen y variación para correlacionar con la música; en P4 la familiar es la referencia oficial de violencia dentro del hogar\n\n\nConsecuencia\nConservar como variable principal de P2, siempre en tasa\n\n\n\nH2. La violencia sexual es la que más cambió en el tiempo.\n\n\n\n\n\n\n\nCampo\nRegistro\n\n\n\n\nEvidencia\nD, tabla por año: mediana de 46.5 a 123.0 por 100 mil mujeres (×2.6); el año explica el 24 % de su variación (η² = 0.24, ω² = 0.21)\n\n\nTipo\nEsperado\n\n\nVínculo con E0\nP2 y P4: la sexualización es la categoría de misoginia más frecuente en MiSonGyny; esta tasa es su contraparte oficial\n\n\nConsecuencia\nConservar; vigilar si el aumento refleja más violencia o más denuncia\n\n\n\nH3. Las carpetas de lesiones no miden violencia contra las mujeres: el 56 % de sus víctimas son hombres. (inesperado)\n\n\n\n\n\n\n\nCampo\nRegistro\n\n\n\n\nEvidencia\nArchivo de víctimas del SESNSP: 917,320 hombres y 726,178 mujeres en lesiones dolosas. Con víctimas mujeres, la tasa física no cambia con los años (η² = 0.01)\n\n\nTipo\nInesperado (calidad del indicador)\n\n\nVínculo con E0\nP2 y P4: con carpetas, la violencia física pesa más de lo que debería frente a los otros tipos y no es violencia de género\n\n\nConsecuencia\nEn la Parte B y en el modelado, medir la violencia física con victimas_mujeres, no con carpetas\n\n\n\nH4. Las diferencias entre estados mezclan violencia y prácticas de registro. (inesperado)\n\n\n\n\n\n\n\nCampo\nRegistro\n\n\n\n\nEvidencia\nD, mapa y tabla por región: la tasa familiar de 2025 va de 7 (Tlaxcala) a 1,097 (Colima); Yucatán, Chiapas y Michoacán también casi no la registran y en ellos domina la física o la sexual. El sur registra cuatro veces menos que el norte\n\n\nTipo\nInesperado\n\n\nVínculo con E0\nP2 por entidad: una correlación entre estados podría reflejar cómo clasifica cada fiscalía y no cuánta violencia hay\n\n\nConsecuencia\nPara P2 por entidad, usar también la suma de familiar y física (víctimas mujeres) o cambios dentro de cada estado en el tiempo; marcar a los estados que casi no registran violencia familiar\n\n\n\nH5. La caída de la desigualdad del feminicidio entre estados es en parte un artefacto de registro. (inesperado)\n\n\n\nCampo\nRegistro\n\n\n\n\nEvidencia\nC, tabla de Gini: Gini de la tasa de 0.54 (2015) a 0.28 (2019). En 2015, ocho estados tenían cero feminicidios porque todavía no registraban el delito; sin esos ceros el Gini de 2015 es 0.38 (verificación)\n\n\nTipo\nInesperado\n\n\nVínculo con E0\nP2: la serie de feminicidio de 2015–2017 no es comparable con la posterior\n\n\nConsecuencia\nParte B: los ceros iniciales de esos estados pasan a faltantes\n\n\n\nH6. El feminicidio se concentra más en conteo que en tasa.\n\n\n\n\n\n\n\nCampo\nRegistro\n\n\n\n\nEvidencia\nC, tabla de Gini y curva de Lorenz: Gini 2025 de 0.40 en conteo y 0.33 en tasa\n\n\nTipo\nEsperado\n\n\nVínculo con E0\nP2: parte de la concentración es tamaño de población\n\n\nConsecuencia\nComparar estados solo con tasas\n\n\n\nH7. La mezcla de tipos de violencia no cambia aunque el volumen se duplique.\n\n\n\n\n\n\n\nCampo\nRegistro\n\n\n\n\nEvidencia\nC, tabla de entropía: entropía normalizada del tipo entre 0.69 y 0.72 en los 11 años\n\n\nTipo\nNegativo (no hay cambio en la composición)\n\n\nVínculo con E0\nP4: la comparación entre los tipos de la música y los oficiales puede hacerse con la mezcla de toda la ventana, porque es estable\n\n\nConsecuencia\nPara P4, una sola distribución oficial por tipo es suficiente"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/hallazgos.html#música-provisionales",
+    "href": "entregas/E2_eda_preparacion/hallazgos.html#música-provisionales",
+    "title": "Hallazgos",
+    "section": "Música (provisionales)",
+    "text": "Música (provisionales)\nH8. El consumo se concentró en un solo género y en menos artistas. (inesperado)\n\n\n\n\n\n\n\nCampo\nRegistro\n\n\n\n\nEvidencia\nC, tablas de entropía y de Gini: entropía del macrogénero de 0.95 (2016) a 0.44 (2025); regional mexicano de 35 % a 75 % de los streams con género; Gini entre artistas de 0.49 a 0.66\n\n\nTipo\nInesperado\n\n\nVínculo con E0\nP1 y P3: la proporción misógina del consumo dependerá cada vez más de un solo género y de pocos artistas\n\n\nConsecuencia\nConservar el macrogénero; analizar P1 por género y no solo en total. Confirmar con el Top 200 completo\n\n\n\nH9. No hay evidencia suficiente de que un género sea más misógino que otro.\n\n\n\nCampo\nRegistro\n\n\n\n\nEvidencia\n9 de 15 canciones de urbano latino misóginas frente a 2 de 9 de regional mexicano; V de Cramér = 0.34, pero p ajustado por Holm = 0.09 con 42 canciones etiquetadas (reducción)\n\n\nTipo\nNegativo\n\n\nVínculo con E0\nP1: con la etiqueta humana de MiSonGyny solo se cubre el 13 % de los streams\n\n\nConsecuencia\nVolver a probar con el Top 200 completo; la respuesta de P1 por género depende del clasificador del modelado"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/hallazgos.html#lo-que-los-datos-no-permiten-responder-del-todo",
+    "href": "entregas/E2_eda_preparacion/hallazgos.html#lo-que-los-datos-no-permiten-responder-del-todo",
+    "title": "Hallazgos",
+    "section": "Lo que los datos no permiten responder del todo",
+    "text": "Lo que los datos no permiten responder del todo\n\nP1 por entidad no se mide: el consumo por estado es una estimación que reparte el consumo nacional con Google Trends y los usuarios de internet.\nP1 y P3 dependen de qué canciones tienen etiqueta de misoginia. Hoy solo la tienen las que están en MiSonGyny; el resto requiere el clasificador del modelado.\nP2 puede describir asociación, no causalidad, y por H4 la comparación entre estados está contaminada por la forma de registrar.\nP4 no puede comparar la violencia económica, patrimonial ni mediática con fuentes oficiales mensuales: el SESNSP no las mide y la ENDIREH solo tiene 2016 y 2021.\nEl RNPDNO no sirve como indicador principal de desaparición de mujeres: el 70 % de sus registros de mujeres no tiene fecha o entidad (calidad)."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/ajustes.html",
+    "href": "entregas/E2_eda_preparacion/ajustes.html",
+    "title": "Ajustes a E1",
+    "section": "",
+    "text": "El EDA no cambió el grano, las dimensiones ni el DDL de E1: las siete tablas del esquema estrella se poblaron tal como se diseñaron. Sí cambiaron algunas fuentes y dos consultas del DataMart. La versión original de E1 se conserva sin cambios en entregas/E1_arquitectura_dw/; la versión vigente (E1 v2) está en sql/ y en pipeline/.\nNo hay pivote. El objetivo de minería de datos, las preguntas P1–P4 y el criterio de éxito de E0 siguen iguales.\n\n\n\n\n\n\n\n\n\n\n#\nQué se encontró\nAntes (E1)\nDespués (E2)\nPor qué sigue en la línea de E0\n\n\n\n\n1\nLas 300 canciones de Kworb cubrían del 6 al 26 % de los streams del Top 200\nstg_kworb_mx_semanal y stg_kworb_catalogo_canciones con 300 canciones\nTop 200 semanal completo (5,177 canciones) en stg_kworb_*_completo y búsqueda de 1,120 artistas más en stg_musicbrainz_tags_completo; las tablas de E1 no se modifican\nP1 habla de “la música más escuchada”; con 300 canciones se medía una parte pequeña. E1 ya preveía la descarga completa en la preparación\n\n\n2\nGoogle Trends solo tenía reguetón de 2021\nstg_trends_regueton_tema_2021\nstg_trends_macrogenero_anio (7 géneros × 11 años) y stg_trends_artista_anio (top 50 de artistas por año)\nEs el reparto por entidad que E1 definió (artista_anio, genero_anio, usuarios_internet); faltaban los datos\n\n\n3\nLos usuarios de internet solo eran de 2024 y el acceso creció de 56 % a 87 %\nstg_endutih_usuarios (microdato 2024)\nAdemás stg_endutih_usuarios_entidad_anio con tabulados 2015–2025; 2019 interpolado\nCon 2024 para toda la década, el peso de Chiapas en 2015 quedaba 36 % inflado\n\n\n4\nLa ENDIREH estaba en el catálogo pero no en staging\n—\nstg_endireh_2021_prevalencias (tabulados de INEGI, cuadro 21.2)\nLlena las columnas prevalencia_* que el DDL de E1 ya tenía para P4\n\n\n5\nLa vista p3_tendencia_tipo_violencia no se podía ejecutar: la CTE y la columna se llamaban participacion\nFROM participacion\nLa CTE se llama con_participacion\nCorrección de un error; la lógica no cambia\n\n\n6\nLas carpetas de lesiones son 56 % de víctimas hombres (hallazgo H3)\nEn P2 el indicador de todos los tipos era carpetas\nEn p2_serie_mensual_nacional y p2_panel_entidad_anio la física usa victimas_mujeres\nP2 es sobre violencia contra las mujeres\n\n\n7\nLas vistas del DataMart en BigQuery eran de una versión anterior a la final de E1 (usaban la columna evento_restriccion_musical, que ya no existe)\nVistas creadas el 10 de octubre\nSe recrean desde sql/consultas_mart.sql en cada carga\nEl repositorio es la fuente de verdad\n\n\n8\nEl RNPDNO tiene 70 % de mujeres sin fecha o entidad\nIndicador de P2\nFuente secundaria de contraste\nP2 sigue cubierta por el SESNSP; se documenta la limitación\n\n\n9\nNatural Earth y Trends usan el código anterior de la Ciudad de México\n—\ndim_entidad.iso_3166_2 guarda MX-CMX, el código vigente\nEl DDL lo pedía así (MX-CMX, MX-YUC…)\n\n\n10\nEl sitio no tenía idioma declarado y las referencias salían en inglés\n—\nlang: es en _quarto.yml\nFormato del sitio\n\n\n\n\n\n\n Volver arriba"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html",
+    "href": "entregas/E2_eda_preparacion/decisiones.html",
+    "title": "Decisiones sobre los datos",
+    "section": "",
+    "text": "Este proyecto busca saber cuánta misoginia hay en la música que más se escucha en México y si se relaciona con la violencia contra las mujeres que registran las autoridades. Antes de responder, revisamos cada fuente de datos y tomamos decisiones sobre qué conservar, qué corregir y qué no tocar. Aquí explicamos las más importantes. Los términos marcados con asterisco (*) están en el glosario al final."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#la-música-ampliamos-la-lista-de-canciones",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#la-música-ampliamos-la-lista-de-canciones",
+    "title": "Decisiones sobre los datos",
+    "section": "1. La música: ampliamos la lista de canciones",
+    "text": "1. La música: ampliamos la lista de canciones\nQué encontramos. Teníamos el historial de las 300 canciones más escuchadas en Spotify México desde 2013. Al compararlas con una lista diaria completa del Top 200, resultó que esas 300 canciones eran apenas el 6 % de lo que se escuchó en 2017 y el 26 % en 2021. Además casi no había canciones de los primeros años: 15 en 2015 contra 246 en 2025.\nQué hicimos. Descargamos el historial completo del Top 200 semanal de México: más de 5,000 canciones.\nPor qué. Con 300 canciones, cualquier conclusión sobre “la música que se escucha” habría hablado de una parte pequeña y poco representativa. Los números de esas canciones sí eran correctos (coinciden con la otra lista); el problema era cuántas había.\nQué cambia. Las cifras de música de esta entrega se recalculan con la lista completa. Sigue faltando lo que nunca entró al Top 200, que ninguna fuente pública publica."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#la-misoginia-de-las-canciones-solo-usamos-etiquetas-hechas-por-personas",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#la-misoginia-de-las-canciones-solo-usamos-etiquetas-hechas-por-personas",
+    "title": "Decisiones sobre los datos",
+    "section": "2. La misoginia de las canciones: solo usamos etiquetas hechas por personas",
+    "text": "2. La misoginia de las canciones: solo usamos etiquetas hechas por personas\nQué encontramos. Un corpus de investigación (MiSonGyny) tiene canciones revisadas a mano y marcadas como misóginas o no. De las 300 canciones, solo 42 estaban en ese corpus, que suman el 13 % de lo escuchado.\nQué hicimos. Las demás canciones quedaron sin etiqueta (en blanco), no como “no misóginas”.\nPor qué. Marcar una canción sin revisarla sería inventar el dato. La clasificación del resto se hará en la siguiente etapa del proyecto con un modelo, y entonces se podrá medir qué tan bien acierta.\nQué cambia. Por ahora cualquier proporción de canciones misóginas se basa en pocas canciones. Por ejemplo, vimos más canciones misóginas en reguetón que en regional mexicano, pero con tan pocas canciones la diferencia podría ser casualidad, y así lo reportamos."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#la-violencia-quitamos-delitos-que-no-son-violencia-de-género",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#la-violencia-quitamos-delitos-que-no-son-violencia-de-género",
+    "title": "Decisiones sobre los datos",
+    "section": "3. La violencia: quitamos delitos que no son violencia de género",
+    "text": "3. La violencia: quitamos delitos que no son violencia de género\nQué encontramos. El registro oficial de delitos (SESNSP) trae todos los delitos: robo, fraude, narcomenudeo… El 79 % de sus filas no tiene relación con la violencia contra las mujeres.\nQué hicimos. Conservamos solo los delitos que la Ley General de Acceso de las Mujeres a una Vida Libre de Violencia permite clasificar: feminicidio, delitos sexuales, lesiones, violencia familiar y violencia de género. El homicidio se conserva como punto de comparación.\nPor qué. Los demás delitos no responden a ninguna de nuestras preguntas.\nQué cambia. Nada se pierde para el proyecto; los datos originales completos siguen guardados."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#las-lesiones-incluyen-víctimas-hombres",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#las-lesiones-incluyen-víctimas-hombres",
+    "title": "Decisiones sobre los datos",
+    "section": "4. Las lesiones incluyen víctimas hombres",
+    "text": "4. Las lesiones incluyen víctimas hombres\nQué encontramos. En las denuncias por lesiones, el 56 % de las víctimas son hombres.\nQué hicimos. Para medir la violencia física contra las mujeres contamos solo a las víctimas mujeres, no todas las denuncias.\nPor qué. Si contáramos todas las denuncias, la violencia física parecería más común de lo que es para las mujeres y se mezclaría con peleas entre hombres.\nQué cambia. La violencia física contra las mujeres resulta estable en la década, a diferencia de lo que sugerían las denuncias totales."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#un-cero-no-siempre-significa-no-pasó-nada",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#un-cero-no-siempre-significa-no-pasó-nada",
+    "title": "Decisiones sobre los datos",
+    "section": "5. Un cero no siempre significa “no pasó nada”",
+    "text": "5. Un cero no siempre significa “no pasó nada”\nQué encontramos. Ocho estados aparecen con cero feminicidios durante uno o varios años al inicio de la serie (por ejemplo, Baja California Sur hasta finales de 2019). No es que no hubiera: todavía no clasificaban esos asesinatos como feminicidio.\nQué hicimos. Cambiamos esos ceros por “dato desconocido” (900 meses-estado de casi 17,000).\nPor qué. Dejar el cero haría creer que en esos estados no mataban mujeres por razones de género y que la desigualdad entre estados bajó mucho; en realidad cambió la forma de registrar.\nQué cambia. La comparación del feminicidio entre estados en 2015–2018 es más honesta, pero esos años siguen siendo menos confiables que los recientes."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#lo-que-no-inventamos",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#lo-que-no-inventamos",
+    "title": "Decisiones sobre los datos",
+    "section": "6. Lo que no inventamos",
+    "text": "6. Lo que no inventamos\nHay datos que faltan y decidimos no rellenar, porque rellenarlos sería inventar personas o hechos:\n\n11 % de las víctimas no tienen sexo registrado y el 10 % de las mujeres no tiene edad. No las repartimos; por eso el número de víctimas mujeres y de niñas es un mínimo.\nEn el registro de personas desaparecidas, el 70 % de las mujeres no tiene fecha o lugar. No se pueden contar por estado y mes, así que ese registro solo sirve como apoyo y no como dato principal.\nLa encuesta nacional sobre violencia en los hogares (ENDIREH) solo existe en 2016 y 2021; no estimamos los demás años.\nVarios registros repetidos del registro de personas desaparecidas no se borraron: al proteger su identidad se quitaron los nombres, y dos personas distintas con la misma edad, estado y fecha se ven idénticas."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#lo-que-sí-completamos",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#lo-que-sí-completamos",
+    "title": "Decisiones sobre los datos",
+    "section": "7. Lo que sí completamos",
+    "text": "7. Lo que sí completamos\nAlgunos datos de contexto se miden cada dos años o una sola vez. Para tener un valor por año:\n\nPobreza (CONEVAL, años pares): para los años intermedios usamos el punto medio entre las mediciones.\nPersonas que usan internet (INEGI): hay dato de 2015 a 2025 excepto 2019, que calculamos a la mitad entre 2018 y 2020.\nImpunidad en feminicidio (México Evalúa): solo existe para 2023 y la repetimos en los demás años. Es la decisión más débil, y 9 estados no tienen el dato.\n\nEstos datos cambian despacio de un año a otro, así que completar los años intermedios no altera las conclusiones. Sirven para comparar estados entre sí, no para explicar cambios de un año a otro."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#las-diferencias-entre-estados-no-son-solo-violencia",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#las-diferencias-entre-estados-no-son-solo-violencia",
+    "title": "Decisiones sobre los datos",
+    "section": "8. Las diferencias entre estados no son solo violencia",
+    "text": "8. Las diferencias entre estados no son solo violencia\nQué encontramos. La tasa de denuncias por violencia familiar va de 7 por cada 100 mil mujeres en Tlaxcala a más de 1,000 en Colima. Tlaxcala, Yucatán, Chiapas y Michoacán casi no registran violencia familiar; registran esos casos como lesiones.\nQué hicimos. No lo “corregimos”, porque no sabemos cuánto de la diferencia es real. Lo marcamos y comparamos los estados también por sus cambios en el tiempo.\nQué cambia. Cuando digamos que un estado tiene más violencia que otro, habrá que aclarar que parte de la diferencia viene de cómo registra cada fiscalía."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#el-consumo-por-estado-es-una-estimación",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#el-consumo-por-estado-es-una-estimación",
+    "title": "Decisiones sobre los datos",
+    "section": "9. El consumo por estado es una estimación",
+    "text": "9. El consumo por estado es una estimación\nNo existe un dato público de cuánta música se escucha en cada estado. Lo estimamos repartiendo lo que se escucha en todo el país según qué tanto se busca a cada artista en Google en cada estado y cuántas personas usan internet ahí. El 95 % del consumo se repartió con las búsquedas del propio artista. Cualquier resultado por estado debe leerse como una aproximación."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#valores-extremos-los-conservamos",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#valores-extremos-los-conservamos",
+    "title": "Decisiones sobre los datos",
+    "section": "10. Valores extremos: los conservamos",
+    "text": "10. Valores extremos: los conservamos\nLas canciones muy exitosas y los meses con muchas denuncias aparecen como valores atípicos*. No los quitamos: son justamente lo que queremos estudiar. Para que unos pocos casos no dominen los cálculos, comparamos la música en escala logarítmica y la violencia en tasas por cada 100 mil mujeres."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#no-simplificamos-variables-ni-tomamos-muestras",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#no-simplificamos-variables-ni-tomamos-muestras",
+    "title": "Decisiones sobre los datos",
+    "section": "11. No simplificamos variables ni tomamos muestras",
+    "text": "11. No simplificamos variables ni tomamos muestras\nRevisamos si algunas variables decían lo mismo. Las cuatro cifras de población (total, mujeres, hombres, mujeres de 15 años y más) son prácticamente iguales entre estados, así que usamos solo la de mujeres. También probamos un análisis de componentes principales*: confirmó que internet y pobreza miden casi lo mismo, pero decidimos conservar las variables originales porque son pocas y se entienden mejor. No tomamos una muestra*: usamos todos los datos, porque caben en la computadora y cargarlos no tiene costo."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/decisiones.html#glosario",
+    "href": "entregas/E2_eda_preparacion/decisiones.html#glosario",
+    "title": "Decisiones sobre los datos",
+    "section": "Glosario",
+    "text": "Glosario\n\n\n\n\n\n\n\nTérmino\nSignificado\n\n\n\n\nAtípico\nUn valor muy alejado de los demás; puede ser un error o un caso real extremo\n\n\nImputar\nRellenar un dato faltante con un valor estimado\n\n\nInterpolar\nEstimar un valor intermedio entre dos mediciones conocidas\n\n\nTasa por 100 mil mujeres\nNúmero de casos dividido entre las mujeres del estado, por 100 mil; permite comparar estados de distinto tamaño\n\n\nComponentes principales (PCA)\nTécnica que resume varias variables relacionadas en unas pocas combinaciones\n\n\nMuestra\nUna parte de los datos elegida para analizar en lugar de todos\n\n\nEscala logarítmica\nUna forma de mostrar números que crecen mucho, en la que cada paso multiplica en lugar de sumar\n\n\nStaging\nEl lugar donde guardamos los datos tal como llegan, sin modificar"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/pipeline.html",
+    "href": "entregas/E2_eda_preparacion/pipeline.html",
+    "title": "Parte C · Pipeline y carga al DW",
+    "section": "",
+    "text": "%%{init: {'theme': 'neutral'}}%%\nflowchart LR\n  A[\"Fuentes descargadas&lt;br/&gt;Kworb, Trends, INEGI,&lt;br/&gt;MusicBrainz\"] --&gt;|carga_staging| B[(\"misoginia_staging&lt;br/&gt;BigQuery, datos crudos\")]\n  B --&gt;|ingesta| C[\"data-raw/&lt;br/&gt;copia local en Parquet\"]\n  C --&gt; D[\"calidad&lt;br/&gt;ensamblado · eda\"]\n  D --&gt; E[\"limpieza · reducción&lt;br/&gt;muestreo · verificación\"]\n  E --&gt; F[\"pesos · estrella&lt;br/&gt;7 tablas del DDL\"]\n  F --&gt;|carga| G[(\"misoginia_dw&lt;br/&gt;esquema estrella\")]\n  G --&gt; H[(\"misoginia_mart&lt;br/&gt;7 vistas P1–P4\")]\n\n\n\n\n\n\nEl pipeline vive en pipeline/ y tiene un solo punto de entrada. Lee staging una sola vez y guarda una copia local; todas las transformaciones se hacen en local con polars, y al final carga el esquema estrella al DW con load jobs. La capa de staging nunca se modifica.\ncd pipeline\npython run_pipeline.py              # todas las etapas, de staging al DataMart\npython run_pipeline.py --sin-carga  # todo menos la escritura en BigQuery\npython run_pipeline.py --desde limpieza\npython run_pipeline.py --solo eda"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/pipeline.html#arquitectura",
+    "href": "entregas/E2_eda_preparacion/pipeline.html#arquitectura",
+    "title": "Parte C · Pipeline y carga al DW",
+    "section": "",
+    "text": "%%{init: {'theme': 'neutral'}}%%\nflowchart LR\n  A[\"Fuentes descargadas&lt;br/&gt;Kworb, Trends, INEGI,&lt;br/&gt;MusicBrainz\"] --&gt;|carga_staging| B[(\"misoginia_staging&lt;br/&gt;BigQuery, datos crudos\")]\n  B --&gt;|ingesta| C[\"data-raw/&lt;br/&gt;copia local en Parquet\"]\n  C --&gt; D[\"calidad&lt;br/&gt;ensamblado · eda\"]\n  D --&gt; E[\"limpieza · reducción&lt;br/&gt;muestreo · verificación\"]\n  E --&gt; F[\"pesos · estrella&lt;br/&gt;7 tablas del DDL\"]\n  F --&gt;|carga| G[(\"misoginia_dw&lt;br/&gt;esquema estrella\")]\n  G --&gt; H[(\"misoginia_mart&lt;br/&gt;7 vistas P1–P4\")]\n\n\n\n\n\n\nEl pipeline vive en pipeline/ y tiene un solo punto de entrada. Lee staging una sola vez y guarda una copia local; todas las transformaciones se hacen en local con polars, y al final carga el esquema estrella al DW con load jobs. La capa de staging nunca se modifica.\ncd pipeline\npython run_pipeline.py              # todas las etapas, de staging al DataMart\npython run_pipeline.py --sin-carga  # todo menos la escritura en BigQuery\npython run_pipeline.py --desde limpieza\npython run_pipeline.py --solo eda"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/pipeline.html#etapas",
+    "href": "entregas/E2_eda_preparacion/pipeline.html#etapas",
+    "title": "Parte C · Pipeline y carga al DW",
+    "section": "Etapas",
+    "text": "Etapas\n\n\n\nTabla 1: Etapas del pipeline, en orden\n\n\n\n\n\nEtapa\nMódulo\nQué hace\nEntrada\nSalida\n\n\n\n\ningesta\nsrc/ingestion/ingesta.py\nCopia cada tabla de staging a Parquet, solo las columnas declaradas, con dry run previo y tope de bytes facturados\nTablas declaradas en config.yaml; las que aún no existen en staging se omiten con aviso\ndata/data-raw/\n\n\ncalidad\nsrc/eda/inspeccion.py\nDiagnóstico de cada tabla antes de limpiar: faltantes, marcadores, duplicados, cobertura y nombres de entidad\ndata-raw/\nconsola (Calidad por fuente)\n\n\nensamblado\nsrc/ingestion/ensamblado.py\nDataset analítico al grano de E1: violencia, consumo y contexto\ndata-raw/\n415,065 · 9,046 · 352 filas\n\n\neda\nsrc/eda/\nDescriptiva, Gini, entropía, cobertura y figuras\ndataset analítico\ntablas eda/ y figuras img/\n\n\nlimpieza\nsrc/cleaning/limpieza.py\nTratamientos y registro de limpieza\ndataset analítico\n89,817 · 7,429 · 300 · 352 filas; logs/registro_limpieza.csv\n\n\nreducción\nsrc/reduction/reduccion.py\nχ², correlación, PCA y tabla de decisión\ndataset limpio\nreduccion/\n\n\nmuestreo\nsrc/sampling/muestreo.py\nComprueba que no hace falta muestrear y escribe la muestra del repositorio\ndataset limpio\ndata/sample/\n\n\nverificación\nsrc/verification/verificacion.py\nAntes contra después; falla si un hallazgo cambia de dirección\nanalítico y limpio\nverificacion/\n\n\npesos\nsrc/loading/pesos.py\nPeso de cada entidad para repartir el consumo nacional (Trends × usuarios de internet)\nlimpio, Trends, ENDUTIH\n15,104 pesos\n\n\nestrella\nsrc/loading/estrella.py\nLas 5 dimensiones y los 2 hechos con las columnas y tipos exactos del DDL\nlimpio y pesos\nestrella/\n\n\ncarga\nsrc/loading/carga_dw.py\nCarga al DW, valida sumas y consistencia, recrea y ejecuta el DataMart\nestrella/\nDW y mart/\n\n\n\n\n\n\nCada etapa escribe en logs/registro_etapas.csv cuántas filas entran y salen de cada tabla; el registro se reinicia cuando el pipeline corre desde el principio.\n\nReproducibilidad\n\nConfiguración en un solo archivo. config.yaml guarda el proyecto y los datasets de BigQuery, el tope de bytes, la semilla, la ventana, las columnas que se leen de cada tabla, las equivalencias de entidad, el mapeo LGAMVLV, las reglas de macrogénero, los umbrales de limpieza y de reducción, y la regla de los pesos. Las rutas están en config/rutas.py y son relativas a la carpeta del proyecto.\nSemilla fija (42), usada por el pipeline y por la muestra del repositorio.\nVersiones fijadas en requirements.txt.\nIdempotente. La ingesta reutiliza la copia local; la carga vacía las tablas del DW (TRUNCATE TABLE) y las vuelve a llenar, y las vistas se crean con CREATE OR REPLACE VIEW. Correr el pipeline dos veces deja el mismo resultado.\nSin pasos manuales entre staging y el DW. Las fuentes que se descargan de un sitio se suben a staging una sola vez con scripts guardados en src/ingestion/ (ver el README).\nCredenciales por Application Default Credentials de gcloud; ningún archivo de llaves en el repositorio (*.json está en .gitignore).\n\n\n\nValidaciones automáticas\nEl pipeline se detiene si alguna falla:\n\n\n\nTabla 2: Validaciones del pipeline\n\n\n\n\n\n\n\n\n\nDónde\nQué se comprueba\n\n\n\n\ningesta\nCada consulta devuelve filas\n\n\nensamblado\nEl grano no se repite en ninguna tabla; ninguna víctima queda sin delito; las 32 entidades están en cada fuente; las sumas de carpetas, víctimas, streams y semanas coinciden con lo crudo\n\n\nlimpieza\nGrano único; ninguna fila de violencia sin tipo; ninguna canción del corpus sin etiqueta; las 32 entidades de Natural Earth tienen clave\n\n\nmuestreo\nNinguna tabla pasa de 5 millones de filas\n\n\nverificación\nNingún hallazgo del EDA cambia de dirección\n\n\npesos\nLas 32 entidades por artista y año; los pesos suman 1\n\n\nestrella\nColumnas y tipos del DDL; llaves primarias únicas; ningún hecho sin su dimensión; el reparto conserva los streams nacionales; pesos en [0, 1]; conteos y streams no negativos; porcentajes en [0, 100]; meses de 1 a 12\n\n\ncarga\nEsquema igual al del DW; sin nulos en columnas obligatorias; filas cargadas = filas locales; sumas iguales; grano único y sin llaves huérfanas en el DW\n\n\n\n\n\n\n\n\nTiempo\n\n\n\nPaso\nTiempo aproximado\n\n\n\n\nIngesta desde cero (unos 130 MB escaneados)\n1 a 2 minutos\n\n\nIngesta con copia local\nsegundos\n\n\nDe calidad a estrella\nunos 10 segundos\n\n\nCarga, validación y DataMart\nalrededor de 1 minuto"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/pipeline.html#dw-poblado",
+    "href": "entregas/E2_eda_preparacion/pipeline.html#dw-poblado",
+    "title": "Parte C · Pipeline y carga al DW",
+    "section": "DW poblado",
+    "text": "DW poblado\nLa carga usa load jobs WRITE_APPEND sobre las tablas que dejó el DDL de E1, para conservar sus descripciones y llaves; antes de cargar se comprueba que el Parquet local tenga exactamente las mismas columnas y tipos.\n\n\n\nTabla 3: Filas por tabla en misoginia_dw\n\n\n\n\n\n\n\n\n\n\nTabla\nFilas\nLlave sustituta\n\n\n\n\ndim_fecha\n132\nfecha_key (AAAAMM01)\n\n\ndim_entidad\n32\nentidad_key\n\n\ndim_cancion\n300\ncancion_key\n\n\ndim_tipo_violencia\n28\ntipo_violencia_key (−1 = no aplica)\n\n\ndim_contexto_entidad\n363\ncontexto_key (32 × 11 más 11 filas nacionales)\n\n\nfact_violencia\n89,817\ngrano: fecha × entidad × tipo de violencia\n\n\nfact_consumo_musical\n237,728\ngrano: fecha × entidad × canción\n\n\n\n\n\n\nConsistencia (consultas ejecutadas en BigQuery por carga_dw; resultado en pipeline/data/data-processed/mart/consistencia_dw.parquet):\n\n\n\nTabla 4: Consistencia del DW\n\n\n\n\n\nRevisión\nfact_violencia\nfact_consumo_musical\n\n\n\n\nFilas\n89,817\n237,728\n\n\nCombinaciones distintas del grano\n89,817\n237,728\n\n\nLlaves nulas\n0\n0\n\n\nLlaves huérfanas en dim_fecha\n0\n0\n\n\nLlaves huérfanas en dim_entidad\n0\n0\n\n\nLlaves huérfanas en dim_cancion\n—\n0\n\n\nLlaves huérfanas en dim_tipo_violencia\n0\n0\n\n\nLlaves huérfanas en dim_contexto_entidad\n0\n0\n\n\n\n\n\n\nEl grano es único en los dos hechos (filas = combinaciones distintas de llaves) y no hay llaves nulas ni huérfanas. Las sumas en el DW son iguales a las locales: 5,115,477 carpetas, 767,029 víctimas mujeres y 69,008,475,449 streams estimados."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/pipeline.html#datamart-consultas-ejecutadas",
+    "href": "entregas/E2_eda_preparacion/pipeline.html#datamart-consultas-ejecutadas",
+    "title": "Parte C · Pipeline y carga al DW",
+    "section": "DataMart: consultas ejecutadas",
+    "text": "DataMart: consultas ejecutadas\nLas siete vistas de E1 se ejecutaron sobre el DW poblado (resultados completos en pipeline/data/data-processed/mart/). Los resultados de música salen todavía de las 300 canciones de E1.\nP1a · Proporción misógina por año y género (ROLLUP con GROUPING). Entre los streams de canciones con etiqueta, el 39 % es de canciones misóginas en toda la ventana, entre 11 % (2018) y 48 % (2020). La lectura más importante es la columna de cobertura: solo el 13 % de los streams tiene etiqueta, y en 2025 apenas el 7 %, así que la proporción es todavía muy inestable.\nP1b · Proporción misógina por entidad (RANK, promedio con ventana). En 2025 va de 33 % (Guanajuato) a 51 % (Sonora). Es una estimación: el 96 % del consumo de cada estado se repartió con Trends del propio artista.\nP2a y P2b · Serie mensual y correlación nacional (funciones de ventana y CORR). Con 132 meses, la proporción misógina se correlaciona positivamente con las tasas de violencia familiar (0.35), sexual (0.31) y de feminicidio (0.23), y casi nada con el homicidio de control (0.07). Con la física y las desapariciones la correlación es negativa (−0.15 y −0.36); la física ya se mide solo con víctimas mujeres (hallazgo H3). Las dos series crecen en el tiempo, así que buena parte de esa correlación puede venir de la tendencia común y no de una relación entre ellas; el modelado tendrá que quitar la tendencia antes de concluir.\nP2c · Panel entidad × año (CORR como función de ventana). Entre estados la correlación es débil (0.22 sexual, 0.15 familiar, 0.05 feminicidio). Por el hallazgo H4, la comparación entre estados también refleja cómo registra cada fiscalía.\nP3 · Tendencia por tipo (media móvil de 12 meses con marco RANGE y cambio anual). Entre las canciones misóginas etiquetadas, la sexualización domina en todos los años; la psicológica (odio) y la física (violencia) aparecen poco.\nP4 · Tipos en la música frente a los oficiales (RANK y UNPIVOT). En la música misógina etiquetada domina la violencia sexual (89 %), seguida de la psicológica (7 %) y la física (5 %). En el SESNSP domina la familiar (51 %) y la sexual es tercera (14 %); en la ENDIREH 2021 la más frecuente es la psicológica (29.4 %), luego la sexual (23.3 %). La sexual es el único tipo que ocupa un lugar alto en las tres fuentes."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/pipeline.html#prueba-externa",
+    "href": "entregas/E2_eda_preparacion/pipeline.html#prueba-externa",
+    "title": "Parte C · Pipeline y carga al DW",
+    "section": "Prueba externa",
+    "text": "Prueba externa\nUn integrante que no escribió el pipeline lo ejecuta desde un clon limpio siguiendo el README y anota aquí el resultado.\n\n\n\nCampo\nResultado\n\n\n\n\nIntegrante\n(por llenar)\n\n\nFecha\n(por llenar)\n\n\nSistema y versión de Python\n(por llenar)\n\n\nComando\npython run_pipeline.py --sin-carga\n\n\n¿Terminó sin errores?\n(por llenar)\n\n\nTiempo\n(por llenar)\n\n\nProblemas y cómo se resolvieron\n(por llenar)"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/preparacion.html",
+    "href": "entregas/E2_eda_preparacion/preparacion.html",
+    "title": "Parte B · Preparación de los datos",
+    "section": "",
+    "text": "La preparación parte de lo que encontró el análisis exploratorio. Cada tratamiento se diagnosticó primero, se aplicó con una regla declarada en pipeline/config.yaml o en el código, y quedó en el registro de limpieza con su conteo y su justificación. El pipeline lo vuelve a escribir en cada corrida (pipeline/logs/registro_limpieza.csv)."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/preparacion.html#calidad-y-tratamiento-del-ruido",
+    "href": "entregas/E2_eda_preparacion/preparacion.html#calidad-y-tratamiento-del-ruido",
+    "title": "Parte B · Preparación de los datos",
+    "section": "Calidad y tratamiento del ruido",
+    "text": "Calidad y tratamiento del ruido\nResumen por tipo de problema, en el orden de la tabla de la entrega. El detalle por fuente está en Calidad por fuente.\n\n\n\n\n\n\n\n\n\nProblema\nQué se encontró\nQué se decidió\nPor qué\n\n\n\n\nValores faltantes\nVíctimas: el SESNSP no reporta víctimas de delitos sexuales ni de violencia familiar (38,016 filas); 11.3 % de las víctimas sin sexo y 10.2 % de las mujeres sin edad. RNPDNO: 70 % de las mujeres sin fecha o entidad, y la fuente termina en agosto de 2023. Contexto: cada indicador solo existe en sus años de medición\nNo imputar víctimas, sexo ni edad; excluir del conteo a las mujeres sin fecha o entidad; no rellenar con cero los meses sin RNPDNO. En el contexto, interpolar entre mediciones y repetir la más cercana en los extremos; la ENDIREH queda nula fuera de 2016 y 2021\nDistinguir ceros estructurales (la fuente no mide ese dato) de faltantes (el dato existe y no se conoce). Imputar víctimas inventaría personas; los indicadores de contexto cambian despacio y la dimensión necesita un valor por año\n\n\nCeros que son faltantes\n8 estados empiezan la serie de feminicidio con 12 meses o más en cero (900 celdas)\nVolver nulos esos ceros\nLa fiscalía todavía no clasificaba el delito; un cero diría que no hubo feminicidios\n\n\nDuplicados\nNinguna llave repetida en las fuentes con llave. Filas idénticas en el RNPDNO (4,354) y la ENDUTIH (1,146)\nConservarlas\nNo hay identificador de persona: en el RNPDNO se quitaron los nombres al cargar staging y casi todas esas filas están testadas; son personas distintas que se ven iguales\n\n\nAtípicos\nStreams: 553 meses fuera de las cercas de Tukey. Violencia: 320 meses atípicos dentro de su estado (|z robusto| &gt; 3.5) y 625 fuera de las cercas entre estados. RNPDNO: 7 edades mayores a 110 años\nConservar los de streams y violencia; analizar streams en log10 y violencia en tasas. Las edades imposibles pasan a nulas\nLos éxitos musicales y los picos de denuncias son el fenómeno de P1 y P2; una edad de 1,832 años es un error de captura\n\n\nInconsistencias de categorías\nNombres de entidad distintos entre fuentes (ESTADO DE MEXICO, VERACRUZ, DISTRITO FEDERAL…); 325,248 filas de delitos sin tipo de violencia de género; el encabezado de MiSonGyny cargado como dato\nTabla de equivalencias a la clave INEGI; excluir los delitos fuera del mapeo LGAMVLV de E1; eliminar el encabezado\nSe unen todas las entidades sin perder filas; los delitos como robo no responden P1–P4\n\n\nTipos, unidades y rangos\nTodo llega como texto; las celdas de Kworb mezclan posición y streams; las semanas cruzan de mes\nConvertir tipos; separar la celda; repartir cada semana entre meses por días\nEl reparto conserva exacta la suma de streams\n\n\nLlaves que no coinciden\n258 de 300 canciones no están en MiSonGyny; 18 artistas de MusicBrainz eran otra persona; la fila MX-X01~ de Natural Earth no es un estado\nes_misogina nulo; descartar el género de esos artistas (“sin etiqueta”); eliminar la fila\nSolo se usa la etiqueta humana; un género de otro artista es peor que ninguno\n\n\n\n\nRegistro de limpieza\nAsí lo escribe el pipeline (se reproduce con python run_pipeline.py --solo limpieza):\n\n\n\n\n\n\n\n\n\n\n\n\nTabla.variable\nProblema\nAfectadas\nTotal\n%\nDecisión\nJustificación\n\n\n\n\nanalitico_consumo.streams\ncanción y mes con 0 streams (celdas – de Kworb)\n1,617\n9,046\n17.88\neliminar la fila\nes un cero estructural: la canción estaba fuera del chart; el hecho de consumo solo guarda lo que se escuchó\n\n\nanalitico_consumo.macrogenero\nartista sin género en MusicBrainz\n2,264\n7,429\n30.48\ndejar como categoría ‘sin etiqueta’\nson 35% de los streams; asignarles un género inventaría la composición que mide P1\n\n\nanalitico_consumo.streams\nfuera de las cercas de Tukey (1.5·IQR)\n553\n7,429\n7.44\nconservar y usar log10 en las comparaciones\nson los éxitos del año, el centro de P1; en escala log solo quedan 256 fuera de las cercas\n\n\nanalitico_violencia.tipo_lgamvlv\ndelito sin tipo de violencia de la LGAMVLV\n325,248\n413,952\n78.57\nexcluir\nson delitos como robo o fraude que no responden P2; el mapeo de E1 conserva 12 subtipos\n\n\nanalitico_violencia.victimas_mujeres\ndelito que el SESNSP no reporta por víctima\n38,016\n88,704\n42.86\ndejar nulo\nes un faltante estructural: el archivo de víctimas del SESNSP no cubre delitos sexuales ni violencia familiar, solo carpetas; no es un cero\n\n\nstg_sesnsp_victimas.sexo\nvíctimas con sexo no identificado\n251,413\n2,216,675\n11.34\nno asignarlas a mujeres ni a hombres\nrepartirlas inventaría víctimas; el conteo de mujeres es un mínimo y así se aclara en decisiones\n\n\nstg_sesnsp_victimas.rango_de_edad\nmujeres víctimas sin edad especificada\n77,637\n763,007\n10.18\nno imputar; victimas_mujeres_menores es un mínimo\nla falta de edad depende de la fiscalía de cada estado, así que imputarla movería las diferencias entre estados\n\n\nanalitico_violencia.carpetas (feminicidio)\nestados que empiezan la serie con 12 meses o más en cero\n900\n16,896\n5.33\nvolver nulo, no cero\nla fiscalía todavía no clasificaba el delito como feminicidio, no es que no hubiera (1 hasta 2018-04, 3 hasta 2019-10, 8 hasta 2017-11, 13 hasta 2016-02, 18 hasta 2017-06, 23 hasta 2017-03, 28 hasta 2016-03, 32 hasta 2016-02)\n\n\nanalitico_violencia.tasa mensual por entidad\nmes atípico dentro de la serie de su estado (|z robusto| &gt; 3.5)\n320\n20,895\n1.53\nconservar\nson picos reales de denuncias (por ejemplo tras cambios de registro o campañas); quitarlos borraría el fenómeno de P2\n\n\nanalitico_violencia.tasa mensual por entidad\nfuera de las cercas de Tukey (1.5·IQR) entre estados\n625\n20,895\n2.99\nconservar y analizar en tasas, no en conteos\nson estados con tasas altas de forma sostenida, que es justo la diferencia que P2 quiere ver\n\n\nstg_rnpdno.fila\nregistros idénticos en las 8 columnas\n4,354\n116,945\n3.72\nconservar\nson personas distintas que se ven iguales: en staging se quitaron las columnas de nombre para proteger su identidad, no queda un identificador de persona (8 valores distintos en consecutivo_registro) y 3,749 de ellas tienen todos sus datos testados\n\n\nstg_rnpdno.edad\nedad mayor a 110 años\n7\n116,945\n0.01\nvolver nula\nes un error de captura; el registro se conserva porque la fecha y la entidad sí sirven\n\n\nstg_rnpdno.sexo, entidad\ndatos testados con la leyenda ELIMINADO\n37,460\n116,945\n32.03\nexcluir del conteo de mujeres\nla fuente los oculta por protección de datos; no se puede saber si son mujeres ni dónde desaparecieron\n\n\nstg_rnpdno.fecha_de_desaparicion\nmujeres sin fecha válida o sin entidad\n13,151\n18,770\n70.06\nexcluir y reportar como límite\nsin mes o sin entidad no se pueden ubicar en el grano; por eso el RNPDNO es solo fuente de contraste para P2\n\n\nanalitico_violencia.victimas_mujeres (RNPDNO)\nla fuente termina en 2023-08\n28\n132\n21.21\ndejar sin filas, no rellenar con cero\nson meses que la versión descargada no cubre; un cero diría que no hubo desapariciones\n\n\nstg_misongyny.fila\nla fila de encabezados se cargó como dato\n1\n4,913\n0.02\neliminar\nno es una canción\n\n\nstg_misongyny.label\ncanciones de prueba con la etiqueta en otro archivo\n820\n4,092\n20.04\nunir por id con TEST_LABELS\nel corpus publica las respuestas de la partición de prueba por separado\n\n\ndim_cancion.es_misogina\ncanción del chart que no está en MiSonGyny\n258\n300\n86.00\ndejar nulo\nsolo se usa la etiqueta humana del corpus; las clasificadas suman 13% de los streams y 19 títulos iguales de otro artista no se emparejaron\n\n\nanalitico_contexto.pct_viviendas_internet\nsolo se mide en 2020\n320\n352\n90.91\ninterpolar entre mediciones y repetir la más cercana en los extremos\ncambian despacio de un año a otro y la dimensión de contexto necesita un valor por año\n\n\nanalitico_contexto.usuarios_internet\nsolo se mide en 2015, 2016, 2017, 2018, 2020, 2021, 2022, 2023, 2024, 2025\n32\n352\n9.09\ninterpolar entre mediciones y repetir la más cercana en los extremos\ncambian despacio de un año a otro y la dimensión de contexto necesita un valor por año\n\n\nanalitico_contexto.pct_usuarios_internet\nsolo se mide en 2015, 2016, 2017, 2018, 2020, 2021, 2022, 2023, 2024, 2025\n32\n352\n9.09\ninterpolar entre mediciones y repetir la más cercana en los extremos\ncambian despacio de un año a otro y la dimensión de contexto necesita un valor por año\n\n\nanalitico_contexto.pct_pobreza\nsolo se mide en 2016, 2018, 2020, 2022\n224\n352\n63.64\ninterpolar entre mediciones y repetir la más cercana en los extremos\ncambian despacio de un año a otro y la dimensión de contexto necesita un valor por año\n\n\nanalitico_contexto.indice_impunidad\nsolo se mide en 2023\n230\n352\n65.34\ninterpolar entre mediciones y repetir la más cercana en los extremos\ncambian despacio de un año a otro y la dimensión de contexto necesita un valor por año; 9 entidades sin ninguna medición quedan nulas\n\n\nanalitico_contexto.prevalencia_*\nla ENDIREH solo se levanta en 2016, 2021\n1,440\n1,760\n81.82\ndejar nulo fuera de los años de levantamiento\nes una encuesta por levantamiento y E1 la define así; P4 la compara en su año, no como serie\n\n\nstg_naturalearth_mx.iso_3166_2\nfila que no es una entidad (clave MX-X01~, sin nombre)\n1\n33\n3.03\neliminar\nes un polígono menor sin estado asignado en Natural Earth"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/preparacion.html#reducción-de-dimensionalidad",
+    "href": "entregas/E2_eda_preparacion/preparacion.html#reducción-de-dimensionalidad",
+    "title": "Parte B · Preparación de los datos",
+    "section": "Reducción de dimensionalidad",
+    "text": "Reducción de dimensionalidad\nCriterios (en config.yaml): una asociación entre categóricas cuenta si su p ajustada por Holm es menor a 0.05 y su V de Cramér llega a 0.10; dos numéricas son redundantes si |ρ de Spearman| ≥ 0.85 y se conserva la más cercana a las preguntas de E0; el PCA busca 85 % de varianza acumulada.\n\nChi-cuadrada con V de Cramér\n\n\n\nTabla 1: Pruebas de independencia. Las categorías raras se agruparon para acercarse a la frecuencia esperada mínima; en las tablas de 2×2 se reporta además la prueba exacta de Fisher.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPrueba\nn\nV de Cramér\np (Holm)\np (Fisher)\nFrecuencia esperada mínima\n¿Asociación relevante?\n\n\n\n\nes_misogina × urbano latino o resto\n42\n0.34\n0.088\n0.047\n5.7\nNo\n\n\nes_misogina × macrogénero (regional, urbano, otros)\n42\n0.34\n0.179\n—\n3.4\nNo\n\n\nes_misogina × país del artista (México u otro)\n30\n0.22\n0.225\n0.283\n5.6\nNo\n\n\nmacrogénero × país del artista\n179\n0.84\n&lt; 0.001\n—\n25.9\nSí\n\n\ntipo de violencia × año\n4,841,209 carpetas\n0.07\n&lt; 0.001\n—\n556.8\nNo (efecto despreciable)\n\n\ntipo de violencia × entidad (2025)\n511,591 carpetas\n0.20\n&lt; 0.001\n—\n0.2\nSí\n\n\n\n\n\n\nCon 42 canciones etiquetadas la diferencia entre géneros (9 de 15 misóginas en urbano latino, 2 de 9 en regional mexicano) tiene un efecto moderado pero no es significativa tras corregir por comparaciones múltiples. El tipo de violencia por año es el caso de n enorme: significativo con V = 0.07, sin importancia práctica. El país del artista casi lo determina el macrogénero (V = 0.84) y sale del análisis.\n\n\nCorrelación\n\n\n\n\n\n\nFigura 1: Correlación de Spearman entre las variables numéricas del panel entidad × año. Se escribe el valor cuando |ρ| ≥ 0.85.\n\n\n\nPares redundantes (Figura 1): las cuatro poblaciones (ρ ≈ 1; se queda poblacion_mujeres, denominador de las tasas), la tasa de feminicidio y la de sus víctimas (ρ = 1.00; se queda la de carpetas) y las viviendas con internet frente a la pobreza (ρ = −0.86; se queda la pobreza, medida en más años). Las tasas de los distintos tipos de violencia no son redundantes entre sí (la más alta, sexual con familiar, ρ = 0.83): miden cosas distintas.\n\n\nPCA\nSe aplicó a los cuatro indicadores de contexto (usuarios de internet, viviendas con internet, pobreza y log de población), estandarizados, con una fila por entidad (promedio de la ventana) para no contar 11 veces a cada estado.\n\n\n\n\n\n\nFigura 2: Sedimentación y cargas de las dos primeras componentes.\n\n\n\n\n\n\nTabla 2: Varianza y cargas del PCA\n\n\n\n\n\n\n\n\n\n\n\nComponente\nVarianza explicada\nAcumulada\nLectura de las cargas\n\n\n\n\nPC1\n70 %\n70 %\nUsuarios de internet (+0.58), viviendas con internet (+0.57) y pobreza (−0.57): un eje de desarrollo\n\n\nPC2\n25 %\n96 %\nCasi solo la población (+0.98)\n\n\n\n\n\n\nDecisión: conservar las variables originales. Dos componentes alcanzan el objetivo de 85 %, pero con cuatro variables eso ahorra muy poco, y PC2 es prácticamente la población, que ya está en la dimensión. Las originales se interpretan directo y la dimensión de contexto del DW las necesita por separado. El PCA confirma lo que mostró la correlación: internet y pobreza miden casi lo mismo entre estados.\nFuga de información. E2 no entrena modelos, así que el PCA y la estandarización se ajustan con todas las entidades. La función ajustar_pca() recibe la tabla con la que se ajusta: en el modelado se le pasará solo la partición de entrenamiento y las demás se transformarán con el mismo objeto. Lo mismo aplica a la imputación del contexto, que deberá recalcularse con los años de entrenamiento si la partición es temporal.\n\n\nTabla de decisión por variable\nCada variable del dataset limpio, con la técnica que se usó, la evidencia y la decisión (pipeline/data/data-processed/reduccion/tabla_decision.parquet):\n\n\n\n\n\n\n\n\n\n\n\n\nVariable\nTabla\nTipo\nTécnica\nEvidencia\nDecisión\nJustificación\n\n\n\n\ncve_ent\nviolencia, contexto\ncategórica nominal\nninguna (llave)\n\nconservar\nidentifica el grano de E1\n\n\nfecha\nviolencia, consumo\nfecha\nninguna (llave)\n\nconservar\nidentifica el grano de E1\n\n\norigen\nviolencia\ncategórica nominal\nninguna\nSESNSP o RNPDNO\nconservar\nsepara la fuente principal de la de contraste\n\n\nbien_juridico_afectado\nviolencia\ncategórica nominal\njerarquía\ndeterminado por subtipo\ncombinar en dim_tipo_violencia\nes un nivel superior de la misma jerarquía de delito\n\n\ntipo_de_delito\nviolencia\ncategórica nominal\njerarquía\ndeterminado por subtipo\ncombinar en dim_tipo_violencia\nes un nivel superior de la misma jerarquía de delito\n\n\nsubtipo_de_delito\nviolencia\ncategórica nominal\njerarquía\ndefine tipo_lgamvlv\ncombinar en dim_tipo_violencia\nse conserva como atributo para auditar el mapeo\n\n\nmodalidad\nviolencia\ncategórica nominal\njerarquía\nparte de la llave del delito\ncombinar en dim_tipo_violencia\nP4 no la usa, pero sin ella se duplicarían carpetas\n\n\ntipo_lgamvlv\nviolencia\ncategórica nominal\nχ²\nV = 0.20, p Holm &lt; 0.001, n = 511,591\nconservar\nes la variable de P4; la mezcla de tipos cambia entre estados\n\n\ncarpetas\nviolencia\nnumérica (conteo)\ncorrelación\nρ(tasa_sexual, tasa_familiar_genero) = 0.83\nconservar y transformar a tasa\nmedida principal de P2; las tasas de cada tipo no son redundantes entre sí\n\n\nvictimas_mujeres\nviolencia\nnumérica (conteo)\ncorrelación\nρ(tasa_feminicidio, tasa_victimas_feminicidio) = 1.00\nconservar en el hecho, no en el análisis\ndonde existe es redundante con carpetas; se queda porque el RNPDNO solo tiene víctimas\n\n\nvictimas_mujeres_menores\nviolencia\nnumérica (conteo)\nninguna\nver registro de limpieza (edad no especificada)\nconservar\nP2 la pide; se aclara que es un mínimo\n\n\nvictimas_hombres\nviolencia\nnumérica (conteo)\nninguna\nsolo para comparar\nconservar\nreferencia de E0 para ver si la violencia es específica contra mujeres\n\n\ntrack_id\nconsumo, canciones\nidentificador\nninguna (llave)\n\nconservar\nidentifica el grano de E1\n\n\nstreams\nconsumo\nnumérica\ncorrelación\nρ(streams, semanas_en_chart) = 0.36\nconservar y usar log10\nmedida principal de P1 y P3\n\n\nsemanas_en_chart\nconsumo\nnumérica (conteo)\ncorrelación\nρ(streams, semanas_en_chart) = 0.36\nconservar\nel DataMart la usa como medida alternativa de P1\n\n\nmejor_posicion\nconsumo\nnumérica (ordinal)\ncorrelación\nρ(streams, mejor_posicion) = -0.77\nconservar\nP3 la usa; su relación con streams no llega al umbral\n\n\nartista\ncanciones\ncategórica nominal\nninguna\n300 canciones, 112 artistas\nconservar\natributo descriptivo de dim_cancion; demasiadas categorías para χ²\n\n\ntitulo\ncanciones\ntexto\nninguna\núnico por canción\nconservar\natributo descriptivo\n\n\npais_artista\ncanciones\ncategórica nominal\nχ² + V de Cramér\ncon macrogénero: V = 0.84, p Holm &lt; 0.001, n = 179; con es_misogina: V = 0.22, p Holm = 0.225, p Fisher = 0.283, n = 30\ndescartar del análisis, conservar en la dimensión\ncasi lo determina el macrogénero (regional mexicano es mexicano) y no se asocia con la misoginia; 121 canciones no tienen país\n\n\nmacrogenero\ncanciones\ncategórica nominal\nχ²\nV = 0.34, p Holm = 0.088, p Fisher = 0.047, n = 42\nconservar\nes la variable de P1 que se cruza con la misoginia\n\n\norigen_genero\ncanciones\ncategórica nominal\nninguna\nauditoría\nconservar\nmarca qué géneros vienen de MusicBrainz, de corrección o no tienen dato\n\n\netiquetas_fuente\ncanciones\ntexto\nninguna\nlista de etiquetas\nconservar\npermite rehacer el macrogénero\n\n\netiqueta_tarea_1\ncanciones\ncategórica nominal\nninguna\ndefine es_misogina\ncombinar en es_misogina\nM y NM se convierten en verdadero y falso\n\n\netiqueta_tarea_2\ncanciones\ncategórica nominal\nninguna\n23 canciones\nconservar como categoria_misoginia\nda el tipo de violencia que P3 y P4 comparan\n\n\nen_corpus_misongyny\ncanciones\nbinaria\nninguna\n42 de 300\nconservar\nmide la cobertura\n\n\nes_misogina\ncanciones\nbinaria\nχ²\nV = 0.34, p Holm = 0.088, p Fisher = 0.047, n = 42\nconservar\nvariable objetivo de P1\n\n\norigen_etiqueta\ncanciones\ncategórica nominal\nninguna\nun solo valor por ahora\nconservar\nen el modelado distinguirá la etiqueta humana de la del clasificador\n\n\npoblacion_total\ncontexto\nnumérica\ncorrelación\nρ(poblacion_mujeres, poblacion_total) = 1.00\ndescartar del análisis, conservar en la dimensión\nredundante con poblacion_mujeres\n\n\npoblacion_mujeres_15_mas\ncontexto\nnumérica\ncorrelación\nρ(poblacion_mujeres, poblacion_mujeres_15_mas) = 1.00\ndescartar del análisis, conservar en la dimensión\nredundante con poblacion_mujeres\n\n\npoblacion_hombres\ncontexto\nnumérica\ncorrelación\nρ(poblacion_mujeres, poblacion_hombres) = 1.00\ndescartar del análisis, conservar en la dimensión\nredundante con poblacion_mujeres\n\n\npoblacion_mujeres\ncontexto\nnumérica\ncorrelación\nρ(poblacion_mujeres, poblacion_total) = 1.00\nconservar\ndenominador de todas las tasas\n\n\npct_usuarios_internet\ncontexto\nnumérica\ncorrelación + PCA\nPC1 explica 70%, PC1 y PC2 96%\nconservar originales\ncon 4 variables las componentes no ahorran casi nada y PC2 es casi solo la población; los originales se interpretan directo\n\n\npct_pobreza\ncontexto\nnumérica\ncorrelación + PCA\nPC1 explica 70%, PC1 y PC2 96%\nconservar originales\ncon 4 variables las componentes no ahorran casi nada y PC2 es casi solo la población; los originales se interpretan directo\n\n\npct_viviendas_internet\ncontexto\nnumérica\ncorrelación + PCA\nρ(pct_pobreza, pct_viviendas_internet) = -0.86; PC1 explica 70%, PC1 y PC2 96%\ndescartar del análisis, conservar en la dimensión\nredundante con pct_pobreza, que se mide en más años\n\n\nindice_impunidad\ncontexto\nnumérica\ncorrelación\n9 de 32 entidades sin dato\nconservar fuera del PCA\nel PCA no admite nulos; queda como atributo con faltante\n\n\npoblacion_6_mas\ncontexto\nnumérica\nninguna\nuniverso de la ENDUTIH\nconservar como auxiliar\nsolo sirve para pasar los usuarios de internet a porcentaje\n\n\nusuarios_internet\ncontexto\nnumérica\nninguna\nENDUTIH 2015–2025, 2019 interpolado\nconservar\nes el factor de usuarios del reparto del consumo de E1\n\n\nprevalencia_total\ncontexto\nnumérica (%)\nninguna\nsolo 2016 y 2021 (ENDIREH)\nconservar\nes la referencia oficial de P4 por tipo de violencia; con dos levantamientos no entra al panel anual ni al PCA\n\n\nprevalencia_psicologica\ncontexto\nnumérica (%)\nninguna\nsolo 2016 y 2021 (ENDIREH)\nconservar\nes la referencia oficial de P4 por tipo de violencia; con dos levantamientos no entra al panel anual ni al PCA\n\n\nprevalencia_fisica\ncontexto\nnumérica (%)\nninguna\nsolo 2016 y 2021 (ENDIREH)\nconservar\nes la referencia oficial de P4 por tipo de violencia; con dos levantamientos no entra al panel anual ni al PCA\n\n\nprevalencia_sexual\ncontexto\nnumérica (%)\nninguna\nsolo 2016 y 2021 (ENDIREH)\nconservar\nes la referencia oficial de P4 por tipo de violencia; con dos levantamientos no entra al panel anual ni al PCA\n\n\nprevalencia_economica_patrimonial\ncontexto\nnumérica (%)\nninguna\nsolo 2016 y 2021 (ENDIREH)\nconservar\nes la referencia oficial de P4 por tipo de violencia; con dos levantamientos no entra al panel anual ni al PCA"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/preparacion.html#muestreo",
+    "href": "entregas/E2_eda_preparacion/preparacion.html#muestreo",
+    "title": "Parte B · Preparación de los datos",
+    "section": "Muestreo",
+    "text": "Muestreo\nNo aplica. El dataset limpio tiene 89,817 filas de violencia, 7,429 de consumo, 300 canciones y 352 de contexto: cabe completo en memoria, el pipeline local corre en segundos y la carga al DW se hace con load jobs, que BigQuery no cobra. No hay una variable objetivo con clases desbalanceadas ni redundancia fuerte entre registros. La etapa muestreo del pipeline lo comprueba en cada corrida (falla si una tabla pasa de 5 millones de filas) y lo deja en el registro de etapas. Lo único que se muestrea es la copia pequeña que se sube al repositorio (pipeline/data/sample/, con semilla fija)."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/preparacion.html#verificación-antes-contra-después",
+    "href": "entregas/E2_eda_preparacion/preparacion.html#verificación-antes-contra-después",
+    "title": "Parte B · Preparación de los datos",
+    "section": "Verificación: antes contra después",
+    "text": "Verificación: antes contra después\nSe recalcularon los estadísticos de cuatro variables y los hallazgos principales del EDA sobre el dataset limpio.\n\n\n\nTabla 3: Estadísticos antes y después de limpiar, con la prueba de Kolmogorov–Smirnov entre las dos distribuciones\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable\nQué la cambió\nn\nMediana\nDE\nIQR\nAsimetría\nKS (p)\n\n\n\n\nStreams por canción y mes\nSe quitaron los meses con 0 streams\n9,046 → 7,429\n5.5 M → 7.0 M\n8.9 M → 9.1 M\n8.5 M → 7.7 M\n2.59 → 2.61\n&lt; 0.001\n\n\nTasa de feminicidio por entidad y año\nCeros iniciales a nulos\n352 → 328\n1.14 → 1.18\n0.91 → 0.89\n0.95 → 0.87\n1.68 → 1.84\n0.78\n\n\nTasa familiar y de género por entidad y año\nNada (control)\n352 → 352\n348.3 → 348.3\n239.0 → 239.0\n380.9 → 380.9\n0.51 → 0.51\n1.00\n\n\nMujeres desaparecidas por entidad y mes\nEdades imposibles a nulo\n1,113 → 1,113\n2 → 2\n4.6 → 4.6\n3 → 3\n3.94 → 3.94\n1.00\n\n\n\n\n\n\n\n\n\n\n\n\nFigura 3: Hallazgos del EDA antes y después de limpiar.\n\n\n\nConclusión: la preparación conserva el fenómeno. La entropía del macrogénero y el Gini entre artistas quedan exactamente iguales (Figura 3): el hallazgo principal de la música no depende de la limpieza. El cambio en los streams es el esperado (los ceros no eran consumo) y no altera la forma de la distribución. El único hallazgo que cambia es la desigualdad del feminicidio entre estados en 2015–2018 (Gini de 0.54 a 0.38 en 2015): no es una alerta sino una corrección, porque esos ceros venían de estados que todavía no registraban el delito. La tendencia se conserva y el pipeline falla si un hallazgo cambia de dirección."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/trazabilidad.html",
+    "href": "entregas/E2_eda_preparacion/trazabilidad.html",
+    "title": "Trazabilidad a E0",
+    "section": "",
+    "text": "La matriz de E1 se extiende con los hallazgos del EDA, las decisiones de preparación y el estado actualizado de cada pregunta. Los hallazgos (H1–H9) están en Hallazgos; las decisiones, en Preparación."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/trazabilidad.html#preguntas",
+    "href": "entregas/E2_eda_preparacion/trazabilidad.html#preguntas",
+    "title": "Trazabilidad a E0",
+    "section": "Preguntas",
+    "text": "Preguntas\n\n\n\n\n\n\n\n\n\n\nPregunta\nVariables y métrica\nHallazgo del EDA\nDecisión de preparación\nEstado actualizado\n\n\n\n\nP1: proporción de contenido misógino en la música más escuchada en Spotify México, por género musical y por entidad (estimada)\nes_misogina, macrogenero (dim_cancion); streams_estimados, peso_entidad, origen_peso (fact_consumo_musical)\nH8: el consumo se concentra en regional mexicano (entropía de 0.95 a 0.44) y en menos artistas (Gini de 0.49 a 0.66). H9: sin diferencia significativa entre géneros con 42 canciones. Las 300 canciones de E1 cubrían del 6 al 26 % del consumo\nAmpliar Kworb al Top 200 completo; es_misogina nulo fuera de MiSonGyny; pesos por entidad con Trends del artista y del género por año y usuarios de internet por año; conservar atípicos y comparar en log10\nParcial: la etiqueta humana cubre el 13 % de los streams; la respuesta completa depende del clasificador del modelado. Por entidad sigue siendo una estimación\n\n\nP2: correlación entre la misoginia musical y los indicadores oficiales de violencia de género, mensual nacional y por entidad y año\nProporción misógina; tasas por 100 mil mujeres con carpetas y, en la física, victimas_mujeres (fact_violencia); poblacion_mujeres, pct_usuarios_internet, pct_pobreza, indice_impunidad (dim_contexto_entidad)\nH1 y H2: la familiar y la sexual crecen hasta 2023. H3: las carpetas de lesiones son 56 % de hombres. H4: las diferencias entre estados mezclan registro y violencia. H5: el feminicidio de 2015–2017 no es comparable. H6: conteo y tasa difieren\nTasas en lugar de conteos; la física con víctimas mujeres (ajustado también en el DataMart); ceros iniciales de feminicidio a faltantes; RNPDNO solo como contraste; contexto completado por año y usado como control fijo por estado\nParcial: asociativo, no causal; las series comparten tendencia y la comparación entre estados está afectada por el registro. El RNPDNO no sirve como indicador principal\n\n\nP3: evolución de la misoginia en la música consumida, 2015–2025, por tipo de violencia\nParticipación de cada tipo en streams_estimados; tipo_violencia_key de la canción; mejor_posicion_nacional\nPocas canciones con categoría de MiSonGyny (23 de la tarea 2); la sexualización domina en casi todos los años\nCategoría de MiSonGyny mapeada a la LGAMVLV con la regla de E1; ampliar Kworb para tener más canciones por año\nParcial: con la etiqueta humana la serie es muy inestable; depende del clasificador\n\n\nP4: tipos de violencia que predominan en la música y si coinciden con los más reportados oficialmente\nParticipación por tipo en la música misógina, en carpetas del SESNSP y prevalencias de la ENDIREH 2021 (dim_contexto_entidad)\nH7: la mezcla de tipos oficiales es estable (entropía 0.69–0.72). La sexual es el único tipo alto en las tres fuentes\nENDIREH incorporada a staging (prevalencias tabuladas); la física con víctimas mujeres; una distribución oficial para toda la ventana\nParcial: la violencia económica, patrimonial y mediática no tiene fuente mensual; el mapeo del clasificador a la LGAMVLV es aproximado"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/trazabilidad.html#variables-conservadas-y-la-pregunta-que-responden",
+    "href": "entregas/E2_eda_preparacion/trazabilidad.html#variables-conservadas-y-la-pregunta-que-responden",
+    "title": "Trazabilidad a E0",
+    "section": "Variables conservadas y la pregunta que responden",
+    "text": "Variables conservadas y la pregunta que responden\nNinguna variable conservada queda sin pregunta. Las que la reducción sacó del análisis siguen en el DW como atributos.\n\n\n\n\n\n\n\n\n\nTabla del DW\nVariable\nPregunta\nEstado en E2\n\n\n\n\nfact_consumo_musical\nstreams_estimados, peso_entidad, origen_peso, interes_busqueda\nP1, P2, P3\nConservadas\n\n\nfact_consumo_musical\nsemanas_en_chart_nacional, mejor_posicion_nacional\nP1, P3\nConservadas (no redundantes con streams)\n\n\nfact_violencia\ncarpetas, victimas_mujeres\nP2, P4\nConservadas; la física usa victimas_mujeres\n\n\nfact_violencia\nvictimas_mujeres_menores, victimas_hombres\nP2\nConservadas (mínimo y comparación)\n\n\ndim_cancion\nes_misogina, categoria_misoginia, etiqueta_misongyny, origen_etiqueta, en_corpus_misongyny\nP1, P3, P4\nConservadas\n\n\ndim_cancion\nmacrogenero, genero, etiquetas_fuente\nP1\nConservadas\n\n\ndim_cancion\npais_artista\nP1\nFuera del análisis (lo determina el macrogénero, V = 0.84); se conserva como atributo\n\n\ndim_cancion\ntermino_trends\nP1, P2\nConservada (auditoría del reparto)\n\n\ndim_cancion\ntiene_letra, score_misoginia, version_modelo\nP1, P3\nVacías hasta el modelado\n\n\ndim_tipo_violencia\ntipo_lgamvlv, ambito_lgamvlv, jerarquía del delito, es_control\nP2, P3, P4\nConservadas\n\n\ndim_contexto_entidad\npoblacion_mujeres\nP2\nConservada (denominador)\n\n\ndim_contexto_entidad\npoblacion_total, poblacion_hombres, poblacion_mujeres_15_mas\nP2\nFuera del análisis (redundantes, ρ ≈ 1); se conservan para tasas específicas\n\n\ndim_contexto_entidad\npct_usuarios_internet, usuarios_internet_estimados\nP1, P2\nConservadas (reparto y control)\n\n\ndim_contexto_entidad\npct_pobreza\nP2\nConservada (control)\n\n\ndim_contexto_entidad\npct_viviendas_internet\nP2\nFuera del análisis (redundante con pobreza, ρ = −0.86)\n\n\ndim_contexto_entidad\nindice_impunidad\nP2\nConservada con faltantes (9 estados)\n\n\ndim_contexto_entidad\nprevalencia_*\nP4\nConservadas (solo 2016 y 2021)\n\n\ndim_entidad, dim_fecha\nLlaves, nombres, región, geometría, calendario\nP1–P4\nConservadas"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/uso_ia.html",
+    "href": "entregas/E2_eda_preparacion/uso_ia.html",
+    "title": "Documentación de uso de herramientas de IA",
+    "section": "",
+    "text": "Claude (Anthropic), modelo Opus 5.5, mediante Claude Code: un asistente con acceso a la terminal, a los archivos del proyecto y, cuando lo autorizamos, a nuestro navegador. Las operaciones que escriben en BigQuery (subir tablas a staging y cargar el DW) las ejecutamos nosotros desde la terminal."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/uso_ia.html#herramienta",
+    "href": "entregas/E2_eda_preparacion/uso_ia.html#herramienta",
+    "title": "Documentación de uso de herramientas de IA",
+    "section": "",
+    "text": "Claude (Anthropic), modelo Opus 5.5, mediante Claude Code: un asistente con acceso a la terminal, a los archivos del proyecto y, cuando lo autorizamos, a nuestro navegador. Las operaciones que escriben en BigQuery (subir tablas a staging y cargar el DW) las ejecutamos nosotros desde la terminal."
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/uso_ia.html#tareas",
+    "href": "entregas/E2_eda_preparacion/uso_ia.html#tareas",
+    "title": "Documentación de uso de herramientas de IA",
+    "section": "2. Tareas",
+    "text": "2. Tareas\n\n\n\n\n\n\n\n\nTarea\nQué hizo la IA\nQué hicimos nosotros\n\n\n\n\nPlan de trabajo\nPropuso un plan a partir del instructivo de E2 y de la documentación de E1\nDecidimos el alcance: ignorar la fecha original por la prórroga, llenar es_misogina solo con MiSonGyny, usar polars, ampliar Kworb\n\n\nCódigo del pipeline\nEscribió los módulos de pipeline/src/ (ingesta, ensamblado, EDA, limpieza, reducción, muestreo, verificación, pesos, estrella y carga) y run_pipeline.py, siguiendo la estructura de la práctica 5 del laboratorio\nPedimos las convenciones (estructura del laboratorio, docstrings con Args y Returns, comentarios sin “pasos”), corrimos cada etapa con nuestros datos y revisamos las salidas\n\n\nDescarga de fuentes\nEscribió los scripts de Kworb, MusicBrainz, ENDIREH y ENDUTIH; descargó Google Trends desde nuestro navegador y los tabulados de INEGI\nAutorizamos el uso del navegador, revisamos las tablas resultantes y subimos las tablas a staging\n\n\nEstadística y figuras\nCalculó las medidas, Gini, entropía, χ², correlación y PCA, y generó las figuras\nRevisamos cada figura y pedimos cambios\n\n\nInterpretación\nPropuso lecturas de los resultados y borradores de hallazgos\nElegimos los hallazgos y cuestionamos los que no se sostenían (sección 4)\n\n\nPáginas Quarto\nRedactó borradores de las páginas de E2\nRevisamos, pedimos reorganizar (por ejemplo, separar los hallazgos y no repetir la limitación de Kworb en cada página)"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/uso_ia.html#prompts-resumen-fiel",
+    "href": "entregas/E2_eda_preparacion/uso_ia.html#prompts-resumen-fiel",
+    "title": "Documentación de uso de herramientas de IA",
+    "section": "3. Prompts (resumen fiel)",
+    "text": "3. Prompts (resumen fiel)\n\n“Vamos a comenzar E2 […] plan de trabajo para hacerlo juntos tú y yo; no abuses de BigQuery, no tenemos muchos créditos; no puedes hacer commits.”\n“El código tiene que seguir las mismas convenciones que vimos en laboratorio […] cuando documentes no pongas pasos ni flechas en comentarios, que se vea lo más humano posible, todas las funciones con documentación, Args y Returns.”\n“Escríbelo” (para cada módulo, después de revisar lo que proponía).\n“¿Realmente son repetidos?”, “dame un ejemplo”, “¿por qué habías dicho que era duplicado?” (sobre el RNPDNO).\n“Haz una página por cada fuente con lo que encontró la inspección”, “los hallazgos ponlos en otra página”, “realiza las páginas de Quarto de la parte A [texto del instructivo]”.\n“Amplía Kworb”, “baja Trends”, “ENDIREH: busca los tabulados de INEGI”.\n“Necesito que me digas qué quitaste, cómo uniste, cómo imputaste, ¿vale la pena el PCA?”"
+  },
+  {
+    "objectID": "entregas/E2_eda_preparacion/uso_ia.html#verificación",
+    "href": "entregas/E2_eda_preparacion/uso_ia.html#verificación",
+    "title": "Documentación de uso de herramientas de IA",
+    "section": "4. Verificación",
+    "text": "4. Verificación\nLo que se ejecutó y se comprobó con los datos:\n\nEl pipeline completo corre de principio a fin (python run_pipeline.py) y se detiene si falla alguna de sus validaciones (ver Pipeline).\nLas fórmulas de Gini, entropía y η² se compararon con los ejemplos resueltos de los apuntes del curso y dieron el mismo resultado.\nLas sumas se comprobaron en cada paso: las carpetas, víctimas, streams y semanas del dataset analítico son las mismas que las de staging; el reparto por entidad conserva el consumo nacional; las sumas del DW son iguales a las locales.\nContrastamos cifras con fuentes publicadas: la prevalencia nacional de la ENDIREH 2021 (42.8 %) y el porcentaje de usuarios de internet de la ENDUTIH 2024 (83.1 %) coinciden con lo que publica INEGI; Trends de reguetón 2021 coincide con la descarga de E1 (Spearman 0.99); los streams de Kworb coinciden con Kaggle para las mismas canciones.\nLas vistas del DataMart se probaron en seco en BigQuery antes de crearlas.\n\nLo que la IA hizo mal y corregimos:\n\nAfirmó que 4,354 registros del RNPDNO eran duplicados y los eliminó. Al pedirle ejemplos vimos que son personas distintas: no hay identificador porque al cargar staging se quitaron los nombres. Se cambió la decisión a conservarlos.\nVarios títulos de figuras decían algo que la figura no mostraba; se reescribieron contra los datos.\nEl mapa tapaba la Ciudad de México con el Estado de México; los colores de cada tipo de violencia cambiaban entre figuras.\nEn una tabla de cobertura escribió cifras de 2021 que no correspondían a los datos; se corrigieron contra la tabla que genera el pipeline.\nAl ampliar el pipeline agregó tablas a la configuración que todavía no existían y la inspección dejó de correr.\nNo había detectado que las carpetas de lesiones incluyen víctimas hombres hasta que revisamos la violencia física por sexo.\n\nInterpretaciones. Solo se publicaron las que se respaldan con una cifra o figura del propio dataset. Las que no se sostuvieron (por ejemplo, que un género musical es más misógino que otro) se reportan como no significativas."
   }
 ]

@@ -19,6 +19,7 @@ Pages.
 |---|---|---|
 | **E0 — Comprensión del negocio** | 1. Comprensión del negocio | Bitácora del stakeholder, Business Understanding Canvas, preguntas de investigación, criterio de éxito, riesgos y supuestos, uso de IA. |
 | **E1 — Arquitectura del DW** | 2. Comprensión de los datos | **Fuentes de datos:** criterios de selección, búsqueda documentada, 27 fuentes evaluadas (16 aceptadas, de 12 tipos distintos, y 11 descartadas) y catálogo con una página por fuente. **Arquitectura** de tres capas con enfoque medallion en BigQuery, evidencia de las cargas y consultas del DataMart. **Esquema estrella** con dos hechos y cinco dimensiones, diagrama Mermaid y DDL. Matriz de trazabilidad, pivote (con E0 v2), glosario, uso de IA y referencias. |
+| **E2 — EDA y preparación** | 2. Comprensión de los datos y 3. Preparación | **Parte A:** datos de partida, estadística descriptiva en cuatro dimensiones, Gini con curva de Lorenz, entropía y 9 hallazgos vinculados a P1–P4. **Parte B:** calidad por fuente, registro de limpieza, χ², correlación y PCA con tabla de decisión por variable, muestreo y verificación antes contra después. **Parte C:** pipeline reproducible en `pipeline/` que pobla el DW en BigQuery y ejecuta el DataMart. Documento de decisiones no técnico, trazabilidad, ajustes a E1 y uso de IA. |
 
 ## Estructura del repositorio
 
@@ -33,7 +34,7 @@ Pages.
 │   │   ├── riesgos_supuestos.qmd # supuestos y riesgos
 │   │   ├── uso_ia.qmd            # documentación de uso de LLMs
 │   │   └── e0_v2.qmd             # E0 v2: resumen de lo ajustado, con enlace a pivote
-│   └── E1_arquitectura_dw/
+│   ├── E1_arquitectura_dw/
 │       ├── fuentes.qmd           # búsqueda documentada, catálogo e integración
 │       ├── fuentes/              # una ficha por fuente (F1–F19)
 │       ├── arquitectura.qmd      # 3 capas, evidencia BigQuery, consultas del mart
@@ -46,6 +47,17 @@ Pages.
 │       ├── sql/                  # ddl_dw.sql, consultas_mart.sql
 │       ├── datos/                # scripts de extracción y preparación de staging (los CSV no se suben)
 │       └── img/                  # capturas de pantalla de BigQuery
+│   └── E2_eda_preparacion/
+│       ├── eda.qmd, eda_descriptiva.qmd, eda_concentracion.qmd, hallazgos.qmd   # Parte A
+│       ├── preparacion.qmd       # Parte B: limpieza, reducción, muestreo, antes/después
+│       ├── pipeline.qmd          # Parte C: pipeline, carga al DW y DataMart
+│       ├── decisiones.qmd        # documento no técnico
+│       ├── trazabilidad.qmd, ajustes.qmd, uso_ia.qmd
+│       ├── calidad.qmd, calidad/ # calidad por fuente
+│       ├── datos_nuevos.qmd      # fuentes agregadas en E2
+│       └── img/                  # figuras que genera el pipeline
+├── pipeline/                     # pipeline de E2 (ver pipeline/README.md)
+├── sql/                          # DDL y consultas del DataMart vigentes (E1 v2)
 ├── assets/                       # logo y scripts del sitio
 ├── _quarto.yml                   # agregar E1 a la navegación
 ├── index.qmd                     # página de inicio del sitio

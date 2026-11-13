@@ -4,6 +4,8 @@ project:
   render:
     - "*.qmd"
 
+lang: es
+
 website:
   title: "Proyecto Integrador — Almacenes y Minería de Datos"
   site-url: "https://jzarcoo.github.io/almacenes-mineria-proyecto/"
@@ -56,6 +58,39 @@ website:
             text: "Glosario"
           - href: entregas/E1_arquitectura_dw/referencias.qmd
             text: "Referencias"
+      - text: "E2 · EDA y preparación"
+        menu:
+          - href: entregas/E2_eda_preparacion/datos_nuevos.qmd
+            text: "Datos agregados en E2"
+          - href: entregas/E2_eda_preparacion/calidad.qmd
+            text: "Calidad por fuente"
+          - text: "---"
+          - text: "Parte A · Análisis exploratorio"
+          - href: entregas/E2_eda_preparacion/eda.qmd
+            text: "Datos de partida"
+          - href: entregas/E2_eda_preparacion/eda_descriptiva.qmd
+            text: "Estadística descriptiva"
+          - href: entregas/E2_eda_preparacion/eda_concentracion.qmd
+            text: "Concentración y heterogeneidad"
+          - href: entregas/E2_eda_preparacion/hallazgos.qmd
+            text: "Hallazgos"
+          - text: "---"
+          - text: "Parte B · Preparación"
+          - href: entregas/E2_eda_preparacion/preparacion.qmd
+            text: "Limpieza, reducción y verificación"
+          - text: "---"
+          - text: "Parte C · Pipeline y DW"
+          - href: entregas/E2_eda_preparacion/pipeline.qmd
+            text: "Pipeline, carga y DataMart"
+          - text: "---"
+          - href: entregas/E2_eda_preparacion/decisiones.qmd
+            text: "Decisiones (no técnico)"
+          - href: entregas/E2_eda_preparacion/trazabilidad.qmd
+            text: "Trazabilidad a E0"
+          - href: entregas/E2_eda_preparacion/ajustes.qmd
+            text: "Ajustes a E1"
+          - href: entregas/E2_eda_preparacion/uso_ia.qmd
+            text: "Uso de herramientas de IA"
     right:
       - icon: github
         href: "https://github.com/jzarcoo/almacenes-mineria-proyecto"

@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Parte B · Preparación de los datos – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ca0495cbf0b9bce0b7b33bf2b9083a47.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/logo.svg" alt="" class="navbar-logo light-content">
+    <img src="../../assets/logo.svg" alt="" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Proyecto Integrador — Almacenes y Minería de Datos</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Buscar"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navegación de palanca" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Inicio</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-e0-·-comprensión-del-negocio" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">E0 · Comprensión del negocio</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-e0-·-comprensión-del-negocio">    
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/bitacora.html">
+ <span class="dropdown-text">Bitácora del stakeholder</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/canvas.html">
+ <span class="dropdown-text">Business Understanding Canvas</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/preguntas.html">
+ <span class="dropdown-text">Preguntas de investigación</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/criterio_exito.html">
+ <span class="dropdown-text">Criterio de éxito</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/riesgos_supuestos.html">
+ <span class="dropdown-text">Riesgos y supuestos</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/uso_ia.html">
+ <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/e0_v2.html">
+ <span class="dropdown-text">E0 v2 · Secciones actualizadas</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-e1-·-arquitectura-del-dw" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">E1 · Arquitectura del DW</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-e1-·-arquitectura-del-dw">    
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes.html">
+ <span class="dropdown-text">Fuentes de datos</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/arquitectura.html">
+ <span class="dropdown-text">Arquitectura de tres capas</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/estrella.html">
+ <span class="dropdown-text">Esquema estrella</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/trazabilidad.html">
+ <span class="dropdown-text">Trazabilidad a E0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/pivote.html">
+ <span class="dropdown-text">Pivote</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/uso_ia.html">
+ <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/glosario.html">
+ <span class="dropdown-text">Glosario</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/referencias.html">
+ <span class="dropdown-text">Referencias</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-e2-·-eda-y-preparación" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">E2 · EDA y preparación</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-e2-·-eda-y-preparación">    
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/datos_nuevos.html">
+ <span class="dropdown-text">Datos agregados en E2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/calidad.html">
+ <span class="dropdown-text">Calidad por fuente</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">Parte A · Análisis exploratorio</li>
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/eda.html">
+ <span class="dropdown-text">Datos de partida</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/eda_descriptiva.html">
+ <span class="dropdown-text">Estadística descriptiva</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/eda_concentracion.html">
+ <span class="dropdown-text">Concentración y heterogeneidad</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/hallazgos.html">
+ <span class="dropdown-text">Hallazgos</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">Parte B · Preparación</li>
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/preparacion.html">
+ <span class="dropdown-text">Limpieza, reducción y verificación</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">Parte C · Pipeline y DW</li>
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/pipeline.html">
+ <span class="dropdown-text">Pipeline, carga y DataMart</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/decisiones.html">
+ <span class="dropdown-text">Decisiones (no técnico)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/trazabilidad.html">
+ <span class="dropdown-text">Trazabilidad a E0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/ajustes.html">
+ <span class="dropdown-text">Ajustes a E1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/uso_ia.html">
+ <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/jzarcoo/almacenes-mineria-proyecto"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text">Repositorio</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">En esta página</h2>
+   
+  <ul>
+  <li><a href="#calidad-y-tratamiento-del-ruido" id="toc-calidad-y-tratamiento-del-ruido" class="nav-link active" data-scroll-target="#calidad-y-tratamiento-del-ruido">Calidad y tratamiento del ruido</a>
+  <ul class="collapse">
+  <li><a href="#registro-de-limpieza" id="toc-registro-de-limpieza" class="nav-link" data-scroll-target="#registro-de-limpieza">Registro de limpieza</a></li>
+  </ul></li>
+  <li><a href="#reducción-de-dimensionalidad" id="toc-reducción-de-dimensionalidad" class="nav-link" data-scroll-target="#reducción-de-dimensionalidad">Reducción de dimensionalidad</a>
+  <ul class="collapse">
+  <li><a href="#chi-cuadrada-con-v-de-cramér" id="toc-chi-cuadrada-con-v-de-cramér" class="nav-link" data-scroll-target="#chi-cuadrada-con-v-de-cramér">Chi-cuadrada con V de Cramér</a></li>
+  <li><a href="#correlación" id="toc-correlación" class="nav-link" data-scroll-target="#correlación">Correlación</a></li>
+  <li><a href="#pca" id="toc-pca" class="nav-link" data-scroll-target="#pca">PCA</a></li>
+  <li><a href="#tabla-de-decisión-por-variable" id="toc-tabla-de-decisión-por-variable" class="nav-link" data-scroll-target="#tabla-de-decisión-por-variable">Tabla de decisión por variable</a></li>
+  </ul></li>
+  <li><a href="#muestreo" id="toc-muestreo" class="nav-link" data-scroll-target="#muestreo">Muestreo</a></li>
+  <li><a href="#verificación-antes-contra-después" id="toc-verificación-antes-contra-después" class="nav-link" data-scroll-target="#verificación-antes-contra-después">Verificación: antes contra después</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Parte B · Preparación de los datos</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>La preparación parte de lo que encontró el <a href="../../entregas/E2_eda_preparacion/eda.html">análisis exploratorio</a>. Cada tratamiento se diagnosticó primero, se aplicó con una regla declarada en <code>pipeline/config.yaml</code> o en el código, y quedó en el <strong>registro de limpieza</strong> con su conteo y su justificación. El pipeline lo vuelve a escribir en cada corrida (<code>pipeline/logs/registro_limpieza.csv</code>).</p>
+<section id="calidad-y-tratamiento-del-ruido" class="level2">
+<h2 class="anchored" data-anchor-id="calidad-y-tratamiento-del-ruido">Calidad y tratamiento del ruido</h2>
+<p>Resumen por tipo de problema, en el orden de la tabla de la entrega. El detalle por fuente está en <a href="../../entregas/E2_eda_preparacion/calidad.html">Calidad por fuente</a>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problema</th>
+<th>Qué se encontró</th>
+<th>Qué se decidió</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Valores faltantes</strong></td>
+<td>Víctimas: el SESNSP no reporta víctimas de delitos sexuales ni de violencia familiar (38,016 filas); 11.3 % de las víctimas sin sexo y 10.2 % de las mujeres sin edad. RNPDNO: 70 % de las mujeres sin fecha o entidad, y la fuente termina en agosto de 2023. Contexto: cada indicador solo existe en sus años de medición</td>
+<td>No imputar víctimas, sexo ni edad; excluir del conteo a las mujeres sin fecha o entidad; no rellenar con cero los meses sin RNPDNO. En el contexto, interpolar entre mediciones y repetir la más cercana en los extremos; la ENDIREH queda nula fuera de 2016 y 2021</td>
+<td>Distinguir <strong>ceros estructurales</strong> (la fuente no mide ese dato) de <strong>faltantes</strong> (el dato existe y no se conoce). Imputar víctimas inventaría personas; los indicadores de contexto cambian despacio y la dimensión necesita un valor por año</td>
+</tr>
+<tr class="even">
+<td><strong>Ceros que son faltantes</strong></td>
+<td>8 estados empiezan la serie de feminicidio con 12 meses o más en cero (900 celdas)</td>
+<td>Volver nulos esos ceros</td>
+<td>La fiscalía todavía no clasificaba el delito; un cero diría que no hubo feminicidios</td>
+</tr>
+<tr class="odd">
+<td><strong>Duplicados</strong></td>
+<td>Ninguna llave repetida en las fuentes con llave. Filas idénticas en el RNPDNO (4,354) y la ENDUTIH (1,146)</td>
+<td><strong>Conservarlas</strong></td>
+<td>No hay identificador de persona: en el RNPDNO se quitaron los nombres al cargar staging y casi todas esas filas están testadas; son personas distintas que se ven iguales</td>
+</tr>
+<tr class="even">
+<td><strong>Atípicos</strong></td>
+<td>Streams: 553 meses fuera de las cercas de Tukey. Violencia: 320 meses atípicos dentro de su estado (|z robusto| &gt; 3.5) y 625 fuera de las cercas entre estados. RNPDNO: 7 edades mayores a 110 años</td>
+<td>Conservar los de streams y violencia; analizar streams en log10 y violencia en tasas. Las edades imposibles pasan a nulas</td>
+<td>Los éxitos musicales y los picos de denuncias son el fenómeno de P1 y P2; una edad de 1,832 años es un error de captura</td>
+</tr>
+<tr class="odd">
+<td><strong>Inconsistencias de categorías</strong></td>
+<td>Nombres de entidad distintos entre fuentes (ESTADO DE MEXICO, VERACRUZ, DISTRITO FEDERAL…); 325,248 filas de delitos sin tipo de violencia de género; el encabezado de MiSonGyny cargado como dato</td>
+<td>Tabla de equivalencias a la clave INEGI; excluir los delitos fuera del mapeo LGAMVLV de E1; eliminar el encabezado</td>
+<td>Se unen todas las entidades sin perder filas; los delitos como robo no responden P1–P4</td>
+</tr>
+<tr class="even">
+<td><strong>Tipos, unidades y rangos</strong></td>
+<td>Todo llega como texto; las celdas de Kworb mezclan posición y streams; las semanas cruzan de mes</td>
+<td>Convertir tipos; separar la celda; repartir cada semana entre meses por días</td>
+<td>El reparto conserva exacta la suma de streams</td>
+</tr>
+<tr class="odd">
+<td><strong>Llaves que no coinciden</strong></td>
+<td>258 de 300 canciones no están en MiSonGyny; 18 artistas de MusicBrainz eran otra persona; la fila <code>MX-X01~</code> de Natural Earth no es un estado</td>
+<td><code>es_misogina</code> nulo; descartar el género de esos artistas (“sin etiqueta”); eliminar la fila</td>
+<td>Solo se usa la etiqueta humana; un género de otro artista es peor que ninguno</td>
+</tr>
+</tbody>
+</table>
+<section id="registro-de-limpieza" class="level3">
+<h3 class="anchored" data-anchor-id="registro-de-limpieza">Registro de limpieza</h3>
+<p>Así lo escribe el pipeline (se reproduce con <code>python run_pipeline.py --solo limpieza</code>):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tabla.variable</th>
+<th>Problema</th>
+<th>Afectadas</th>
+<th>Total</th>
+<th>%</th>
+<th>Decisión</th>
+<th>Justificación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>analitico_consumo.streams</td>
+<td>canción y mes con 0 streams (celdas – de Kworb)</td>
+<td>1,617</td>
+<td>9,046</td>
+<td>17.88</td>
+<td>eliminar la fila</td>
+<td>es un cero estructural: la canción estaba fuera del chart; el hecho de consumo solo guarda lo que se escuchó</td>
+</tr>
+<tr class="even">
+<td>analitico_consumo.macrogenero</td>
+<td>artista sin género en MusicBrainz</td>
+<td>2,264</td>
+<td>7,429</td>
+<td>30.48</td>
+<td>dejar como categoría ‘sin etiqueta’</td>
+<td>son 35% de los streams; asignarles un género inventaría la composición que mide P1</td>
+</tr>
+<tr class="odd">
+<td>analitico_consumo.streams</td>
+<td>fuera de las cercas de Tukey (1.5·IQR)</td>
+<td>553</td>
+<td>7,429</td>
+<td>7.44</td>
+<td>conservar y usar log10 en las comparaciones</td>
+<td>son los éxitos del año, el centro de P1; en escala log solo quedan 256 fuera de las cercas</td>
+</tr>
+<tr class="even">
+<td>analitico_violencia.tipo_lgamvlv</td>
+<td>delito sin tipo de violencia de la LGAMVLV</td>
+<td>325,248</td>
+<td>413,952</td>
+<td>78.57</td>
+<td>excluir</td>
+<td>son delitos como robo o fraude que no responden P2; el mapeo de E1 conserva 12 subtipos</td>
+</tr>
+<tr class="odd">
+<td>analitico_violencia.victimas_mujeres</td>
+<td>delito que el SESNSP no reporta por víctima</td>
+<td>38,016</td>
+<td>88,704</td>
+<td>42.86</td>
+<td>dejar nulo</td>
+<td>es un faltante estructural: el archivo de víctimas del SESNSP no cubre delitos sexuales ni violencia familiar, solo carpetas; no es un cero</td>
+</tr>
+<tr class="even">
+<td>stg_sesnsp_victimas.sexo</td>
+<td>víctimas con sexo no identificado</td>
+<td>251,413</td>
+<td>2,216,675</td>
+<td>11.34</td>
+<td>no asignarlas a mujeres ni a hombres</td>
+<td>repartirlas inventaría víctimas; el conteo de mujeres es un mínimo y así se aclara en decisiones</td>
+</tr>
+<tr class="odd">
+<td>stg_sesnsp_victimas.rango_de_edad</td>
+<td>mujeres víctimas sin edad especificada</td>
+<td>77,637</td>
+<td>763,007</td>
+<td>10.18</td>
+<td>no imputar; victimas_mujeres_menores es un mínimo</td>
+<td>la falta de edad depende de la fiscalía de cada estado, así que imputarla movería las diferencias entre estados</td>
+</tr>
+<tr class="even">
+<td>analitico_violencia.carpetas (feminicidio)</td>
+<td>estados que empiezan la serie con 12 meses o más en cero</td>
+<td>900</td>
+<td>16,896</td>
+<td>5.33</td>
+<td>volver nulo, no cero</td>
+<td>la fiscalía todavía no clasificaba el delito como feminicidio, no es que no hubiera (1 hasta 2018-04, 3 hasta 2019-10, 8 hasta 2017-11, 13 hasta 2016-02, 18 hasta 2017-06, 23 hasta 2017-03, 28 hasta 2016-03, 32 hasta 2016-02)</td>
+</tr>
+<tr class="odd">
+<td>analitico_violencia.tasa mensual por entidad</td>
+<td>mes atípico dentro de la serie de su estado (|z robusto| &gt; 3.5)</td>
+<td>320</td>
+<td>20,895</td>
+<td>1.53</td>
+<td>conservar</td>
+<td>son picos reales de denuncias (por ejemplo tras cambios de registro o campañas); quitarlos borraría el fenómeno de P2</td>
+</tr>
+<tr class="even">
+<td>analitico_violencia.tasa mensual por entidad</td>
+<td>fuera de las cercas de Tukey (1.5·IQR) entre estados</td>
+<td>625</td>
+<td>20,895</td>
+<td>2.99</td>
+<td>conservar y analizar en tasas, no en conteos</td>
+<td>son estados con tasas altas de forma sostenida, que es justo la diferencia que P2 quiere ver</td>
+</tr>
+<tr class="odd">
+<td>stg_rnpdno.fila</td>
+<td>registros idénticos en las 8 columnas</td>
+<td>4,354</td>
+<td>116,945</td>
+<td>3.72</td>
+<td>conservar</td>
+<td>son personas distintas que se ven iguales: en staging se quitaron las columnas de nombre para proteger su identidad, no queda un identificador de persona (8 valores distintos en consecutivo_registro) y 3,749 de ellas tienen todos sus datos testados</td>
+</tr>
+<tr class="even">
+<td>stg_rnpdno.edad</td>
+<td>edad mayor a 110 años</td>
+<td>7</td>
+<td>116,945</td>
+<td>0.01</td>
+<td>volver nula</td>
+<td>es un error de captura; el registro se conserva porque la fecha y la entidad sí sirven</td>
+</tr>
+<tr class="odd">
+<td>stg_rnpdno.sexo, entidad</td>
+<td>datos testados con la leyenda ELIMINADO</td>
+<td>37,460</td>
+<td>116,945</td>
+<td>32.03</td>
+<td>excluir del conteo de mujeres</td>
+<td>la fuente los oculta por protección de datos; no se puede saber si son mujeres ni dónde desaparecieron</td>
+</tr>
+<tr class="even">
+<td>stg_rnpdno.fecha_de_desaparicion</td>
+<td>mujeres sin fecha válida o sin entidad</td>
+<td>13,151</td>
+<td>18,770</td>
+<td>70.06</td>
+<td>excluir y reportar como límite</td>
+<td>sin mes o sin entidad no se pueden ubicar en el grano; por eso el RNPDNO es solo fuente de contraste para P2</td>
+</tr>
+<tr class="odd">
+<td>analitico_violencia.victimas_mujeres (RNPDNO)</td>
+<td>la fuente termina en 2023-08</td>
+<td>28</td>
+<td>132</td>
+<td>21.21</td>
+<td>dejar sin filas, no rellenar con cero</td>
+<td>son meses que la versión descargada no cubre; un cero diría que no hubo desapariciones</td>
+</tr>
+<tr class="even">
+<td>stg_misongyny.fila</td>
+<td>la fila de encabezados se cargó como dato</td>
+<td>1</td>
+<td>4,913</td>
+<td>0.02</td>
+<td>eliminar</td>
+<td>no es una canción</td>
+</tr>
+<tr class="odd">
+<td>stg_misongyny.label</td>
+<td>canciones de prueba con la etiqueta en otro archivo</td>
+<td>820</td>
+<td>4,092</td>
+<td>20.04</td>
+<td>unir por id con TEST_LABELS</td>
+<td>el corpus publica las respuestas de la partición de prueba por separado</td>
+</tr>
+<tr class="even">
+<td>dim_cancion.es_misogina</td>
+<td>canción del chart que no está en MiSonGyny</td>
+<td>258</td>
+<td>300</td>
+<td>86.00</td>
+<td>dejar nulo</td>
+<td>solo se usa la etiqueta humana del corpus; las clasificadas suman 13% de los streams y 19 títulos iguales de otro artista no se emparejaron</td>
+</tr>
+<tr class="odd">
+<td>analitico_contexto.pct_viviendas_internet</td>
+<td>solo se mide en 2020</td>
+<td>320</td>
+<td>352</td>
+<td>90.91</td>
+<td>interpolar entre mediciones y repetir la más cercana en los extremos</td>
+<td>cambian despacio de un año a otro y la dimensión de contexto necesita un valor por año</td>
+</tr>
+<tr class="even">
+<td>analitico_contexto.usuarios_internet</td>
+<td>solo se mide en 2015, 2016, 2017, 2018, 2020, 2021, 2022, 2023, 2024, 2025</td>
+<td>32</td>
+<td>352</td>
+<td>9.09</td>
+<td>interpolar entre mediciones y repetir la más cercana en los extremos</td>
+<td>cambian despacio de un año a otro y la dimensión de contexto necesita un valor por año</td>
+</tr>
+<tr class="odd">
+<td>analitico_contexto.pct_usuarios_internet</td>
+<td>solo se mide en 2015, 2016, 2017, 2018, 2020, 2021, 2022, 2023, 2024, 2025</td>
+<td>32</td>
+<td>352</td>
+<td>9.09</td>
+<td>interpolar entre mediciones y repetir la más cercana en los extremos</td>
+<td>cambian despacio de un año a otro y la dimensión de contexto necesita un valor por año</td>
+</tr>
+<tr class="even">
+<td>analitico_contexto.pct_pobreza</td>
+<td>solo se mide en 2016, 2018, 2020, 2022</td>
+<td>224</td>
+<td>352</td>
+<td>63.64</td>
+<td>interpolar entre mediciones y repetir la más cercana en los extremos</td>
+<td>cambian despacio de un año a otro y la dimensión de contexto necesita un valor por año</td>
+</tr>
+<tr class="odd">
+<td>analitico_contexto.indice_impunidad</td>
+<td>solo se mide en 2023</td>
+<td>230</td>
+<td>352</td>
+<td>65.34</td>
+<td>interpolar entre mediciones y repetir la más cercana en los extremos</td>
+<td>cambian despacio de un año a otro y la dimensión de contexto necesita un valor por año; 9 entidades sin ninguna medición quedan nulas</td>
+</tr>
+<tr class="even">
+<td>analitico_contexto.prevalencia_*</td>
+<td>la ENDIREH solo se levanta en 2016, 2021</td>
+<td>1,440</td>
+<td>1,760</td>
+<td>81.82</td>
+<td>dejar nulo fuera de los años de levantamiento</td>
+<td>es una encuesta por levantamiento y E1 la define así; P4 la compara en su año, no como serie</td>
+</tr>
+<tr class="odd">
+<td>stg_naturalearth_mx.iso_3166_2</td>
+<td>fila que no es una entidad (clave MX-X01~, sin nombre)</td>
+<td>1</td>
+<td>33</td>
+<td>3.03</td>
+<td>eliminar</td>
+<td>es un polígono menor sin estado asignado en Natural Earth</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="reducción-de-dimensionalidad" class="level2">
+<h2 class="anchored" data-anchor-id="reducción-de-dimensionalidad">Reducción de dimensionalidad</h2>
+<p><strong>Criterios</strong> (en <code>config.yaml</code>): una asociación entre categóricas cuenta si su <em>p</em> ajustada por Holm es menor a 0.05 <strong>y</strong> su V de Cramér llega a 0.10; dos numéricas son redundantes si |ρ de Spearman| ≥ 0.85 y se conserva la más cercana a las preguntas de E0; el PCA busca 85 % de varianza acumulada.</p>
+<section id="chi-cuadrada-con-v-de-cramér" class="level3">
+<h3 class="anchored" data-anchor-id="chi-cuadrada-con-v-de-cramér">Chi-cuadrada con V de Cramér</h3>
+<div id="tbl-chi2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-chi2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1: Pruebas de independencia. Las categorías raras se agruparon para acercarse a la frecuencia esperada mínima; en las tablas de 2×2 se reporta además la prueba exacta de Fisher.
+</figcaption>
+<div aria-describedby="tbl-chi2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Prueba</th>
+<th>n</th>
+<th>V de Cramér</th>
+<th>p (Holm)</th>
+<th>p (Fisher)</th>
+<th>Frecuencia esperada mínima</th>
+<th>¿Asociación relevante?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>es_misogina × urbano latino o resto</td>
+<td>42</td>
+<td>0.34</td>
+<td>0.088</td>
+<td>0.047</td>
+<td>5.7</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>es_misogina × macrogénero (regional, urbano, otros)</td>
+<td>42</td>
+<td>0.34</td>
+<td>0.179</td>
+<td>—</td>
+<td>3.4</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>es_misogina × país del artista (México u otro)</td>
+<td>30</td>
+<td>0.22</td>
+<td>0.225</td>
+<td>0.283</td>
+<td>5.6</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>macrogénero × país del artista</td>
+<td>179</td>
+<td><strong>0.84</strong></td>
+<td>&lt; 0.001</td>
+<td>—</td>
+<td>25.9</td>
+<td><strong>Sí</strong></td>
+</tr>
+<tr class="odd">
+<td>tipo de violencia × año</td>
+<td>4,841,209 carpetas</td>
+<td>0.07</td>
+<td>&lt; 0.001</td>
+<td>—</td>
+<td>556.8</td>
+<td>No (efecto despreciable)</td>
+</tr>
+<tr class="even">
+<td>tipo de violencia × entidad (2025)</td>
+<td>511,591 carpetas</td>
+<td><strong>0.20</strong></td>
+<td>&lt; 0.001</td>
+<td>—</td>
+<td>0.2</td>
+<td><strong>Sí</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Con 42 canciones etiquetadas la diferencia entre géneros (9 de 15 misóginas en urbano latino, 2 de 9 en regional mexicano) tiene un efecto moderado pero no es significativa tras corregir por comparaciones múltiples. El tipo de violencia por año es el caso de <em>n</em> enorme: significativo con V = 0.07, sin importancia práctica. El país del artista casi lo determina el macrogénero (V = 0.84) y sale del análisis.</p>
+</section>
+<section id="correlación" class="level3">
+<h3 class="anchored" data-anchor-id="correlación">Correlación</h3>
+<div id="fig-correlacion" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-correlacion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/reduccion_correlacion.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-correlacion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Correlación de Spearman entre las variables numéricas del panel entidad × año. Se escribe el valor cuando |ρ| ≥ 0.85.
+</figcaption>
+</figure>
+</div>
+<p>Pares redundantes (<a href="#fig-correlacion" class="quarto-xref">Figura&nbsp;1</a>): las cuatro poblaciones (ρ ≈ 1; se queda <code>poblacion_mujeres</code>, denominador de las tasas), la tasa de feminicidio y la de sus víctimas (ρ = 1.00; se queda la de carpetas) y las viviendas con internet frente a la pobreza (ρ = −0.86; se queda la pobreza, medida en más años). Las tasas de los distintos tipos de violencia <strong>no</strong> son redundantes entre sí (la más alta, sexual con familiar, ρ = 0.83): miden cosas distintas.</p>
+</section>
+<section id="pca" class="level3">
+<h3 class="anchored" data-anchor-id="pca">PCA</h3>
+<p>Se aplicó a los cuatro indicadores de contexto (usuarios de internet, viviendas con internet, pobreza y log de población), estandarizados, con <strong>una fila por entidad</strong> (promedio de la ventana) para no contar 11 veces a cada estado.</p>
+<div id="fig-pca" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/reduccion_pca.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Sedimentación y cargas de las dos primeras componentes.
+</figcaption>
+</figure>
+</div>
+<div id="tbl-pca" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;2: Varianza y cargas del PCA
+</figcaption>
+<div aria-describedby="tbl-pca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Componente</th>
+<th>Varianza explicada</th>
+<th>Acumulada</th>
+<th>Lectura de las cargas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PC1</td>
+<td>70 %</td>
+<td>70 %</td>
+<td>Usuarios de internet (+0.58), viviendas con internet (+0.57) y pobreza (−0.57): un eje de desarrollo</td>
+</tr>
+<tr class="even">
+<td>PC2</td>
+<td>25 %</td>
+<td>96 %</td>
+<td>Casi solo la población (+0.98)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Decisión: conservar las variables originales.</strong> Dos componentes alcanzan el objetivo de 85 %, pero con cuatro variables eso ahorra muy poco, y PC2 es prácticamente la población, que ya está en la dimensión. Las originales se interpretan directo y la dimensión de contexto del DW las necesita por separado. El PCA confirma lo que mostró la correlación: internet y pobreza miden casi lo mismo entre estados.</p>
+<p><strong>Fuga de información.</strong> E2 no entrena modelos, así que el PCA y la estandarización se ajustan con todas las entidades. La función <code>ajustar_pca()</code> recibe la tabla con la que se ajusta: en el modelado se le pasará solo la partición de entrenamiento y las demás se transformarán con el mismo objeto. Lo mismo aplica a la imputación del contexto, que deberá recalcularse con los años de entrenamiento si la partición es temporal.</p>
+</section>
+<section id="tabla-de-decisión-por-variable" class="level3">
+<h3 class="anchored" data-anchor-id="tabla-de-decisión-por-variable">Tabla de decisión por variable</h3>
+<p>Cada variable del dataset limpio, con la técnica que se usó, la evidencia y la decisión (<code>pipeline/data/data-processed/reduccion/tabla_decision.parquet</code>):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Tabla</th>
+<th>Tipo</th>
+<th>Técnica</th>
+<th>Evidencia</th>
+<th>Decisión</th>
+<th>Justificación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cve_ent</td>
+<td>violencia, contexto</td>
+<td>categórica nominal</td>
+<td>ninguna (llave)</td>
+<td></td>
+<td>conservar</td>
+<td>identifica el grano de E1</td>
+</tr>
+<tr class="even">
+<td>fecha</td>
+<td>violencia, consumo</td>
+<td>fecha</td>
+<td>ninguna (llave)</td>
+<td></td>
+<td>conservar</td>
+<td>identifica el grano de E1</td>
+</tr>
+<tr class="odd">
+<td>origen</td>
+<td>violencia</td>
+<td>categórica nominal</td>
+<td>ninguna</td>
+<td>SESNSP o RNPDNO</td>
+<td>conservar</td>
+<td>separa la fuente principal de la de contraste</td>
+</tr>
+<tr class="even">
+<td>bien_juridico_afectado</td>
+<td>violencia</td>
+<td>categórica nominal</td>
+<td>jerarquía</td>
+<td>determinado por subtipo</td>
+<td>combinar en dim_tipo_violencia</td>
+<td>es un nivel superior de la misma jerarquía de delito</td>
+</tr>
+<tr class="odd">
+<td>tipo_de_delito</td>
+<td>violencia</td>
+<td>categórica nominal</td>
+<td>jerarquía</td>
+<td>determinado por subtipo</td>
+<td>combinar en dim_tipo_violencia</td>
+<td>es un nivel superior de la misma jerarquía de delito</td>
+</tr>
+<tr class="even">
+<td>subtipo_de_delito</td>
+<td>violencia</td>
+<td>categórica nominal</td>
+<td>jerarquía</td>
+<td>define tipo_lgamvlv</td>
+<td>combinar en dim_tipo_violencia</td>
+<td>se conserva como atributo para auditar el mapeo</td>
+</tr>
+<tr class="odd">
+<td>modalidad</td>
+<td>violencia</td>
+<td>categórica nominal</td>
+<td>jerarquía</td>
+<td>parte de la llave del delito</td>
+<td>combinar en dim_tipo_violencia</td>
+<td>P4 no la usa, pero sin ella se duplicarían carpetas</td>
+</tr>
+<tr class="even">
+<td>tipo_lgamvlv</td>
+<td>violencia</td>
+<td>categórica nominal</td>
+<td>χ²</td>
+<td>V = 0.20, p Holm &lt; 0.001, n = 511,591</td>
+<td>conservar</td>
+<td>es la variable de P4; la mezcla de tipos cambia entre estados</td>
+</tr>
+<tr class="odd">
+<td>carpetas</td>
+<td>violencia</td>
+<td>numérica (conteo)</td>
+<td>correlación</td>
+<td>ρ(tasa_sexual, tasa_familiar_genero) = 0.83</td>
+<td>conservar y transformar a tasa</td>
+<td>medida principal de P2; las tasas de cada tipo no son redundantes entre sí</td>
+</tr>
+<tr class="even">
+<td>victimas_mujeres</td>
+<td>violencia</td>
+<td>numérica (conteo)</td>
+<td>correlación</td>
+<td>ρ(tasa_feminicidio, tasa_victimas_feminicidio) = 1.00</td>
+<td>conservar en el hecho, no en el análisis</td>
+<td>donde existe es redundante con carpetas; se queda porque el RNPDNO solo tiene víctimas</td>
+</tr>
+<tr class="odd">
+<td>victimas_mujeres_menores</td>
+<td>violencia</td>
+<td>numérica (conteo)</td>
+<td>ninguna</td>
+<td>ver registro de limpieza (edad no especificada)</td>
+<td>conservar</td>
+<td>P2 la pide; se aclara que es un mínimo</td>
+</tr>
+<tr class="even">
+<td>victimas_hombres</td>
+<td>violencia</td>
+<td>numérica (conteo)</td>
+<td>ninguna</td>
+<td>solo para comparar</td>
+<td>conservar</td>
+<td>referencia de E0 para ver si la violencia es específica contra mujeres</td>
+</tr>
+<tr class="odd">
+<td>track_id</td>
+<td>consumo, canciones</td>
+<td>identificador</td>
+<td>ninguna (llave)</td>
+<td></td>
+<td>conservar</td>
+<td>identifica el grano de E1</td>
+</tr>
+<tr class="even">
+<td>streams</td>
+<td>consumo</td>
+<td>numérica</td>
+<td>correlación</td>
+<td>ρ(streams, semanas_en_chart) = 0.36</td>
+<td>conservar y usar log10</td>
+<td>medida principal de P1 y P3</td>
+</tr>
+<tr class="odd">
+<td>semanas_en_chart</td>
+<td>consumo</td>
+<td>numérica (conteo)</td>
+<td>correlación</td>
+<td>ρ(streams, semanas_en_chart) = 0.36</td>
+<td>conservar</td>
+<td>el DataMart la usa como medida alternativa de P1</td>
+</tr>
+<tr class="even">
+<td>mejor_posicion</td>
+<td>consumo</td>
+<td>numérica (ordinal)</td>
+<td>correlación</td>
+<td>ρ(streams, mejor_posicion) = -0.77</td>
+<td>conservar</td>
+<td>P3 la usa; su relación con streams no llega al umbral</td>
+</tr>
+<tr class="odd">
+<td>artista</td>
+<td>canciones</td>
+<td>categórica nominal</td>
+<td>ninguna</td>
+<td>300 canciones, 112 artistas</td>
+<td>conservar</td>
+<td>atributo descriptivo de dim_cancion; demasiadas categorías para χ²</td>
+</tr>
+<tr class="even">
+<td>titulo</td>
+<td>canciones</td>
+<td>texto</td>
+<td>ninguna</td>
+<td>único por canción</td>
+<td>conservar</td>
+<td>atributo descriptivo</td>
+</tr>
+<tr class="odd">
+<td>pais_artista</td>
+<td>canciones</td>
+<td>categórica nominal</td>
+<td>χ² + V de Cramér</td>
+<td>con macrogénero: V = 0.84, p Holm &lt; 0.001, n = 179; con es_misogina: V = 0.22, p Holm = 0.225, p Fisher = 0.283, n = 30</td>
+<td>descartar del análisis, conservar en la dimensión</td>
+<td>casi lo determina el macrogénero (regional mexicano es mexicano) y no se asocia con la misoginia; 121 canciones no tienen país</td>
+</tr>
+<tr class="even">
+<td>macrogenero</td>
+<td>canciones</td>
+<td>categórica nominal</td>
+<td>χ²</td>
+<td>V = 0.34, p Holm = 0.088, p Fisher = 0.047, n = 42</td>
+<td>conservar</td>
+<td>es la variable de P1 que se cruza con la misoginia</td>
+</tr>
+<tr class="odd">
+<td>origen_genero</td>
+<td>canciones</td>
+<td>categórica nominal</td>
+<td>ninguna</td>
+<td>auditoría</td>
+<td>conservar</td>
+<td>marca qué géneros vienen de MusicBrainz, de corrección o no tienen dato</td>
+</tr>
+<tr class="even">
+<td>etiquetas_fuente</td>
+<td>canciones</td>
+<td>texto</td>
+<td>ninguna</td>
+<td>lista de etiquetas</td>
+<td>conservar</td>
+<td>permite rehacer el macrogénero</td>
+</tr>
+<tr class="odd">
+<td>etiqueta_tarea_1</td>
+<td>canciones</td>
+<td>categórica nominal</td>
+<td>ninguna</td>
+<td>define es_misogina</td>
+<td>combinar en es_misogina</td>
+<td>M y NM se convierten en verdadero y falso</td>
+</tr>
+<tr class="even">
+<td>etiqueta_tarea_2</td>
+<td>canciones</td>
+<td>categórica nominal</td>
+<td>ninguna</td>
+<td>23 canciones</td>
+<td>conservar como categoria_misoginia</td>
+<td>da el tipo de violencia que P3 y P4 comparan</td>
+</tr>
+<tr class="odd">
+<td>en_corpus_misongyny</td>
+<td>canciones</td>
+<td>binaria</td>
+<td>ninguna</td>
+<td>42 de 300</td>
+<td>conservar</td>
+<td>mide la cobertura</td>
+</tr>
+<tr class="even">
+<td>es_misogina</td>
+<td>canciones</td>
+<td>binaria</td>
+<td>χ²</td>
+<td>V = 0.34, p Holm = 0.088, p Fisher = 0.047, n = 42</td>
+<td>conservar</td>
+<td>variable objetivo de P1</td>
+</tr>
+<tr class="odd">
+<td>origen_etiqueta</td>
+<td>canciones</td>
+<td>categórica nominal</td>
+<td>ninguna</td>
+<td>un solo valor por ahora</td>
+<td>conservar</td>
+<td>en el modelado distinguirá la etiqueta humana de la del clasificador</td>
+</tr>
+<tr class="even">
+<td>poblacion_total</td>
+<td>contexto</td>
+<td>numérica</td>
+<td>correlación</td>
+<td>ρ(poblacion_mujeres, poblacion_total) = 1.00</td>
+<td>descartar del análisis, conservar en la dimensión</td>
+<td>redundante con poblacion_mujeres</td>
+</tr>
+<tr class="odd">
+<td>poblacion_mujeres_15_mas</td>
+<td>contexto</td>
+<td>numérica</td>
+<td>correlación</td>
+<td>ρ(poblacion_mujeres, poblacion_mujeres_15_mas) = 1.00</td>
+<td>descartar del análisis, conservar en la dimensión</td>
+<td>redundante con poblacion_mujeres</td>
+</tr>
+<tr class="even">
+<td>poblacion_hombres</td>
+<td>contexto</td>
+<td>numérica</td>
+<td>correlación</td>
+<td>ρ(poblacion_mujeres, poblacion_hombres) = 1.00</td>
+<td>descartar del análisis, conservar en la dimensión</td>
+<td>redundante con poblacion_mujeres</td>
+</tr>
+<tr class="odd">
+<td>poblacion_mujeres</td>
+<td>contexto</td>
+<td>numérica</td>
+<td>correlación</td>
+<td>ρ(poblacion_mujeres, poblacion_total) = 1.00</td>
+<td>conservar</td>
+<td>denominador de todas las tasas</td>
+</tr>
+<tr class="even">
+<td>pct_usuarios_internet</td>
+<td>contexto</td>
+<td>numérica</td>
+<td>correlación + PCA</td>
+<td>PC1 explica 70%, PC1 y PC2 96%</td>
+<td>conservar originales</td>
+<td>con 4 variables las componentes no ahorran casi nada y PC2 es casi solo la población; los originales se interpretan directo</td>
+</tr>
+<tr class="odd">
+<td>pct_pobreza</td>
+<td>contexto</td>
+<td>numérica</td>
+<td>correlación + PCA</td>
+<td>PC1 explica 70%, PC1 y PC2 96%</td>
+<td>conservar originales</td>
+<td>con 4 variables las componentes no ahorran casi nada y PC2 es casi solo la población; los originales se interpretan directo</td>
+</tr>
+<tr class="even">
+<td>pct_viviendas_internet</td>
+<td>contexto</td>
+<td>numérica</td>
+<td>correlación + PCA</td>
+<td>ρ(pct_pobreza, pct_viviendas_internet) = -0.86; PC1 explica 70%, PC1 y PC2 96%</td>
+<td>descartar del análisis, conservar en la dimensión</td>
+<td>redundante con pct_pobreza, que se mide en más años</td>
+</tr>
+<tr class="odd">
+<td>indice_impunidad</td>
+<td>contexto</td>
+<td>numérica</td>
+<td>correlación</td>
+<td>9 de 32 entidades sin dato</td>
+<td>conservar fuera del PCA</td>
+<td>el PCA no admite nulos; queda como atributo con faltante</td>
+</tr>
+<tr class="even">
+<td>poblacion_6_mas</td>
+<td>contexto</td>
+<td>numérica</td>
+<td>ninguna</td>
+<td>universo de la ENDUTIH</td>
+<td>conservar como auxiliar</td>
+<td>solo sirve para pasar los usuarios de internet a porcentaje</td>
+</tr>
+<tr class="odd">
+<td>usuarios_internet</td>
+<td>contexto</td>
+<td>numérica</td>
+<td>ninguna</td>
+<td>ENDUTIH 2015–2025, 2019 interpolado</td>
+<td>conservar</td>
+<td>es el factor de usuarios del reparto del consumo de E1</td>
+</tr>
+<tr class="even">
+<td>prevalencia_total</td>
+<td>contexto</td>
+<td>numérica (%)</td>
+<td>ninguna</td>
+<td>solo 2016 y 2021 (ENDIREH)</td>
+<td>conservar</td>
+<td>es la referencia oficial de P4 por tipo de violencia; con dos levantamientos no entra al panel anual ni al PCA</td>
+</tr>
+<tr class="odd">
+<td>prevalencia_psicologica</td>
+<td>contexto</td>
+<td>numérica (%)</td>
+<td>ninguna</td>
+<td>solo 2016 y 2021 (ENDIREH)</td>
+<td>conservar</td>
+<td>es la referencia oficial de P4 por tipo de violencia; con dos levantamientos no entra al panel anual ni al PCA</td>
+</tr>
+<tr class="even">
+<td>prevalencia_fisica</td>
+<td>contexto</td>
+<td>numérica (%)</td>
+<td>ninguna</td>
+<td>solo 2016 y 2021 (ENDIREH)</td>
+<td>conservar</td>
+<td>es la referencia oficial de P4 por tipo de violencia; con dos levantamientos no entra al panel anual ni al PCA</td>
+</tr>
+<tr class="odd">
+<td>prevalencia_sexual</td>
+<td>contexto</td>
+<td>numérica (%)</td>
+<td>ninguna</td>
+<td>solo 2016 y 2021 (ENDIREH)</td>
+<td>conservar</td>
+<td>es la referencia oficial de P4 por tipo de violencia; con dos levantamientos no entra al panel anual ni al PCA</td>
+</tr>
+<tr class="even">
+<td>prevalencia_economica_patrimonial</td>
+<td>contexto</td>
+<td>numérica (%)</td>
+<td>ninguna</td>
+<td>solo 2016 y 2021 (ENDIREH)</td>
+<td>conservar</td>
+<td>es la referencia oficial de P4 por tipo de violencia; con dos levantamientos no entra al panel anual ni al PCA</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="muestreo" class="level2">
+<h2 class="anchored" data-anchor-id="muestreo">Muestreo</h2>
+<p><strong>No aplica.</strong> El dataset limpio tiene 89,817 filas de violencia, 7,429 de consumo, 300 canciones y 352 de contexto: cabe completo en memoria, el pipeline local corre en segundos y la carga al DW se hace con <em>load jobs</em>, que BigQuery no cobra. No hay una variable objetivo con clases desbalanceadas ni redundancia fuerte entre registros. La etapa <code>muestreo</code> del pipeline lo comprueba en cada corrida (falla si una tabla pasa de 5 millones de filas) y lo deja en el registro de etapas. Lo único que se muestrea es la copia pequeña que se sube al repositorio (<code>pipeline/data/sample/</code>, con semilla fija).</p>
+</section>
+<section id="verificación-antes-contra-después" class="level2">
+<h2 class="anchored" data-anchor-id="verificación-antes-contra-después">Verificación: antes contra después</h2>
+<p>Se recalcularon los estadísticos de cuatro variables y los hallazgos principales del EDA sobre el dataset limpio.</p>
+<div id="tbl-verificacion" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-verificacion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;3: Estadísticos antes y después de limpiar, con la prueba de Kolmogorov–Smirnov entre las dos distribuciones
+</figcaption>
+<div aria-describedby="tbl-verificacion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Qué la cambió</th>
+<th>n</th>
+<th>Mediana</th>
+<th>DE</th>
+<th>IQR</th>
+<th>Asimetría</th>
+<th>KS (p)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Streams por canción y mes</td>
+<td>Se quitaron los meses con 0 streams</td>
+<td>9,046 → 7,429</td>
+<td>5.5 M → 7.0 M</td>
+<td>8.9 M → 9.1 M</td>
+<td>8.5 M → 7.7 M</td>
+<td>2.59 → 2.61</td>
+<td>&lt; 0.001</td>
+</tr>
+<tr class="even">
+<td>Tasa de feminicidio por entidad y año</td>
+<td>Ceros iniciales a nulos</td>
+<td>352 → 328</td>
+<td>1.14 → 1.18</td>
+<td>0.91 → 0.89</td>
+<td>0.95 → 0.87</td>
+<td>1.68 → 1.84</td>
+<td>0.78</td>
+</tr>
+<tr class="odd">
+<td>Tasa familiar y de género por entidad y año</td>
+<td>Nada (control)</td>
+<td>352 → 352</td>
+<td>348.3 → 348.3</td>
+<td>239.0 → 239.0</td>
+<td>380.9 → 380.9</td>
+<td>0.51 → 0.51</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<td>Mujeres desaparecidas por entidad y mes</td>
+<td>Edades imposibles a nulo</td>
+<td>1,113 → 1,113</td>
+<td>2 → 2</td>
+<td>4.6 → 4.6</td>
+<td>3 → 3</td>
+<td>3.94 → 3.94</td>
+<td>1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="fig-antes-despues" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-antes-despues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/verificacion_antes_despues.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-antes-despues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Hallazgos del EDA antes y después de limpiar.
+</figcaption>
+</figure>
+</div>
+<p><strong>Conclusión: la preparación conserva el fenómeno.</strong> La entropía del macrogénero y el Gini entre artistas quedan exactamente iguales (<a href="#fig-antes-despues" class="quarto-xref">Figura&nbsp;3</a>): el hallazgo principal de la música no depende de la limpieza. El cambio en los streams es el esperado (los ceros no eran consumo) y no altera la forma de la distribución. El único hallazgo que cambia es la desigualdad del feminicidio entre estados en 2015–2018 (Gini de 0.54 a 0.38 en 2015): no es una alerta sino una corrección, porque esos ceros venían de estados que todavía no registraban el delito. La tendencia se conserva y el pipeline falla si un hallazgo cambia de dirección.</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Volver arriba</a></main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Envuelve las tablas en un contenedor con scroll horizontal en pantallas
+  // angostas. No modifica ningún texto ni dato de las tablas.
+  document.querySelectorAll("main.content table").forEach(function (table) {
+    if (table.closest(".table-responsive")) return;
+    var wrapper = document.createElement("div");
+    wrapper.className = "table-responsive";
+    table.parentNode.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/jzarcoo\.github\.io\/almacenes-mineria-proyecto\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Facultad de Ciencias, UNAM — Almacenes y Minería de Datos</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

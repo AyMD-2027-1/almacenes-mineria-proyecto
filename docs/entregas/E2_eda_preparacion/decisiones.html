@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Decisiones sobre los datos – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ca0495cbf0b9bce0b7b33bf2b9083a47.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/logo.svg" alt="" class="navbar-logo light-content">
+    <img src="../../assets/logo.svg" alt="" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Proyecto Integrador — Almacenes y Minería de Datos</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Buscar"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navegación de palanca" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Inicio</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-e0-·-comprensión-del-negocio" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">E0 · Comprensión del negocio</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-e0-·-comprensión-del-negocio">    
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/bitacora.html">
+ <span class="dropdown-text">Bitácora del stakeholder</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/canvas.html">
+ <span class="dropdown-text">Business Understanding Canvas</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/preguntas.html">
+ <span class="dropdown-text">Preguntas de investigación</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/criterio_exito.html">
+ <span class="dropdown-text">Criterio de éxito</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/riesgos_supuestos.html">
+ <span class="dropdown-text">Riesgos y supuestos</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/uso_ia.html">
+ <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E0_comprension_negocio/e0_v2.html">
+ <span class="dropdown-text">E0 v2 · Secciones actualizadas</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-e1-·-arquitectura-del-dw" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">E1 · Arquitectura del DW</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-e1-·-arquitectura-del-dw">    
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/fuentes.html">
+ <span class="dropdown-text">Fuentes de datos</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/arquitectura.html">
+ <span class="dropdown-text">Arquitectura de tres capas</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/estrella.html">
+ <span class="dropdown-text">Esquema estrella</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/trazabilidad.html">
+ <span class="dropdown-text">Trazabilidad a E0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/pivote.html">
+ <span class="dropdown-text">Pivote</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/uso_ia.html">
+ <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/glosario.html">
+ <span class="dropdown-text">Glosario</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E1_arquitectura_dw/referencias.html">
+ <span class="dropdown-text">Referencias</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-e2-·-eda-y-preparación" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">E2 · EDA y preparación</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-e2-·-eda-y-preparación">    
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/datos_nuevos.html">
+ <span class="dropdown-text">Datos agregados en E2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/calidad.html">
+ <span class="dropdown-text">Calidad por fuente</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">Parte A · Análisis exploratorio</li>
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/eda.html">
+ <span class="dropdown-text">Datos de partida</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/eda_descriptiva.html">
+ <span class="dropdown-text">Estadística descriptiva</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/eda_concentracion.html">
+ <span class="dropdown-text">Concentración y heterogeneidad</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/hallazgos.html">
+ <span class="dropdown-text">Hallazgos</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">Parte B · Preparación</li>
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/preparacion.html">
+ <span class="dropdown-text">Limpieza, reducción y verificación</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">Parte C · Pipeline y DW</li>
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/pipeline.html">
+ <span class="dropdown-text">Pipeline, carga y DataMart</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/decisiones.html">
+ <span class="dropdown-text">Decisiones (no técnico)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/trazabilidad.html">
+ <span class="dropdown-text">Trazabilidad a E0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/ajustes.html">
+ <span class="dropdown-text">Ajustes a E1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../entregas/E2_eda_preparacion/uso_ia.html">
+ <span class="dropdown-text">Uso de herramientas de IA</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/jzarcoo/almacenes-mineria-proyecto"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text">Repositorio</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">En esta página</h2>
+   
+  <ul>
+  <li><a href="#la-música-ampliamos-la-lista-de-canciones" id="toc-la-música-ampliamos-la-lista-de-canciones" class="nav-link active" data-scroll-target="#la-música-ampliamos-la-lista-de-canciones">1. La música: ampliamos la lista de canciones</a></li>
+  <li><a href="#la-misoginia-de-las-canciones-solo-usamos-etiquetas-hechas-por-personas" id="toc-la-misoginia-de-las-canciones-solo-usamos-etiquetas-hechas-por-personas" class="nav-link" data-scroll-target="#la-misoginia-de-las-canciones-solo-usamos-etiquetas-hechas-por-personas">2. La misoginia de las canciones: solo usamos etiquetas hechas por personas</a></li>
+  <li><a href="#la-violencia-quitamos-delitos-que-no-son-violencia-de-género" id="toc-la-violencia-quitamos-delitos-que-no-son-violencia-de-género" class="nav-link" data-scroll-target="#la-violencia-quitamos-delitos-que-no-son-violencia-de-género">3. La violencia: quitamos delitos que no son violencia de género</a></li>
+  <li><a href="#las-lesiones-incluyen-víctimas-hombres" id="toc-las-lesiones-incluyen-víctimas-hombres" class="nav-link" data-scroll-target="#las-lesiones-incluyen-víctimas-hombres">4. Las lesiones incluyen víctimas hombres</a></li>
+  <li><a href="#un-cero-no-siempre-significa-no-pasó-nada" id="toc-un-cero-no-siempre-significa-no-pasó-nada" class="nav-link" data-scroll-target="#un-cero-no-siempre-significa-no-pasó-nada">5. Un cero no siempre significa “no pasó nada”</a></li>
+  <li><a href="#lo-que-no-inventamos" id="toc-lo-que-no-inventamos" class="nav-link" data-scroll-target="#lo-que-no-inventamos">6. Lo que no inventamos</a></li>
+  <li><a href="#lo-que-sí-completamos" id="toc-lo-que-sí-completamos" class="nav-link" data-scroll-target="#lo-que-sí-completamos">7. Lo que sí completamos</a></li>
+  <li><a href="#las-diferencias-entre-estados-no-son-solo-violencia" id="toc-las-diferencias-entre-estados-no-son-solo-violencia" class="nav-link" data-scroll-target="#las-diferencias-entre-estados-no-son-solo-violencia">8. Las diferencias entre estados no son solo violencia</a></li>
+  <li><a href="#el-consumo-por-estado-es-una-estimación" id="toc-el-consumo-por-estado-es-una-estimación" class="nav-link" data-scroll-target="#el-consumo-por-estado-es-una-estimación">9. El consumo por estado es una estimación</a></li>
+  <li><a href="#valores-extremos-los-conservamos" id="toc-valores-extremos-los-conservamos" class="nav-link" data-scroll-target="#valores-extremos-los-conservamos">10. Valores extremos: los conservamos</a></li>
+  <li><a href="#no-simplificamos-variables-ni-tomamos-muestras" id="toc-no-simplificamos-variables-ni-tomamos-muestras" class="nav-link" data-scroll-target="#no-simplificamos-variables-ni-tomamos-muestras">11. No simplificamos variables ni tomamos muestras</a></li>
+  <li><a href="#glosario" id="toc-glosario" class="nav-link" data-scroll-target="#glosario">Glosario</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Decisiones sobre los datos</h1>
+<p class="subtitle lead">Qué hicimos con los datos y por qué, explicado sin tecnicismos</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Este proyecto busca saber cuánta misoginia hay en la música que más se escucha en México y si se relaciona con la violencia contra las mujeres que registran las autoridades. Antes de responder, revisamos cada fuente de datos y tomamos decisiones sobre qué conservar, qué corregir y qué no tocar. Aquí explicamos las más importantes. Los términos marcados con asterisco (*) están en el glosario al final.</p>
+<section id="la-música-ampliamos-la-lista-de-canciones" class="level2">
+<h2 class="anchored" data-anchor-id="la-música-ampliamos-la-lista-de-canciones">1. La música: ampliamos la lista de canciones</h2>
+<p><strong>Qué encontramos.</strong> Teníamos el historial de las 300 canciones más escuchadas en Spotify México desde 2013. Al compararlas con una lista diaria completa del Top 200, resultó que esas 300 canciones eran apenas el <strong>6 % de lo que se escuchó en 2017</strong> y el <strong>26 % en 2021</strong>. Además casi no había canciones de los primeros años: 15 en 2015 contra 246 en 2025.</p>
+<p><strong>Qué hicimos.</strong> Descargamos el historial completo del Top 200 semanal de México: más de 5,000 canciones.</p>
+<p><strong>Por qué.</strong> Con 300 canciones, cualquier conclusión sobre “la música que se escucha” habría hablado de una parte pequeña y poco representativa. Los números de esas canciones sí eran correctos (coinciden con la otra lista); el problema era cuántas había.</p>
+<p><strong>Qué cambia.</strong> Las cifras de música de esta entrega se recalculan con la lista completa. Sigue faltando lo que nunca entró al Top 200, que ninguna fuente pública publica.</p>
+</section>
+<section id="la-misoginia-de-las-canciones-solo-usamos-etiquetas-hechas-por-personas" class="level2">
+<h2 class="anchored" data-anchor-id="la-misoginia-de-las-canciones-solo-usamos-etiquetas-hechas-por-personas">2. La misoginia de las canciones: solo usamos etiquetas hechas por personas</h2>
+<p><strong>Qué encontramos.</strong> Un corpus de investigación (MiSonGyny) tiene canciones revisadas a mano y marcadas como misóginas o no. De las 300 canciones, <strong>solo 42 estaban en ese corpus</strong>, que suman el 13 % de lo escuchado.</p>
+<p><strong>Qué hicimos.</strong> Las demás canciones quedaron <strong>sin etiqueta</strong> (en blanco), no como “no misóginas”.</p>
+<p><strong>Por qué.</strong> Marcar una canción sin revisarla sería inventar el dato. La clasificación del resto se hará en la siguiente etapa del proyecto con un modelo, y entonces se podrá medir qué tan bien acierta.</p>
+<p><strong>Qué cambia.</strong> Por ahora cualquier proporción de canciones misóginas se basa en pocas canciones. Por ejemplo, vimos más canciones misóginas en reguetón que en regional mexicano, pero con tan pocas canciones la diferencia podría ser casualidad, y así lo reportamos.</p>
+</section>
+<section id="la-violencia-quitamos-delitos-que-no-son-violencia-de-género" class="level2">
+<h2 class="anchored" data-anchor-id="la-violencia-quitamos-delitos-que-no-son-violencia-de-género">3. La violencia: quitamos delitos que no son violencia de género</h2>
+<p><strong>Qué encontramos.</strong> El registro oficial de delitos (SESNSP) trae todos los delitos: robo, fraude, narcomenudeo… El <strong>79 %</strong> de sus filas no tiene relación con la violencia contra las mujeres.</p>
+<p><strong>Qué hicimos.</strong> Conservamos solo los delitos que la Ley General de Acceso de las Mujeres a una Vida Libre de Violencia permite clasificar: feminicidio, delitos sexuales, lesiones, violencia familiar y violencia de género. El homicidio se conserva como punto de comparación.</p>
+<p><strong>Por qué.</strong> Los demás delitos no responden a ninguna de nuestras preguntas.</p>
+<p><strong>Qué cambia.</strong> Nada se pierde para el proyecto; los datos originales completos siguen guardados.</p>
+</section>
+<section id="las-lesiones-incluyen-víctimas-hombres" class="level2">
+<h2 class="anchored" data-anchor-id="las-lesiones-incluyen-víctimas-hombres">4. Las lesiones incluyen víctimas hombres</h2>
+<p><strong>Qué encontramos.</strong> En las denuncias por lesiones, el <strong>56 % de las víctimas son hombres</strong>.</p>
+<p><strong>Qué hicimos.</strong> Para medir la violencia física contra las mujeres contamos <strong>solo a las víctimas mujeres</strong>, no todas las denuncias.</p>
+<p><strong>Por qué.</strong> Si contáramos todas las denuncias, la violencia física parecería más común de lo que es para las mujeres y se mezclaría con peleas entre hombres.</p>
+<p><strong>Qué cambia.</strong> La violencia física contra las mujeres resulta estable en la década, a diferencia de lo que sugerían las denuncias totales.</p>
+</section>
+<section id="un-cero-no-siempre-significa-no-pasó-nada" class="level2">
+<h2 class="anchored" data-anchor-id="un-cero-no-siempre-significa-no-pasó-nada">5. Un cero no siempre significa “no pasó nada”</h2>
+<p><strong>Qué encontramos.</strong> Ocho estados aparecen con <strong>cero feminicidios</strong> durante uno o varios años al inicio de la serie (por ejemplo, Baja California Sur hasta finales de 2019). No es que no hubiera: todavía no clasificaban esos asesinatos como feminicidio.</p>
+<p><strong>Qué hicimos.</strong> Cambiamos esos ceros por “dato desconocido” (900 meses-estado de casi 17,000).</p>
+<p><strong>Por qué.</strong> Dejar el cero haría creer que en esos estados no mataban mujeres por razones de género y que la desigualdad entre estados bajó mucho; en realidad cambió la forma de registrar.</p>
+<p><strong>Qué cambia.</strong> La comparación del feminicidio entre estados en 2015–2018 es más honesta, pero esos años siguen siendo menos confiables que los recientes.</p>
+</section>
+<section id="lo-que-no-inventamos" class="level2">
+<h2 class="anchored" data-anchor-id="lo-que-no-inventamos">6. Lo que no inventamos</h2>
+<p>Hay datos que faltan y decidimos <strong>no rellenar</strong>, porque rellenarlos sería inventar personas o hechos:</p>
+<ul>
+<li><strong>11 %</strong> de las víctimas no tienen sexo registrado y el <strong>10 %</strong> de las mujeres no tiene edad. No las repartimos; por eso el número de víctimas mujeres y de niñas es un <strong>mínimo</strong>.</li>
+<li>En el registro de personas desaparecidas, el <strong>70 %</strong> de las mujeres no tiene fecha o lugar. No se pueden contar por estado y mes, así que ese registro solo sirve como apoyo y no como dato principal.</li>
+<li>La encuesta nacional sobre violencia en los hogares (ENDIREH) solo existe en 2016 y 2021; no estimamos los demás años.</li>
+<li>Varios registros repetidos del registro de personas desaparecidas <strong>no se borraron</strong>: al proteger su identidad se quitaron los nombres, y dos personas distintas con la misma edad, estado y fecha se ven idénticas.</li>
+</ul>
+</section>
+<section id="lo-que-sí-completamos" class="level2">
+<h2 class="anchored" data-anchor-id="lo-que-sí-completamos">7. Lo que sí completamos</h2>
+<p>Algunos datos de contexto se miden cada dos años o una sola vez. Para tener un valor por año:</p>
+<ul>
+<li><strong>Pobreza</strong> (CONEVAL, años pares): para los años intermedios usamos el punto medio entre las mediciones.</li>
+<li><strong>Personas que usan internet</strong> (INEGI): hay dato de 2015 a 2025 excepto 2019, que calculamos a la mitad entre 2018 y 2020.</li>
+<li><strong>Impunidad en feminicidio</strong> (México Evalúa): solo existe para 2023 y la repetimos en los demás años. <strong>Es la decisión más débil</strong>, y 9 estados no tienen el dato.</li>
+</ul>
+<p>Estos datos cambian despacio de un año a otro, así que completar los años intermedios no altera las conclusiones. Sirven para comparar estados entre sí, no para explicar cambios de un año a otro.</p>
+</section>
+<section id="las-diferencias-entre-estados-no-son-solo-violencia" class="level2">
+<h2 class="anchored" data-anchor-id="las-diferencias-entre-estados-no-son-solo-violencia">8. Las diferencias entre estados no son solo violencia</h2>
+<p><strong>Qué encontramos.</strong> La tasa de denuncias por violencia familiar va de <strong>7 por cada 100 mil mujeres en Tlaxcala a más de 1,000 en Colima</strong>. Tlaxcala, Yucatán, Chiapas y Michoacán casi no registran violencia familiar; registran esos casos como lesiones.</p>
+<p><strong>Qué hicimos.</strong> No lo “corregimos”, porque no sabemos cuánto de la diferencia es real. Lo marcamos y comparamos los estados también por sus cambios en el tiempo.</p>
+<p><strong>Qué cambia.</strong> Cuando digamos que un estado tiene más violencia que otro, habrá que aclarar que parte de la diferencia viene de cómo registra cada fiscalía.</p>
+</section>
+<section id="el-consumo-por-estado-es-una-estimación" class="level2">
+<h2 class="anchored" data-anchor-id="el-consumo-por-estado-es-una-estimación">9. El consumo por estado es una estimación</h2>
+<p>No existe un dato público de cuánta música se escucha en cada estado. Lo <strong>estimamos</strong> repartiendo lo que se escucha en todo el país según qué tanto se busca a cada artista en Google en cada estado y cuántas personas usan internet ahí. El 95 % del consumo se repartió con las búsquedas del propio artista. Cualquier resultado por estado debe leerse como una aproximación.</p>
+</section>
+<section id="valores-extremos-los-conservamos" class="level2">
+<h2 class="anchored" data-anchor-id="valores-extremos-los-conservamos">10. Valores extremos: los conservamos</h2>
+<p>Las canciones muy exitosas y los meses con muchas denuncias aparecen como <strong>valores atípicos*</strong>. No los quitamos: son justamente lo que queremos estudiar. Para que unos pocos casos no dominen los cálculos, comparamos la música en escala logarítmica y la violencia en tasas por cada 100 mil mujeres.</p>
+</section>
+<section id="no-simplificamos-variables-ni-tomamos-muestras" class="level2">
+<h2 class="anchored" data-anchor-id="no-simplificamos-variables-ni-tomamos-muestras">11. No simplificamos variables ni tomamos muestras</h2>
+<p>Revisamos si algunas variables decían lo mismo. Las cuatro cifras de población (total, mujeres, hombres, mujeres de 15 años y más) son prácticamente iguales entre estados, así que usamos solo la de mujeres. También probamos un <strong>análisis de componentes principales*</strong>: confirmó que internet y pobreza miden casi lo mismo, pero decidimos conservar las variables originales porque son pocas y se entienden mejor. No tomamos una <strong>muestra*</strong>: usamos todos los datos, porque caben en la computadora y cargarlos no tiene costo.</p>
+</section>
+<section id="glosario" class="level2">
+<h2 class="anchored" data-anchor-id="glosario">Glosario</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Término</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Atípico</td>
+<td>Un valor muy alejado de los demás; puede ser un error o un caso real extremo</td>
+</tr>
+<tr class="even">
+<td>Imputar</td>
+<td>Rellenar un dato faltante con un valor estimado</td>
+</tr>
+<tr class="odd">
+<td>Interpolar</td>
+<td>Estimar un valor intermedio entre dos mediciones conocidas</td>
+</tr>
+<tr class="even">
+<td>Tasa por 100 mil mujeres</td>
+<td>Número de casos dividido entre las mujeres del estado, por 100 mil; permite comparar estados de distinto tamaño</td>
+</tr>
+<tr class="odd">
+<td>Componentes principales (PCA)</td>
+<td>Técnica que resume varias variables relacionadas en unas pocas combinaciones</td>
+</tr>
+<tr class="even">
+<td>Muestra</td>
+<td>Una parte de los datos elegida para analizar en lugar de todos</td>
+</tr>
+<tr class="odd">
+<td>Escala logarítmica</td>
+<td>Una forma de mostrar números que crecen mucho, en la que cada paso multiplica en lugar de sumar</td>
+</tr>
+<tr class="even">
+<td>Staging</td>
+<td>El lugar donde guardamos los datos tal como llegan, sin modificar</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Volver arriba</a></main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Envuelve las tablas en un contenedor con scroll horizontal en pantallas
+  // angostas. No modifica ningún texto ni dato de las tablas.
+  document.querySelectorAll("main.content table").forEach(function (table) {
+    if (table.closest(".table-responsive")) return;
+    var wrapper = document.createElement("div");
+    wrapper.className = "table-responsive";
+    table.parentNode.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/jzarcoo\.github\.io\/almacenes-mineria-proyecto\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Facultad de Ciencias, UNAM — Almacenes y Minería de Datos</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
