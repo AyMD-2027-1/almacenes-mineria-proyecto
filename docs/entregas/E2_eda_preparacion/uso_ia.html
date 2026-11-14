@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Documentación de uso de herramientas de IA – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>Uso de herramientas de IA – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -265,10 +265,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#herramienta" id="toc-herramienta" class="nav-link active" data-scroll-target="#herramienta">1. Herramienta</a></li>
-  <li><a href="#tareas" id="toc-tareas" class="nav-link" data-scroll-target="#tareas">2. Tareas</a></li>
-  <li><a href="#prompts-resumen-fiel" id="toc-prompts-resumen-fiel" class="nav-link" data-scroll-target="#prompts-resumen-fiel">3. Prompts (resumen fiel)</a></li>
-  <li><a href="#verificación" id="toc-verificación" class="nav-link" data-scroll-target="#verificación">4. Verificación</a></li>
+  <li><a href="#cómo-repartimos-el-trabajo" id="toc-cómo-repartimos-el-trabajo" class="nav-link active" data-scroll-target="#cómo-repartimos-el-trabajo">Cómo repartimos el trabajo</a></li>
+  <li><a href="#lo-que-comprobamos" id="toc-lo-que-comprobamos" class="nav-link" data-scroll-target="#lo-que-comprobamos">Lo que comprobamos</a></li>
+  <li><a href="#lo-que-corregimos" id="toc-lo-que-corregimos" class="nav-link" data-scroll-target="#lo-que-corregimos">Lo que corregimos</a></li>
   </ul>
 </nav>
     </div>
@@ -277,7 +276,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Documentación de uso de herramientas de IA</h1>
+<h1 class="title">Uso de herramientas de IA</h1>
 <p class="subtitle lead">Entrega E2</p>
 </div>
 
@@ -295,91 +294,23 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="herramienta" class="level2">
-<h2 class="anchored" data-anchor-id="herramienta">1. Herramienta</h2>
-<p>Claude (Anthropic), modelo Opus 5.5, mediante <strong>Claude Code</strong>: un asistente con acceso a la terminal, a los archivos del proyecto y, cuando lo autorizamos, a nuestro navegador. Las operaciones que escriben en BigQuery (subir tablas a staging y cargar el DW) las ejecutamos nosotros desde la terminal.</p>
+<p>En esta entrega trabajamos con Claude (Anthropic), modelo Opus 5.5, a través de Claude Code, un asistente que puede leer y escribir archivos del proyecto, correr comandos en la terminal y, cuando se lo permitimos, usar nuestro navegador. Las operaciones que escriben en BigQuery, como subir tablas a staging o cargar el DW, las ejecutamos nosotros.</p>
+<section id="cómo-repartimos-el-trabajo" class="level2">
+<h2 class="anchored" data-anchor-id="cómo-repartimos-el-trabajo">Cómo repartimos el trabajo</h2>
+<p>Nosotros definimos el rumbo y tomamos las decisiones; la IA escribió la mayor parte del código y de los borradores, y cada resultado lo revisamos contra los datos antes de aceptarlo.</p>
+<p>Desde el inicio fijamos las reglas del trabajo. Le pedimos un plan a partir del instructivo y de lo que ya teníamos de E1, y le pusimos condiciones: cuidar los créditos de BigQuery, no hacer commits, usar polars como en el laboratorio y seguir la estructura de la práctica 5, con funciones documentadas y comentarios escritos como los escribiría una persona. También decidimos el alcance: llenar <code>es_misogina</code> solo con la etiqueta humana de MiSonGyny, dejar el RNPDNO como fuente de contraste y usar los tabulados de la ENDIREH en lugar del microdato.</p>
+<p>Con esas reglas, la IA escribió los módulos del pipeline uno por uno. Nosotros los corríamos con nuestros datos, revisábamos la salida y pedíamos cambios antes de pasar al siguiente. Hizo también las descargas de Google Trends desde nuestro navegador, buscó los tabulados de INEGI y escribió los descargadores de Kworb y MusicBrainz; nosotros autorizamos cada descarga, revisamos las tablas y las subimos a staging.</p>
+<p>Las decisiones de fondo salieron de discutir los resultados. Cuando la IA propuso conservar las 300 canciones de Kworb, le pedimos medir su cobertura; al ver que cubrían entre 6 y 26 % del consumo, decidimos ampliar la fuente. Pedimos agregar la ENDUTIH de cada año porque usar solo 2024 deformaba el reparto por estado, y aprobamos medir la violencia física con víctimas mujeres. En las páginas de Quarto pedimos separar los hallazgos, no repetir la misma limitación en cada página y escribir de forma más directa.</p>
 </section>
-<section id="tareas" class="level2">
-<h2 class="anchored" data-anchor-id="tareas">2. Tareas</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Tarea</th>
-<th>Qué hizo la IA</th>
-<th>Qué hicimos nosotros</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Plan de trabajo</td>
-<td>Propuso un plan a partir del instructivo de E2 y de la documentación de E1</td>
-<td>Decidimos el alcance: ignorar la fecha original por la prórroga, llenar <code>es_misogina</code> solo con MiSonGyny, usar polars, ampliar Kworb</td>
-</tr>
-<tr class="even">
-<td>Código del pipeline</td>
-<td>Escribió los módulos de <code>pipeline/src/</code> (ingesta, ensamblado, EDA, limpieza, reducción, muestreo, verificación, pesos, estrella y carga) y <code>run_pipeline.py</code>, siguiendo la estructura de la práctica 5 del laboratorio</td>
-<td>Pedimos las convenciones (estructura del laboratorio, docstrings con Args y Returns, comentarios sin “pasos”), corrimos cada etapa con nuestros datos y revisamos las salidas</td>
-</tr>
-<tr class="odd">
-<td>Descarga de fuentes</td>
-<td>Escribió los scripts de Kworb, MusicBrainz, ENDIREH y ENDUTIH; descargó Google Trends desde nuestro navegador y los tabulados de INEGI</td>
-<td>Autorizamos el uso del navegador, revisamos las tablas resultantes y subimos las tablas a staging</td>
-</tr>
-<tr class="even">
-<td>Estadística y figuras</td>
-<td>Calculó las medidas, Gini, entropía, χ², correlación y PCA, y generó las figuras</td>
-<td>Revisamos cada figura y pedimos cambios</td>
-</tr>
-<tr class="odd">
-<td>Interpretación</td>
-<td>Propuso lecturas de los resultados y borradores de hallazgos</td>
-<td>Elegimos los hallazgos y cuestionamos los que no se sostenían (sección 4)</td>
-</tr>
-<tr class="even">
-<td>Páginas Quarto</td>
-<td>Redactó borradores de las páginas de E2</td>
-<td>Revisamos, pedimos reorganizar (por ejemplo, separar los hallazgos y no repetir la limitación de Kworb en cada página)</td>
-</tr>
-</tbody>
-</table>
+<section id="lo-que-comprobamos" class="level2">
+<h2 class="anchored" data-anchor-id="lo-que-comprobamos">Lo que comprobamos</h2>
+<p>El pipeline corre de principio a fin con un solo comando y se detiene si alguna validación falla; esas validaciones están descritas en <a href="../../entregas/E2_eda_preparacion/pipeline.html">Pipeline</a>. Comparamos las fórmulas de Gini, entropía y η² con los ejemplos resueltos de los apuntes del curso y dieron lo mismo. Revisamos que las sumas de carpetas, víctimas y streams se conservaran en cada paso, desde staging hasta el DW, y que el reparto por estado devolviera el consumo nacional.</p>
+<p>También contrastamos cifras con fuentes externas. La prevalencia nacional de la ENDIREH 2021 (42.8 %) y el porcentaje de usuarios de internet de la ENDUTIH 2024 (83.1 %) coinciden con lo que publica INEGI, el reguetón de 2021 coincide con la descarga que hicimos en E1, y los streams de Kworb coinciden con los de Kaggle para las mismas canciones. Las vistas del DataMart las probamos en seco en BigQuery antes de crearlas.</p>
 </section>
-<section id="prompts-resumen-fiel" class="level2">
-<h2 class="anchored" data-anchor-id="prompts-resumen-fiel">3. Prompts (resumen fiel)</h2>
-<ul>
-<li>“Vamos a comenzar E2 […] plan de trabajo para hacerlo juntos tú y yo; no abuses de BigQuery, no tenemos muchos créditos; no puedes hacer commits.”</li>
-<li>“El código tiene que seguir las mismas convenciones que vimos en laboratorio […] cuando documentes no pongas pasos ni flechas en comentarios, que se vea lo más humano posible, todas las funciones con documentación, Args y Returns.”</li>
-<li>“Escríbelo” (para cada módulo, después de revisar lo que proponía).</li>
-<li>“¿Realmente son repetidos?”, “dame un ejemplo”, “¿por qué habías dicho que era duplicado?” (sobre el RNPDNO).</li>
-<li>“Haz una página por cada fuente con lo que encontró la inspección”, “los hallazgos ponlos en otra página”, “realiza las páginas de Quarto de la parte A [texto del instructivo]”.</li>
-<li>“Amplía Kworb”, “baja Trends”, “ENDIREH: busca los tabulados de INEGI”.</li>
-<li>“Necesito que me digas qué quitaste, cómo uniste, cómo imputaste, ¿vale la pena el PCA?”</li>
-</ul>
-</section>
-<section id="verificación" class="level2">
-<h2 class="anchored" data-anchor-id="verificación">4. Verificación</h2>
-<p><strong>Lo que se ejecutó y se comprobó con los datos:</strong></p>
-<ul>
-<li>El pipeline completo corre de principio a fin (<code>python run_pipeline.py</code>) y se detiene si falla alguna de sus validaciones (ver <a href="../../entregas/E2_eda_preparacion/pipeline.html">Pipeline</a>).</li>
-<li>Las fórmulas de Gini, entropía y η² se compararon con los ejemplos resueltos de los apuntes del curso y dieron el mismo resultado.</li>
-<li>Las sumas se comprobaron en cada paso: las carpetas, víctimas, streams y semanas del dataset analítico son las mismas que las de staging; el reparto por entidad conserva el consumo nacional; las sumas del DW son iguales a las locales.</li>
-<li>Contrastamos cifras con fuentes publicadas: la prevalencia nacional de la ENDIREH 2021 (42.8 %) y el porcentaje de usuarios de internet de la ENDUTIH 2024 (83.1 %) coinciden con lo que publica INEGI; Trends de reguetón 2021 coincide con la descarga de E1 (Spearman 0.99); los streams de Kworb coinciden con Kaggle para las mismas canciones.</li>
-<li>Las vistas del DataMart se probaron en seco en BigQuery antes de crearlas.</li>
-</ul>
-<p><strong>Lo que la IA hizo mal y corregimos:</strong></p>
-<ul>
-<li>Afirmó que 4,354 registros del RNPDNO eran duplicados y los eliminó. Al pedirle ejemplos vimos que son personas distintas: no hay identificador porque al cargar staging se quitaron los nombres. Se cambió la decisión a conservarlos.</li>
-<li>Varios títulos de figuras decían algo que la figura no mostraba; se reescribieron contra los datos.</li>
-<li>El mapa tapaba la Ciudad de México con el Estado de México; los colores de cada tipo de violencia cambiaban entre figuras.</li>
-<li>En una tabla de cobertura escribió cifras de 2021 que no correspondían a los datos; se corrigieron contra la tabla que genera el pipeline.</li>
-<li>Al ampliar el pipeline agregó tablas a la configuración que todavía no existían y la inspección dejó de correr.</li>
-<li>No había detectado que las carpetas de lesiones incluyen víctimas hombres hasta que revisamos la violencia física por sexo.</li>
-</ul>
-<p><strong>Interpretaciones.</strong> Solo se publicaron las que se respaldan con una cifra o figura del propio dataset. Las que no se sostuvieron (por ejemplo, que un género musical es más misógino que otro) se reportan como no significativas.</p>
+<section id="lo-que-corregimos" class="level2">
+<h2 class="anchored" data-anchor-id="lo-que-corregimos">Lo que corregimos</h2>
+<p>No todo lo que propuso la IA era correcto. Afirmó que 4,354 registros del RNPDNO eran duplicados y los eliminó; cuando le pedimos ejemplos vimos que eran personas distintas que se ven iguales porque al cargar staging quitamos los nombres, y cambiamos la decisión a conservarlos. Varios títulos de figuras decían algo que la figura no mostraba, el mapa tapaba la Ciudad de México con el Estado de México y los colores de cada tipo de violencia cambiaban de una figura a otra. En una tabla de cobertura escribió cifras de 2021 que no correspondían a los datos. Tampoco había notado que las carpetas de lesiones incluyen víctimas hombres hasta que revisamos la violencia física por sexo. Todo esto se corrigió contra las tablas que genera el pipeline.</p>
+<p>En el informe solo dejamos interpretaciones que se sostienen con una cifra o una figura de nuestros datos. Las que no se sostuvieron, como que un género musical sea más misógino que otro, aparecen como resultados no significativos.</p>
 
 
 </section>

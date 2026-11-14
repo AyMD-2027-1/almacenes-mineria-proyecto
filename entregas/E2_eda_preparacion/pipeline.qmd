@@ -156,19 +156,3 @@ aparecen poco.
 violencia sexual (89 %), seguida de la psicológica (7 %) y la física (5 %). En el SESNSP domina la familiar (51 %) y
 la sexual es tercera (14 %); en la ENDIREH 2021 la más frecuente es la psicológica (29.4 %), luego la sexual (23.3 %).
 La sexual es el único tipo que ocupa un lugar alto en las tres fuentes.
-
-## Prueba externa
-
-Un integrante que no escribió el pipeline lo ejecuta desde un clon limpio siguiendo el
-[README](https://github.com/jzarcoo/almacenes-mineria-proyecto/blob/main/pipeline/README.md) y anota aquí el
-resultado.
-
-| Campo | Resultado |
-|---|---|
-| Integrante | *(por llenar)* |
-| Fecha | *(por llenar)* |
-| Sistema y versión de Python | *(por llenar)* |
-| Comando | `python run_pipeline.py --sin-carga` |
-| ¿Terminó sin errores? | *(por llenar)* |
-| Tiempo | *(por llenar)* |
-| Problemas y cómo se resolvieron | *(por llenar)* |

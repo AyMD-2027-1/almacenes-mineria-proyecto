@@ -265,9 +265,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#por-qué-hizo-falta-ampliar-kworb" id="toc-por-qué-hizo-falta-ampliar-kworb" class="nav-link active" data-scroll-target="#por-qué-hizo-falta-ampliar-kworb">Por qué hizo falta ampliar Kworb</a></li>
+  <li><a href="#por-qué-ampliamos-kworb" id="toc-por-qué-ampliamos-kworb" class="nav-link active" data-scroll-target="#por-qué-ampliamos-kworb">Por qué ampliamos Kworb</a></li>
   <li><a href="#tablas-nuevas-de-staging" id="toc-tablas-nuevas-de-staging" class="nav-link" data-scroll-target="#tablas-nuevas-de-staging">Tablas nuevas de staging</a></li>
-  <li><a href="#efecto-en-el-reparto-del-consumo-por-entidad" id="toc-efecto-en-el-reparto-del-consumo-por-entidad" class="nav-link" data-scroll-target="#efecto-en-el-reparto-del-consumo-por-entidad">Efecto en el reparto del consumo por entidad</a></li>
+  <li><a href="#qué-cambió-en-el-reparto-por-estado" id="toc-qué-cambió-en-el-reparto-por-estado" class="nav-link" data-scroll-target="#qué-cambió-en-el-reparto-por-estado">Qué cambió en el reparto por estado</a></li>
   </ul>
 </nav>
     </div>
@@ -293,10 +293,16 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Durante el EDA aparecieron huecos en los datos de E1 que limitaban las respuestas a P1–P4. Esta página reúne las fuentes que se agregaron o ampliaron en E2: por qué hicieron falta, cómo se obtuvieron y cómo se validaron. Todas se suben a staging como <strong>tablas nuevas</strong>; las de E1 no se modifican.</p>
-<section id="por-qué-hizo-falta-ampliar-kworb" class="level2">
-<h2 class="anchored" data-anchor-id="por-qué-hizo-falta-ampliar-kworb">Por qué hizo falta ampliar Kworb</h2>
-<p>El staging de E1 trae el historial de <strong>300 canciones</strong>: las de más streams acumulados del chart semanal de México. Al compararlas con el Top 200 diario de Kaggle (2017–2021) resultó que cubren muy poco del consumo:</p>
+<p>El análisis exploratorio mostró huecos en los datos con los que cerramos E1, y algunos limitaban directamente lo que podemos responder en P1–P4. Para cubrirlos agregamos o ampliamos varias fuentes. Todas entraron a staging como tablas nuevas, de modo que las tablas de E1 siguen intactas.</p>
+<section id="por-qué-ampliamos-kworb" class="level2">
+<h2 class="anchored" data-anchor-id="por-qué-ampliamos-kworb">Por qué ampliamos Kworb</h2>
+<p>En E1 cargamos el historial de las 300 canciones con más streams acumulados en el chart semanal de México. Al compararlas con el Top 200 diario de Kaggle, que sí trae todas las canciones de cada día entre 2017 y 2021, vimos que esas 300 canciones explicaban muy poco del consumo real.</p>
+<div id="tbl-cobertura" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-cobertura-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1: Cobertura de las 300 canciones de E1 frente al Top 200 de Kaggle
+</figcaption>
+<div aria-describedby="tbl-cobertura-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
 <col style="width: 20%">
@@ -308,8 +314,8 @@ ul.task-list li input[type="checkbox"] {
 <thead>
 <tr class="header">
 <th>Año</th>
-<th>Canciones del Top 200</th>
-<th>En la muestra</th>
+<th>Canciones en el Top 200</th>
+<th>Presentes en la muestra</th>
 <th>Parte de las canciones</th>
 <th>Parte de los streams</th>
 </tr>
@@ -352,94 +358,97 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>Además, la muestra se inclina a los años recientes (15 canciones con streams en 2015 y 246 en 2025), así que cualquier medida de música de los primeros años sale de muy pocas canciones. Los streams de Kworb sí son confiables: para las mismas canciones coinciden con Kaggle (razón de 0.98 a 1.12 desde 2018). El problema es cuántas canciones hay, no cómo se miden. Por eso se descarga el Top 200 semanal completo, como E1 ya había planeado para la preparación.</p>
+</div>
+</figure>
+</div>
+<p>La muestra además se cargaba hacia los años recientes, con 15 canciones en 2015 y 246 en 2025, así que cualquier medida de los primeros años dependía de un puñado de canciones. Los streams de Kworb en sí son confiables: para las mismas canciones coinciden con los de Kaggle, con una razón entre 0.98 y 1.12 desde 2018. El problema era cuántas canciones teníamos, no cómo estaban medidas, así que descargamos el Top 200 semanal completo, algo que E1 ya había dejado planeado para esta etapa.</p>
 </section>
 <section id="tablas-nuevas-de-staging" class="level2">
 <h2 class="anchored" data-anchor-id="tablas-nuevas-de-staging">Tablas nuevas de staging</h2>
+<div id="tbl-nuevas" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nuevas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;2: Fuentes agregadas o ampliadas en E2
+</figcaption>
+<div aria-describedby="tbl-nuevas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Tabla</th>
 <th>Filas</th>
-<th>Para qué</th>
-<th>Cómo se obtuvo</th>
-<th>Validación</th>
-<th>Estado</th>
+<th>Para qué la usamos</th>
+<th>Cómo la obtuvimos</th>
+<th>Cómo la validamos</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><code>stg_kworb_catalogo_completo</code></td>
 <td>5,177</td>
-<td>Todas las canciones del Top 200 semanal de México, 2013–2026</td>
-<td><code>src/ingestion/kworb.py</code>, lista <code>mx_weekly_totals</code></td>
-<td>Reproduce exactamente las 300 canciones de E1</td>
-<td>Descargando</td>
+<td>Es el catálogo de todas las canciones que han estado en el Top 200 semanal de México.</td>
+<td>Leímos la lista <code>mx_weekly_totals</code> de Kworb con <code>src/ingestion/kworb.py</code>.</td>
+<td>Contiene exactamente las 300 canciones de E1, con el mismo artista y título.</td>
 </tr>
 <tr class="even">
 <td><code>stg_kworb_mx_semanal_completo</code></td>
-<td>—</td>
-<td>Historial semanal de todas esas canciones</td>
-<td><code>src/ingestion/kworb.py</code>, página de cada canción, columna MX, 1.5 s entre páginas</td>
-<td>Mismo formato que la tabla de E1</td>
-<td>Descargando</td>
+<td>en descarga</td>
+<td>Es el historial semanal de cada una de esas canciones.</td>
+<td>Descargamos la página de cada canción y tomamos la columna de México, con 1.5 segundos entre páginas.</td>
+<td>Tiene el mismo formato que la tabla de E1.</td>
 </tr>
 <tr class="odd">
 <td><code>stg_musicbrainz_tags_completo</code></td>
 <td>1,120</td>
-<td>Género de los artistas nuevos</td>
-<td><code>src/ingestion/musicbrainz.py</code>, mismo método que E1</td>
-<td>Mismo formato que la tabla de E1</td>
-<td>Descargando</td>
+<td>Da el género de los artistas que no estaban en E1.</td>
+<td>Buscamos cada artista en MusicBrainz con el mismo método de E1 (<code>src/ingestion/musicbrainz.py</code>).</td>
+<td>Ninguna búsqueda devolvió error.</td>
 </tr>
 <tr class="even">
 <td><code>stg_trends_macrogenero_anio</code></td>
 <td>2,464</td>
-<td>Peso por género para repartir el consumo entre entidades</td>
-<td>Google Trends, un tema por macrogénero (7) y una descarga por año 2015–2025</td>
-<td>Reguetón 2021 contra E1: Spearman 0.99</td>
-<td>En staging</td>
+<td>Permite repartir entre estados el consumo de los artistas sin datos propios.</td>
+<td>Descargamos de Google Trends el interés por estado de un tema por macrogénero, una vez por año de 2015 a 2025.</td>
+<td>El reguetón de 2021 coincide con la descarga de E1 (Spearman de 0.99).</td>
 </tr>
 <tr class="odd">
 <td><code>stg_trends_artista_anio</code></td>
 <td>11,840</td>
-<td>Peso por artista, caso principal del reparto de E1</td>
-<td>Google Trends, tema de cada artista del top 50 de cada año (109 artistas, 370 descargas)</td>
-<td>356 de 370 descargas con valor en 28 estados o más</td>
-<td>En staging</td>
+<td>Es la base principal del reparto por estado que definió E1.</td>
+<td>Descargamos el tema de cada artista del top 50 de cada año: 109 artistas y 370 descargas.</td>
+<td>356 de las 370 descargas tienen valor en al menos 28 estados.</td>
 </tr>
 <tr class="even">
 <td><code>stg_endireh_2021_prevalencias</code></td>
 <td>3,960</td>
-<td>Prevalencias oficiales por tipo de violencia para P4</td>
-<td>Tabulados de INEGI, cuadro 21.2, pasado a formato largo sin cambiar valores (<code>src/ingestion/endireh.py</code>)</td>
-<td>Prevalencia nacional 2021 = 42.8 %, la publicada</td>
-<td>En staging</td>
+<td>Aporta las prevalencias oficiales por tipo de violencia que compara P4.</td>
+<td>Pasamos a formato largo el cuadro 21.2 de los tabulados de INEGI, sin cambiar ningún valor (<code>src/ingestion/endireh.py</code>).</td>
+<td>La prevalencia nacional de 2021 es 42.8 %, igual a la publicada.</td>
 </tr>
 <tr class="odd">
 <td><code>stg_endutih_usuarios_entidad_anio</code></td>
 <td>330</td>
-<td>Usuarios de internet de cada año para el reparto (E1 solo tenía 2024)</td>
-<td>Tabulados de INEGI 2015–2025 (<code>src/ingestion/endutih.py</code>); 2019 no existe y se interpola</td>
-<td>La suma de estados da el total nacional cada año</td>
-<td>Por subir</td>
+<td>Da los usuarios de internet de cada año; en E1 solo teníamos 2024.</td>
+<td>Tomamos los tabulados anuales de INEGI de 2015 a 2025 (<code>src/ingestion/endutih.py</code>). INEGI no publica 2019, que interpolamos.</td>
+<td>En cada año la suma de los estados da el total nacional.</td>
 </tr>
 </tbody>
 </table>
-<p>Las tablas de Trends y de artistas nuevos de Kworb se amplían cuando termina la descarga de Kworb, porque cambia el top 50 de artistas de cada año.</p>
+</div>
+</figure>
+</div>
+<p>Cuando termine la descarga de Kworb volveremos a bajar Trends para los artistas nuevos que entren al top 50 de cada año.</p>
 </section>
-<section id="efecto-en-el-reparto-del-consumo-por-entidad" class="level2">
-<h2 class="anchored" data-anchor-id="efecto-en-el-reparto-del-consumo-por-entidad">Efecto en el reparto del consumo por entidad</h2>
-<p>Con los usuarios de internet de cada año, en lugar de los de 2024 para toda la década, cambian los pesos de los primeros años: en 2015, el peso de Chiapas bajaba 27 % y el de la Ciudad de México subía 27 % respecto de usar 2024. Con Trends por artista, el 95 % de los streams se reparte con el interés del propio artista, el 2.8 % con el de su género y el 2.3 % solo con los usuarios de internet.</p>
-<p>El detalle de calidad de cada fuente está en <a href="../../entregas/E2_eda_preparacion/calidad.html">Calidad por fuente</a>.</p>
+<section id="qué-cambió-en-el-reparto-por-estado" class="level2">
+<h2 class="anchored" data-anchor-id="qué-cambió-en-el-reparto-por-estado">Qué cambió en el reparto por estado</h2>
+<p>Con los usuarios de internet de cada año, y no los de 2024 para toda la década, los pesos de los primeros años cambian bastante: en 2015 el de Chiapas baja 27 % y el de la Ciudad de México sube 27 %, porque el acceso a internet creció mucho más rápido en el sur. Con Trends por artista, el 95 % de los streams se reparte con el interés del propio artista, el 2.8 % con el de su género y el 2.3 % solo con los usuarios de internet.</p>
+<p>La calidad de cada fuente está descrita en <a href="../../entregas/E2_eda_preparacion/calidad.html">Calidad por fuente</a>.</p>
 
 
 </section>
