@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F4. Kworb — chart semanal de Spotify México – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F4. Kworb · chart semanal de Spotify México – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -265,8 +265,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#qué-encontró-la-inspección" id="toc-qué-encontró-la-inspección" class="nav-link active" data-scroll-target="#qué-encontró-la-inspección">Qué encontró la inspección</a></li>
-  <li><a href="#qué-se-decidió" id="toc-qué-se-decidió" class="nav-link" data-scroll-target="#qué-se-decidió">Qué se decidió</a></li>
+  <li><a href="#qué-encontramos" id="toc-qué-encontramos" class="nav-link active" data-scroll-target="#qué-encontramos">Qué encontramos</a></li>
+  <li><a href="#qué-decidimos" id="toc-qué-decidimos" class="nav-link" data-scroll-target="#qué-decidimos">Qué decidimos</a></li>
   </ul>
 </nav>
     </div>
@@ -275,7 +275,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F4. Kworb — chart semanal de Spotify México</h1>
+<h1 class="title">F4. Kworb · chart semanal de Spotify México</h1>
 </div>
 
 
@@ -292,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Historial semanal de las canciones del Top 200 de Spotify México. Es la fuente de streams de toda la ventana (P1 y P3).</p>
+<p>El historial semanal de las canciones del Top 200 de Spotify México es la fuente de streams de toda la ventana, para P1 y P3.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -309,7 +309,7 @@ ul.task-list li input[type="checkbox"] {
 <th>Columnas</th>
 <th>Llave natural</th>
 <th>Filas idénticas</th>
-<th>Llave repetida</th>
+<th>Llaves repetidas</th>
 </tr>
 </thead>
 <tbody>
@@ -331,68 +331,54 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<section id="qué-encontró-la-inspección" class="level2">
-<h2 class="anchored" data-anchor-id="qué-encontró-la-inspección">Qué encontró la inspección</h2>
-<ul>
-<li><strong>Celdas <code>--</code>:</strong> 8,359 (19.7 %). Indican una semana en que la canción no estuvo en el chart: son ceros, no faltantes.</li>
-<li><strong>600 filas de resumen</strong> (“Total” y “Peak”) mezcladas con las semanas.</li>
-<li><strong>Semanas fuera de la ventana:</strong> 2013–2014 (las semanas terminaban en domingo) y 2026.</li>
-<li><strong>La muestra se inclina a los años recientes:</strong> 15 canciones con streams en 2015 y 246 en 2025, porque son las 300 con más streams acumulados.</li>
-<li><strong>Cobertura contra Kaggle Top 200:</strong> las 300 canciones son el 5.7 % de los streams en 2017 y el 26.4 % en 2021.</li>
-<li><strong>Consistencia:</strong> para las mismas canciones, los streams de Kworb y Kaggle coinciden (razón de 0.98 a 1.12 desde 2018; Spearman de 0.80 a 0.87).</li>
-</ul>
+<section id="qué-encontramos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
+<p>El 19.7 % de las celdas (8,359) tiene <code>--</code>, que significa que esa semana la canción no estuvo en el chart: es un cero, no un faltante. Entre las semanas aparecen 600 filas de resumen (“Total” y “Peak”), y hay semanas fuera de la ventana, de 2013–2014 y de 2026. El problema mayor es que las 300 canciones se inclinan a los años recientes, con 15 canciones en 2015 y 246 en 2025, y frente al Top 200 de Kaggle cubren apenas el 5.7 % de los streams en 2017 y el 26.4 % en 2021. Los valores en sí son confiables: para las mismas canciones coinciden con Kaggle, con una razón entre 0.98 y 1.12 desde 2018.</p>
 </section>
-<section id="qué-se-decidió" class="level2">
-<h2 class="anchored" data-anchor-id="qué-se-decidió">Qué se decidió</h2>
+<section id="qué-decidimos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Problema</th>
-<th>Afecta</th>
-<th>Decisión</th>
-<th>Por qué</th>
+<th>Cuánto afecta</th>
+<th>Qué decidimos y por qué</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Filas Total y Peak</td>
+<td>Filas “Total” y “Peak”</td>
 <td>600 filas</td>
-<td>Excluir al ensamblar</td>
-<td>No son semanas</td>
+<td>Las excluimos al ensamblar, porque no son semanas.</td>
 </tr>
 <tr class="even">
-<td>Semanas que cruzan de mes</td>
+<td>Semanas que cruzan de un mes a otro</td>
 <td>Todas</td>
-<td>Repartir los streams por días</td>
-<td>Conserva exacta la suma de streams</td>
+<td>Repartimos los streams de cada semana según sus días, lo que conserva exacta la suma.</td>
 </tr>
 <tr class="odd">
 <td>Canción y mes con 0 streams</td>
 <td>1,617 de 9,046 filas</td>
-<td>Eliminar</td>
-<td>Cero estructural: la canción no estaba en el chart</td>
+<td>Eliminamos esas filas, porque son un cero estructural: la canción no estaba en el chart.</td>
 </tr>
 <tr class="even">
 <td>Streams muy altos</td>
 <td>553 fuera de las cercas de Tukey</td>
-<td>Conservar y usar log10</td>
-<td>Son los éxitos, el centro de P1</td>
+<td>Los conservamos y comparamos en escala logarítmica, porque son los éxitos, el centro de P1.</td>
 </tr>
 <tr class="odd">
 <td>Cobertura de 6 a 26 %</td>
 <td>Toda la serie</td>
-<td><strong>Ampliar al Top 200 completo</strong> (5,177 canciones)</td>
-<td>Las 300 canciones no representan el consumo; la descarga completa ya estaba planeada en E1</td>
+<td>Ampliamos la fuente al Top 200 completo (5,177 canciones), como E1 ya tenía previsto.</td>
 </tr>
 </tbody>
 </table>
-<p>Las cifras se reproducen con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code> desde <code>pipeline/</code>.</p>
+<p>Las cifras se reproducen desde <code>pipeline/</code> con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code>.</p>
 <p><a href="../../../entregas/E2_eda_preparacion/calidad.html">← Volver a calidad por fuente</a></p>
 
 

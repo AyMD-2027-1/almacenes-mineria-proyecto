@@ -34,8 +34,8 @@ Desarrollamos el proyecto de forma incremental siguiendo las fases de **CRISP-DM
 | # | Fase CRISP-DM | Estatus |
 |---|---|---|
 | 1 | Comprensión del negocio | Cubierta en **E0** |
-| 2 | Comprensión de los datos | Cubierta en **E1** |
-| 3 | Preparación de los datos | Entrega posterior |
+| 2 | Comprensión de los datos | Iniciada en **E1** y completada en **E2** |
+| 3 | Preparación de los datos | Cubierta en **E2** |
 | 4 | Modelado | Entrega posterior |
 | 5 | Evaluación | Entrega posterior |
 | 6 | Despliegue | Integrada en el reporte y la presentación final |
@@ -59,3 +59,15 @@ Desarrollamos el proyecto de forma incremental siguiendo las fases de **CRISP-DM
 - [Trazabilidad a E0](entregas/E1_arquitectura_dw/trazabilidad.qmd)
 - [Documentación de uso de herramientas de IA](entregas/E1_arquitectura_dw/uso_ia.qmd)
 - [Referencias](entregas/E1_arquitectura_dw/referencias.qmd)
+
+### E2 — EDA y preparación de los datos
+
+- [Datos agregados en E2](entregas/E2_eda_preparacion/datos_nuevos.qmd)
+- [Calidad por fuente](entregas/E2_eda_preparacion/calidad.qmd)
+- [Parte A · Análisis exploratorio](entregas/E2_eda_preparacion/eda.qmd): [estadística descriptiva](entregas/E2_eda_preparacion/eda_descriptiva.qmd), [concentración y heterogeneidad](entregas/E2_eda_preparacion/eda_concentracion.qmd) y [hallazgos](entregas/E2_eda_preparacion/hallazgos.qmd)
+- [Parte B · Preparación de los datos](entregas/E2_eda_preparacion/preparacion.qmd)
+- [Parte C · Pipeline, carga al DW y DataMart](entregas/E2_eda_preparacion/pipeline.qmd)
+- [Decisiones sobre los datos](entregas/E2_eda_preparacion/decisiones.qmd)
+- [Trazabilidad a E0](entregas/E2_eda_preparacion/trazabilidad.qmd)
+- [Ajustes a E1](entregas/E2_eda_preparacion/ajustes.qmd)
+- [Documentación de uso de herramientas de IA](entregas/E2_eda_preparacion/uso_ia.qmd)

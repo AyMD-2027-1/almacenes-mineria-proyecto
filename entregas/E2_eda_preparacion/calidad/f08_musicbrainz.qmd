@@ -1,31 +1,33 @@
 ---
-title: "F8. MusicBrainz — género por artista"
+title: "F8. MusicBrainz · género por artista"
 ---
 
-Búsqueda de cada artista del catálogo de Kworb en MusicBrainz; se guarda la respuesta completa en JSON.
+Buscamos a cada artista del catálogo de Kworb en MusicBrainz y guardamos la respuesta completa en JSON; de ahí sale
+el macrogénero de P1.
 
-| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llave repetida |
+| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llaves repetidas |
 |---|---|---|---|---|---|
 | `stg_musicbrainz_tags` | 112 | 2 | artista buscado | 0 | 0 |
 
-## Qué encontró la inspección
+## Qué encontramos
 
-- **Una búsqueda por artista, sin errores ni nulos.**
-- **El primer resultado no siempre es el artista correcto.** En 18 búsquedas el nombre del resultado no coincide; por ejemplo, "Alemán" devuelve a Oscar Alemán.
-- **Las etiquetas de pocos votos son ruido.** Con todas, Billie Eilish y Ed Sheeran caían en hip hop.
-- **Plan B:** MusicBrainz devuelve al rapero británico, no al dúo de reguetón puertorriqueño.
+Hay una búsqueda por artista, sin errores ni nulos, pero el primer resultado no siempre es el artista correcto: en
+18 búsquedas el nombre no coincide, como "Alemán", que devuelve a Oscar Alemán. Las etiquetas con pocos votos meten
+ruido; si se usan todas, Billie Eilish y Ed Sheeran caen en hip hop. Plan B es un caso conocido: MusicBrainz devuelve
+al rapero británico y no al dúo de reguetón puertorriqueño.
 
-## Qué se decidió
+## Qué decidimos
 
-| Problema | Afecta | Decisión | Por qué |
-|---|---|---|---|
-| El resultado es otro artista | 18 artistas | Descartar y dejar "sin etiqueta" | Un género de otro artista sería peor que ninguno |
-| Etiquetas ruidosas | Todas | Usar solo las 5 más votadas | Corrige los casos como Billie Eilish |
-| Plan B | 1 artista | Corrección declarada en `config.yaml` | Es un error de identidad conocido |
-| Artistas sin género | 30.5 % de las filas canción-mes | Dejar la categoría "sin etiqueta" | Asignarles un género inventaría la composición de P1 |
+| Problema | Cuánto afecta | Qué decidimos y por qué |
+|---|---|---|
+| El resultado es otro artista | 18 artistas | Descartamos su género y los dejamos como "sin etiqueta", porque un género equivocado es peor que ninguno. |
+| Etiquetas con ruido | Todas | Usamos solo las 5 más votadas, lo que corrige casos como el de Billie Eilish. |
+| Plan B | 1 artista | Declaramos la corrección en `config.yaml`, porque es un error de identidad conocido. |
+| Artistas sin género | 30.5 % de las filas de canción y mes | Los dejamos en la categoría "sin etiqueta", porque asignarles un género inventaría la composición que mide P1. |
 
-**Ampliación:** con el catálogo completo de Kworb se buscan 1,120 artistas más con el mismo método (`src/ingestion/musicbrainz.py`), en `stg_musicbrainz_tags_completo`.
+Con el catálogo completo de Kworb buscamos con el mismo método a 1,120 artistas más, en
+`stg_musicbrainz_tags_completo`.
 
-Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 
 [← Volver a calidad por fuente](../calidad.qmd)

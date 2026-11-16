@@ -3,41 +3,42 @@ title: "Trazabilidad a E0"
 subtitle: "Matriz de E1 extendida con lo aprendido en E2"
 ---
 
-La matriz de [E1](../E1_arquitectura_dw/trazabilidad.qmd) se extiende con los hallazgos del EDA, las decisiones de
-preparación y el estado actualizado de cada pregunta. Los hallazgos (H1–H9) están en [Hallazgos](hallazgos.qmd);
-las decisiones, en [Preparación](preparacion.qmd).
+Extendimos la matriz de [E1](../E1_arquitectura_dw/trazabilidad.qmd) con lo que encontramos en el análisis
+exploratorio, las decisiones de preparación y el estado actualizado de cada pregunta. Los hallazgos citados (H1 a
+H9) están en [Hallazgos](hallazgos.qmd) y las decisiones en [Preparación](preparacion.qmd).
 
 ## Preguntas
 
-| Pregunta | Variables y métrica | Hallazgo del EDA | Decisión de preparación | Estado actualizado |
+| Pregunta | Variables y métrica | Lo que mostró el EDA | Lo que decidimos | Estado |
 |---|---|---|---|---|
-| **P1:** proporción de contenido misógino en la música más escuchada en Spotify México, por género musical y por entidad (estimada) | `es_misogina`, `macrogenero` (`dim_cancion`); `streams_estimados`, `peso_entidad`, `origen_peso` (`fact_consumo_musical`) | H8: el consumo se concentra en regional mexicano (entropía de 0.95 a 0.44) y en menos artistas (Gini de 0.49 a 0.66). H9: sin diferencia significativa entre géneros con 42 canciones. Las 300 canciones de E1 cubrían del 6 al 26 % del consumo | Ampliar Kworb al Top 200 completo; `es_misogina` nulo fuera de MiSonGyny; pesos por entidad con Trends del artista y del género por año y usuarios de internet por año; conservar atípicos y comparar en log10 | **Parcial:** la etiqueta humana cubre el 13 % de los streams; la respuesta completa depende del clasificador del modelado. Por entidad sigue siendo una estimación |
-| **P2:** correlación entre la misoginia musical y los indicadores oficiales de violencia de género, mensual nacional y por entidad y año | Proporción misógina; tasas por 100 mil mujeres con `carpetas` y, en la física, `victimas_mujeres` (`fact_violencia`); `poblacion_mujeres`, `pct_usuarios_internet`, `pct_pobreza`, `indice_impunidad` (`dim_contexto_entidad`) | H1 y H2: la familiar y la sexual crecen hasta 2023. H3: las carpetas de lesiones son 56 % de hombres. H4: las diferencias entre estados mezclan registro y violencia. H5: el feminicidio de 2015–2017 no es comparable. H6: conteo y tasa difieren | Tasas en lugar de conteos; la física con víctimas mujeres (ajustado también en el DataMart); ceros iniciales de feminicidio a faltantes; RNPDNO solo como contraste; contexto completado por año y usado como control fijo por estado | **Parcial:** asociativo, no causal; las series comparten tendencia y la comparación entre estados está afectada por el registro. El RNPDNO no sirve como indicador principal |
-| **P3:** evolución de la misoginia en la música consumida, 2015–2025, por tipo de violencia | Participación de cada tipo en `streams_estimados`; `tipo_violencia_key` de la canción; `mejor_posicion_nacional` | Pocas canciones con categoría de MiSonGyny (23 de la tarea 2); la sexualización domina en casi todos los años | Categoría de MiSonGyny mapeada a la LGAMVLV con la regla de E1; ampliar Kworb para tener más canciones por año | **Parcial:** con la etiqueta humana la serie es muy inestable; depende del clasificador |
-| **P4:** tipos de violencia que predominan en la música y si coinciden con los más reportados oficialmente | Participación por tipo en la música misógina, en `carpetas` del SESNSP y prevalencias de la ENDIREH 2021 (`dim_contexto_entidad`) | H7: la mezcla de tipos oficiales es estable (entropía 0.69–0.72). La sexual es el único tipo alto en las tres fuentes | ENDIREH incorporada a staging (prevalencias tabuladas); la física con víctimas mujeres; una distribución oficial para toda la ventana | **Parcial:** la violencia económica, patrimonial y mediática no tiene fuente mensual; el mapeo del clasificador a la LGAMVLV es aproximado |
+| **P1.** Proporción de contenido misógino en la música más escuchada en Spotify México, por género musical y por entidad (estimada). | La proporción misógina de `streams_estimados`, con `es_misogina` y `macrogenero` de `dim_cancion` y el peso de cada estado (`peso_entidad`, `origen_peso`). | El consumo se concentró en el regional mexicano y en menos artistas (H8). Con 42 canciones etiquetadas no hay diferencia significativa entre géneros (H9). Las 300 canciones de E1 cubrían entre 6 y 26 % del consumo. | Ampliamos Kworb al Top 200 completo, dejamos `es_misogina` vacío fuera de MiSonGyny y calculamos los pesos por estado con Trends por año y los usuarios de internet de cada año. | Parcial. La etiqueta humana cubre el 13 % de los streams y la respuesta completa depende del clasificador del modelado; por estado sigue siendo una estimación. |
+| **P2.** Correlación entre la misoginia musical y los indicadores oficiales de violencia de género, mensual nacional y por entidad y año. | La proporción misógina frente a las tasas por 100 mil mujeres (carpetas, y víctimas mujeres en la violencia física), con la población, el acceso a internet, la pobreza y la impunidad como controles. | La violencia familiar y la sexual crecen hasta 2023 (H1, H2), las carpetas de lesiones son mayoritariamente de hombres (H3), las diferencias entre estados reflejan también el registro (H4) y el feminicidio de 2015–2017 no es comparable (H5). | Usamos tasas en lugar de conteos, medimos la violencia física con víctimas mujeres también en el DataMart, convertimos los ceros iniciales de feminicidio en faltantes y dejamos el RNPDNO como contraste. | Parcial. El diseño es asociativo y no causal, las series comparten tendencia y la comparación entre estados está afectada por el registro. |
+| **P3.** Evolución de la misoginia en la música consumida, 2015–2025, por tipo de violencia. | La participación de cada tipo en los streams de la música misógina, con su media móvil de 12 meses. | Solo 23 canciones tienen categoría de MiSonGyny, y la sexualización domina en casi todos los años. | Mapeamos las categorías de MiSonGyny a la LGAMVLV con la regla de E1 y ampliamos Kworb para tener más canciones por año. | Parcial. Con la etiqueta humana la serie es muy inestable y depende del clasificador. |
+| **P4.** Tipos de violencia que predominan en la música y si coinciden con los más reportados oficialmente. | La participación por tipo en la música misógina, en las carpetas del SESNSP y en las prevalencias de la ENDIREH 2021. | La mezcla de tipos oficiales es estable (H7), y la violencia sexual es la única que aparece alta en las tres fuentes. | Incorporamos la ENDIREH a staging y medimos la violencia física con víctimas mujeres. | Parcial. La violencia económica, patrimonial y mediática no tiene una fuente mensual, y el mapeo del clasificador a la LGAMVLV es aproximado. |
+: Estado de las preguntas de E0 después de E2 {#tbl-preguntas}
 
 ## Variables conservadas y la pregunta que responden
 
 Ninguna variable conservada queda sin pregunta. Las que la reducción sacó del análisis siguen en el DW como
-atributos.
+atributos, por si alguna consulta las necesita.
 
-| Tabla del DW | Variable | Pregunta | Estado en E2 |
+| Tabla del DW | Variables | Pregunta | Situación en E2 |
 |---|---|---|---|
-| `fact_consumo_musical` | `streams_estimados`, `peso_entidad`, `origen_peso`, `interes_busqueda` | P1, P2, P3 | Conservadas |
-| `fact_consumo_musical` | `semanas_en_chart_nacional`, `mejor_posicion_nacional` | P1, P3 | Conservadas (no redundantes con streams) |
-| `fact_violencia` | `carpetas`, `victimas_mujeres` | P2, P4 | Conservadas; la física usa `victimas_mujeres` |
-| `fact_violencia` | `victimas_mujeres_menores`, `victimas_hombres` | P2 | Conservadas (mínimo y comparación) |
-| `dim_cancion` | `es_misogina`, `categoria_misoginia`, `etiqueta_misongyny`, `origen_etiqueta`, `en_corpus_misongyny` | P1, P3, P4 | Conservadas |
-| `dim_cancion` | `macrogenero`, `genero`, `etiquetas_fuente` | P1 | Conservadas |
-| `dim_cancion` | `pais_artista` | P1 | Fuera del análisis (lo determina el macrogénero, V = 0.84); se conserva como atributo |
-| `dim_cancion` | `termino_trends` | P1, P2 | Conservada (auditoría del reparto) |
-| `dim_cancion` | `tiene_letra`, `score_misoginia`, `version_modelo` | P1, P3 | Vacías hasta el modelado |
-| `dim_tipo_violencia` | `tipo_lgamvlv`, `ambito_lgamvlv`, jerarquía del delito, `es_control` | P2, P3, P4 | Conservadas |
-| `dim_contexto_entidad` | `poblacion_mujeres` | P2 | Conservada (denominador) |
-| `dim_contexto_entidad` | `poblacion_total`, `poblacion_hombres`, `poblacion_mujeres_15_mas` | P2 | Fuera del análisis (redundantes, ρ ≈ 1); se conservan para tasas específicas |
-| `dim_contexto_entidad` | `pct_usuarios_internet`, `usuarios_internet_estimados` | P1, P2 | Conservadas (reparto y control) |
-| `dim_contexto_entidad` | `pct_pobreza` | P2 | Conservada (control) |
-| `dim_contexto_entidad` | `pct_viviendas_internet` | P2 | Fuera del análisis (redundante con pobreza, ρ = −0.86) |
-| `dim_contexto_entidad` | `indice_impunidad` | P2 | Conservada con faltantes (9 estados) |
-| `dim_contexto_entidad` | `prevalencia_*` | P4 | Conservadas (solo 2016 y 2021) |
-| `dim_entidad`, `dim_fecha` | Llaves, nombres, región, geometría, calendario | P1–P4 | Conservadas |
+| `fact_consumo_musical` | `streams_estimados`, `peso_entidad`, `origen_peso`, `interes_busqueda` | P1, P2, P3 | Se conservan. |
+| `fact_consumo_musical` | `semanas_en_chart_nacional`, `mejor_posicion_nacional` | P1, P3 | Se conservan, porque no son redundantes con los streams. |
+| `fact_violencia` | `carpetas`, `victimas_mujeres` | P2, P4 | Se conservan; la violencia física se mide con `victimas_mujeres`. |
+| `fact_violencia` | `victimas_mujeres_menores`, `victimas_hombres` | P2 | Se conservan como mínimo de niñas víctimas y como comparación. |
+| `dim_cancion` | `es_misogina`, `categoria_misoginia`, `etiqueta_misongyny`, `origen_etiqueta`, `en_corpus_misongyny` | P1, P3, P4 | Se conservan. |
+| `dim_cancion` | `macrogenero`, `genero`, `etiquetas_fuente`, `termino_trends` | P1, P2 | Se conservan. |
+| `dim_cancion` | `pais_artista` | P1 | Sale del análisis porque lo determina el macrogénero (V = 0.84), pero se conserva como atributo. |
+| `dim_cancion` | `tiene_letra`, `score_misoginia`, `version_modelo` | P1, P3 | Quedan vacías hasta el modelado. |
+| `dim_tipo_violencia` | `tipo_lgamvlv`, `ambito_lgamvlv`, la jerarquía del delito y `es_control` | P2, P3, P4 | Se conservan. |
+| `dim_contexto_entidad` | `poblacion_mujeres` | P2 | Se conserva como denominador de las tasas. |
+| `dim_contexto_entidad` | `poblacion_total`, `poblacion_hombres`, `poblacion_mujeres_15_mas` | P2 | Salen del análisis porque son redundantes (ρ ≈ 1), pero se conservan para tasas específicas. |
+| `dim_contexto_entidad` | `pct_usuarios_internet`, `usuarios_internet_estimados` | P1, P2 | Se conservan para el reparto del consumo y como control. |
+| `dim_contexto_entidad` | `pct_pobreza` | P2 | Se conserva como control. |
+| `dim_contexto_entidad` | `pct_viviendas_internet` | P2 | Sale del análisis porque es redundante con la pobreza (ρ = −0.86). |
+| `dim_contexto_entidad` | `indice_impunidad` | P2 | Se conserva, con nueve estados sin dato. |
+| `dim_contexto_entidad` | `prevalencia_*` | P4 | Se conservan, solo para 2016 y 2021. |
+| `dim_entidad`, `dim_fecha` | Llaves, nombres, región, geometría y calendario | P1–P4 | Se conservan. |
+: Variables del DW y la pregunta que responden {#tbl-variables}

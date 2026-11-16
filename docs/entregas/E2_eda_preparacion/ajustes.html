@@ -285,8 +285,13 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>El EDA no cambió el grano, las dimensiones ni el DDL de E1: las siete tablas del esquema estrella se poblaron tal como se diseñaron. Sí cambiaron algunas fuentes y dos consultas del DataMart. La versión original de E1 se conserva sin cambios en <code>entregas/E1_arquitectura_dw/</code>; la versión vigente (E1 v2) está en <code>sql/</code> y en <code>pipeline/</code>.</p>
-<p><strong>No hay pivote.</strong> El objetivo de minería de datos, las preguntas P1–P4 y el criterio de éxito de E0 siguen iguales.</p>
+<p>El análisis exploratorio no cambió el grano, las dimensiones ni el DDL de E1: las siete tablas del esquema estrella se poblaron tal como se diseñaron. Lo que sí cambió fueron algunas fuentes y dos consultas del DataMart. La versión original de E1 se conserva intacta en <code>entregas/E1_arquitectura_dw/</code>, y la versión vigente, que llamamos E1 v2, está en <code>sql/</code> y en <code>pipeline/</code>. No hubo pivote: el objetivo de minería de datos, las preguntas P1–P4 y el criterio de éxito de E0 siguen siendo los mismos.</p>
+<div id="tbl-ajustes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ajustes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1: Ajustes respecto de E1
+</figcaption>
+<div aria-describedby="tbl-ajustes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
 <col style="width: 20%">
@@ -298,85 +303,88 @@ ul.task-list li input[type="checkbox"] {
 <thead>
 <tr class="header">
 <th>#</th>
-<th>Qué se encontró</th>
-<th>Antes (E1)</th>
-<th>Después (E2)</th>
+<th>Qué encontramos</th>
+<th>Qué teníamos en E1</th>
+<th>Qué cambió en E2</th>
 <th>Por qué sigue en la línea de E0</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>Las 300 canciones de Kworb cubrían del 6 al 26 % de los streams del Top 200</td>
-<td><code>stg_kworb_mx_semanal</code> y <code>stg_kworb_catalogo_canciones</code> con 300 canciones</td>
-<td>Top 200 semanal completo (5,177 canciones) en <code>stg_kworb_*_completo</code> y búsqueda de 1,120 artistas más en <code>stg_musicbrainz_tags_completo</code>; las tablas de E1 no se modifican</td>
-<td>P1 habla de “la música más escuchada”; con 300 canciones se medía una parte pequeña. E1 ya preveía la descarga completa en la preparación</td>
+<td>Las 300 canciones de Kworb cubrían entre 6 y 26 % de los streams del Top 200.</td>
+<td>Las tablas <code>stg_kworb_mx_semanal</code> y <code>stg_kworb_catalogo_canciones</code>, con 300 canciones.</td>
+<td>Agregamos el Top 200 semanal completo (5,177 canciones) en <code>stg_kworb_*_completo</code> y la búsqueda de 1,120 artistas más en <code>stg_musicbrainz_tags_completo</code>, sin modificar las tablas de E1.</td>
+<td>P1 habla de la música más escuchada, y con 300 canciones medíamos solo una parte pequeña. E1 ya preveía la descarga completa en esta etapa.</td>
 </tr>
 <tr class="even">
 <td>2</td>
-<td>Google Trends solo tenía reguetón de 2021</td>
-<td><code>stg_trends_regueton_tema_2021</code></td>
-<td><code>stg_trends_macrogenero_anio</code> (7 géneros × 11 años) y <code>stg_trends_artista_anio</code> (top 50 de artistas por año)</td>
-<td>Es el reparto por entidad que E1 definió (<code>artista_anio</code>, <code>genero_anio</code>, <code>usuarios_internet</code>); faltaban los datos</td>
+<td>Google Trends solo tenía el reguetón de 2021.</td>
+<td><code>stg_trends_regueton_tema_2021</code>.</td>
+<td>Agregamos <code>stg_trends_macrogenero_anio</code>, con 7 géneros por 11 años, y <code>stg_trends_artista_anio</code>, con el top 50 de artistas de cada año.</td>
+<td>Es el reparto por estado que definió E1; solo faltaban los datos para aplicarlo.</td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td>Los usuarios de internet solo eran de 2024 y el acceso creció de 56 % a 87 %</td>
-<td><code>stg_endutih_usuarios</code> (microdato 2024)</td>
-<td>Además <code>stg_endutih_usuarios_entidad_anio</code> con tabulados 2015–2025; 2019 interpolado</td>
-<td>Con 2024 para toda la década, el peso de Chiapas en 2015 quedaba 36 % inflado</td>
+<td>Los usuarios de internet eran solo de 2024, pero el acceso creció de 56 a 87 % en la década.</td>
+<td>El microdato de 2024, <code>stg_endutih_usuarios</code>.</td>
+<td>Agregamos <code>stg_endutih_usuarios_entidad_anio</code>, con los tabulados de 2015 a 2025 y 2019 interpolado.</td>
+<td>Con 2024 para toda la década, el peso de Chiapas en 2015 quedaba 36 % inflado.</td>
 </tr>
 <tr class="even">
 <td>4</td>
-<td>La ENDIREH estaba en el catálogo pero no en staging</td>
-<td>—</td>
-<td><code>stg_endireh_2021_prevalencias</code> (tabulados de INEGI, cuadro 21.2)</td>
-<td>Llena las columnas <code>prevalencia_*</code> que el DDL de E1 ya tenía para P4</td>
+<td>La ENDIREH estaba en el catálogo pero no en staging.</td>
+<td>Nada en staging.</td>
+<td>Agregamos <code>stg_endireh_2021_prevalencias</code>, con el cuadro 21.2 de los tabulados de INEGI.</td>
+<td>Llena las columnas <code>prevalencia_*</code> que el DDL de E1 ya tenía previstas para P4.</td>
 </tr>
 <tr class="odd">
 <td>5</td>
-<td>La vista <code>p3_tendencia_tipo_violencia</code> no se podía ejecutar: la CTE y la columna se llamaban <code>participacion</code></td>
-<td><code>FROM participacion</code></td>
-<td>La CTE se llama <code>con_participacion</code></td>
-<td>Corrección de un error; la lógica no cambia</td>
+<td>La vista <code>p3_tendencia_tipo_violencia</code> no se podía ejecutar, porque una CTE y una columna se llamaban igual.</td>
+<td>La CTE se llamaba <code>participacion</code>.</td>
+<td>La renombramos <code>con_participacion</code>.</td>
+<td>Es la corrección de un error; la lógica de la consulta no cambia.</td>
 </tr>
 <tr class="even">
 <td>6</td>
-<td>Las carpetas de lesiones son 56 % de víctimas hombres (hallazgo H3)</td>
-<td>En P2 el indicador de todos los tipos era <code>carpetas</code></td>
-<td>En <code>p2_serie_mensual_nacional</code> y <code>p2_panel_entidad_anio</code> la física usa <code>victimas_mujeres</code></td>
-<td>P2 es sobre violencia contra las mujeres</td>
+<td>Las carpetas de lesiones son en un 56 % de víctimas hombres (hallazgo H3).</td>
+<td>En P2 el indicador de todos los tipos eran las carpetas.</td>
+<td>En <code>p2_serie_mensual_nacional</code> y <code>p2_panel_entidad_anio</code> la violencia física se mide con víctimas mujeres.</td>
+<td>P2 trata de la violencia contra las mujeres.</td>
 </tr>
 <tr class="odd">
 <td>7</td>
-<td>Las vistas del DataMart en BigQuery eran de una versión anterior a la final de E1 (usaban la columna <code>evento_restriccion_musical</code>, que ya no existe)</td>
-<td>Vistas creadas el 10 de octubre</td>
-<td>Se recrean desde <code>sql/consultas_mart.sql</code> en cada carga</td>
-<td>El repositorio es la fuente de verdad</td>
+<td>Las vistas del DataMart en BigQuery eran de una versión anterior al archivo final de E1 y usaban una columna que ya no existe.</td>
+<td>Vistas creadas el 10 de octubre.</td>
+<td>Las vistas se recrean desde <code>sql/consultas_mart.sql</code> en cada carga.</td>
+<td>El repositorio es la referencia de lo que corre en BigQuery.</td>
 </tr>
 <tr class="even">
 <td>8</td>
-<td>El RNPDNO tiene 70 % de mujeres sin fecha o entidad</td>
-<td>Indicador de P2</td>
-<td>Fuente secundaria de contraste</td>
-<td>P2 sigue cubierta por el SESNSP; se documenta la limitación</td>
+<td>El 70 % de las mujeres del RNPDNO no tiene fecha o entidad.</td>
+<td>Era uno de los indicadores de P2.</td>
+<td>Queda como fuente secundaria de contraste.</td>
+<td>P2 sigue cubierta por el SESNSP, y la limitación queda documentada.</td>
 </tr>
 <tr class="odd">
 <td>9</td>
-<td>Natural Earth y Trends usan el código anterior de la Ciudad de México</td>
-<td>—</td>
-<td><code>dim_entidad.iso_3166_2</code> guarda <code>MX-CMX</code>, el código vigente</td>
-<td>El DDL lo pedía así (<code>MX-CMX</code>, <code>MX-YUC</code>…)</td>
+<td>Natural Earth y Google Trends usan el código anterior de la Ciudad de México.</td>
+<td>No había un valor definido.</td>
+<td><code>dim_entidad.iso_3166_2</code> guarda <code>MX-CMX</code>, el código vigente.</td>
+<td>El DDL de E1 ya pedía ese formato.</td>
 </tr>
 <tr class="even">
 <td>10</td>
-<td>El sitio no tenía idioma declarado y las referencias salían en inglés</td>
-<td>—</td>
-<td><code>lang: es</code> en <code>_quarto.yml</code></td>
-<td>Formato del sitio</td>
+<td>Las referencias de las páginas salían en inglés.</td>
+<td>El sitio no declaraba idioma.</td>
+<td>Agregamos <code>lang: es</code> a <code>_quarto.yml</code>.</td>
+<td>Es un ajuste de formato; las páginas de E0 y E1 no se volvieron a generar.</td>
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 
 
 

@@ -1,31 +1,27 @@
 ---
-title: "F5. Kaggle — Spotify Charts de México"
+title: "F5. Kaggle · Spotify Charts de México"
 ---
 
-Charts diarios de Spotify (Top 200 y Viral 50) de 2017 a 2021. Se usa para **validar** Kworb y medir su cobertura, no en el almacén.
+Los charts diarios de Spotify (Top 200 y Viral 50) de 2017 a 2021 sirven para validar Kworb y medir su cobertura;
+no entran al almacén.
 
-| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llave repetida |
+| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llaves repetidas |
 |---|---|---|---|---|---|
 | `stg_kaggle_charts_mx` | 448,832 | 7 | chart, fecha y posición | 0 | 0 |
 
-## Qué encontró la inspección
+## Qué encontramos
 
-| Chart | Filas | Sin streams | Desde | Hasta |
-|---|---|---|---|---|
-| top200 | 358,343 | 0 | 2017-01-01 | 2021-11-30 |
-| viral50 | 90,489 | 90,489 | 2017-01-01 | 2021-12-31 |
+El Top 200 tiene 358,343 filas del 1 de enero de 2017 al 30 de noviembre de 2021, todas con streams. El Viral 50
+tiene 90,489 filas hasta diciembre de 2021, pero no publica streams, y de ahí sale el 20.2 % de nulos de esa columna.
+El identificador de Spotify de cada canción viene dentro de su URL.
 
-- **Viral 50 no publica streams:** de ahí sale el 20.2 % de nulos en `streams`.
-- **El Top 200 termina el 30 de noviembre de 2021.**
-- El ID de Spotify viene dentro de la URL de la canción.
+## Qué decidimos
 
-## Qué se decidió
+| Problema | Cuánto afecta | Qué decidimos y por qué |
+|---|---|---|
+| Viral 50 sin streams | 90,489 filas | Lo excluimos, porque no sirve para medir consumo. |
+| Solo cubre 2017–2021 | — | La usamos solo para validar Kworb y medir su cobertura, porque mezclarla con Kworb rompería la serie. |
 
-| Problema | Afecta | Decisión | Por qué |
-|---|---|---|---|
-| Viral 50 sin streams | 90,489 filas | Excluir | No sirve para medir consumo |
-| Solo 2017–2021 | — | Usar solo para validar y medir cobertura | No cubre la ventana; mezclarla con Kworb rompería la serie |
-
-Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 
 [← Volver a calidad por fuente](../calidad.qmd)

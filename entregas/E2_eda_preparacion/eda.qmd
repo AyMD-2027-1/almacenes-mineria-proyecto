@@ -2,25 +2,21 @@
 title: "Parte A · Análisis exploratorio"
 ---
 
-El análisis exploratorio se hace sobre el **dataset analítico** ensamblado al grano declarado en E1, **antes de
-limpiar**: solo se convirtieron tipos y fechas. Así lo que se describe es el dato tal como llega, y la limpieza
-(Parte B) se decide a partir de lo que aquí se encuentra.
+Hicimos el análisis exploratorio sobre el dataset analítico ensamblado al grano de E1 y antes de limpiar, con solo
+los tipos y las fechas convertidos. Así describimos los datos tal como llegan, y las decisiones de limpieza de la
+Parte B salen de lo que encontramos aquí. La [estadística descriptiva](eda_descriptiva.qmd) caracteriza las
+variables en sus cuatro dimensiones y las compara entre años, regiones y géneros; la página de
+[concentración y heterogeneidad](eda_concentracion.qmd) calcula el Gini con su curva de Lorenz y la entropía
+normalizada, y los [hallazgos](hallazgos.qmd) reúnen lo que todo esto significa para las preguntas de E0. La calidad
+de cada fuente a su granularidad original está en [Calidad por fuente](calidad.qmd).
 
-| Página | Qué contiene |
-|---|---|
-| [Estadística descriptiva](eda_descriptiva.qmd) | Localización, variabilidad y forma de las variables numéricas; comparación entre años, regiones y géneros; heterogeneidad de las categóricas |
-| [Concentración y heterogeneidad](eda_concentracion.qmd) | Gini con curva de Lorenz y entropía normalizada, comparados por año y por entidad |
-| [Hallazgos](hallazgos.qmd) | Hallazgos con su evidencia, tipo, pregunta de E0 y consecuencia para la preparación |
-| [Calidad por fuente](calidad.qmd) | Cada fuente a su granularidad original: faltantes, duplicados, marcadores y decisiones |
-| [Datos agregados en E2](datos_nuevos.qmd) | Fuentes que se agregaron o ampliaron, entre ellas la ampliación de Kworb |
-
-Todo se reproduce con `python run_pipeline.py --solo eda` desde `pipeline/`; las tablas completas quedan en
+Todo se reproduce desde `pipeline/` con `python run_pipeline.py --solo eda`; las tablas completas quedan en
 `pipeline/data/data-processed/eda/` y las figuras en `img/`.
 
 ## Datos de partida
 
-El dataset analítico tiene tres tablas, una por grano de E1. Todas cubren las **32 entidades federativas** (el
-consumo es nacional) y la ventana **enero de 2015 a diciembre de 2025**.
+El dataset analítico tiene tres tablas, una por cada grano de E1. Todas cubren de enero de 2015 a diciembre de
+2025; la violencia y el contexto cubren las 32 entidades federativas, y el consumo es nacional.
 
 | Tabla | Grano | Filas | Variables | Fuentes | Periodo con dato |
 |---|---|---|---|---|---|

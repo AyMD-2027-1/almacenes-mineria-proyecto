@@ -1,30 +1,35 @@
 ---
-title: "F2. ENDIREH 2021 — prevalencias tabuladas"
+title: "F2. ENDIREH 2021 · prevalencias tabuladas"
 ---
 
-Prevalencia de violencia contra las mujeres de 15 años y más. **Fuente agregada en E2:** E1 la tenía en el catálogo, pero no en staging.
+La prevalencia de violencia contra las mujeres de 15 años y más es la referencia oficial por tipo de violencia que
+usa P4. Estaba en el catálogo de E1, pero la agregamos a staging en E2.
 
-| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llave repetida |
+| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llaves repetidas |
 |---|---|---|---|---|---|
 | `stg_endireh_2021_prevalencias` | 3,960 | 6 | entidad, persona agresora, medida, levantamiento y tipo de violencia | 0 | 0 |
 
-## Cómo se obtuvo
+## Cómo la obtuvimos
 
-Tabulados de INEGI, archivo "XXI. Prevalencia de la violencia", cuadro 21.2: últimos 12 meses, por entidad, tipo de persona agresora y tipo de violencia. `src/ingestion/endireh.py` solo pasa el cuadro de formato de presentación a formato largo, sin cambiar valores: 33 entidades (32 y la nacional) × 3 tipos de agresor × 4 medidas (estimación, coeficiente de variación, error estándar, observaciones) × 2 levantamientos (2016 y 2021) × 5 tipos de violencia.
+Tomamos de los tabulados de INEGI el archivo "XXI. Prevalencia de la violencia", cuadro 21.2, con la violencia de
+los últimos 12 meses por entidad, tipo de persona agresora y tipo de violencia. El script `src/ingestion/endireh.py`
+solo lo pasa del formato de presentación a una tabla larga, sin cambiar ningún valor: 33 entidades (las 32 y la
+nacional), tres tipos de agresor, cuatro medidas (estimación, coeficiente de variación, error estándar y
+observaciones), dos levantamientos (2016 y 2021) y cinco tipos de violencia.
 
-## Qué encontró la inspección
+## Qué encontramos
 
-- **Completa:** sin nulos, sin marcadores, sin duplicados, y las 32 entidades más la nacional.
-- **Validación:** la prevalencia nacional de 2021 da 42.8 %, la cifra que publica INEGI.
-- **Solo dos años de dato:** 2016 y 2021.
+La tabla está completa: no tiene nulos, marcadores ni duplicados, y trae las 32 entidades más la nacional. La
+prevalencia nacional de 2021 da 42.8 %, la misma que publica INEGI. Su única limitación es que solo hay dos años de
+dato.
 
-## Qué se decidió
+## Qué decidimos
 
-| Problema | Afecta | Decisión | Por qué |
-|---|---|---|---|
-| Solo existe en los años de levantamiento | 1,440 de 1,760 celdas del contexto | Dejar nulo los demás años | Es una encuesta por levantamiento; P4 la compara en su año, no como serie |
-| Varias medidas y agresores | — | Usar la estimación con agresor "total" | Es la cifra que corresponde a `prevalencia_*` en el DDL de E1; los coeficientes de variación quedan disponibles |
+| Problema | Cuánto afecta | Qué decidimos y por qué |
+|---|---|---|
+| Solo existe en los años de levantamiento | 1,440 de 1,760 celdas del contexto | Dejamos vacíos los demás años, porque es una encuesta por levantamiento y P4 la compara en su año, no como serie. |
+| Varias medidas y tipos de agresor | — | Usamos la estimación con agresor "total", que es la cifra que corresponde a `prevalencia_*` en el DDL; los coeficientes de variación quedan disponibles. |
 
-Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 
 [← Volver a calidad por fuente](../calidad.qmd)

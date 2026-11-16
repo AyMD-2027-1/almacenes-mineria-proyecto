@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F15. CONEVAL — pobreza por entidad – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F15. CONEVAL · pobreza por entidad – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -265,8 +265,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#qué-encontró-la-inspección" id="toc-qué-encontró-la-inspección" class="nav-link active" data-scroll-target="#qué-encontró-la-inspección">Qué encontró la inspección</a></li>
-  <li><a href="#qué-se-decidió" id="toc-qué-se-decidió" class="nav-link" data-scroll-target="#qué-se-decidió">Qué se decidió</a></li>
+  <li><a href="#qué-encontramos" id="toc-qué-encontramos" class="nav-link active" data-scroll-target="#qué-encontramos">Qué encontramos</a></li>
+  <li><a href="#qué-decidimos" id="toc-qué-decidimos" class="nav-link" data-scroll-target="#qué-decidimos">Qué decidimos</a></li>
   </ul>
 </nav>
     </div>
@@ -275,7 +275,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F15. CONEVAL — pobreza por entidad</h1>
+<h1 class="title">F15. CONEVAL · pobreza por entidad</h1>
 </div>
 
 
@@ -292,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Anexo estadístico de pobreza; una hoja por entidad con el formato del documento.</p>
+<p>Es el anexo estadístico de pobreza, con una hoja por entidad en el formato del documento.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -309,7 +309,7 @@ ul.task-list li input[type="checkbox"] {
 <th>Columnas leídas</th>
 <th>Llave natural</th>
 <th>Filas idénticas</th>
-<th>Llave repetida</th>
+<th>Llaves repetidas</th>
 </tr>
 </thead>
 <tbody>
@@ -323,47 +323,39 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<section id="qué-encontró-la-inspección" class="level2">
-<h2 class="anchored" data-anchor-id="qué-encontró-la-inspección">Qué encontró la inspección</h2>
-<ul>
-<li><strong>Formato de presentación:</strong> 34 hojas (32 entidades, la nacional y “Contenido”) y 39 filas por hoja, con títulos, notas y celdas vacías. De ahí el 31 a 47 % de nulos en las columnas de valores: es estructura del documento, no faltantes.</li>
-<li><strong>33 celdas con el texto “Porcentaje”</strong> en las columnas numéricas: son encabezados.</li>
-<li><strong>La fila 9 es el porcentaje de población en pobreza;</strong> las columnas <code>c04</code> a <code>c07</code> son 2016, 2018, 2020 y 2022.</li>
-</ul>
+<section id="qué-encontramos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
+<p>La tabla conserva el formato de presentación: 34 hojas (las 32 entidades, la nacional y un índice) con 39 filas cada una, entre títulos, notas y celdas vacías. Por eso las columnas de valores tienen entre 31 y 47 % de nulos, que son parte de la estructura del documento y no faltantes. Las 33 celdas con el texto “Porcentaje” en las columnas numéricas son encabezados. El dato que buscamos está en la fila 9, el porcentaje de población en pobreza, y las columnas <code>c04</code> a <code>c07</code> corresponden a 2016, 2018, 2020 y 2022.</p>
 </section>
-<section id="qué-se-decidió" class="level2">
-<h2 class="anchored" data-anchor-id="qué-se-decidió">Qué se decidió</h2>
+<section id="qué-decidimos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Problema</th>
-<th>Afecta</th>
-<th>Decisión</th>
-<th>Por qué</th>
+<th>Cuánto afecta</th>
+<th>Qué decidimos y por qué</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Títulos, notas y encabezados</td>
 <td>La mayor parte de las filas</td>
-<td>Usar solo la fila 9 de cada entidad</td>
-<td>Es el indicador que define E1</td>
+<td>Usamos solo la fila 9 de cada entidad, que es el indicador que define E1.</td>
 </tr>
 <tr class="even">
 <td>Solo años pares hasta 2022</td>
 <td>224 de 352 celdas</td>
-<td>Interpolar 2017, 2019 y 2021; repetir el más cercano en 2015 y 2023–2025</td>
-<td>La pobreza cambia despacio</td>
+<td>Interpolamos 2017, 2019 y 2021 y repetimos el valor más cercano en 2015 y en 2023–2025, porque la pobreza cambia despacio.</td>
 </tr>
 </tbody>
 </table>
-<p>Las cifras se reproducen con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code> desde <code>pipeline/</code>.</p>
+<p>Las cifras se reproducen desde <code>pipeline/</code> con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code>.</p>
 <p><a href="../../../entregas/E2_eda_preparacion/calidad.html">← Volver a calidad por fuente</a></p>
 
 

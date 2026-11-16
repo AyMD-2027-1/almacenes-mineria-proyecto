@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F14. Censo 2020 ITER — viviendas con internet – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F14. Censo 2020 ITER · viviendas con internet – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -265,8 +265,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#qué-encontró-la-inspección" id="toc-qué-encontró-la-inspección" class="nav-link active" data-scroll-target="#qué-encontró-la-inspección">Qué encontró la inspección</a></li>
-  <li><a href="#qué-se-decidió" id="toc-qué-se-decidió" class="nav-link" data-scroll-target="#qué-se-decidió">Qué se decidió</a></li>
+  <li><a href="#qué-encontramos" id="toc-qué-encontramos" class="nav-link active" data-scroll-target="#qué-encontramos">Qué encontramos</a></li>
+  <li><a href="#qué-decidimos" id="toc-qué-decidimos" class="nav-link" data-scroll-target="#qué-decidimos">Qué decidimos</a></li>
   </ul>
 </nav>
     </div>
@@ -275,7 +275,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F14. Censo 2020 ITER — viviendas con internet</h1>
+<h1 class="title">F14. Censo 2020 ITER · viviendas con internet</h1>
 </div>
 
 
@@ -292,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Principales resultados por localidad del Censo 2020. Se leyeron solo los totales estatales (<code>MUN = 000</code>, <code>LOC = 0000</code>).</p>
+<p>De los resultados por localidad del Censo 2020 leímos solo los totales estatales (<code>MUN = 000</code>, <code>LOC = 0000</code>), de donde sale el porcentaje de viviendas con internet.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -309,7 +309,7 @@ ul.task-list li input[type="checkbox"] {
 <th>Columnas leídas</th>
 <th>Llave natural</th>
 <th>Filas idénticas</th>
-<th>Llave repetida</th>
+<th>Llaves repetidas</th>
 </tr>
 </thead>
 <tbody>
@@ -323,52 +323,44 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<section id="qué-encontró-la-inspección" class="level2">
-<h2 class="anchored" data-anchor-id="qué-encontró-la-inspección">Qué encontró la inspección</h2>
-<ul>
-<li><strong>Completa a nivel estatal:</strong> 32 entidades y el total nacional, sin nulos. Las celdas confidenciales (<code>*</code>) del ITER solo aparecen en localidades pequeñas, que no se leyeron.</li>
-<li><strong>Un solo año:</strong> 2020.</li>
-</ul>
+<section id="qué-encontramos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
+<p>A nivel estatal la tabla está completa: tiene las 32 entidades y el total nacional, sin nulos. Las celdas confidenciales del ITER (<code>*</code>) solo aparecen en localidades pequeñas, que no leímos. El dato es de un solo año, 2020.</p>
 </section>
-<section id="qué-se-decidió" class="level2">
-<h2 class="anchored" data-anchor-id="qué-se-decidió">Qué se decidió</h2>
+<section id="qué-decidimos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Problema</th>
-<th>Afecta</th>
-<th>Decisión</th>
-<th>Por qué</th>
+<th>Cuánto afecta</th>
+<th>Qué decidimos y por qué</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Fila del total nacional</td>
-<td>1</td>
-<td>Excluir del contexto estatal</td>
-<td>No es una entidad</td>
+<td>1 fila</td>
+<td>La excluimos del contexto estatal, porque no es una entidad.</td>
 </tr>
 <tr class="even">
-<td>Solo 2020</td>
+<td>Un solo año</td>
 <td>320 de 352 celdas del contexto</td>
-<td>Repetir el valor de 2020 en los demás años</td>
-<td>El indicador cambia despacio</td>
+<td>Repetimos el valor de 2020 en los demás años, porque el indicador cambia despacio.</td>
 </tr>
 <tr class="odd">
 <td>Redundante con la pobreza (ρ = −0.86)</td>
 <td>—</td>
-<td>Fuera del análisis; se conserva en la dimensión</td>
-<td>La pobreza se mide en más años</td>
+<td>La sacamos del análisis y la conservamos en la dimensión, porque la pobreza se mide en más años.</td>
 </tr>
 </tbody>
 </table>
-<p>Las cifras se reproducen con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code> desde <code>pipeline/</code>.</p>
+<p>Las cifras se reproducen desde <code>pipeline/</code> con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code>.</p>
 <p><a href="../../../entregas/E2_eda_preparacion/calidad.html">← Volver a calidad por fuente</a></p>
 
 

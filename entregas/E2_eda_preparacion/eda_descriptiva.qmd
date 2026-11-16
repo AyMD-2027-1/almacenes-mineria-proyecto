@@ -20,12 +20,12 @@ son de la muestra de Kworb. Las medidas completas están en `pipeline/data/data-
 | Impunidad del feminicidio (%) | entidad, 2023 | 23 | 79.9 | 90.6 | 83.5 | 62.8 | 99.1 | 100.0 |
 : Medidas de localización {#tbl-localizacion}
 
-**Lectura.** Una canción que está en el chart suma unos 55 millones de streams en un año típico (mediana), pero la
-media sube a 75 millones porque unas pocas canciones acumulan cientos de millones. En violencia, la entidad típica
-registra unas 350 carpetas de violencia familiar por cada 100 mil mujeres al año: es, por mucho, el delito de
-violencia de género más denunciado, cuatro veces la tasa sexual. La moda no aporta en las tasas (casi no hay
-valores repetidos), así que no se usa para interpretar; en la impunidad la moda es 100 %: varias entidades no
-resuelven ningún caso de feminicidio según México Evalúa.
+En un año típico, una canción que está en el chart suma unos 55 millones de streams, pero la media sube a 75
+millones porque unas pocas canciones acumulan cientos de millones. En violencia, el estado típico registra unas 350
+carpetas de violencia familiar por cada 100 mil mujeres al año, cuatro veces la tasa sexual: es por mucho el delito
+de violencia de género más denunciado. La moda casi no dice nada en las tasas, porque apenas hay valores repetidos,
+así que no la usamos para interpretar. La excepción es la impunidad, donde la moda es 100 %: según México Evalúa,
+varios estados no resuelven ningún caso de feminicidio.
 
 ## Variabilidad y forma
 
@@ -41,19 +41,20 @@ resuelven ningún caso de feminicidio según México Evalúa.
 | Pobreza (%) | 15.0 | 23.2 | 11.7 | 0.38 | 0.44 | −0.58 | 1.03 | 0.87 |
 : Variabilidad y forma. CV = DE/media; curtosis en exceso (0 en una normal). La última columna compara la DE con la que tendría una normal con el mismo IQR: mayor a 1 indica colas pesadas o atípicos. {#tbl-variabilidad}
 
-**Media frente a mediana: ¿hay sesgo?** Los streams tienen una media 34–37 % mayor que la mediana y asimetría
-positiva: la distribución tiene una cola larga a la derecha formada por los grandes éxitos (@fig-streams). Las
-tasas de violencia están mucho más cerca de la simetría (media/mediana de 1.05 a 1.17), salvo el feminicidio,
-cuya cola derecha son unos pocos estados con tasas de 4 a 6 por 100 mil.
+Comparar la media con la mediana muestra si hay sesgo. En los streams la media es entre 34 y 37 % mayor que la
+mediana y la asimetría es positiva, así que la distribución tiene una cola larga a la derecha formada por los
+grandes éxitos (@fig-streams). Las tasas de violencia están mucho más cerca de la simetría, con razones de 1.05 a
+1.17, salvo el feminicidio, cuya cola la forman unos pocos estados con tasas de 4 a 6 por 100 mil.
 
-**Desviación estándar frente a IQR: ¿hay atípicos?** En los streams mensuales la DE es 1.6 veces la que tendría
-una normal con el mismo IQR y la curtosis es 10: hay meses atípicos (los estrenos y los picos de un éxito). En el
-feminicidio la razón es 1.3: algunos estados se separan del resto. En las tasas familiar y sexual la razón es
-cercana o menor a 1: la dispersión es amplia pero pareja, sin unos pocos valores extremos.
+Comparar la desviación estándar con el IQR muestra si hay atípicos. En los streams mensuales la desviación es 1.6
+veces la que tendría una normal con el mismo IQR y la curtosis llega a 10, lo que confirma meses atípicos: los
+estrenos y los picos de un éxito. En el feminicidio la razón es 1.3, porque algunos estados se separan del resto.
+En las tasas familiar y sexual la razón es cercana o menor a 1, es decir, la dispersión es amplia pero pareja y no
+depende de unos pocos valores extremos.
 
-**Coeficiente de variación.** Las tasas de violencia varían entre entidades y años alrededor de 60–70 % de su
-media, mucho más que los indicadores de contexto (19 % internet, 38 % pobreza). La violencia registrada es más
-desigual entre estados que las condiciones socioeconómicas que la acompañan.
+El coeficiente de variación de las tasas de violencia ronda el 60 o 70 %, mucho más que el de los indicadores de
+contexto (19 % en internet y 38 % en pobreza). La violencia registrada es más desigual entre estados que las
+condiciones socioeconómicas que la acompañan.
 
 ![Distribución de los streams anuales por canción (escala logarítmica, porque abarcan cinco órdenes de magnitud).](img/descriptiva_hist_streams.png){#fig-streams}
 
@@ -103,9 +104,9 @@ violencia real con prácticas de registro de cada fiscalía. En el feminicidio l
 
 ### Por macrogénero
 
-Los streams anuales por canción (en log10) apenas difieren entre géneros: el macrogénero explica el 4.6 % de la
-variación (η² = 0.046). Una canción de regional mexicano o de urbano latino no es más escuchada que una de pop;
-lo que cambia entre géneros es **cuántas** canciones entran al chart, no cuánto se escucha cada una.
+Los streams anuales por canción, en escala logarítmica, apenas difieren entre géneros: el macrogénero explica el
+4.6 % de la variación (η² = 0.046). Una canción de regional mexicano o de urbano latino no se escucha más que una de
+pop; lo que cambia entre géneros es cuántas canciones entran al chart, no cuánto se escucha cada una.
 
 ## Variables categóricas
 
@@ -118,11 +119,11 @@ lo que cambia entre géneros es **cuántas** canciones entran al chart, no cuán
 | País del artista | canciones | sin dato | 12 | 0.39 | 0.63 | 4.8 |
 : Heterogeneidad de las variables categóricas {#tbl-categoricas}
 
-La violencia familiar es la mitad de las carpetas de violencia de género; con 4 tipos, hay en la práctica 2.7
-tipos "efectivos". El macrogénero se reparte entre unos 4 géneros efectivos en toda la ventana, pero esa cifra
-global esconde una concentración creciente año con año (ver [concentración](eda_concentracion.qmd)). El país del
-artista tiene como moda "sin dato": el 39 % de las canciones no tiene país en MusicBrainz, así que esa variable
-sirve poco para el análisis.
+La violencia familiar reúne la mitad de las carpetas de violencia de género, de modo que, aunque hay cuatro
+tipos, en la práctica equivalen a 2.7 tipos repartidos por igual. El macrogénero se reparte entre unos cuatro
+géneros efectivos en toda la ventana, pero esa cifra global esconde una concentración que crece cada año, como se
+ve en [Concentración y heterogeneidad](eda_concentracion.qmd). En el país del artista la categoría más frecuente es
+"sin dato": el 39 % de las canciones no tiene país en MusicBrainz, así que esa variable aporta poco al análisis.
 
 ![Participación de cada macrogénero en los streams; en gris, los artistas sin género en MusicBrainz.](img/descriptiva_barras_macrogenero.png){#fig-macrogeneros}
 

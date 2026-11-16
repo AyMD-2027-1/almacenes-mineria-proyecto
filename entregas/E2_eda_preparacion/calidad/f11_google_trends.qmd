@@ -1,36 +1,42 @@
 ---
-title: "F11. Google Trends — interés por estado"
+title: "F11. Google Trends · interés por estado"
 ---
 
-Interés de búsqueda por estado. Es la base para repartir el consumo nacional entre entidades.
+El interés de búsqueda por estado es la base para repartir el consumo nacional entre entidades.
 
-| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llave repetida | Origen |
+| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llaves repetidas | Origen |
 |---|---|---|---|---|---|---|
 | `stg_trends_regueton_tema_2021` | 32 | 2 | región | 0 | 0 | E1 |
-| `stg_trends_macrogenero_anio` | 2,464 | 8 | macrogénero, año y estado | 0 | 0 | **E2** |
-| `stg_trends_artista_anio` | 11,840 | 10 | artista, año y estado | 0 | 0 | **E2** |
+| `stg_trends_macrogenero_anio` | 2,464 | 8 | macrogénero, año y estado | 0 | 0 | E2 |
+| `stg_trends_artista_anio` | 11,840 | 10 | artista, año y estado | 0 | 0 | E2 |
 
-## Por qué se agregaron tablas en E2
+## Por qué agregamos tablas en E2
 
-El diseño de E1 reparte el consumo con el Trends del **artista** en cada año y, si no lo hay, con el de su **género**. En staging solo existía reguetón de 2021. En E2 se descargó un tema por macrogénero (7) y por artista del top 50 de cada año (109 artistas), una descarga por año de 2015 a 2025.
+E1 definió repartir el consumo con el Trends del artista en cada año y, si no lo hay, con el de su género, pero en
+staging solo estaba el reguetón de 2021. En E2 descargamos un tema por cada uno de los 7 macrogéneros y uno por cada
+artista del top 50 de cada año (109 artistas), una vez por año de 2015 a 2025. El código de la descarga está en
+`pipeline/src/ingestion/trends_descarga.js`.
 
-## Qué encontró la inspección
+## Qué encontramos
 
-- **Las 77 descargas por género y las 370 por artista traen los 32 estados.** Sin nulos ni duplicados.
-- **Validación:** reguetón 2021 descargado en E2 contra la tabla de E1 da Spearman 0.99, con una diferencia media de 1.1 puntos.
-- **Estados sin valor:** regional mexicano tiene 17 celdas en cero y electrónica 43, en estados con poco volumen. 14 de las 370 descargas por artista tienen menos de 28 estados con valor.
-- **Nombres en español de Trends** (Veracruz, Estado de México, Michoacán) distintos al SESNSP. La Ciudad de México usa el código anterior `MX-DIF`.
+Las 77 descargas por género y las 370 por artista traen los 32 estados, sin nulos ni duplicados. El reguetón de 2021
+descargado en E2 coincide con el de E1, con un Spearman de 0.99 y una diferencia media de 1.1 puntos. Algunos
+estados aparecen sin valor: el regional mexicano tiene 17 celdas en cero y la electrónica 43, en estados con poco
+volumen, y 14 de las 370 descargas por artista tienen menos de 28 estados con valor. Los nombres en español de
+Trends (Veracruz, Estado de México, Michoacán) difieren del SESNSP, y la Ciudad de México usa el código anterior
+`MX-DIF`.
 
-## Qué se decidió
+## Qué decidimos
 
-| Problema | Afecta | Decisión | Por qué |
-|---|---|---|---|
-| Descargas con pocos estados | 14 de artista, 3 de género | Bajar al siguiente nivel del reparto | Regla de E1: se necesitan 28 entidades con valor |
-| Nombres distintos | 3 entidades | Unir por el código ISO, no por nombre | El código es estable entre fuentes |
-| `MX-DIF` | 1 entidad | Guardar `MX-CMX` en `dim_entidad` | Es el código ISO vigente |
+| Problema | Cuánto afecta | Qué decidimos y por qué |
+|---|---|---|
+| Descargas con pocos estados | 14 de artista y 3 de género | Pasamos al siguiente nivel del reparto, como define E1: hacen falta 28 entidades con valor. |
+| Nombres distintos | 3 entidades | Unimos por el código ISO y no por el nombre, porque el código es estable entre fuentes. |
+| Código `MX-DIF` | 1 entidad | Guardamos `MX-CMX` en `dim_entidad`, que es el código ISO vigente. |
 
-Resultado: el 95 % de los streams se reparte con el Trends del artista, el 2.8 % con el del género y el 2.3 % con los usuarios de internet.
+Con este reparto, el 95 % de los streams usa el Trends del propio artista, el 2.8 % el de su género y el 2.3 % solo
+los usuarios de internet.
 
-Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 
 [← Volver a calidad por fuente](../calidad.qmd)

@@ -3,149 +3,114 @@ title: "Decisiones sobre los datos"
 subtitle: "Qué hicimos con los datos y por qué, explicado sin tecnicismos"
 ---
 
-Este proyecto busca saber cuánta misoginia hay en la música que más se escucha en México y si se relaciona con la
-violencia contra las mujeres que registran las autoridades. Antes de responder, revisamos cada fuente de datos y
-tomamos decisiones sobre qué conservar, qué corregir y qué no tocar. Aquí explicamos las más importantes. Los
-términos marcados con asterisco (\*) están en el glosario al final.
+Este proyecto busca saber cuánta misoginia hay en la música más escuchada en México y si se relaciona con la
+violencia contra las mujeres que registran las autoridades. Antes de responder revisamos cada fuente de datos y
+decidimos qué conservar, qué corregir y qué dejar como estaba. Aquí explicamos las decisiones más importantes. Las
+palabras marcadas con asterisco (\*) se explican en el glosario al final.
 
-## 1. La música: ampliamos la lista de canciones
+## Ampliamos la lista de canciones
 
-**Qué encontramos.** Teníamos el historial de las 300 canciones más escuchadas en Spotify México desde 2013. Al
-compararlas con una lista diaria completa del Top 200, resultó que esas 300 canciones eran apenas el **6 % de lo que
-se escuchó en 2017** y el **26 % en 2021**. Además casi no había canciones de los primeros años: 15 en 2015 contra
-246 en 2025.
+Al principio teníamos el historial de las 300 canciones más escuchadas en Spotify México. Cuando las comparamos con
+la lista diaria completa de las 200 más escuchadas, resultó que esas 300 canciones eran apenas el 6 % de lo que se
+escuchó en 2017 y el 26 % en 2021, y que casi no había canciones de los primeros años: 15 en 2015 contra 246 en
+2025. Los números de esas canciones eran correctos, pero eran muy pocas, y cualquier conclusión sobre "la música
+que se escucha" habría hablado de una parte pequeña y nada representativa. Por eso descargamos el historial completo
+de las 200 canciones más escuchadas de cada semana, que son más de 5,000. Aun así faltan las canciones que nunca
+entraron a esa lista, porque ninguna fuente pública las publica.
 
-**Qué hicimos.** Descargamos el historial completo del Top 200 semanal de México: más de 5,000 canciones.
+## Solo usamos etiquetas de misoginia hechas por personas
 
-**Por qué.** Con 300 canciones, cualquier conclusión sobre "la música que se escucha" habría hablado de una parte
-pequeña y poco representativa. Los números de esas canciones sí eran correctos (coinciden con la otra lista); el
-problema era cuántas había.
+Un corpus de investigación llamado MiSonGyny tiene canciones revisadas a mano y marcadas como misóginas o no. De
+las 300 canciones solo 42 estaban en él, y suman el 13 % de lo escuchado. Al resto lo dejamos sin etiqueta, en
+blanco, y no como "no misógina", porque marcar una canción sin revisarla sería inventar el dato. En la siguiente
+etapa del proyecto un modelo clasificará las demás y podremos medir qué tan bien acierta. Mientras tanto, cualquier
+proporción de canciones misóginas se basa en pocas canciones; por ejemplo, vimos más canciones misóginas en el
+reguetón que en el regional mexicano, pero con tan pocos casos la diferencia podría ser casualidad, y así lo
+reportamos.
 
-**Qué cambia.** Las cifras de música de esta entrega se recalculan con la lista completa. Sigue faltando lo que
-nunca entró al Top 200, que ninguna fuente pública publica.
+## Dejamos fuera los delitos que no son violencia de género
 
-## 2. La misoginia de las canciones: solo usamos etiquetas hechas por personas
+El registro oficial de delitos del Secretariado Ejecutivo trae todos los delitos del país: robo, fraude,
+narcomenudeo y muchos más. El 79 % de sus filas no tiene relación con la violencia contra las mujeres, así que
+conservamos solo los delitos que la Ley General de Acceso de las Mujeres a una Vida Libre de Violencia permite
+clasificar: feminicidio, delitos sexuales, lesiones, violencia familiar y violencia de género. El homicidio se queda
+como punto de comparación. Los demás delitos no responden a ninguna de nuestras preguntas y siguen guardados en los
+datos originales.
 
-**Qué encontramos.** Un corpus de investigación (MiSonGyny) tiene canciones revisadas a mano y marcadas como
-misóginas o no. De las 300 canciones, **solo 42 estaban en ese corpus**, que suman el 13 % de lo escuchado.
+## En la violencia física contamos solo a las mujeres
 
-**Qué hicimos.** Las demás canciones quedaron **sin etiqueta** (en blanco), no como "no misóginas".
+En las denuncias por lesiones, el 56 % de las víctimas son hombres. Si contáramos todas las denuncias, la violencia
+física parecería mucho más común de lo que es para las mujeres y se mezclaría con peleas entre hombres, así que
+contamos únicamente a las víctimas mujeres. Con esa corrección, la violencia física contra las mujeres resulta
+estable a lo largo de la década.
 
-**Por qué.** Marcar una canción sin revisarla sería inventar el dato. La clasificación del resto se hará en la
-siguiente etapa del proyecto con un modelo, y entonces se podrá medir qué tan bien acierta.
+## Un cero no siempre significa que no pasó nada
 
-**Qué cambia.** Por ahora cualquier proporción de canciones misóginas se basa en pocas canciones. Por ejemplo, vimos
-más canciones misóginas en reguetón que en regional mexicano, pero con tan pocas canciones la diferencia podría
-ser casualidad, y así lo reportamos.
+Ocho estados aparecen con cero feminicidios durante uno o varios años al inicio del periodo; Baja California Sur,
+por ejemplo, hasta finales de 2019. No es que no hubiera feminicidios: todavía no clasificaban esos asesinatos con
+ese nombre. Dejar el cero haría creer que en esos estados no se mataba a mujeres por razones de género y que la
+desigualdad entre estados bajó mucho, cuando en realidad cambió la forma de registrar. Por eso cambiamos esos ceros
+por "dato desconocido" en 900 de casi 17,000 combinaciones de mes y estado. La comparación entre estados en
+2015–2018 queda más honesta, aunque esos años siguen siendo menos confiables que los recientes.
 
-## 3. La violencia: quitamos delitos que no son violencia de género
+## Lo que no inventamos
 
-**Qué encontramos.** El registro oficial de delitos (SESNSP) trae todos los delitos: robo, fraude, narcomenudeo…
-El **79 %** de sus filas no tiene relación con la violencia contra las mujeres.
+Hay datos que faltan y decidimos no rellenar, porque hacerlo sería inventar personas o hechos. El 11 % de las
+víctimas no tiene sexo registrado y el 10 % de las mujeres víctimas no tiene edad; no las repartimos, así que las
+cifras de mujeres y de niñas víctimas son un mínimo. En el registro de personas desaparecidas, el 70 % de las
+mujeres no tiene fecha o lugar, de modo que no se pueden contar por estado y mes y ese registro solo sirve como
+apoyo. La encuesta nacional sobre violencia en los hogares (ENDIREH) solo existe para 2016 y 2021, y no estimamos
+los demás años. Tampoco borramos los registros repetidos del registro de personas desaparecidas: al proteger su
+identidad se quitaron los nombres, y dos personas distintas con la misma edad, estado y fecha se ven idénticas.
 
-**Qué hicimos.** Conservamos solo los delitos que la Ley General de Acceso de las Mujeres a una Vida Libre de
-Violencia permite clasificar: feminicidio, delitos sexuales, lesiones, violencia familiar y violencia de género. El
-homicidio se conserva como punto de comparación.
+## Lo que sí completamos
 
-**Por qué.** Los demás delitos no responden a ninguna de nuestras preguntas.
+Algunos datos de contexto se miden cada dos años o una sola vez, y para tener un valor por año completamos los años
+que faltan. Para la pobreza, que CONEVAL mide en años pares, usamos el punto medio entre dos mediciones. Para el
+porcentaje de personas que usan internet, INEGI tiene datos de 2015 a 2025 salvo 2019, que calculamos a la mitad
+entre 2018 y 2020. La impunidad en feminicidio, que publica México Evalúa, solo existe para 2023; la repetimos en
+los demás años, y es la decisión más débil de todas, además de que nueve estados no tienen el dato. Estos
+indicadores cambian despacio, así que completar los años intermedios no altera las conclusiones, pero solo sirven
+para comparar estados entre sí y no para explicar cambios de un año a otro.
 
-**Qué cambia.** Nada se pierde para el proyecto; los datos originales completos siguen guardados.
+## Las diferencias entre estados no son solo violencia
 
-## 4. Las lesiones incluyen víctimas hombres
+La tasa de denuncias por violencia familiar va de 7 por cada 100 mil mujeres en Tlaxcala a más de 1,000 en Colima.
+Tlaxcala, Yucatán, Chiapas y Michoacán casi no registran violencia familiar porque clasifican esos casos como
+lesiones. No lo corregimos, porque no sabemos qué parte de la diferencia es real, pero lo señalamos y comparamos a
+cada estado también consigo mismo a lo largo del tiempo. Cuando digamos que un estado tiene más violencia que otro,
+habrá que aclarar que parte de la diferencia viene de cómo registra cada fiscalía.
 
-**Qué encontramos.** En las denuncias por lesiones, el **56 % de las víctimas son hombres**.
+## El consumo por estado es una estimación
 
-**Qué hicimos.** Para medir la violencia física contra las mujeres contamos **solo a las víctimas mujeres**, no
-todas las denuncias.
+No existe un dato público de cuánta música se escucha en cada estado, así que lo estimamos: repartimos lo que se
+escucha en todo el país según qué tanto se busca a cada artista en Google en cada estado y cuántas personas usan
+internet ahí. El 95 % del consumo se repartió con las búsquedas del propio artista. Cualquier resultado por estado
+debe leerse como una aproximación.
 
-**Por qué.** Si contáramos todas las denuncias, la violencia física parecería más común de lo que es para las
-mujeres y se mezclaría con peleas entre hombres.
+## Conservamos los valores extremos
 
-**Qué cambia.** La violencia física contra las mujeres resulta estable en la década, a diferencia de lo que
-sugerían las denuncias totales.
+Las canciones muy exitosas y los meses con muchas denuncias aparecen como valores atípicos\*. No los quitamos,
+porque son justamente lo que queremos estudiar. Para que unos pocos casos no dominen los cálculos, comparamos la
+música en escala logarítmica\* y la violencia en tasas por cada 100 mil mujeres.
 
-## 5. Un cero no siempre significa "no pasó nada"
+## No simplificamos variables ni tomamos muestras
 
-**Qué encontramos.** Ocho estados aparecen con **cero feminicidios** durante uno o varios años al inicio de la
-serie (por ejemplo, Baja California Sur hasta finales de 2019). No es que no hubiera: todavía no clasificaban esos
-asesinatos como feminicidio.
-
-**Qué hicimos.** Cambiamos esos ceros por "dato desconocido" (900 meses-estado de casi 17,000).
-
-**Por qué.** Dejar el cero haría creer que en esos estados no mataban mujeres por razones de género y que la
-desigualdad entre estados bajó mucho; en realidad cambió la forma de registrar.
-
-**Qué cambia.** La comparación del feminicidio entre estados en 2015–2018 es más honesta, pero esos años siguen
-siendo menos confiables que los recientes.
-
-## 6. Lo que no inventamos
-
-Hay datos que faltan y decidimos **no rellenar**, porque rellenarlos sería inventar personas o hechos:
-
-- **11 %** de las víctimas no tienen sexo registrado y el **10 %** de las mujeres no tiene edad. No las repartimos;
-  por eso el número de víctimas mujeres y de niñas es un **mínimo**.
-- En el registro de personas desaparecidas, el **70 %** de las mujeres no tiene fecha o lugar. No se pueden contar
-  por estado y mes, así que ese registro solo sirve como apoyo y no como dato principal.
-- La encuesta nacional sobre violencia en los hogares (ENDIREH) solo existe en 2016 y 2021; no estimamos los demás
-  años.
-- Varios registros repetidos del registro de personas desaparecidas **no se borraron**: al proteger su identidad
-  se quitaron los nombres, y dos personas distintas con la misma edad, estado y fecha se ven idénticas.
-
-## 7. Lo que sí completamos
-
-Algunos datos de contexto se miden cada dos años o una sola vez. Para tener un valor por año:
-
-- **Pobreza** (CONEVAL, años pares): para los años intermedios usamos el punto medio entre las mediciones.
-- **Personas que usan internet** (INEGI): hay dato de 2015 a 2025 excepto 2019, que calculamos a la mitad entre 2018
-  y 2020.
-- **Impunidad en feminicidio** (México Evalúa): solo existe para 2023 y la repetimos en los demás años. **Es la
-  decisión más débil**, y 9 estados no tienen el dato.
-
-Estos datos cambian despacio de un año a otro, así que completar los años intermedios no altera las conclusiones.
-Sirven para comparar estados entre sí, no para explicar cambios de un año a otro.
-
-## 8. Las diferencias entre estados no son solo violencia
-
-**Qué encontramos.** La tasa de denuncias por violencia familiar va de **7 por cada 100 mil mujeres en Tlaxcala a
-más de 1,000 en Colima**. Tlaxcala, Yucatán, Chiapas y Michoacán casi no registran violencia familiar; registran
-esos casos como lesiones.
-
-**Qué hicimos.** No lo "corregimos", porque no sabemos cuánto de la diferencia es real. Lo marcamos y comparamos los
-estados también por sus cambios en el tiempo.
-
-**Qué cambia.** Cuando digamos que un estado tiene más violencia que otro, habrá que aclarar que parte de la
-diferencia viene de cómo registra cada fiscalía.
-
-## 9. El consumo por estado es una estimación
-
-No existe un dato público de cuánta música se escucha en cada estado. Lo **estimamos** repartiendo lo que se escucha
-en todo el país según qué tanto se busca a cada artista en Google en cada estado y cuántas personas usan internet
-ahí. El 95 % del consumo se repartió con las búsquedas del propio artista. Cualquier resultado por estado debe
-leerse como una aproximación.
-
-## 10. Valores extremos: los conservamos
-
-Las canciones muy exitosas y los meses con muchas denuncias aparecen como **valores atípicos\***. No los quitamos:
-son justamente lo que queremos estudiar. Para que unos pocos casos no dominen los cálculos, comparamos la música en
-escala logarítmica y la violencia en tasas por cada 100 mil mujeres.
-
-## 11. No simplificamos variables ni tomamos muestras
-
-Revisamos si algunas variables decían lo mismo. Las cuatro cifras de población (total, mujeres, hombres, mujeres de
-15 años y más) son prácticamente iguales entre estados, así que usamos solo la de mujeres. También probamos un
-**análisis de componentes principales\***: confirmó que internet y pobreza miden casi lo mismo, pero decidimos
-conservar las variables originales porque son pocas y se entienden mejor. No tomamos una **muestra\***: usamos
-todos los datos, porque caben en la computadora y cargarlos no tiene costo.
+Revisamos si algunas variables decían lo mismo. Las cuatro cifras de población (total, mujeres, hombres y mujeres
+de 15 años y más) se mueven prácticamente igual entre estados, así que usamos solo la de mujeres. También probamos
+un análisis de componentes principales\*, que confirmó que el acceso a internet y la pobreza miden casi lo mismo;
+aun así conservamos las variables originales porque son pocas y se entienden mejor. No tomamos una muestra\*:
+usamos todos los datos, porque caben sin problema en una computadora y cargarlos al almacén no tiene costo.
 
 ## Glosario
 
 | Término | Significado |
 |---|---|
-| Atípico | Un valor muy alejado de los demás; puede ser un error o un caso real extremo |
-| Imputar | Rellenar un dato faltante con un valor estimado |
-| Interpolar | Estimar un valor intermedio entre dos mediciones conocidas |
-| Tasa por 100 mil mujeres | Número de casos dividido entre las mujeres del estado, por 100 mil; permite comparar estados de distinto tamaño |
-| Componentes principales (PCA) | Técnica que resume varias variables relacionadas en unas pocas combinaciones |
-| Muestra | Una parte de los datos elegida para analizar en lugar de todos |
-| Escala logarítmica | Una forma de mostrar números que crecen mucho, en la que cada paso multiplica en lugar de sumar |
-| Staging | El lugar donde guardamos los datos tal como llegan, sin modificar |
+| Atípico | Un valor muy alejado de los demás, que puede ser un error o un caso real extremo. |
+| Imputar | Rellenar un dato faltante con un valor estimado. |
+| Interpolar | Estimar un valor intermedio entre dos mediciones conocidas. |
+| Tasa por 100 mil mujeres | El número de casos dividido entre las mujeres del estado y multiplicado por 100 mil; permite comparar estados de distinto tamaño. |
+| Análisis de componentes principales | Una técnica que resume varias variables relacionadas en unas pocas combinaciones. |
+| Muestra | Una parte de los datos que se analiza en lugar de todos. |
+| Escala logarítmica | Una forma de mostrar números que crecen mucho, en la que cada paso multiplica en lugar de sumar. |
+| Staging | El lugar donde guardamos los datos tal como llegan, sin modificarlos. |

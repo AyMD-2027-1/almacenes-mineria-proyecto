@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F18. Natural Earth — geometrías – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F18. Natural Earth · geometrías – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -265,8 +265,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#qué-encontró-la-inspección" id="toc-qué-encontró-la-inspección" class="nav-link active" data-scroll-target="#qué-encontró-la-inspección">Qué encontró la inspección</a></li>
-  <li><a href="#qué-se-decidió" id="toc-qué-se-decidió" class="nav-link" data-scroll-target="#qué-se-decidió">Qué se decidió</a></li>
+  <li><a href="#qué-encontramos" id="toc-qué-encontramos" class="nav-link active" data-scroll-target="#qué-encontramos">Qué encontramos</a></li>
+  <li><a href="#qué-decidimos" id="toc-qué-decidimos" class="nav-link" data-scroll-target="#qué-decidimos">Qué decidimos</a></li>
   </ul>
 </nav>
     </div>
@@ -275,7 +275,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F18. Natural Earth — geometrías</h1>
+<h1 class="title">F18. Natural Earth · geometrías</h1>
 </div>
 
 
@@ -292,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Polígonos de las entidades para los mapas.</p>
+<p>Los polígonos de las entidades se usan para los mapas.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -309,7 +309,7 @@ ul.task-list li input[type="checkbox"] {
 <th>Columnas leídas</th>
 <th>Llave natural</th>
 <th>Filas idénticas</th>
-<th>Llave repetida</th>
+<th>Llaves repetidas</th>
 </tr>
 </thead>
 <tbody>
@@ -323,53 +323,44 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<section id="qué-encontró-la-inspección" class="level2">
-<h2 class="anchored" data-anchor-id="qué-encontró-la-inspección">Qué encontró la inspección</h2>
-<ul>
-<li><strong>Una fila de más:</strong> código <code>MX-X01~</code>, sin nombre. Es un polígono menor sin estado asignado.</li>
-<li><strong>Nombres distintos:</strong> Estado de México, Michoacán, “Estado de Veracruz” y “Distrito Federal” para la Ciudad de México.</li>
-<li><strong>Código anterior de la Ciudad de México:</strong> <code>MX-DIF</code>.</li>
-</ul>
+<section id="qué-encontramos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
+<p>Hay una fila de más, con el código <code>MX-X01~</code> y sin nombre, que es un polígono menor sin estado asignado. Cuatro entidades tienen un nombre distinto al del SESNSP: Estado de México, Michoacán, “Estado de Veracruz” y “Distrito Federal” para la Ciudad de México, que además usa el código anterior <code>MX-DIF</code>.</p>
 </section>
-<section id="qué-se-decidió" class="level2">
-<h2 class="anchored" data-anchor-id="qué-se-decidió">Qué se decidió</h2>
+<section id="qué-decidimos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Problema</th>
-<th>Afecta</th>
-<th>Decisión</th>
-<th>Por qué</th>
+<th>Cuánto afecta</th>
+<th>Qué decidimos y por qué</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Fila <code>MX-X01~</code></td>
-<td>1</td>
-<td>Eliminar</td>
-<td>No es una entidad</td>
+<td>1 fila</td>
+<td>La eliminamos, porque no es una entidad.</td>
 </tr>
 <tr class="even">
 <td>Nombres distintos</td>
 <td>4 entidades</td>
-<td>Equivalencias, incluida <code>DISTRITO FEDERAL</code></td>
-<td>Une con la clave INEGI</td>
+<td>Los unimos con la tabla de equivalencias, que incluye <code>DISTRITO FEDERAL</code>.</td>
 </tr>
 <tr class="odd">
-<td><code>MX-DIF</code></td>
-<td>1</td>
-<td><code>MX-CMX</code> en <code>dim_entidad</code></td>
-<td>Es el código ISO vigente</td>
+<td>Código <code>MX-DIF</code></td>
+<td>1 entidad</td>
+<td>Guardamos <code>MX-CMX</code> en <code>dim_entidad</code>, que es el código ISO vigente.</td>
 </tr>
 </tbody>
 </table>
-<p>Las cifras se reproducen con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code> desde <code>pipeline/</code>.</p>
+<p>Las cifras se reproducen desde <code>pipeline/</code> con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code>.</p>
 <p><a href="../../../entregas/E2_eda_preparacion/calidad.html">← Volver a calidad por fuente</a></p>
 
 

@@ -1,26 +1,28 @@
 ---
-title: "F15. CONEVAL — pobreza por entidad"
+title: "F15. CONEVAL · pobreza por entidad"
 ---
 
-Anexo estadístico de pobreza; una hoja por entidad con el formato del documento.
+Es el anexo estadístico de pobreza, con una hoja por entidad en el formato del documento.
 
-| Tabla | Filas | Columnas leídas | Llave natural | Filas idénticas | Llave repetida |
+| Tabla | Filas | Columnas leídas | Llave natural | Filas idénticas | Llaves repetidas |
 |---|---|---|---|---|---|
 | `stg_coneval_pobreza` | 1,062 | 7 | hoja y fila | 0 | 0 |
 
-## Qué encontró la inspección
+## Qué encontramos
 
-- **Formato de presentación:** 34 hojas (32 entidades, la nacional y "Contenido") y 39 filas por hoja, con títulos, notas y celdas vacías. De ahí el 31 a 47 % de nulos en las columnas de valores: es estructura del documento, no faltantes.
-- **33 celdas con el texto "Porcentaje"** en las columnas numéricas: son encabezados.
-- **La fila 9 es el porcentaje de población en pobreza;** las columnas `c04` a `c07` son 2016, 2018, 2020 y 2022.
+La tabla conserva el formato de presentación: 34 hojas (las 32 entidades, la nacional y un índice) con 39 filas cada
+una, entre títulos, notas y celdas vacías. Por eso las columnas de valores tienen entre 31 y 47 % de nulos, que son
+parte de la estructura del documento y no faltantes. Las 33 celdas con el texto "Porcentaje" en las columnas
+numéricas son encabezados. El dato que buscamos está en la fila 9, el porcentaje de población en pobreza, y las
+columnas `c04` a `c07` corresponden a 2016, 2018, 2020 y 2022.
 
-## Qué se decidió
+## Qué decidimos
 
-| Problema | Afecta | Decisión | Por qué |
-|---|---|---|---|
-| Títulos, notas y encabezados | La mayor parte de las filas | Usar solo la fila 9 de cada entidad | Es el indicador que define E1 |
-| Solo años pares hasta 2022 | 224 de 352 celdas | Interpolar 2017, 2019 y 2021; repetir el más cercano en 2015 y 2023–2025 | La pobreza cambia despacio |
+| Problema | Cuánto afecta | Qué decidimos y por qué |
+|---|---|---|
+| Títulos, notas y encabezados | La mayor parte de las filas | Usamos solo la fila 9 de cada entidad, que es el indicador que define E1. |
+| Solo años pares hasta 2022 | 224 de 352 celdas | Interpolamos 2017, 2019 y 2021 y repetimos el valor más cercano en 2015 y en 2023–2025, porque la pobreza cambia despacio. |
 
-Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 
 [← Volver a calidad por fuente](../calidad.qmd)

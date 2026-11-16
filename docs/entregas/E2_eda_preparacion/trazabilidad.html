@@ -293,9 +293,15 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>La matriz de <a href="../../entregas/E1_arquitectura_dw/trazabilidad.html">E1</a> se extiende con los hallazgos del EDA, las decisiones de preparación y el estado actualizado de cada pregunta. Los hallazgos (H1–H9) están en <a href="../../entregas/E2_eda_preparacion/hallazgos.html">Hallazgos</a>; las decisiones, en <a href="../../entregas/E2_eda_preparacion/preparacion.html">Preparación</a>.</p>
+<p>Extendimos la matriz de <a href="../../entregas/E1_arquitectura_dw/trazabilidad.html">E1</a> con lo que encontramos en el análisis exploratorio, las decisiones de preparación y el estado actualizado de cada pregunta. Los hallazgos citados (H1 a H9) están en <a href="../../entregas/E2_eda_preparacion/hallazgos.html">Hallazgos</a> y las decisiones en <a href="../../entregas/E2_eda_preparacion/preparacion.html">Preparación</a>.</p>
 <section id="preguntas" class="level2">
 <h2 class="anchored" data-anchor-id="preguntas">Preguntas</h2>
+<div id="tbl-preguntas" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-preguntas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1: Estado de las preguntas de E0 después de E2
+</figcaption>
+<div aria-describedby="tbl-preguntas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
 <col style="width: 20%">
@@ -308,46 +314,55 @@ ul.task-list li input[type="checkbox"] {
 <tr class="header">
 <th>Pregunta</th>
 <th>Variables y métrica</th>
-<th>Hallazgo del EDA</th>
-<th>Decisión de preparación</th>
-<th>Estado actualizado</th>
+<th>Lo que mostró el EDA</th>
+<th>Lo que decidimos</th>
+<th>Estado</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>P1:</strong> proporción de contenido misógino en la música más escuchada en Spotify México, por género musical y por entidad (estimada)</td>
-<td><code>es_misogina</code>, <code>macrogenero</code> (<code>dim_cancion</code>); <code>streams_estimados</code>, <code>peso_entidad</code>, <code>origen_peso</code> (<code>fact_consumo_musical</code>)</td>
-<td>H8: el consumo se concentra en regional mexicano (entropía de 0.95 a 0.44) y en menos artistas (Gini de 0.49 a 0.66). H9: sin diferencia significativa entre géneros con 42 canciones. Las 300 canciones de E1 cubrían del 6 al 26 % del consumo</td>
-<td>Ampliar Kworb al Top 200 completo; <code>es_misogina</code> nulo fuera de MiSonGyny; pesos por entidad con Trends del artista y del género por año y usuarios de internet por año; conservar atípicos y comparar en log10</td>
-<td><strong>Parcial:</strong> la etiqueta humana cubre el 13 % de los streams; la respuesta completa depende del clasificador del modelado. Por entidad sigue siendo una estimación</td>
+<td><strong>P1.</strong> Proporción de contenido misógino en la música más escuchada en Spotify México, por género musical y por entidad (estimada).</td>
+<td>La proporción misógina de <code>streams_estimados</code>, con <code>es_misogina</code> y <code>macrogenero</code> de <code>dim_cancion</code> y el peso de cada estado (<code>peso_entidad</code>, <code>origen_peso</code>).</td>
+<td>El consumo se concentró en el regional mexicano y en menos artistas (H8). Con 42 canciones etiquetadas no hay diferencia significativa entre géneros (H9). Las 300 canciones de E1 cubrían entre 6 y 26 % del consumo.</td>
+<td>Ampliamos Kworb al Top 200 completo, dejamos <code>es_misogina</code> vacío fuera de MiSonGyny y calculamos los pesos por estado con Trends por año y los usuarios de internet de cada año.</td>
+<td>Parcial. La etiqueta humana cubre el 13 % de los streams y la respuesta completa depende del clasificador del modelado; por estado sigue siendo una estimación.</td>
 </tr>
 <tr class="even">
-<td><strong>P2:</strong> correlación entre la misoginia musical y los indicadores oficiales de violencia de género, mensual nacional y por entidad y año</td>
-<td>Proporción misógina; tasas por 100 mil mujeres con <code>carpetas</code> y, en la física, <code>victimas_mujeres</code> (<code>fact_violencia</code>); <code>poblacion_mujeres</code>, <code>pct_usuarios_internet</code>, <code>pct_pobreza</code>, <code>indice_impunidad</code> (<code>dim_contexto_entidad</code>)</td>
-<td>H1 y H2: la familiar y la sexual crecen hasta 2023. H3: las carpetas de lesiones son 56 % de hombres. H4: las diferencias entre estados mezclan registro y violencia. H5: el feminicidio de 2015–2017 no es comparable. H6: conteo y tasa difieren</td>
-<td>Tasas en lugar de conteos; la física con víctimas mujeres (ajustado también en el DataMart); ceros iniciales de feminicidio a faltantes; RNPDNO solo como contraste; contexto completado por año y usado como control fijo por estado</td>
-<td><strong>Parcial:</strong> asociativo, no causal; las series comparten tendencia y la comparación entre estados está afectada por el registro. El RNPDNO no sirve como indicador principal</td>
+<td><strong>P2.</strong> Correlación entre la misoginia musical y los indicadores oficiales de violencia de género, mensual nacional y por entidad y año.</td>
+<td>La proporción misógina frente a las tasas por 100 mil mujeres (carpetas, y víctimas mujeres en la violencia física), con la población, el acceso a internet, la pobreza y la impunidad como controles.</td>
+<td>La violencia familiar y la sexual crecen hasta 2023 (H1, H2), las carpetas de lesiones son mayoritariamente de hombres (H3), las diferencias entre estados reflejan también el registro (H4) y el feminicidio de 2015–2017 no es comparable (H5).</td>
+<td>Usamos tasas en lugar de conteos, medimos la violencia física con víctimas mujeres también en el DataMart, convertimos los ceros iniciales de feminicidio en faltantes y dejamos el RNPDNO como contraste.</td>
+<td>Parcial. El diseño es asociativo y no causal, las series comparten tendencia y la comparación entre estados está afectada por el registro.</td>
 </tr>
 <tr class="odd">
-<td><strong>P3:</strong> evolución de la misoginia en la música consumida, 2015–2025, por tipo de violencia</td>
-<td>Participación de cada tipo en <code>streams_estimados</code>; <code>tipo_violencia_key</code> de la canción; <code>mejor_posicion_nacional</code></td>
-<td>Pocas canciones con categoría de MiSonGyny (23 de la tarea 2); la sexualización domina en casi todos los años</td>
-<td>Categoría de MiSonGyny mapeada a la LGAMVLV con la regla de E1; ampliar Kworb para tener más canciones por año</td>
-<td><strong>Parcial:</strong> con la etiqueta humana la serie es muy inestable; depende del clasificador</td>
+<td><strong>P3.</strong> Evolución de la misoginia en la música consumida, 2015–2025, por tipo de violencia.</td>
+<td>La participación de cada tipo en los streams de la música misógina, con su media móvil de 12 meses.</td>
+<td>Solo 23 canciones tienen categoría de MiSonGyny, y la sexualización domina en casi todos los años.</td>
+<td>Mapeamos las categorías de MiSonGyny a la LGAMVLV con la regla de E1 y ampliamos Kworb para tener más canciones por año.</td>
+<td>Parcial. Con la etiqueta humana la serie es muy inestable y depende del clasificador.</td>
 </tr>
 <tr class="even">
-<td><strong>P4:</strong> tipos de violencia que predominan en la música y si coinciden con los más reportados oficialmente</td>
-<td>Participación por tipo en la música misógina, en <code>carpetas</code> del SESNSP y prevalencias de la ENDIREH 2021 (<code>dim_contexto_entidad</code>)</td>
-<td>H7: la mezcla de tipos oficiales es estable (entropía 0.69–0.72). La sexual es el único tipo alto en las tres fuentes</td>
-<td>ENDIREH incorporada a staging (prevalencias tabuladas); la física con víctimas mujeres; una distribución oficial para toda la ventana</td>
-<td><strong>Parcial:</strong> la violencia económica, patrimonial y mediática no tiene fuente mensual; el mapeo del clasificador a la LGAMVLV es aproximado</td>
+<td><strong>P4.</strong> Tipos de violencia que predominan en la música y si coinciden con los más reportados oficialmente.</td>
+<td>La participación por tipo en la música misógina, en las carpetas del SESNSP y en las prevalencias de la ENDIREH 2021.</td>
+<td>La mezcla de tipos oficiales es estable (H7), y la violencia sexual es la única que aparece alta en las tres fuentes.</td>
+<td>Incorporamos la ENDIREH a staging y medimos la violencia física con víctimas mujeres.</td>
+<td>Parcial. La violencia económica, patrimonial y mediática no tiene una fuente mensual, y el mapeo del clasificador a la LGAMVLV es aproximado.</td>
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 </section>
 <section id="variables-conservadas-y-la-pregunta-que-responden" class="level2">
 <h2 class="anchored" data-anchor-id="variables-conservadas-y-la-pregunta-que-responden">Variables conservadas y la pregunta que responden</h2>
-<p>Ninguna variable conservada queda sin pregunta. Las que la reducción sacó del análisis siguen en el DW como atributos.</p>
+<p>Ninguna variable conservada queda sin pregunta. Las que la reducción sacó del análisis siguen en el DW como atributos, por si alguna consulta las necesita.</p>
+<div id="tbl-variables" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-variables-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;2: Variables del DW y la pregunta que responden
+</figcaption>
+<div aria-describedby="tbl-variables-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -358,9 +373,9 @@ ul.task-list li input[type="checkbox"] {
 <thead>
 <tr class="header">
 <th>Tabla del DW</th>
-<th>Variable</th>
+<th>Variables</th>
 <th>Pregunta</th>
-<th>Estado en E2</th>
+<th>Situación en E2</th>
 </tr>
 </thead>
 <tbody>
@@ -368,112 +383,109 @@ ul.task-list li input[type="checkbox"] {
 <td><code>fact_consumo_musical</code></td>
 <td><code>streams_estimados</code>, <code>peso_entidad</code>, <code>origen_peso</code>, <code>interes_busqueda</code></td>
 <td>P1, P2, P3</td>
-<td>Conservadas</td>
+<td>Se conservan.</td>
 </tr>
 <tr class="even">
 <td><code>fact_consumo_musical</code></td>
 <td><code>semanas_en_chart_nacional</code>, <code>mejor_posicion_nacional</code></td>
 <td>P1, P3</td>
-<td>Conservadas (no redundantes con streams)</td>
+<td>Se conservan, porque no son redundantes con los streams.</td>
 </tr>
 <tr class="odd">
 <td><code>fact_violencia</code></td>
 <td><code>carpetas</code>, <code>victimas_mujeres</code></td>
 <td>P2, P4</td>
-<td>Conservadas; la física usa <code>victimas_mujeres</code></td>
+<td>Se conservan; la violencia física se mide con <code>victimas_mujeres</code>.</td>
 </tr>
 <tr class="even">
 <td><code>fact_violencia</code></td>
 <td><code>victimas_mujeres_menores</code>, <code>victimas_hombres</code></td>
 <td>P2</td>
-<td>Conservadas (mínimo y comparación)</td>
+<td>Se conservan como mínimo de niñas víctimas y como comparación.</td>
 </tr>
 <tr class="odd">
 <td><code>dim_cancion</code></td>
 <td><code>es_misogina</code>, <code>categoria_misoginia</code>, <code>etiqueta_misongyny</code>, <code>origen_etiqueta</code>, <code>en_corpus_misongyny</code></td>
 <td>P1, P3, P4</td>
-<td>Conservadas</td>
+<td>Se conservan.</td>
 </tr>
 <tr class="even">
 <td><code>dim_cancion</code></td>
-<td><code>macrogenero</code>, <code>genero</code>, <code>etiquetas_fuente</code></td>
-<td>P1</td>
-<td>Conservadas</td>
+<td><code>macrogenero</code>, <code>genero</code>, <code>etiquetas_fuente</code>, <code>termino_trends</code></td>
+<td>P1, P2</td>
+<td>Se conservan.</td>
 </tr>
 <tr class="odd">
 <td><code>dim_cancion</code></td>
 <td><code>pais_artista</code></td>
 <td>P1</td>
-<td>Fuera del análisis (lo determina el macrogénero, V = 0.84); se conserva como atributo</td>
+<td>Sale del análisis porque lo determina el macrogénero (V = 0.84), pero se conserva como atributo.</td>
 </tr>
 <tr class="even">
-<td><code>dim_cancion</code></td>
-<td><code>termino_trends</code></td>
-<td>P1, P2</td>
-<td>Conservada (auditoría del reparto)</td>
-</tr>
-<tr class="odd">
 <td><code>dim_cancion</code></td>
 <td><code>tiene_letra</code>, <code>score_misoginia</code>, <code>version_modelo</code></td>
 <td>P1, P3</td>
-<td>Vacías hasta el modelado</td>
-</tr>
-<tr class="even">
-<td><code>dim_tipo_violencia</code></td>
-<td><code>tipo_lgamvlv</code>, <code>ambito_lgamvlv</code>, jerarquía del delito, <code>es_control</code></td>
-<td>P2, P3, P4</td>
-<td>Conservadas</td>
+<td>Quedan vacías hasta el modelado.</td>
 </tr>
 <tr class="odd">
+<td><code>dim_tipo_violencia</code></td>
+<td><code>tipo_lgamvlv</code>, <code>ambito_lgamvlv</code>, la jerarquía del delito y <code>es_control</code></td>
+<td>P2, P3, P4</td>
+<td>Se conservan.</td>
+</tr>
+<tr class="even">
 <td><code>dim_contexto_entidad</code></td>
 <td><code>poblacion_mujeres</code></td>
 <td>P2</td>
-<td>Conservada (denominador)</td>
+<td>Se conserva como denominador de las tasas.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>dim_contexto_entidad</code></td>
 <td><code>poblacion_total</code>, <code>poblacion_hombres</code>, <code>poblacion_mujeres_15_mas</code></td>
 <td>P2</td>
-<td>Fuera del análisis (redundantes, ρ ≈ 1); se conservan para tasas específicas</td>
+<td>Salen del análisis porque son redundantes (ρ ≈ 1), pero se conservan para tasas específicas.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>dim_contexto_entidad</code></td>
 <td><code>pct_usuarios_internet</code>, <code>usuarios_internet_estimados</code></td>
 <td>P1, P2</td>
-<td>Conservadas (reparto y control)</td>
+<td>Se conservan para el reparto del consumo y como control.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>dim_contexto_entidad</code></td>
 <td><code>pct_pobreza</code></td>
 <td>P2</td>
-<td>Conservada (control)</td>
+<td>Se conserva como control.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>dim_contexto_entidad</code></td>
 <td><code>pct_viviendas_internet</code></td>
 <td>P2</td>
-<td>Fuera del análisis (redundante con pobreza, ρ = −0.86)</td>
-</tr>
-<tr class="even">
-<td><code>dim_contexto_entidad</code></td>
-<td><code>indice_impunidad</code></td>
-<td>P2</td>
-<td>Conservada con faltantes (9 estados)</td>
+<td>Sale del análisis porque es redundante con la pobreza (ρ = −0.86).</td>
 </tr>
 <tr class="odd">
 <td><code>dim_contexto_entidad</code></td>
-<td><code>prevalencia_*</code></td>
-<td>P4</td>
-<td>Conservadas (solo 2016 y 2021)</td>
+<td><code>indice_impunidad</code></td>
+<td>P2</td>
+<td>Se conserva, con nueve estados sin dato.</td>
 </tr>
 <tr class="even">
+<td><code>dim_contexto_entidad</code></td>
+<td><code>prevalencia_*</code></td>
+<td>P4</td>
+<td>Se conservan, solo para 2016 y 2021.</td>
+</tr>
+<tr class="odd">
 <td><code>dim_entidad</code>, <code>dim_fecha</code></td>
-<td>Llaves, nombres, región, geometría, calendario</td>
+<td>Llaves, nombres, región, geometría y calendario</td>
 <td>P1–P4</td>
-<td>Conservadas</td>
+<td>Se conservan.</td>
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 
 
 </section>

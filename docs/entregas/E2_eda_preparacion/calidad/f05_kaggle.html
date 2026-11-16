@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F5. Kaggle — Spotify Charts de México – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F5. Kaggle · Spotify Charts de México – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -265,8 +265,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#qué-encontró-la-inspección" id="toc-qué-encontró-la-inspección" class="nav-link active" data-scroll-target="#qué-encontró-la-inspección">Qué encontró la inspección</a></li>
-  <li><a href="#qué-se-decidió" id="toc-qué-se-decidió" class="nav-link" data-scroll-target="#qué-se-decidió">Qué se decidió</a></li>
+  <li><a href="#qué-encontramos" id="toc-qué-encontramos" class="nav-link active" data-scroll-target="#qué-encontramos">Qué encontramos</a></li>
+  <li><a href="#qué-decidimos" id="toc-qué-decidimos" class="nav-link" data-scroll-target="#qué-decidimos">Qué decidimos</a></li>
   </ul>
 </nav>
     </div>
@@ -275,7 +275,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F5. Kaggle — Spotify Charts de México</h1>
+<h1 class="title">F5. Kaggle · Spotify Charts de México</h1>
 </div>
 
 
@@ -292,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Charts diarios de Spotify (Top 200 y Viral 50) de 2017 a 2021. Se usa para <strong>validar</strong> Kworb y medir su cobertura, no en el almacén.</p>
+<p>Los charts diarios de Spotify (Top 200 y Viral 50) de 2017 a 2021 sirven para validar Kworb y medir su cobertura; no entran al almacén.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -309,7 +309,7 @@ ul.task-list li input[type="checkbox"] {
 <th>Columnas</th>
 <th>Llave natural</th>
 <th>Filas idénticas</th>
-<th>Llave repetida</th>
+<th>Llaves repetidas</th>
 </tr>
 </thead>
 <tbody>
@@ -323,74 +323,39 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<section id="qué-encontró-la-inspección" class="level2">
-<h2 class="anchored" data-anchor-id="qué-encontró-la-inspección">Qué encontró la inspección</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Chart</th>
-<th>Filas</th>
-<th>Sin streams</th>
-<th>Desde</th>
-<th>Hasta</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>top200</td>
-<td>358,343</td>
-<td>0</td>
-<td>2017-01-01</td>
-<td>2021-11-30</td>
-</tr>
-<tr class="even">
-<td>viral50</td>
-<td>90,489</td>
-<td>90,489</td>
-<td>2017-01-01</td>
-<td>2021-12-31</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>Viral 50 no publica streams:</strong> de ahí sale el 20.2 % de nulos en <code>streams</code>.</li>
-<li><strong>El Top 200 termina el 30 de noviembre de 2021.</strong></li>
-<li>El ID de Spotify viene dentro de la URL de la canción.</li>
-</ul>
+<section id="qué-encontramos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
+<p>El Top 200 tiene 358,343 filas del 1 de enero de 2017 al 30 de noviembre de 2021, todas con streams. El Viral 50 tiene 90,489 filas hasta diciembre de 2021, pero no publica streams, y de ahí sale el 20.2 % de nulos de esa columna. El identificador de Spotify de cada canción viene dentro de su URL.</p>
 </section>
-<section id="qué-se-decidió" class="level2">
-<h2 class="anchored" data-anchor-id="qué-se-decidió">Qué se decidió</h2>
+<section id="qué-decidimos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Problema</th>
-<th>Afecta</th>
-<th>Decisión</th>
-<th>Por qué</th>
+<th>Cuánto afecta</th>
+<th>Qué decidimos y por qué</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Viral 50 sin streams</td>
 <td>90,489 filas</td>
-<td>Excluir</td>
-<td>No sirve para medir consumo</td>
+<td>Lo excluimos, porque no sirve para medir consumo.</td>
 </tr>
 <tr class="even">
-<td>Solo 2017–2021</td>
+<td>Solo cubre 2017–2021</td>
 <td>—</td>
-<td>Usar solo para validar y medir cobertura</td>
-<td>No cubre la ventana; mezclarla con Kworb rompería la serie</td>
+<td>La usamos solo para validar Kworb y medir su cobertura, porque mezclarla con Kworb rompería la serie.</td>
 </tr>
 </tbody>
 </table>
-<p>Las cifras se reproducen con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code> desde <code>pipeline/</code>.</p>
+<p>Las cifras se reproducen desde <code>pipeline/</code> con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code>.</p>
 <p><a href="../../../entregas/E2_eda_preparacion/calidad.html">← Volver a calidad por fuente</a></p>
 
 

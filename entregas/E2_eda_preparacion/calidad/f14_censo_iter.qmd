@@ -1,26 +1,27 @@
 ---
-title: "F14. Censo 2020 ITER — viviendas con internet"
+title: "F14. Censo 2020 ITER · viviendas con internet"
 ---
 
-Principales resultados por localidad del Censo 2020. Se leyeron solo los totales estatales (`MUN = 000`, `LOC = 0000`).
+De los resultados por localidad del Censo 2020 leímos solo los totales estatales (`MUN = 000`, `LOC = 0000`), de
+donde sale el porcentaje de viviendas con internet.
 
-| Tabla | Filas | Columnas leídas | Llave natural | Filas idénticas | Llave repetida |
+| Tabla | Filas | Columnas leídas | Llave natural | Filas idénticas | Llaves repetidas |
 |---|---|---|---|---|---|
 | `stg_censo_iter` | 33 | 9 | entidad | 0 | 0 |
 
-## Qué encontró la inspección
+## Qué encontramos
 
-- **Completa a nivel estatal:** 32 entidades y el total nacional, sin nulos. Las celdas confidenciales (`*`) del ITER solo aparecen en localidades pequeñas, que no se leyeron.
-- **Un solo año:** 2020.
+A nivel estatal la tabla está completa: tiene las 32 entidades y el total nacional, sin nulos. Las celdas
+confidenciales del ITER (`*`) solo aparecen en localidades pequeñas, que no leímos. El dato es de un solo año, 2020.
 
-## Qué se decidió
+## Qué decidimos
 
-| Problema | Afecta | Decisión | Por qué |
-|---|---|---|---|
-| Fila del total nacional | 1 | Excluir del contexto estatal | No es una entidad |
-| Solo 2020 | 320 de 352 celdas del contexto | Repetir el valor de 2020 en los demás años | El indicador cambia despacio |
-| Redundante con la pobreza (ρ = −0.86) | — | Fuera del análisis; se conserva en la dimensión | La pobreza se mide en más años |
+| Problema | Cuánto afecta | Qué decidimos y por qué |
+|---|---|---|
+| Fila del total nacional | 1 fila | La excluimos del contexto estatal, porque no es una entidad. |
+| Un solo año | 320 de 352 celdas del contexto | Repetimos el valor de 2020 en los demás años, porque el indicador cambia despacio. |
+| Redundante con la pobreza (ρ = −0.86) | — | La sacamos del análisis y la conservamos en la dimensión, porque la pobreza se mide en más años. |
 
-Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 
 [← Volver a calidad por fuente](../calidad.qmd)

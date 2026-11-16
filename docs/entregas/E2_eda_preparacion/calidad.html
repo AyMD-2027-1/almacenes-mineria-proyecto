@@ -285,7 +285,13 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Diagnóstico de cada tabla de staging tal como llega de BigQuery, antes de limpiar, y lo que se decidió en cada caso. El diagnóstico lo produce <code>python -m src.eda.inspeccion</code> y cada tratamiento queda con su conteo en el registro de limpieza (<code>pipeline/logs/registro_limpieza.csv</code>).</p>
+<p>Antes de limpiar revisamos cada tabla de staging tal como llega de BigQuery, a su granularidad original. Cada ficha cuenta lo que encontramos y lo que decidimos; el diagnóstico lo produce <code>python -m src.eda.inspeccion</code>, y cada tratamiento queda con su conteo en el registro de limpieza (<code>pipeline/logs/registro_limpieza.csv</code>).</p>
+<div id="tbl-fuentes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fuentes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1: Resumen de la calidad por fuente
+</figcaption>
+<div aria-describedby="tbl-fuentes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -293,7 +299,7 @@ ul.task-list li input[type="checkbox"] {
 <th>Tablas en staging</th>
 <th>Filas</th>
 <th>Problema principal</th>
-<th>Decisión principal</th>
+<th>Qué decidimos</th>
 </tr>
 </thead>
 <tbody>
@@ -301,102 +307,105 @@ ul.task-list li input[type="checkbox"] {
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f01_sesnsp.html">F1. SESNSP</a></td>
 <td>2</td>
 <td>115,456</td>
-<td>Feminicidio en cero antes de que los estados lo registraran; víctimas sin sexo o edad</td>
-<td>Ceros iniciales a nulo; no se imputan sexo ni edad</td>
+<td>Ocho estados tienen feminicidio en cero antes de registrarlo, y hay víctimas sin sexo o sin edad.</td>
+<td>Convertimos esos ceros en faltantes y no imputamos sexo ni edad.</td>
 </tr>
 <tr class="even">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f02_endireh.html">F2. ENDIREH 2021</a></td>
-<td>1 (nueva en E2)</td>
+<td>1, nueva en E2</td>
 <td>3,960</td>
-<td>Solo 2016 y 2021</td>
-<td>Nulo fuera de los levantamientos</td>
+<td>Solo existe para 2016 y 2021.</td>
+<td>Dejamos vacíos los demás años.</td>
 </tr>
 <tr class="odd">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f03_conapo.html">F3. CONAPO</a></td>
 <td>1</td>
 <td>77,440</td>
-<td>Nombres de entidad cortos</td>
-<td>Equivalencias</td>
+<td>Tres entidades tienen nombre corto.</td>
+<td>Las unimos con la tabla de equivalencias.</td>
 </tr>
 <tr class="even">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f04_kworb.html">F4. Kworb</a></td>
-<td>2 (+2 en E2)</td>
+<td>2, más 2 en E2</td>
 <td>42,717</td>
-<td>Muestra de 300 canciones con cobertura baja (<a href="../../entregas/E2_eda_preparacion/datos_nuevos.html">detalle</a>)</td>
-<td>Ampliar al Top 200 completo</td>
+<td>La muestra de 300 canciones cubre poco del consumo (<a href="../../entregas/E2_eda_preparacion/datos_nuevos.html">detalle</a>).</td>
+<td>Ampliamos la fuente al Top 200 completo.</td>
 </tr>
 <tr class="odd">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f05_kaggle.html">F5. Kaggle</a></td>
 <td>1</td>
 <td>448,832</td>
-<td>Viral 50 sin streams; solo 2017–2021</td>
-<td>Solo para validar</td>
+<td>El Viral 50 no trae streams y solo cubre 2017–2021.</td>
+<td>La usamos solo para validar Kworb.</td>
 </tr>
 <tr class="even">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f06_misongyny.html">F6. MiSonGyny</a></td>
 <td>1</td>
 <td>4,913</td>
-<td>Encabezado como dato; etiquetas de prueba aparte</td>
-<td>Eliminar el encabezado; unir por id</td>
+<td>El encabezado se cargó como dato y las etiquetas de prueba vienen aparte.</td>
+<td>Eliminamos el encabezado y unimos las etiquetas por <code>id</code>.</td>
 </tr>
 <tr class="odd">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f08_musicbrainz.html">F8. MusicBrainz</a></td>
-<td>1 (+1 en E2)</td>
+<td>1, más 1 en E2</td>
 <td>112</td>
-<td>18 búsquedas devuelven a otro artista</td>
-<td>Descartar; “sin etiqueta”</td>
+<td>En 18 búsquedas el resultado es otro artista.</td>
+<td>Descartamos esos géneros y los dejamos “sin etiqueta”.</td>
 </tr>
 <tr class="even">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f11_google_trends.html">F11. Google Trends</a></td>
-<td>1 (+2 en E2)</td>
+<td>1, más 2 en E2</td>
 <td>14,336</td>
-<td>Solo había reguetón 2021</td>
-<td>Descargar género y artista por año</td>
+<td>Solo teníamos el reguetón de 2021.</td>
+<td>Descargamos el interés por género y por artista de cada año.</td>
 </tr>
 <tr class="odd">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f13_rnpdno.html">F13. RNPDNO</a></td>
 <td>1</td>
 <td>116,945</td>
-<td>32 % testado, 80 % sin fecha, sin identificador de persona</td>
-<td>Fuente secundaria; no se eliminan filas iguales</td>
+<td>El 32 % está testado, el 80 % no tiene fecha y no hay identificador de persona.</td>
+<td>Lo usamos como fuente secundaria y no eliminamos filas iguales.</td>
 </tr>
 <tr class="even">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f14_censo_iter.html">F14. Censo 2020</a></td>
 <td>1</td>
 <td>33</td>
-<td>Un solo año</td>
-<td>Se repite; fuera del análisis por redundante</td>
+<td>Es de un solo año.</td>
+<td>Lo repetimos en los demás años y lo sacamos del análisis por redundante.</td>
 </tr>
 <tr class="odd">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f15_coneval.html">F15. CONEVAL</a></td>
 <td>1</td>
 <td>1,062</td>
-<td>Formato de presentación</td>
-<td>Solo la fila 9; interpolar</td>
+<td>Conserva el formato de presentación.</td>
+<td>Tomamos solo la fila de pobreza e interpolamos los años intermedios.</td>
 </tr>
 <tr class="even">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f16_endutih.html">F16. ENDUTIH</a></td>
-<td>1 (+1 en E2)</td>
+<td>1, más 1 en E2</td>
 <td>58,410</td>
-<td>En E1 solo 2024; falta 2019 en INEGI</td>
-<td>Tabulados 2015–2025; 2019 interpolado</td>
+<td>En E1 solo teníamos 2024, e INEGI no publica 2019.</td>
+<td>Usamos los tabulados de 2015 a 2025 e interpolamos 2019.</td>
 </tr>
 <tr class="odd">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f17_mexico_evalua.html">F17. México Evalúa</a></td>
 <td>1</td>
 <td>314</td>
-<td>9 estados sin dato; un solo año</td>
-<td>Nulo; repetir 2023</td>
+<td>Nueve estados no tienen dato y solo existe 2023.</td>
+<td>Los dejamos vacíos y repetimos 2023 en los demás años.</td>
 </tr>
 <tr class="even">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f18_natural_earth.html">F18. Natural Earth</a></td>
 <td>1</td>
 <td>33</td>
-<td>Fila <code>MX-X01~</code> sin estado</td>
-<td>Eliminar</td>
+<td>Tiene una fila, <code>MX-X01~</code>, que no es un estado.</td>
+<td>La eliminamos.</td>
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 
 
 

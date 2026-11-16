@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F11. Google Trends — interés por estado – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F11. Google Trends · interés por estado – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -265,9 +265,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#por-qué-se-agregaron-tablas-en-e2" id="toc-por-qué-se-agregaron-tablas-en-e2" class="nav-link active" data-scroll-target="#por-qué-se-agregaron-tablas-en-e2">Por qué se agregaron tablas en E2</a></li>
-  <li><a href="#qué-encontró-la-inspección" id="toc-qué-encontró-la-inspección" class="nav-link" data-scroll-target="#qué-encontró-la-inspección">Qué encontró la inspección</a></li>
-  <li><a href="#qué-se-decidió" id="toc-qué-se-decidió" class="nav-link" data-scroll-target="#qué-se-decidió">Qué se decidió</a></li>
+  <li><a href="#por-qué-agregamos-tablas-en-e2" id="toc-por-qué-agregamos-tablas-en-e2" class="nav-link active" data-scroll-target="#por-qué-agregamos-tablas-en-e2">Por qué agregamos tablas en E2</a></li>
+  <li><a href="#qué-encontramos" id="toc-qué-encontramos" class="nav-link" data-scroll-target="#qué-encontramos">Qué encontramos</a></li>
+  <li><a href="#qué-decidimos" id="toc-qué-decidimos" class="nav-link" data-scroll-target="#qué-decidimos">Qué decidimos</a></li>
   </ul>
 </nav>
     </div>
@@ -276,7 +276,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F11. Google Trends — interés por estado</h1>
+<h1 class="title">F11. Google Trends · interés por estado</h1>
 </div>
 
 
@@ -293,7 +293,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Interés de búsqueda por estado. Es la base para repartir el consumo nacional entre entidades.</p>
+<p>El interés de búsqueda por estado es la base para repartir el consumo nacional entre entidades.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 14%">
@@ -311,7 +311,7 @@ ul.task-list li input[type="checkbox"] {
 <th>Columnas</th>
 <th>Llave natural</th>
 <th>Filas idénticas</th>
-<th>Llave repetida</th>
+<th>Llaves repetidas</th>
 <th>Origen</th>
 </tr>
 </thead>
@@ -332,7 +332,7 @@ ul.task-list li input[type="checkbox"] {
 <td>macrogénero, año y estado</td>
 <td>0</td>
 <td>0</td>
-<td><strong>E2</strong></td>
+<td>E2</td>
 </tr>
 <tr class="odd">
 <td><code>stg_trends_artista_anio</code></td>
@@ -341,63 +341,53 @@ ul.task-list li input[type="checkbox"] {
 <td>artista, año y estado</td>
 <td>0</td>
 <td>0</td>
-<td><strong>E2</strong></td>
+<td>E2</td>
 </tr>
 </tbody>
 </table>
-<section id="por-qué-se-agregaron-tablas-en-e2" class="level2">
-<h2 class="anchored" data-anchor-id="por-qué-se-agregaron-tablas-en-e2">Por qué se agregaron tablas en E2</h2>
-<p>El diseño de E1 reparte el consumo con el Trends del <strong>artista</strong> en cada año y, si no lo hay, con el de su <strong>género</strong>. En staging solo existía reguetón de 2021. En E2 se descargó un tema por macrogénero (7) y por artista del top 50 de cada año (109 artistas), una descarga por año de 2015 a 2025.</p>
+<section id="por-qué-agregamos-tablas-en-e2" class="level2">
+<h2 class="anchored" data-anchor-id="por-qué-agregamos-tablas-en-e2">Por qué agregamos tablas en E2</h2>
+<p>E1 definió repartir el consumo con el Trends del artista en cada año y, si no lo hay, con el de su género, pero en staging solo estaba el reguetón de 2021. En E2 descargamos un tema por cada uno de los 7 macrogéneros y uno por cada artista del top 50 de cada año (109 artistas), una vez por año de 2015 a 2025. El código de la descarga está en <code>pipeline/src/ingestion/trends_descarga.js</code>.</p>
 </section>
-<section id="qué-encontró-la-inspección" class="level2">
-<h2 class="anchored" data-anchor-id="qué-encontró-la-inspección">Qué encontró la inspección</h2>
-<ul>
-<li><strong>Las 77 descargas por género y las 370 por artista traen los 32 estados.</strong> Sin nulos ni duplicados.</li>
-<li><strong>Validación:</strong> reguetón 2021 descargado en E2 contra la tabla de E1 da Spearman 0.99, con una diferencia media de 1.1 puntos.</li>
-<li><strong>Estados sin valor:</strong> regional mexicano tiene 17 celdas en cero y electrónica 43, en estados con poco volumen. 14 de las 370 descargas por artista tienen menos de 28 estados con valor.</li>
-<li><strong>Nombres en español de Trends</strong> (Veracruz, Estado de México, Michoacán) distintos al SESNSP. La Ciudad de México usa el código anterior <code>MX-DIF</code>.</li>
-</ul>
+<section id="qué-encontramos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
+<p>Las 77 descargas por género y las 370 por artista traen los 32 estados, sin nulos ni duplicados. El reguetón de 2021 descargado en E2 coincide con el de E1, con un Spearman de 0.99 y una diferencia media de 1.1 puntos. Algunos estados aparecen sin valor: el regional mexicano tiene 17 celdas en cero y la electrónica 43, en estados con poco volumen, y 14 de las 370 descargas por artista tienen menos de 28 estados con valor. Los nombres en español de Trends (Veracruz, Estado de México, Michoacán) difieren del SESNSP, y la Ciudad de México usa el código anterior <code>MX-DIF</code>.</p>
 </section>
-<section id="qué-se-decidió" class="level2">
-<h2 class="anchored" data-anchor-id="qué-se-decidió">Qué se decidió</h2>
+<section id="qué-decidimos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Problema</th>
-<th>Afecta</th>
-<th>Decisión</th>
-<th>Por qué</th>
+<th>Cuánto afecta</th>
+<th>Qué decidimos y por qué</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Descargas con pocos estados</td>
-<td>14 de artista, 3 de género</td>
-<td>Bajar al siguiente nivel del reparto</td>
-<td>Regla de E1: se necesitan 28 entidades con valor</td>
+<td>14 de artista y 3 de género</td>
+<td>Pasamos al siguiente nivel del reparto, como define E1: hacen falta 28 entidades con valor.</td>
 </tr>
 <tr class="even">
 <td>Nombres distintos</td>
 <td>3 entidades</td>
-<td>Unir por el código ISO, no por nombre</td>
-<td>El código es estable entre fuentes</td>
+<td>Unimos por el código ISO y no por el nombre, porque el código es estable entre fuentes.</td>
 </tr>
 <tr class="odd">
-<td><code>MX-DIF</code></td>
+<td>Código <code>MX-DIF</code></td>
 <td>1 entidad</td>
-<td>Guardar <code>MX-CMX</code> en <code>dim_entidad</code></td>
-<td>Es el código ISO vigente</td>
+<td>Guardamos <code>MX-CMX</code> en <code>dim_entidad</code>, que es el código ISO vigente.</td>
 </tr>
 </tbody>
 </table>
-<p>Resultado: el 95 % de los streams se reparte con el Trends del artista, el 2.8 % con el del género y el 2.3 % con los usuarios de internet.</p>
-<p>Las cifras se reproducen con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code> desde <code>pipeline/</code>.</p>
+<p>Con este reparto, el 95 % de los streams usa el Trends del propio artista, el 2.8 % el de su género y el 2.3 % solo los usuarios de internet.</p>
+<p>Las cifras se reproducen desde <code>pipeline/</code> con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code>.</p>
 <p><a href="../../../entregas/E2_eda_preparacion/calidad.html">← Volver a calidad por fuente</a></p>
 
 

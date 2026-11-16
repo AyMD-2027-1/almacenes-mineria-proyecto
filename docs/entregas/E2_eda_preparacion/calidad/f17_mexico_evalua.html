@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F17. México Evalúa — impunidad – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F17. México Evalúa · impunidad – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -265,8 +265,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#qué-encontró-la-inspección" id="toc-qué-encontró-la-inspección" class="nav-link active" data-scroll-target="#qué-encontró-la-inspección">Qué encontró la inspección</a></li>
-  <li><a href="#qué-se-decidió" id="toc-qué-se-decidió" class="nav-link" data-scroll-target="#qué-se-decidió">Qué se decidió</a></li>
+  <li><a href="#qué-encontramos" id="toc-qué-encontramos" class="nav-link active" data-scroll-target="#qué-encontramos">Qué encontramos</a></li>
+  <li><a href="#qué-decidimos" id="toc-qué-decidimos" class="nav-link" data-scroll-target="#qué-decidimos">Qué decidimos</a></li>
   </ul>
 </nav>
     </div>
@@ -275,7 +275,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F17. México Evalúa — impunidad</h1>
+<h1 class="title">F17. México Evalúa · impunidad</h1>
 </div>
 
 
@@ -292,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Índices de impunidad por delito y entidad del reporte Hallazgos 2023, extraídos del PDF.</p>
+<p>Son los índices de impunidad por delito y entidad del reporte Hallazgos 2023, extraídos del PDF.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -309,7 +309,7 @@ ul.task-list li input[type="checkbox"] {
 <th>Columnas</th>
 <th>Llave natural</th>
 <th>Filas idénticas</th>
-<th>Llave repetida</th>
+<th>Llaves repetidas</th>
 </tr>
 </thead>
 <tbody>
@@ -323,53 +323,44 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<section id="qué-encontró-la-inspección" class="level2">
-<h2 class="anchored" data-anchor-id="qué-encontró-la-inspección">Qué encontró la inspección</h2>
-<ul>
-<li><strong>12 delitos;</strong> para feminicidio hay 24 filas: la nacional y 23 estados. <strong>9 estados no tienen dato.</strong></li>
-<li><strong>Nombres de entidad cortos</strong> (ESTADO DE MEXICO, MICHOACAN, VERACRUZ, COAHUILA) y “NACIONAL”.</li>
-<li><strong>Un solo año:</strong> 2023.</li>
-</ul>
+<section id="qué-encontramos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
+<p>El reporte tiene 12 delitos. Para el feminicidio hay 24 filas, la nacional y 23 estados, así que nueve estados no tienen dato. Algunas entidades aparecen con nombre corto (ESTADO DE MEXICO, MICHOACAN, VERACRUZ, COAHUILA) y hay una fila “NACIONAL”. El índice es de un solo año, 2023.</p>
 </section>
-<section id="qué-se-decidió" class="level2">
-<h2 class="anchored" data-anchor-id="qué-se-decidió">Qué se decidió</h2>
+<section id="qué-decidimos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Problema</th>
-<th>Afecta</th>
-<th>Decisión</th>
-<th>Por qué</th>
+<th>Cuánto afecta</th>
+<th>Qué decidimos y por qué</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Nombres distintos</td>
+<td>Nombres de entidad distintos</td>
 <td>4 entidades</td>
-<td>Tabla de equivalencias</td>
-<td>Une sin perder filas</td>
+<td>Los unimos con la tabla de equivalencias, sin perder filas.</td>
 </tr>
 <tr class="even">
 <td>Estados sin medición</td>
 <td>9 de 32</td>
-<td>Dejar nulo</td>
-<td>No hay forma de estimarlo</td>
+<td>Los dejamos vacíos, porque no hay forma de estimarlos.</td>
 </tr>
 <tr class="odd">
-<td>Solo 2023</td>
+<td>Un solo año</td>
 <td>230 de 352 celdas</td>
-<td>Repetir 2023 en los demás años</td>
-<td><strong>Es la decisión más débil</strong>; la impunidad puede cambiar más que la pobreza</td>
+<td>Repetimos 2023 en los demás años. Es la decisión más débil, porque la impunidad puede cambiar más que la pobreza.</td>
 </tr>
 </tbody>
 </table>
-<p>Las cifras se reproducen con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code> desde <code>pipeline/</code>.</p>
+<p>Las cifras se reproducen desde <code>pipeline/</code> con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code>.</p>
 <p><a href="../../../entregas/E2_eda_preparacion/calidad.html">← Volver a calidad por fuente</a></p>
 
 

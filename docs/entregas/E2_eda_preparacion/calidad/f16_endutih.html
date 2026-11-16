@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F16. ENDUTIH — usuarios de internet – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F16. ENDUTIH · usuarios de internet – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -265,9 +265,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#por-qué-se-agregó-una-tabla-en-e2" id="toc-por-qué-se-agregó-una-tabla-en-e2" class="nav-link active" data-scroll-target="#por-qué-se-agregó-una-tabla-en-e2">Por qué se agregó una tabla en E2</a></li>
-  <li><a href="#qué-encontró-la-inspección" id="toc-qué-encontró-la-inspección" class="nav-link" data-scroll-target="#qué-encontró-la-inspección">Qué encontró la inspección</a></li>
-  <li><a href="#qué-se-decidió" id="toc-qué-se-decidió" class="nav-link" data-scroll-target="#qué-se-decidió">Qué se decidió</a></li>
+  <li><a href="#por-qué-agregamos-una-tabla-en-e2" id="toc-por-qué-agregamos-una-tabla-en-e2" class="nav-link active" data-scroll-target="#por-qué-agregamos-una-tabla-en-e2">Por qué agregamos una tabla en E2</a></li>
+  <li><a href="#qué-encontramos" id="toc-qué-encontramos" class="nav-link" data-scroll-target="#qué-encontramos">Qué encontramos</a></li>
+  <li><a href="#qué-decidimos" id="toc-qué-decidimos" class="nav-link" data-scroll-target="#qué-decidimos">Qué decidimos</a></li>
   </ul>
 </nav>
     </div>
@@ -276,7 +276,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F16. ENDUTIH — usuarios de internet</h1>
+<h1 class="title">F16. ENDUTIH · usuarios de internet</h1>
 </div>
 
 
@@ -293,7 +293,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Encuesta de disponibilidad y uso de tecnologías de la información. Da los usuarios de internet de cada entidad, que entran en el peso del reparto del consumo.</p>
+<p>La encuesta de disponibilidad y uso de tecnologías de la información da los usuarios de internet de cada estado, que entran en el peso del reparto del consumo.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -317,10 +317,10 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td><code>stg_endutih_usuarios</code></td>
 <td>58,080</td>
-<td>5 leídas (entidad, sexo, edad, factor de expansión, uso de internet)</td>
+<td>5 leídas: entidad, sexo, edad, factor de expansión y uso de internet</td>
 <td>No está entre las columnas leídas</td>
 <td>1,146</td>
-<td>E1, microdato 2024</td>
+<td>E1, microdato de 2024</td>
 </tr>
 <tr class="even">
 <td><code>stg_endutih_usuarios_entidad_anio</code></td>
@@ -328,68 +328,57 @@ ul.task-list li input[type="checkbox"] {
 <td>4</td>
 <td>año y entidad</td>
 <td>0</td>
-<td><strong>E2</strong>, tabulados 2015–2025</td>
+<td>E2, tabulados de 2015 a 2025</td>
 </tr>
 </tbody>
 </table>
-<section id="por-qué-se-agregó-una-tabla-en-e2" class="level2">
-<h2 class="anchored" data-anchor-id="por-qué-se-agregó-una-tabla-en-e2">Por qué se agregó una tabla en E2</h2>
-<p>En E1 solo estaba el microdato de 2024, y el reparto usaba esos usuarios para toda la década. Pero el acceso creció de 56 % (2015) a 87 % (2025) y de forma desigual: Chiapas pasó de 33 % a 74 % y la Ciudad de México de 73 % a 96 %. Con 2024 para todo, en 2015 el peso de Chiapas quedaba 36 % inflado y el de la Ciudad de México 27 % por debajo.</p>
-<p>Se tomaron los tabulados de INEGI “Usuarios de internet, por entidad federativa, según sexo” de cada año (<code>src/ingestion/endutih.py</code>, columna “Total, Absolutos”). <strong>INEGI no publica tabulados de 2019.</strong></p>
+<section id="por-qué-agregamos-una-tabla-en-e2" class="level2">
+<h2 class="anchored" data-anchor-id="por-qué-agregamos-una-tabla-en-e2">Por qué agregamos una tabla en E2</h2>
+<p>En E1 solo teníamos el microdato de 2024, así que el reparto usaba esos usuarios para toda la década. Pero el acceso creció de 56 % en 2015 a 87 % en 2025, y de forma desigual: Chiapas pasó de 33 a 74 % y la Ciudad de México de 73 a 96 %. Con 2024 para todo, en 2015 el peso de Chiapas quedaba 36 % inflado y el de la Ciudad de México 27 % por debajo. Tomamos entonces los tabulados de INEGI “Usuarios de internet, por entidad federativa, según sexo” de cada año con <code>src/ingestion/endutih.py</code>; INEGI no publica tabulados de 2019.</p>
 </section>
-<section id="qué-encontró-la-inspección" class="level2">
-<h2 class="anchored" data-anchor-id="qué-encontró-la-inspección">Qué encontró la inspección</h2>
-<ul>
-<li><strong>Microdato 2024:</strong> sin nulos ni marcadores. Las 1,146 filas idénticas son personas distintas: el identificador (vivienda, hogar y persona) no se leyó y el factor de expansión lo comparten las personas de una misma unidad de muestreo. El porcentaje ponderado da 83.1 %, la cifra de INEGI.</li>
-<li><strong>Tabulados:</strong> 10 años × 33 filas (32 entidades y la nacional), sin nulos. En cada año la suma de los estados da el total nacional; los usuarios pasan de 61.4 millones en 2015 a 104.9 millones en 2025.</li>
-<li><strong>Validación cruzada:</strong> en 2024, el porcentaje de los tabulados (sobre la población de 6 años y más de CONAPO) difiere en promedio 1.7 puntos del microdato, por la diferencia entre la población de CONAPO y la estimación de INEGI.</li>
-</ul>
+<section id="qué-encontramos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
+<p>El microdato de 2024 no tiene nulos ni marcadores. Sus 1,146 filas idénticas son personas distintas: el identificador (vivienda, hogar y persona) no está entre las columnas que leímos, y el factor de expansión lo comparten las personas de una misma unidad de muestreo. Con todas sus filas, el porcentaje ponderado de usuarios da 83.1 %, la cifra de INEGI. Los tabulados tienen 33 filas por año, sin nulos, y en cada año la suma de los estados da el total nacional, que pasa de 61.4 millones en 2015 a 104.9 millones en 2025. En 2024, el porcentaje calculado con los tabulados difiere en promedio 1.7 puntos del microdato, por la diferencia entre la población de CONAPO y la estimación de INEGI.</p>
 </section>
-<section id="qué-se-decidió" class="level2">
-<h2 class="anchored" data-anchor-id="qué-se-decidió">Qué se decidió</h2>
+<section id="qué-decidimos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Problema</th>
-<th>Afecta</th>
-<th>Decisión</th>
-<th>Por qué</th>
+<th>Cuánto afecta</th>
+<th>Qué decidimos y por qué</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Filas idénticas en el microdato</td>
 <td>1,146</td>
-<td>Conservar</td>
-<td>No son duplicados; quitarlas cambiaría el 83.1 % validado</td>
+<td>Las conservamos, porque no son duplicados y quitarlas cambiaría el 83.1 % validado.</td>
 </tr>
 <tr class="even">
 <td>Un solo año en E1</td>
 <td>Toda la década</td>
-<td>Usar los tabulados 2015–2025</td>
-<td>El reparto necesita los usuarios de cada año</td>
+<td>Usamos los tabulados de 2015 a 2025, porque el reparto necesita los usuarios de cada año.</td>
 </tr>
 <tr class="odd">
 <td>Falta 2019</td>
 <td>32 de 352 celdas</td>
-<td>Interpolar entre 2018 y 2020</td>
-<td>INEGI no lo publica; el crecimiento entre años es gradual</td>
+<td>Lo interpolamos entre 2018 y 2020, porque INEGI no lo publica y el crecimiento entre años es gradual.</td>
 </tr>
 <tr class="even">
-<td>Porcentaje</td>
+<td>Porcentaje de usuarios</td>
 <td>—</td>
-<td>Usuarios / población de 6 años y más de CONAPO</td>
-<td>Es el universo de la encuesta</td>
+<td>Lo calculamos sobre la población de 6 años y más de CONAPO, que es el universo de la encuesta.</td>
 </tr>
 </tbody>
 </table>
-<p>Las cifras se reproducen con <code>python -m src.ingestion.endutih</code>, <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code> desde <code>pipeline/</code>.</p>
+<p>Las cifras se reproducen desde <code>pipeline/</code> con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code>.</p>
 <p><a href="../../../entregas/E2_eda_preparacion/calidad.html">← Volver a calidad por fuente</a></p>
 
 

@@ -306,70 +306,70 @@ ul.task-list li input[type="checkbox"] {
 <p>La preparación parte de lo que encontró el <a href="../../entregas/E2_eda_preparacion/eda.html">análisis exploratorio</a>. Cada tratamiento se diagnosticó primero, se aplicó con una regla declarada en <code>pipeline/config.yaml</code> o en el código, y quedó en el <strong>registro de limpieza</strong> con su conteo y su justificación. El pipeline lo vuelve a escribir en cada corrida (<code>pipeline/logs/registro_limpieza.csv</code>).</p>
 <section id="calidad-y-tratamiento-del-ruido" class="level2">
 <h2 class="anchored" data-anchor-id="calidad-y-tratamiento-del-ruido">Calidad y tratamiento del ruido</h2>
-<p>Resumen por tipo de problema, en el orden de la tabla de la entrega. El detalle por fuente está en <a href="../../entregas/E2_eda_preparacion/calidad.html">Calidad por fuente</a>.</p>
+<p>La tabla resume los problemas por tipo, en el orden que propone la entrega. El detalle de cada fuente está en <a href="../../entregas/E2_eda_preparacion/calidad.html">Calidad por fuente</a>.</p>
+<div id="tbl-calidad" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-calidad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1: Calidad de los datos y tratamiento por tipo de problema
+</figcaption>
+<div aria-describedby="tbl-calidad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Problema</th>
-<th>Qué se encontró</th>
-<th>Qué se decidió</th>
-<th>Por qué</th>
+<th>Qué encontramos</th>
+<th>Qué decidimos y por qué</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Valores faltantes</strong></td>
-<td>Víctimas: el SESNSP no reporta víctimas de delitos sexuales ni de violencia familiar (38,016 filas); 11.3 % de las víctimas sin sexo y 10.2 % de las mujeres sin edad. RNPDNO: 70 % de las mujeres sin fecha o entidad, y la fuente termina en agosto de 2023. Contexto: cada indicador solo existe en sus años de medición</td>
-<td>No imputar víctimas, sexo ni edad; excluir del conteo a las mujeres sin fecha o entidad; no rellenar con cero los meses sin RNPDNO. En el contexto, interpolar entre mediciones y repetir la más cercana en los extremos; la ENDIREH queda nula fuera de 2016 y 2021</td>
-<td>Distinguir <strong>ceros estructurales</strong> (la fuente no mide ese dato) de <strong>faltantes</strong> (el dato existe y no se conoce). Imputar víctimas inventaría personas; los indicadores de contexto cambian despacio y la dimensión necesita un valor por año</td>
+<td>Valores faltantes</td>
+<td>El SESNSP no reporta víctimas de delitos sexuales ni de violencia familiar (38,016 filas), el 11.3 % de las víctimas no tiene sexo y el 10.2 % de las mujeres no tiene edad. En el RNPDNO, el 70 % de las mujeres no tiene fecha o entidad y la fuente termina en agosto de 2023. Cada indicador de contexto existe solo en sus años de medición.</td>
+<td>Distinguimos los ceros estructurales, cuando la fuente no mide el dato, de los faltantes, cuando el dato existe pero no se conoce. No imputamos víctimas, sexo ni edad porque eso inventaría personas, y no rellenamos con cero los meses sin RNPDNO. En el contexto interpolamos entre mediciones y repetimos la más cercana en los extremos, porque esos indicadores cambian despacio; la ENDIREH queda vacía fuera de 2016 y 2021.</td>
 </tr>
 <tr class="even">
-<td><strong>Ceros que son faltantes</strong></td>
-<td>8 estados empiezan la serie de feminicidio con 12 meses o más en cero (900 celdas)</td>
-<td>Volver nulos esos ceros</td>
-<td>La fiscalía todavía no clasificaba el delito; un cero diría que no hubo feminicidios</td>
+<td>Ceros que en realidad faltan</td>
+<td>Ocho estados empiezan la serie de feminicidio con 12 meses o más en cero (900 celdas).</td>
+<td>Convertimos esos ceros en faltantes, porque la fiscalía todavía no clasificaba el delito y un cero diría que no hubo feminicidios.</td>
 </tr>
 <tr class="odd">
-<td><strong>Duplicados</strong></td>
-<td>Ninguna llave repetida en las fuentes con llave. Filas idénticas en el RNPDNO (4,354) y la ENDUTIH (1,146)</td>
-<td><strong>Conservarlas</strong></td>
-<td>No hay identificador de persona: en el RNPDNO se quitaron los nombres al cargar staging y casi todas esas filas están testadas; son personas distintas que se ven iguales</td>
+<td>Duplicados</td>
+<td>No hay llaves repetidas en las fuentes que tienen llave. Hay filas idénticas en el RNPDNO (4,354) y en la ENDUTIH (1,146).</td>
+<td>Las conservamos. Ninguna de las dos fuentes trae un identificador de persona, y en el RNPDNO casi todas esas filas están testadas: son personas distintas que se ven iguales.</td>
 </tr>
 <tr class="even">
-<td><strong>Atípicos</strong></td>
-<td>Streams: 553 meses fuera de las cercas de Tukey. Violencia: 320 meses atípicos dentro de su estado (|z robusto| &gt; 3.5) y 625 fuera de las cercas entre estados. RNPDNO: 7 edades mayores a 110 años</td>
-<td>Conservar los de streams y violencia; analizar streams en log10 y violencia en tasas. Las edades imposibles pasan a nulas</td>
-<td>Los éxitos musicales y los picos de denuncias son el fenómeno de P1 y P2; una edad de 1,832 años es un error de captura</td>
+<td>Atípicos</td>
+<td>Hay 553 meses de streams fuera de las cercas de Tukey, 320 meses de violencia atípicos dentro de su estado (|z robusto| &gt; 3.5) y 625 fuera de las cercas entre estados. El RNPDNO tiene 7 edades mayores a 110 años.</td>
+<td>Conservamos los atípicos de streams y de violencia, porque los éxitos y los picos de denuncias son el fenómeno de P1 y P2; comparamos los streams en escala logarítmica y la violencia en tasas. Las edades imposibles pasan a faltantes, porque una edad de 1,832 años es un error de captura.</td>
 </tr>
 <tr class="odd">
-<td><strong>Inconsistencias de categorías</strong></td>
-<td>Nombres de entidad distintos entre fuentes (ESTADO DE MEXICO, VERACRUZ, DISTRITO FEDERAL…); 325,248 filas de delitos sin tipo de violencia de género; el encabezado de MiSonGyny cargado como dato</td>
-<td>Tabla de equivalencias a la clave INEGI; excluir los delitos fuera del mapeo LGAMVLV de E1; eliminar el encabezado</td>
-<td>Se unen todas las entidades sin perder filas; los delitos como robo no responden P1–P4</td>
+<td>Categorías inconsistentes</td>
+<td>Los nombres de entidad cambian entre fuentes (ESTADO DE MEXICO, VERACRUZ, DISTRITO FEDERAL), 325,248 filas son delitos sin relación con la violencia de género y el encabezado de MiSonGyny se cargó como dato.</td>
+<td>Unimos las entidades con una tabla de equivalencias a la clave INEGI, sin perder filas; excluimos los delitos fuera del mapeo de la LGAMVLV de E1, porque no responden P1–P4, y eliminamos el encabezado.</td>
 </tr>
 <tr class="even">
-<td><strong>Tipos, unidades y rangos</strong></td>
-<td>Todo llega como texto; las celdas de Kworb mezclan posición y streams; las semanas cruzan de mes</td>
-<td>Convertir tipos; separar la celda; repartir cada semana entre meses por días</td>
-<td>El reparto conserva exacta la suma de streams</td>
+<td>Tipos, unidades y rangos</td>
+<td>Todo llega como texto, las celdas de Kworb mezclan posición y streams, y las semanas cruzan de un mes a otro.</td>
+<td>Convertimos los tipos, separamos la celda y repartimos cada semana entre meses según sus días, lo que conserva exacta la suma de streams.</td>
 </tr>
 <tr class="odd">
-<td><strong>Llaves que no coinciden</strong></td>
-<td>258 de 300 canciones no están en MiSonGyny; 18 artistas de MusicBrainz eran otra persona; la fila <code>MX-X01~</code> de Natural Earth no es un estado</td>
-<td><code>es_misogina</code> nulo; descartar el género de esos artistas (“sin etiqueta”); eliminar la fila</td>
-<td>Solo se usa la etiqueta humana; un género de otro artista es peor que ninguno</td>
+<td>Llaves que no coinciden</td>
+<td>258 de 300 canciones no están en MiSonGyny, 18 búsquedas de MusicBrainz devolvieron a otro artista y la fila <code>MX-X01~</code> de Natural Earth no es un estado.</td>
+<td>Dejamos <code>es_misogina</code> vacío, porque solo usamos la etiqueta humana; descartamos el género de esos 18 artistas, porque un género equivocado es peor que ninguno, y eliminamos la fila.</td>
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 <section id="registro-de-limpieza" class="level3">
 <h3 class="anchored" data-anchor-id="registro-de-limpieza">Registro de limpieza</h3>
-<p>Así lo escribe el pipeline (se reproduce con <code>python run_pipeline.py --solo limpieza</code>):</p>
+<p>La tabla siguiente es el registro tal como lo escribe el pipeline; se reproduce con <code>python run_pipeline.py --solo limpieza</code>.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 14%">
@@ -623,13 +623,13 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="reducción-de-dimensionalidad" class="level2">
 <h2 class="anchored" data-anchor-id="reducción-de-dimensionalidad">Reducción de dimensionalidad</h2>
-<p><strong>Criterios</strong> (en <code>config.yaml</code>): una asociación entre categóricas cuenta si su <em>p</em> ajustada por Holm es menor a 0.05 <strong>y</strong> su V de Cramér llega a 0.10; dos numéricas son redundantes si |ρ de Spearman| ≥ 0.85 y se conserva la más cercana a las preguntas de E0; el PCA busca 85 % de varianza acumulada.</p>
+<p>Los criterios están en <code>config.yaml</code>. Una asociación entre categóricas cuenta si su <em>p</em> ajustada por Holm es menor a 0.05 y además su V de Cramér llega a 0.10. Dos variables numéricas son redundantes si su ρ de Spearman llega a 0.85 en valor absoluto, y en ese caso conservamos la más cercana a las preguntas de E0. El PCA busca explicar el 85 % de la varianza.</p>
 <section id="chi-cuadrada-con-v-de-cramér" class="level3">
 <h3 class="anchored" data-anchor-id="chi-cuadrada-con-v-de-cramér">Chi-cuadrada con V de Cramér</h3>
 <div id="tbl-chi2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-chi2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;1: Pruebas de independencia. Las categorías raras se agruparon para acercarse a la frecuencia esperada mínima; en las tablas de 2×2 se reporta además la prueba exacta de Fisher.
+Tabla&nbsp;2: Pruebas de independencia. Las categorías raras se agruparon para acercarse a la frecuencia esperada mínima; en las tablas de 2×2 se reporta además la prueba exacta de Fisher.
 </figcaption>
 <div aria-describedby="tbl-chi2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -745,7 +745,7 @@ Figura&nbsp;2: Sedimentación y cargas de las dos primeras componentes.
 <div id="tbl-pca" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;2: Varianza y cargas del PCA
+Tabla&nbsp;3: Varianza y cargas del PCA
 </figcaption>
 <div aria-describedby="tbl-pca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -781,8 +781,8 @@ Tabla&nbsp;2: Varianza y cargas del PCA
 </div>
 </figure>
 </div>
-<p><strong>Decisión: conservar las variables originales.</strong> Dos componentes alcanzan el objetivo de 85 %, pero con cuatro variables eso ahorra muy poco, y PC2 es prácticamente la población, que ya está en la dimensión. Las originales se interpretan directo y la dimensión de contexto del DW las necesita por separado. El PCA confirma lo que mostró la correlación: internet y pobreza miden casi lo mismo entre estados.</p>
-<p><strong>Fuga de información.</strong> E2 no entrena modelos, así que el PCA y la estandarización se ajustan con todas las entidades. La función <code>ajustar_pca()</code> recibe la tabla con la que se ajusta: en el modelado se le pasará solo la partición de entrenamiento y las demás se transformarán con el mismo objeto. Lo mismo aplica a la imputación del contexto, que deberá recalcularse con los años de entrenamiento si la partición es temporal.</p>
+<p>Decidimos conservar las variables originales. Dos componentes alcanzan el objetivo de 85 %, pero con cuatro variables eso ahorra muy poco, y la segunda componente es prácticamente la población, que ya está en la dimensión. Las variables originales se interpretan directo y la dimensión de contexto del DW las necesita por separado. Lo que sí deja el PCA es la confirmación de lo que mostró la correlación: entre estados, internet y pobreza miden casi lo mismo.</p>
+<p>Para evitar fuga de información, el PCA y la estandarización se ajustan con todos los estados solo porque E2 no entrena modelos. La función <code>ajustar_pca()</code> recibe la tabla con la que se ajusta, de modo que en el modelado le pasaremos únicamente la partición de entrenamiento y transformaremos las demás con el mismo objeto. Lo mismo vale para la imputación del contexto, que habrá que recalcular con los años de entrenamiento si la partición es temporal.</p>
 </section>
 <section id="tabla-de-decisión-por-variable" class="level3">
 <h3 class="anchored" data-anchor-id="tabla-de-decisión-por-variable">Tabla de decisión por variable</h3>
@@ -1193,15 +1193,15 @@ Tabla&nbsp;2: Varianza y cargas del PCA
 </section>
 <section id="muestreo" class="level2">
 <h2 class="anchored" data-anchor-id="muestreo">Muestreo</h2>
-<p><strong>No aplica.</strong> El dataset limpio tiene 89,817 filas de violencia, 7,429 de consumo, 300 canciones y 352 de contexto: cabe completo en memoria, el pipeline local corre en segundos y la carga al DW se hace con <em>load jobs</em>, que BigQuery no cobra. No hay una variable objetivo con clases desbalanceadas ni redundancia fuerte entre registros. La etapa <code>muestreo</code> del pipeline lo comprueba en cada corrida (falla si una tabla pasa de 5 millones de filas) y lo deja en el registro de etapas. Lo único que se muestrea es la copia pequeña que se sube al repositorio (<code>pipeline/data/sample/</code>, con semilla fija).</p>
+<p>El muestreo no aplica. El dataset limpio tiene 89,817 filas de violencia, 7,429 de consumo, 300 canciones y 352 de contexto; cabe completo en memoria, el pipeline local corre en segundos y la carga al DW se hace con <em>load jobs</em>, que BigQuery no cobra. Tampoco hay una variable objetivo con clases desbalanceadas ni redundancia fuerte entre registros. La etapa <code>muestreo</code> del pipeline lo comprueba en cada corrida, falla si una tabla pasa de 5 millones de filas y lo anota en el registro de etapas. Lo único que muestreamos es la copia pequeña que se sube al repositorio, en <code>pipeline/data/sample/</code>, con semilla fija.</p>
 </section>
 <section id="verificación-antes-contra-después" class="level2">
 <h2 class="anchored" data-anchor-id="verificación-antes-contra-después">Verificación: antes contra después</h2>
-<p>Se recalcularon los estadísticos de cuatro variables y los hallazgos principales del EDA sobre el dataset limpio.</p>
+<p>Volvimos a calcular los estadísticos de cuatro variables y los hallazgos principales del EDA sobre el dataset limpio.</p>
 <div id="tbl-verificacion" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-verificacion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;3: Estadísticos antes y después de limpiar, con la prueba de Kolmogorov–Smirnov entre las dos distribuciones
+Tabla&nbsp;4: Estadísticos antes y después de limpiar, con la prueba de Kolmogorov–Smirnov entre las dos distribuciones
 </figcaption>
 <div aria-describedby="tbl-verificacion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1283,7 +1283,7 @@ Figura&nbsp;3: Hallazgos del EDA antes y después de limpiar.
 </figcaption>
 </figure>
 </div>
-<p><strong>Conclusión: la preparación conserva el fenómeno.</strong> La entropía del macrogénero y el Gini entre artistas quedan exactamente iguales (<a href="#fig-antes-despues" class="quarto-xref">Figura&nbsp;3</a>): el hallazgo principal de la música no depende de la limpieza. El cambio en los streams es el esperado (los ceros no eran consumo) y no altera la forma de la distribución. El único hallazgo que cambia es la desigualdad del feminicidio entre estados en 2015–2018 (Gini de 0.54 a 0.38 en 2015): no es una alerta sino una corrección, porque esos ceros venían de estados que todavía no registraban el delito. La tendencia se conserva y el pipeline falla si un hallazgo cambia de dirección.</p>
+<p>La preparación conserva el fenómeno que estudiamos. La entropía del macrogénero y el Gini entre artistas quedan exactamente iguales (<a href="#fig-antes-despues" class="quarto-xref">Figura&nbsp;3</a>), así que el hallazgo principal de la música no depende de la limpieza. El cambio en los streams es el esperado, porque los ceros no eran consumo, y no altera la forma de la distribución. El único hallazgo que cambia es la desigualdad del feminicidio entre estados en 2015–2018, cuyo Gini de 2015 baja de 0.54 a 0.38. No es una señal de alerta sino una corrección, porque esos ceros venían de estados que todavía no registraban el delito, y la tendencia se mantiene. El pipeline falla si algún hallazgo cambia de dirección.</p>
 
 
 </section>

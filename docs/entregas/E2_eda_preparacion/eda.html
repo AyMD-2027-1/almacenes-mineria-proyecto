@@ -294,41 +294,11 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>El análisis exploratorio se hace sobre el <strong>dataset analítico</strong> ensamblado al grano declarado en E1, <strong>antes de limpiar</strong>: solo se convirtieron tipos y fechas. Así lo que se describe es el dato tal como llega, y la limpieza (Parte B) se decide a partir de lo que aquí se encuentra.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Página</th>
-<th>Qué contiene</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="../../entregas/E2_eda_preparacion/eda_descriptiva.html">Estadística descriptiva</a></td>
-<td>Localización, variabilidad y forma de las variables numéricas; comparación entre años, regiones y géneros; heterogeneidad de las categóricas</td>
-</tr>
-<tr class="even">
-<td><a href="../../entregas/E2_eda_preparacion/eda_concentracion.html">Concentración y heterogeneidad</a></td>
-<td>Gini con curva de Lorenz y entropía normalizada, comparados por año y por entidad</td>
-</tr>
-<tr class="odd">
-<td><a href="../../entregas/E2_eda_preparacion/hallazgos.html">Hallazgos</a></td>
-<td>Hallazgos con su evidencia, tipo, pregunta de E0 y consecuencia para la preparación</td>
-</tr>
-<tr class="even">
-<td><a href="../../entregas/E2_eda_preparacion/calidad.html">Calidad por fuente</a></td>
-<td>Cada fuente a su granularidad original: faltantes, duplicados, marcadores y decisiones</td>
-</tr>
-<tr class="odd">
-<td><a href="../../entregas/E2_eda_preparacion/datos_nuevos.html">Datos agregados en E2</a></td>
-<td>Fuentes que se agregaron o ampliaron, entre ellas la ampliación de Kworb</td>
-</tr>
-</tbody>
-</table>
-<p>Todo se reproduce con <code>python run_pipeline.py --solo eda</code> desde <code>pipeline/</code>; las tablas completas quedan en <code>pipeline/data/data-processed/eda/</code> y las figuras en <code>img/</code>.</p>
+<p>Hicimos el análisis exploratorio sobre el dataset analítico ensamblado al grano de E1 y antes de limpiar, con solo los tipos y las fechas convertidos. Así describimos los datos tal como llegan, y las decisiones de limpieza de la Parte B salen de lo que encontramos aquí. La <a href="../../entregas/E2_eda_preparacion/eda_descriptiva.html">estadística descriptiva</a> caracteriza las variables en sus cuatro dimensiones y las compara entre años, regiones y géneros; la página de <a href="../../entregas/E2_eda_preparacion/eda_concentracion.html">concentración y heterogeneidad</a> calcula el Gini con su curva de Lorenz y la entropía normalizada, y los <a href="../../entregas/E2_eda_preparacion/hallazgos.html">hallazgos</a> reúnen lo que todo esto significa para las preguntas de E0. La calidad de cada fuente a su granularidad original está en <a href="../../entregas/E2_eda_preparacion/calidad.html">Calidad por fuente</a>.</p>
+<p>Todo se reproduce desde <code>pipeline/</code> con <code>python run_pipeline.py --solo eda</code>; las tablas completas quedan en <code>pipeline/data/data-processed/eda/</code> y las figuras en <code>img/</code>.</p>
 <section id="datos-de-partida" class="level2">
 <h2 class="anchored" data-anchor-id="datos-de-partida">Datos de partida</h2>
-<p>El dataset analítico tiene tres tablas, una por grano de E1. Todas cubren las <strong>32 entidades federativas</strong> (el consumo es nacional) y la ventana <strong>enero de 2015 a diciembre de 2025</strong>.</p>
+<p>El dataset analítico tiene tres tablas, una por cada grano de E1. Todas cubren de enero de 2015 a diciembre de 2025; la violencia y el contexto cubren las 32 entidades federativas, y el consumo es nacional.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">

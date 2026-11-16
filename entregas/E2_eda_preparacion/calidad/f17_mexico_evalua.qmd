@@ -1,27 +1,27 @@
 ---
-title: "F17. México Evalúa — impunidad"
+title: "F17. México Evalúa · impunidad"
 ---
 
-Índices de impunidad por delito y entidad del reporte Hallazgos 2023, extraídos del PDF.
+Son los índices de impunidad por delito y entidad del reporte Hallazgos 2023, extraídos del PDF.
 
-| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llave repetida |
+| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llaves repetidas |
 |---|---|---|---|---|---|
 | `stg_mexico_evalua_12_indices` | 314 | 4 | delito, entidad y año | 0 | 0 |
 
-## Qué encontró la inspección
+## Qué encontramos
 
-- **12 delitos;** para feminicidio hay 24 filas: la nacional y 23 estados. **9 estados no tienen dato.**
-- **Nombres de entidad cortos** (ESTADO DE MEXICO, MICHOACAN, VERACRUZ, COAHUILA) y "NACIONAL".
-- **Un solo año:** 2023.
+El reporte tiene 12 delitos. Para el feminicidio hay 24 filas, la nacional y 23 estados, así que nueve estados no
+tienen dato. Algunas entidades aparecen con nombre corto (ESTADO DE MEXICO, MICHOACAN, VERACRUZ, COAHUILA) y hay una
+fila "NACIONAL". El índice es de un solo año, 2023.
 
-## Qué se decidió
+## Qué decidimos
 
-| Problema | Afecta | Decisión | Por qué |
-|---|---|---|---|
-| Nombres distintos | 4 entidades | Tabla de equivalencias | Une sin perder filas |
-| Estados sin medición | 9 de 32 | Dejar nulo | No hay forma de estimarlo |
-| Solo 2023 | 230 de 352 celdas | Repetir 2023 en los demás años | **Es la decisión más débil**; la impunidad puede cambiar más que la pobreza |
+| Problema | Cuánto afecta | Qué decidimos y por qué |
+|---|---|---|
+| Nombres de entidad distintos | 4 entidades | Los unimos con la tabla de equivalencias, sin perder filas. |
+| Estados sin medición | 9 de 32 | Los dejamos vacíos, porque no hay forma de estimarlos. |
+| Un solo año | 230 de 352 celdas | Repetimos 2023 en los demás años. Es la decisión más débil, porque la impunidad puede cambiar más que la pobreza. |
 
-Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 
 [← Volver a calidad por fuente](../calidad.qmd)

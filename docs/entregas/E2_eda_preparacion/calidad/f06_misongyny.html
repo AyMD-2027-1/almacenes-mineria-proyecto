@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F6. MiSonGyny — etiquetas de misoginia – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F6. MiSonGyny · etiquetas de misoginia – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -265,8 +265,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#qué-encontró-la-inspección" id="toc-qué-encontró-la-inspección" class="nav-link active" data-scroll-target="#qué-encontró-la-inspección">Qué encontró la inspección</a></li>
-  <li><a href="#qué-se-decidió" id="toc-qué-se-decidió" class="nav-link" data-scroll-target="#qué-se-decidió">Qué se decidió</a></li>
+  <li><a href="#qué-encontramos" id="toc-qué-encontramos" class="nav-link active" data-scroll-target="#qué-encontramos">Qué encontramos</a></li>
+  <li><a href="#qué-decidimos" id="toc-qué-decidimos" class="nav-link" data-scroll-target="#qué-decidimos">Qué decidimos</a></li>
   </ul>
 </nav>
     </div>
@@ -275,7 +275,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F6. MiSonGyny — etiquetas de misoginia</h1>
+<h1 class="title">F6. MiSonGyny · etiquetas de misoginia</h1>
 </div>
 
 
@@ -292,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Corpus de letras en español etiquetadas a mano: tarea 1, misógina o no (M/NM); tarea 2, categoría (H odio, S sexualización, V violencia, NR no relacionada).</p>
+<p>Es un corpus de letras en español etiquetadas a mano. La tarea 1 dice si la letra es misógina o no (M o NM) y la tarea 2 en qué categoría cae: odio (H), sexualización (S), violencia (V) o no relacionada (NR).</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -309,7 +309,7 @@ ul.task-list li input[type="checkbox"] {
 <th>Columnas</th>
 <th>Llave natural</th>
 <th>Filas idénticas</th>
-<th>Llave repetida</th>
+<th>Llaves repetidas</th>
 </tr>
 </thead>
 <tbody>
@@ -323,8 +323,8 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<section id="qué-encontró-la-inspección" class="level2">
-<h2 class="anchored" data-anchor-id="qué-encontró-la-inspección">Qué encontró la inspección</h2>
+<section id="qué-encontramos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -379,51 +379,43 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<ul>
-<li><strong>La fila de encabezados se cargó como dato</strong> (la última de la tabla).</li>
-<li><strong>Las canciones de prueba no traen etiqueta:</strong> está en los archivos TEST_LABELS, ligada por <code>id</code>. De ahí el 16.7 % de nulos.</li>
-</ul>
+<p>La última fila es el encabezado del archivo, que se cargó como si fuera un dato. Las canciones de prueba no traen etiqueta porque el corpus la publica aparte, en los archivos TEST_LABELS, ligada por <code>id</code>; de ahí el 16.7 % de nulos.</p>
 </section>
-<section id="qué-se-decidió" class="level2">
-<h2 class="anchored" data-anchor-id="qué-se-decidió">Qué se decidió</h2>
+<section id="qué-decidimos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Problema</th>
-<th>Afecta</th>
-<th>Decisión</th>
-<th>Por qué</th>
+<th>Cuánto afecta</th>
+<th>Qué decidimos y por qué</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Encabezado como dato</td>
+<td>Encabezado cargado como dato</td>
 <td>1 fila</td>
-<td>Eliminar</td>
-<td>No es una canción</td>
+<td>Lo eliminamos, porque no es una canción.</td>
 </tr>
 <tr class="even">
 <td>Etiquetas de prueba en otro archivo</td>
 <td>820 canciones</td>
-<td>Unir por id</td>
-<td>El corpus publica las respuestas por separado</td>
+<td>Las unimos por <code>id</code>, como las publica el corpus.</td>
 </tr>
 <tr class="odd">
 <td>Canciones del chart que no están en el corpus</td>
 <td>258 de 300</td>
-<td><code>es_misogina</code> nulo</td>
-<td>Solo se usa la etiqueta humana; el clasificador es modelado</td>
+<td>Dejamos <code>es_misogina</code> vacío, porque solo usamos la etiqueta humana; el clasificador corresponde al modelado.</td>
 </tr>
 </tbody>
 </table>
-<p>El emparejamiento es por título y artista, simplificados. Quedan 42 canciones (16 misóginas, 26 no), el 13 % de los streams; 19 títulos iguales de otro artista se descartaron.</p>
-<p>Las cifras se reproducen con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code> desde <code>pipeline/</code>.</p>
+<p>El emparejamiento con Kworb es por título y artista simplificados. Quedan 42 canciones, 16 misóginas y 26 no, que suman el 13 % de los streams; descartamos 19 títulos iguales que pertenecían a otro artista.</p>
+<p>Las cifras se reproducen desde <code>pipeline/</code> con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code>.</p>
 <p><a href="../../../entregas/E2_eda_preparacion/calidad.html">← Volver a calidad por fuente</a></p>
 
 

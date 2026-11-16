@@ -1,27 +1,27 @@
 ---
-title: "F18. Natural Earth — geometrías"
+title: "F18. Natural Earth · geometrías"
 ---
 
-Polígonos de las entidades para los mapas.
+Los polígonos de las entidades se usan para los mapas.
 
-| Tabla | Filas | Columnas leídas | Llave natural | Filas idénticas | Llave repetida |
+| Tabla | Filas | Columnas leídas | Llave natural | Filas idénticas | Llaves repetidas |
 |---|---|---|---|---|---|
 | `stg_naturalearth_mx` | 33 | 4 | código ISO | 0 | 0 |
 
-## Qué encontró la inspección
+## Qué encontramos
 
-- **Una fila de más:** código `MX-X01~`, sin nombre. Es un polígono menor sin estado asignado.
-- **Nombres distintos:** Estado de México, Michoacán, "Estado de Veracruz" y "Distrito Federal" para la Ciudad de México.
-- **Código anterior de la Ciudad de México:** `MX-DIF`.
+Hay una fila de más, con el código `MX-X01~` y sin nombre, que es un polígono menor sin estado asignado. Cuatro
+entidades tienen un nombre distinto al del SESNSP: Estado de México, Michoacán, "Estado de Veracruz" y "Distrito
+Federal" para la Ciudad de México, que además usa el código anterior `MX-DIF`.
 
-## Qué se decidió
+## Qué decidimos
 
-| Problema | Afecta | Decisión | Por qué |
-|---|---|---|---|
-| Fila `MX-X01~` | 1 | Eliminar | No es una entidad |
-| Nombres distintos | 4 entidades | Equivalencias, incluida `DISTRITO FEDERAL` | Une con la clave INEGI |
-| `MX-DIF` | 1 | `MX-CMX` en `dim_entidad` | Es el código ISO vigente |
+| Problema | Cuánto afecta | Qué decidimos y por qué |
+|---|---|---|
+| Fila `MX-X01~` | 1 fila | La eliminamos, porque no es una entidad. |
+| Nombres distintos | 4 entidades | Los unimos con la tabla de equivalencias, que incluye `DISTRITO FEDERAL`. |
+| Código `MX-DIF` | 1 entidad | Guardamos `MX-CMX` en `dim_entidad`, que es el código ISO vigente. |
 
-Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 
 [← Volver a calidad por fuente](../calidad.qmd)

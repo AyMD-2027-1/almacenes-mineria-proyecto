@@ -9,22 +9,24 @@ limpieza** con su conteo y su justificación. El pipeline lo vuelve a escribir e
 
 ## Calidad y tratamiento del ruido
 
-Resumen por tipo de problema, en el orden de la tabla de la entrega. El detalle por fuente está en
+La tabla resume los problemas por tipo, en el orden que propone la entrega. El detalle de cada fuente está en
 [Calidad por fuente](calidad.qmd).
 
-| Problema | Qué se encontró | Qué se decidió | Por qué |
-|---|---|---|---|
-| **Valores faltantes** | Víctimas: el SESNSP no reporta víctimas de delitos sexuales ni de violencia familiar (38,016 filas); 11.3 % de las víctimas sin sexo y 10.2 % de las mujeres sin edad. RNPDNO: 70 % de las mujeres sin fecha o entidad, y la fuente termina en agosto de 2023. Contexto: cada indicador solo existe en sus años de medición | No imputar víctimas, sexo ni edad; excluir del conteo a las mujeres sin fecha o entidad; no rellenar con cero los meses sin RNPDNO. En el contexto, interpolar entre mediciones y repetir la más cercana en los extremos; la ENDIREH queda nula fuera de 2016 y 2021 | Distinguir **ceros estructurales** (la fuente no mide ese dato) de **faltantes** (el dato existe y no se conoce). Imputar víctimas inventaría personas; los indicadores de contexto cambian despacio y la dimensión necesita un valor por año |
-| **Ceros que son faltantes** | 8 estados empiezan la serie de feminicidio con 12 meses o más en cero (900 celdas) | Volver nulos esos ceros | La fiscalía todavía no clasificaba el delito; un cero diría que no hubo feminicidios |
-| **Duplicados** | Ninguna llave repetida en las fuentes con llave. Filas idénticas en el RNPDNO (4,354) y la ENDUTIH (1,146) | **Conservarlas** | No hay identificador de persona: en el RNPDNO se quitaron los nombres al cargar staging y casi todas esas filas están testadas; son personas distintas que se ven iguales |
-| **Atípicos** | Streams: 553 meses fuera de las cercas de Tukey. Violencia: 320 meses atípicos dentro de su estado (\|z robusto\| > 3.5) y 625 fuera de las cercas entre estados. RNPDNO: 7 edades mayores a 110 años | Conservar los de streams y violencia; analizar streams en log10 y violencia en tasas. Las edades imposibles pasan a nulas | Los éxitos musicales y los picos de denuncias son el fenómeno de P1 y P2; una edad de 1,832 años es un error de captura |
-| **Inconsistencias de categorías** | Nombres de entidad distintos entre fuentes (ESTADO DE MEXICO, VERACRUZ, DISTRITO FEDERAL…); 325,248 filas de delitos sin tipo de violencia de género; el encabezado de MiSonGyny cargado como dato | Tabla de equivalencias a la clave INEGI; excluir los delitos fuera del mapeo LGAMVLV de E1; eliminar el encabezado | Se unen todas las entidades sin perder filas; los delitos como robo no responden P1–P4 |
-| **Tipos, unidades y rangos** | Todo llega como texto; las celdas de Kworb mezclan posición y streams; las semanas cruzan de mes | Convertir tipos; separar la celda; repartir cada semana entre meses por días | El reparto conserva exacta la suma de streams |
-| **Llaves que no coinciden** | 258 de 300 canciones no están en MiSonGyny; 18 artistas de MusicBrainz eran otra persona; la fila `MX-X01~` de Natural Earth no es un estado | `es_misogina` nulo; descartar el género de esos artistas ("sin etiqueta"); eliminar la fila | Solo se usa la etiqueta humana; un género de otro artista es peor que ninguno |
+| Problema | Qué encontramos | Qué decidimos y por qué |
+|---|---|---|
+| Valores faltantes | El SESNSP no reporta víctimas de delitos sexuales ni de violencia familiar (38,016 filas), el 11.3 % de las víctimas no tiene sexo y el 10.2 % de las mujeres no tiene edad. En el RNPDNO, el 70 % de las mujeres no tiene fecha o entidad y la fuente termina en agosto de 2023. Cada indicador de contexto existe solo en sus años de medición. | Distinguimos los ceros estructurales, cuando la fuente no mide el dato, de los faltantes, cuando el dato existe pero no se conoce. No imputamos víctimas, sexo ni edad porque eso inventaría personas, y no rellenamos con cero los meses sin RNPDNO. En el contexto interpolamos entre mediciones y repetimos la más cercana en los extremos, porque esos indicadores cambian despacio; la ENDIREH queda vacía fuera de 2016 y 2021. |
+| Ceros que en realidad faltan | Ocho estados empiezan la serie de feminicidio con 12 meses o más en cero (900 celdas). | Convertimos esos ceros en faltantes, porque la fiscalía todavía no clasificaba el delito y un cero diría que no hubo feminicidios. |
+| Duplicados | No hay llaves repetidas en las fuentes que tienen llave. Hay filas idénticas en el RNPDNO (4,354) y en la ENDUTIH (1,146). | Las conservamos. Ninguna de las dos fuentes trae un identificador de persona, y en el RNPDNO casi todas esas filas están testadas: son personas distintas que se ven iguales. |
+| Atípicos | Hay 553 meses de streams fuera de las cercas de Tukey, 320 meses de violencia atípicos dentro de su estado (\|z robusto\| > 3.5) y 625 fuera de las cercas entre estados. El RNPDNO tiene 7 edades mayores a 110 años. | Conservamos los atípicos de streams y de violencia, porque los éxitos y los picos de denuncias son el fenómeno de P1 y P2; comparamos los streams en escala logarítmica y la violencia en tasas. Las edades imposibles pasan a faltantes, porque una edad de 1,832 años es un error de captura. |
+| Categorías inconsistentes | Los nombres de entidad cambian entre fuentes (ESTADO DE MEXICO, VERACRUZ, DISTRITO FEDERAL), 325,248 filas son delitos sin relación con la violencia de género y el encabezado de MiSonGyny se cargó como dato. | Unimos las entidades con una tabla de equivalencias a la clave INEGI, sin perder filas; excluimos los delitos fuera del mapeo de la LGAMVLV de E1, porque no responden P1–P4, y eliminamos el encabezado. |
+| Tipos, unidades y rangos | Todo llega como texto, las celdas de Kworb mezclan posición y streams, y las semanas cruzan de un mes a otro. | Convertimos los tipos, separamos la celda y repartimos cada semana entre meses según sus días, lo que conserva exacta la suma de streams. |
+| Llaves que no coinciden | 258 de 300 canciones no están en MiSonGyny, 18 búsquedas de MusicBrainz devolvieron a otro artista y la fila `MX-X01~` de Natural Earth no es un estado. | Dejamos `es_misogina` vacío, porque solo usamos la etiqueta humana; descartamos el género de esos 18 artistas, porque un género equivocado es peor que ninguno, y eliminamos la fila. |
+: Calidad de los datos y tratamiento por tipo de problema {#tbl-calidad}
 
 ### Registro de limpieza
 
-Así lo escribe el pipeline (se reproduce con `python run_pipeline.py --solo limpieza`):
+La tabla siguiente es el registro tal como lo escribe el pipeline; se reproduce con
+`python run_pipeline.py --solo limpieza`.
 
 | Tabla.variable | Problema | Afectadas | Total | % | Decisión | Justificación |
 |---|---|---|---|---|---|---|
@@ -56,9 +58,10 @@ Así lo escribe el pipeline (se reproduce con `python run_pipeline.py --solo lim
 
 ## Reducción de dimensionalidad
 
-**Criterios** (en `config.yaml`): una asociación entre categóricas cuenta si su *p* ajustada por Holm es menor a
-0.05 **y** su V de Cramér llega a 0.10; dos numéricas son redundantes si \|ρ de Spearman\| ≥ 0.85 y se conserva la
-más cercana a las preguntas de E0; el PCA busca 85 % de varianza acumulada.
+Los criterios están en `config.yaml`. Una asociación entre categóricas cuenta si su *p* ajustada por Holm es menor
+a 0.05 y además su V de Cramér llega a 0.10. Dos variables numéricas son redundantes si su ρ de Spearman llega a
+0.85 en valor absoluto, y en ese caso conservamos la más cercana a las preguntas de E0. El PCA busca explicar el 85 %
+de la varianza.
 
 ### Chi-cuadrada con V de Cramér
 
@@ -100,15 +103,16 @@ estado.
 | PC2 | 25 % | 96 % | Casi solo la población (+0.98) |
 : Varianza y cargas del PCA {#tbl-pca}
 
-**Decisión: conservar las variables originales.** Dos componentes alcanzan el objetivo de 85 %, pero con cuatro
-variables eso ahorra muy poco, y PC2 es prácticamente la población, que ya está en la dimensión. Las originales se
-interpretan directo y la dimensión de contexto del DW las necesita por separado. El PCA confirma lo que mostró la
-correlación: internet y pobreza miden casi lo mismo entre estados.
+Decidimos conservar las variables originales. Dos componentes alcanzan el objetivo de 85 %, pero con cuatro
+variables eso ahorra muy poco, y la segunda componente es prácticamente la población, que ya está en la dimensión.
+Las variables originales se interpretan directo y la dimensión de contexto del DW las necesita por separado. Lo que
+sí deja el PCA es la confirmación de lo que mostró la correlación: entre estados, internet y pobreza miden casi lo
+mismo.
 
-**Fuga de información.** E2 no entrena modelos, así que el PCA y la estandarización se ajustan con todas las
-entidades. La función `ajustar_pca()` recibe la tabla con la que se ajusta: en el modelado se le pasará solo la
-partición de entrenamiento y las demás se transformarán con el mismo objeto. Lo mismo aplica a la imputación del
-contexto, que deberá recalcularse con los años de entrenamiento si la partición es temporal.
+Para evitar fuga de información, el PCA y la estandarización se ajustan con todos los estados solo porque E2 no
+entrena modelos. La función `ajustar_pca()` recibe la tabla con la que se ajusta, de modo que en el modelado le
+pasaremos únicamente la partición de entrenamiento y transformaremos las demás con el mismo objeto. Lo mismo vale
+para la imputación del contexto, que habrá que recalcular con los años de entrenamiento si la partición es temporal.
 
 ### Tabla de decisión por variable
 
@@ -162,16 +166,17 @@ Cada variable del dataset limpio, con la técnica que se usó, la evidencia y la
 
 ## Muestreo
 
-**No aplica.** El dataset limpio tiene 89,817 filas de violencia, 7,429 de consumo, 300 canciones y 352 de
-contexto: cabe completo en memoria, el pipeline local corre en segundos y la carga al DW se hace con *load jobs*,
-que BigQuery no cobra. No hay una variable objetivo con clases desbalanceadas ni redundancia fuerte entre
-registros. La etapa `muestreo` del pipeline lo comprueba en cada corrida (falla si una tabla pasa de 5 millones de
-filas) y lo deja en el registro de etapas. Lo único que se muestrea es la copia pequeña que se sube al repositorio
-(`pipeline/data/sample/`, con semilla fija).
+El muestreo no aplica. El dataset limpio tiene 89,817 filas de violencia, 7,429 de consumo, 300 canciones y 352 de
+contexto; cabe completo en memoria, el pipeline local corre en segundos y la carga al DW se hace con *load jobs*,
+que BigQuery no cobra. Tampoco hay una variable objetivo con clases desbalanceadas ni redundancia fuerte entre
+registros. La etapa `muestreo` del pipeline lo comprueba en cada corrida, falla si una tabla pasa de 5 millones de
+filas y lo anota en el registro de etapas. Lo único que muestreamos es la copia pequeña que se sube al repositorio,
+en `pipeline/data/sample/`, con semilla fija.
 
 ## Verificación: antes contra después
 
-Se recalcularon los estadísticos de cuatro variables y los hallazgos principales del EDA sobre el dataset limpio.
+Volvimos a calcular los estadísticos de cuatro variables y los hallazgos principales del EDA sobre el dataset
+limpio.
 
 | Variable | Qué la cambió | n | Mediana | DE | IQR | Asimetría | KS (p) |
 |---|---|---|---|---|---|---|---|
@@ -183,9 +188,9 @@ Se recalcularon los estadísticos de cuatro variables y los hallazgos principale
 
 ![Hallazgos del EDA antes y después de limpiar.](img/verificacion_antes_despues.png){#fig-antes-despues}
 
-**Conclusión: la preparación conserva el fenómeno.** La entropía del macrogénero y el Gini entre artistas quedan
-exactamente iguales (@fig-antes-despues): el hallazgo principal de la música no depende de la limpieza. El cambio
-en los streams es el esperado (los ceros no eran consumo) y no altera la forma de la distribución. El único
-hallazgo que cambia es la desigualdad del feminicidio entre estados en 2015–2018 (Gini de 0.54 a 0.38 en 2015):
-no es una alerta sino una corrección, porque esos ceros venían de estados que todavía no registraban el delito. La
-tendencia se conserva y el pipeline falla si un hallazgo cambia de dirección.
+La preparación conserva el fenómeno que estudiamos. La entropía del macrogénero y el Gini entre artistas quedan
+exactamente iguales (@fig-antes-despues), así que el hallazgo principal de la música no depende de la limpieza. El
+cambio en los streams es el esperado, porque los ceros no eran consumo, y no altera la forma de la distribución. El
+único hallazgo que cambia es la desigualdad del feminicidio entre estados en 2015–2018, cuyo Gini de 2015 baja de
+0.54 a 0.38. No es una señal de alerta sino una corrección, porque esos ceros venían de estados que todavía no
+registraban el delito, y la tendencia se mantiene. El pipeline falla si algún hallazgo cambia de dirección.

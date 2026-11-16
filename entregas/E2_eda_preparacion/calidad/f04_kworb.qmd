@@ -1,33 +1,34 @@
 ---
-title: "F4. Kworb — chart semanal de Spotify México"
+title: "F4. Kworb · chart semanal de Spotify México"
 ---
 
-Historial semanal de las canciones del Top 200 de Spotify México. Es la fuente de streams de toda la ventana (P1 y P3).
+El historial semanal de las canciones del Top 200 de Spotify México es la fuente de streams de toda la ventana, para
+P1 y P3.
 
-| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llave repetida |
+| Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llaves repetidas |
 |---|---|---|---|---|---|
 | `stg_kworb_mx_semanal` | 42,417 | 3 | canción y semana | 0 | 0 |
 | `stg_kworb_catalogo_canciones` | 300 | 3 | canción | 0 | 0 |
 
-## Qué encontró la inspección
+## Qué encontramos
 
-- **Celdas `--`:** 8,359 (19.7 %). Indican una semana en que la canción no estuvo en el chart: son ceros, no faltantes.
-- **600 filas de resumen** ("Total" y "Peak") mezcladas con las semanas.
-- **Semanas fuera de la ventana:** 2013–2014 (las semanas terminaban en domingo) y 2026.
-- **La muestra se inclina a los años recientes:** 15 canciones con streams en 2015 y 246 en 2025, porque son las 300 con más streams acumulados.
-- **Cobertura contra Kaggle Top 200:** las 300 canciones son el 5.7 % de los streams en 2017 y el 26.4 % en 2021.
-- **Consistencia:** para las mismas canciones, los streams de Kworb y Kaggle coinciden (razón de 0.98 a 1.12 desde 2018; Spearman de 0.80 a 0.87).
+El 19.7 % de las celdas (8,359) tiene `--`, que significa que esa semana la canción no estuvo en el chart: es un
+cero, no un faltante. Entre las semanas aparecen 600 filas de resumen ("Total" y "Peak"), y hay semanas fuera de la
+ventana, de 2013–2014 y de 2026. El problema mayor es que las 300 canciones se inclinan a los años recientes, con 15
+canciones en 2015 y 246 en 2025, y frente al Top 200 de Kaggle cubren apenas el 5.7 % de los streams en 2017 y el
+26.4 % en 2021. Los valores en sí son confiables: para las mismas canciones coinciden con Kaggle, con una razón entre
+0.98 y 1.12 desde 2018.
 
-## Qué se decidió
+## Qué decidimos
 
-| Problema | Afecta | Decisión | Por qué |
-|---|---|---|---|
-| Filas Total y Peak | 600 filas | Excluir al ensamblar | No son semanas |
-| Semanas que cruzan de mes | Todas | Repartir los streams por días | Conserva exacta la suma de streams |
-| Canción y mes con 0 streams | 1,617 de 9,046 filas | Eliminar | Cero estructural: la canción no estaba en el chart |
-| Streams muy altos | 553 fuera de las cercas de Tukey | Conservar y usar log10 | Son los éxitos, el centro de P1 |
-| Cobertura de 6 a 26 % | Toda la serie | **Ampliar al Top 200 completo** (5,177 canciones) | Las 300 canciones no representan el consumo; la descarga completa ya estaba planeada en E1 |
+| Problema | Cuánto afecta | Qué decidimos y por qué |
+|---|---|---|
+| Filas "Total" y "Peak" | 600 filas | Las excluimos al ensamblar, porque no son semanas. |
+| Semanas que cruzan de un mes a otro | Todas | Repartimos los streams de cada semana según sus días, lo que conserva exacta la suma. |
+| Canción y mes con 0 streams | 1,617 de 9,046 filas | Eliminamos esas filas, porque son un cero estructural: la canción no estaba en el chart. |
+| Streams muy altos | 553 fuera de las cercas de Tukey | Los conservamos y comparamos en escala logarítmica, porque son los éxitos, el centro de P1. |
+| Cobertura de 6 a 26 % | Toda la serie | Ampliamos la fuente al Top 200 completo (5,177 canciones), como E1 ya tenía previsto. |
 
-Las cifras se reproducen con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza` desde `pipeline/`.
+Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 
 [← Volver a calidad por fuente](../calidad.qmd)

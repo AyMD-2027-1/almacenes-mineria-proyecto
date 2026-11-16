@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>F2. ENDIREH 2021 — prevalencias tabuladas – Proyecto Integrador — Almacenes y Minería de Datos</title>
+<title>F2. ENDIREH 2021 · prevalencias tabuladas – Proyecto Integrador — Almacenes y Minería de Datos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -265,9 +265,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#cómo-se-obtuvo" id="toc-cómo-se-obtuvo" class="nav-link active" data-scroll-target="#cómo-se-obtuvo">Cómo se obtuvo</a></li>
-  <li><a href="#qué-encontró-la-inspección" id="toc-qué-encontró-la-inspección" class="nav-link" data-scroll-target="#qué-encontró-la-inspección">Qué encontró la inspección</a></li>
-  <li><a href="#qué-se-decidió" id="toc-qué-se-decidió" class="nav-link" data-scroll-target="#qué-se-decidió">Qué se decidió</a></li>
+  <li><a href="#cómo-la-obtuvimos" id="toc-cómo-la-obtuvimos" class="nav-link active" data-scroll-target="#cómo-la-obtuvimos">Cómo la obtuvimos</a></li>
+  <li><a href="#qué-encontramos" id="toc-qué-encontramos" class="nav-link" data-scroll-target="#qué-encontramos">Qué encontramos</a></li>
+  <li><a href="#qué-decidimos" id="toc-qué-decidimos" class="nav-link" data-scroll-target="#qué-decidimos">Qué decidimos</a></li>
   </ul>
 </nav>
     </div>
@@ -276,7 +276,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">F2. ENDIREH 2021 — prevalencias tabuladas</h1>
+<h1 class="title">F2. ENDIREH 2021 · prevalencias tabuladas</h1>
 </div>
 
 
@@ -293,7 +293,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Prevalencia de violencia contra las mujeres de 15 años y más. <strong>Fuente agregada en E2:</strong> E1 la tenía en el catálogo, pero no en staging.</p>
+<p>La prevalencia de violencia contra las mujeres de 15 años y más es la referencia oficial por tipo de violencia que usa P4. Estaba en el catálogo de E1, pero la agregamos a staging en E2.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -310,7 +310,7 @@ ul.task-list li input[type="checkbox"] {
 <th>Columnas</th>
 <th>Llave natural</th>
 <th>Filas idénticas</th>
-<th>Llave repetida</th>
+<th>Llaves repetidas</th>
 </tr>
 </thead>
 <tbody>
@@ -324,51 +324,43 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<section id="cómo-se-obtuvo" class="level2">
-<h2 class="anchored" data-anchor-id="cómo-se-obtuvo">Cómo se obtuvo</h2>
-<p>Tabulados de INEGI, archivo “XXI. Prevalencia de la violencia”, cuadro 21.2: últimos 12 meses, por entidad, tipo de persona agresora y tipo de violencia. <code>src/ingestion/endireh.py</code> solo pasa el cuadro de formato de presentación a formato largo, sin cambiar valores: 33 entidades (32 y la nacional) × 3 tipos de agresor × 4 medidas (estimación, coeficiente de variación, error estándar, observaciones) × 2 levantamientos (2016 y 2021) × 5 tipos de violencia.</p>
+<section id="cómo-la-obtuvimos" class="level2">
+<h2 class="anchored" data-anchor-id="cómo-la-obtuvimos">Cómo la obtuvimos</h2>
+<p>Tomamos de los tabulados de INEGI el archivo “XXI. Prevalencia de la violencia”, cuadro 21.2, con la violencia de los últimos 12 meses por entidad, tipo de persona agresora y tipo de violencia. El script <code>src/ingestion/endireh.py</code> solo lo pasa del formato de presentación a una tabla larga, sin cambiar ningún valor: 33 entidades (las 32 y la nacional), tres tipos de agresor, cuatro medidas (estimación, coeficiente de variación, error estándar y observaciones), dos levantamientos (2016 y 2021) y cinco tipos de violencia.</p>
 </section>
-<section id="qué-encontró-la-inspección" class="level2">
-<h2 class="anchored" data-anchor-id="qué-encontró-la-inspección">Qué encontró la inspección</h2>
-<ul>
-<li><strong>Completa:</strong> sin nulos, sin marcadores, sin duplicados, y las 32 entidades más la nacional.</li>
-<li><strong>Validación:</strong> la prevalencia nacional de 2021 da 42.8 %, la cifra que publica INEGI.</li>
-<li><strong>Solo dos años de dato:</strong> 2016 y 2021.</li>
-</ul>
+<section id="qué-encontramos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
+<p>La tabla está completa: no tiene nulos, marcadores ni duplicados, y trae las 32 entidades más la nacional. La prevalencia nacional de 2021 da 42.8 %, la misma que publica INEGI. Su única limitación es que solo hay dos años de dato.</p>
 </section>
-<section id="qué-se-decidió" class="level2">
-<h2 class="anchored" data-anchor-id="qué-se-decidió">Qué se decidió</h2>
+<section id="qué-decidimos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Problema</th>
-<th>Afecta</th>
-<th>Decisión</th>
-<th>Por qué</th>
+<th>Cuánto afecta</th>
+<th>Qué decidimos y por qué</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Solo existe en los años de levantamiento</td>
 <td>1,440 de 1,760 celdas del contexto</td>
-<td>Dejar nulo los demás años</td>
-<td>Es una encuesta por levantamiento; P4 la compara en su año, no como serie</td>
+<td>Dejamos vacíos los demás años, porque es una encuesta por levantamiento y P4 la compara en su año, no como serie.</td>
 </tr>
 <tr class="even">
-<td>Varias medidas y agresores</td>
+<td>Varias medidas y tipos de agresor</td>
 <td>—</td>
-<td>Usar la estimación con agresor “total”</td>
-<td>Es la cifra que corresponde a <code>prevalencia_*</code> en el DDL de E1; los coeficientes de variación quedan disponibles</td>
+<td>Usamos la estimación con agresor “total”, que es la cifra que corresponde a <code>prevalencia_*</code> en el DDL; los coeficientes de variación quedan disponibles.</td>
 </tr>
 </tbody>
 </table>
-<p>Las cifras se reproducen con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code> desde <code>pipeline/</code>.</p>
+<p>Las cifras se reproducen desde <code>pipeline/</code> con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code>.</p>
 <p><a href="../../../entregas/E2_eda_preparacion/calidad.html">← Volver a calidad por fuente</a></p>
 
 
