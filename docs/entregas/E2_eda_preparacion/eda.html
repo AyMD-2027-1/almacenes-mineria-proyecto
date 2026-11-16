@@ -267,7 +267,9 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#datos-de-partida" id="toc-datos-de-partida" class="nav-link active" data-scroll-target="#datos-de-partida">Datos de partida</a>
   <ul class="collapse">
-  <li><a href="#variables-fuente-y-regla-de-agregación" id="toc-variables-fuente-y-regla-de-agregación" class="nav-link" data-scroll-target="#variables-fuente-y-regla-de-agregación">Variables, fuente y regla de agregación</a></li>
+  <li><a href="#violencia-analitico_violencia" id="toc-violencia-analitico_violencia" class="nav-link" data-scroll-target="#violencia-analitico_violencia">Violencia (<code>analitico_violencia</code>)</a></li>
+  <li><a href="#consumo-analitico_consumo" id="toc-consumo-analitico_consumo" class="nav-link" data-scroll-target="#consumo-analitico_consumo">Consumo (<code>analitico_consumo</code>)</a></li>
+  <li><a href="#contexto-analitico_contexto" id="toc-contexto-analitico_contexto" class="nav-link" data-scroll-target="#contexto-analitico_contexto">Contexto (<code>analitico_contexto</code>)</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -345,19 +347,23 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<section id="variables-fuente-y-regla-de-agregación" class="level3">
-<h3 class="anchored" data-anchor-id="variables-fuente-y-regla-de-agregación">Variables, fuente y regla de agregación</h3>
+<section id="violencia-analitico_violencia" class="level3">
+<h3 class="anchored" data-anchor-id="violencia-analitico_violencia">Violencia (<code>analitico_violencia</code>)</h3>
+<div id="tbl-var-violencia" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-var-violencia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1: Variables de violencia
+</figcaption>
+<div aria-describedby="tbl-var-violencia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Tabla</th>
 <th>Variable</th>
 <th>Fuente</th>
 <th>Granularidad original</th>
@@ -366,126 +372,172 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>violencia</td>
 <td><code>cve_ent</code></td>
-<td>SESNSP, RNPDNO</td>
-<td>entidad</td>
-<td>Clave INEGI; los nombres del RNPDNO pasan por la tabla de equivalencias</td>
+<td>SESNSP y RNPDNO</td>
+<td>Entidad</td>
+<td>Es la clave INEGI; los nombres del RNPDNO pasan por la tabla de equivalencias.</td>
 </tr>
 <tr class="even">
-<td>violencia</td>
 <td><code>fecha</code></td>
-<td>SESNSP, RNPDNO</td>
-<td>mes (SESNSP); día (RNPDNO)</td>
-<td>El SESNSP trae una columna por mes; el RNPDNO se lleva al primer día del mes de desaparición</td>
+<td>SESNSP y RNPDNO</td>
+<td>Mes en el SESNSP y día en el RNPDNO</td>
+<td>El SESNSP trae una columna por mes, que pasamos a filas; el RNPDNO se lleva al primer día del mes de desaparición.</td>
 </tr>
 <tr class="odd">
-<td>violencia</td>
 <td><code>origen</code></td>
 <td>—</td>
 <td>—</td>
-<td>Marca SESNSP o RNPDNO</td>
+<td>Indica si la fila viene del SESNSP o del RNPDNO.</td>
 </tr>
 <tr class="even">
-<td>violencia</td>
 <td><code>bien_juridico_afectado</code>, <code>tipo_de_delito</code>, <code>subtipo_de_delito</code>, <code>modalidad</code></td>
 <td>SESNSP</td>
-<td>delito</td>
-<td>Sin cambio; el RNPDNO recibe “Desaparición”</td>
+<td>Delito</td>
+<td>No cambian; el RNPDNO recibe “Desaparición”.</td>
 </tr>
 <tr class="odd">
-<td>violencia</td>
 <td><code>tipo_lgamvlv</code></td>
-<td>Mapeo de E1 (<code>config.yaml</code>)</td>
-<td>subtipo de delito</td>
-<td>Regla de mapeo del subtipo al tipo de la LGAMVLV</td>
+<td>Mapeo de E1 en <code>config.yaml</code></td>
+<td>Subtipo de delito</td>
+<td>Se asigna con la regla de mapeo del subtipo al tipo de la LGAMVLV.</td>
 </tr>
 <tr class="even">
-<td>violencia</td>
 <td><code>carpetas</code></td>
 <td>SESNSP, archivo de delitos</td>
-<td>entidad × delito × mes</td>
-<td>Sin agregación</td>
+<td>Entidad, delito y mes</td>
+<td>No se agrega.</td>
 </tr>
 <tr class="odd">
-<td>violencia</td>
 <td><code>victimas_mujeres</code>, <code>victimas_mujeres_menores</code>, <code>victimas_hombres</code></td>
-<td>SESNSP, archivo de víctimas; RNPDNO</td>
-<td>víctimas por sexo y rango de edad; registro por persona</td>
-<td>SESNSP: suma de las filas de cada sexo (menores = rango 0–17). RNPDNO: conteo de registros de mujeres por entidad y mes</td>
-</tr>
-<tr class="even">
-<td>consumo</td>
-<td><code>track_id</code>, <code>artista</code>, <code>titulo</code></td>
-<td>Kworb</td>
-<td>canción</td>
-<td>Sin cambio</td>
-</tr>
-<tr class="odd">
-<td>consumo</td>
-<td><code>fecha</code>, <code>streams</code></td>
-<td>Kworb</td>
-<td>semana (termina en jueves)</td>
-<td>Cada semana se reparte entre los meses según cuántos de sus 7 días caen en cada uno; se conserva la suma</td>
-</tr>
-<tr class="even">
-<td>consumo</td>
-<td><code>semanas_en_chart</code>, <code>mejor_posicion</code></td>
-<td>Kworb</td>
-<td>semana</td>
-<td>Se cuentan en el mes en que termina la semana</td>
-</tr>
-<tr class="odd">
-<td>consumo</td>
-<td><code>pais_artista</code>, <code>macrogenero</code>, <code>origen_genero</code>, <code>etiquetas_fuente</code></td>
-<td>MusicBrainz</td>
-<td>artista</td>
-<td>Primer resultado si el nombre coincide; macrogénero con las 5 etiquetas más votadas</td>
-</tr>
-<tr class="even">
-<td>contexto</td>
-<td><code>poblacion_*</code></td>
-<td>CONAPO</td>
-<td>entidad × año × sexo × edad</td>
-<td>Suma por sexo y grupo de edad</td>
-</tr>
-<tr class="odd">
-<td>contexto</td>
-<td><code>usuarios_internet</code>, <code>pct_usuarios_internet</code></td>
-<td>ENDUTIH</td>
-<td>entidad × año (tabulados)</td>
-<td>Sin agregación; el porcentaje es sobre la población de 6 años y más</td>
-</tr>
-<tr class="even">
-<td>contexto</td>
-<td><code>pct_viviendas_internet</code></td>
-<td>Censo 2020</td>
-<td>localidad</td>
-<td>Se usa el total estatal publicado</td>
-</tr>
-<tr class="odd">
-<td>contexto</td>
-<td><code>pct_pobreza</code></td>
-<td>CONEVAL</td>
-<td>entidad, años pares</td>
-<td>Fila de pobreza del anexo estadístico</td>
-</tr>
-<tr class="even">
-<td>contexto</td>
-<td><code>indice_impunidad</code></td>
-<td>México Evalúa</td>
-<td>entidad, 2023</td>
-<td>Índice del feminicidio</td>
-</tr>
-<tr class="odd">
-<td>contexto</td>
-<td><code>prevalencia_*</code></td>
-<td>ENDIREH</td>
-<td>entidad, 2016 y 2021</td>
-<td>Estimación con agresor “total” del cuadro 21.2</td>
+<td>SESNSP, archivo de víctimas, y RNPDNO</td>
+<td>Víctimas por sexo y rango de edad; un registro por persona en el RNPDNO</td>
+<td>En el SESNSP sumamos las filas de cada sexo, y las menores son el rango de 0 a 17 años; en el RNPDNO contamos los registros de mujeres por entidad y mes.</td>
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
+</section>
+<section id="consumo-analitico_consumo" class="level3">
+<h3 class="anchored" data-anchor-id="consumo-analitico_consumo">Consumo (<code>analitico_consumo</code>)</h3>
+<div id="tbl-var-consumo" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-var-consumo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;2: Variables de consumo
+</figcaption>
+<div aria-describedby="tbl-var-consumo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Fuente</th>
+<th>Granularidad original</th>
+<th>Cómo llega al grano</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>track_id</code>, <code>artista</code>, <code>titulo</code></td>
+<td>Kworb</td>
+<td>Canción</td>
+<td>No cambian.</td>
+</tr>
+<tr class="even">
+<td><code>fecha</code>, <code>streams</code></td>
+<td>Kworb</td>
+<td>Semana, que termina en jueves</td>
+<td>Repartimos cada semana entre los meses según cuántos de sus 7 días caen en cada uno, lo que conserva la suma.</td>
+</tr>
+<tr class="odd">
+<td><code>semanas_en_chart</code>, <code>mejor_posicion</code></td>
+<td>Kworb</td>
+<td>Semana</td>
+<td>Se cuentan en el mes en que termina la semana.</td>
+</tr>
+<tr class="even">
+<td><code>pais_artista</code>, <code>macrogenero</code>, <code>origen_genero</code>, <code>etiquetas_fuente</code></td>
+<td>MusicBrainz</td>
+<td>Artista</td>
+<td>Tomamos el primer resultado si el nombre coincide, y el macrogénero sale de las 5 etiquetas más votadas.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="contexto-analitico_contexto" class="level3">
+<h3 class="anchored" data-anchor-id="contexto-analitico_contexto">Contexto (<code>analitico_contexto</code>)</h3>
+<div id="tbl-var-contexto" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-var-contexto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;3: Variables de contexto
+</figcaption>
+<div aria-describedby="tbl-var-contexto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Fuente</th>
+<th>Granularidad original</th>
+<th>Cómo llega al grano</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>poblacion_*</code></td>
+<td>CONAPO</td>
+<td>Entidad, año, sexo y edad</td>
+<td>Sumamos por sexo y grupo de edad.</td>
+</tr>
+<tr class="even">
+<td><code>usuarios_internet</code>, <code>pct_usuarios_internet</code></td>
+<td>ENDUTIH</td>
+<td>Entidad y año, en los tabulados</td>
+<td>No se agregan; el porcentaje es sobre la población de 6 años y más.</td>
+</tr>
+<tr class="odd">
+<td><code>pct_viviendas_internet</code></td>
+<td>Censo 2020</td>
+<td>Localidad</td>
+<td>Usamos el total estatal publicado.</td>
+</tr>
+<tr class="even">
+<td><code>pct_pobreza</code></td>
+<td>CONEVAL</td>
+<td>Entidad, en años pares</td>
+<td>Tomamos la fila de pobreza del anexo estadístico.</td>
+</tr>
+<tr class="odd">
+<td><code>indice_impunidad</code></td>
+<td>México Evalúa</td>
+<td>Entidad, en 2023</td>
+<td>Usamos el índice del feminicidio.</td>
+</tr>
+<tr class="even">
+<td><code>prevalencia_*</code></td>
+<td>ENDIREH</td>
+<td>Entidad, en 2016 y 2021</td>
+<td>Usamos la estimación con agresor “total” del cuadro 21.2.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
 
 
 </section>
