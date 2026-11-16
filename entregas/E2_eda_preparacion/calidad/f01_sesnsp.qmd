@@ -11,9 +11,8 @@ La incidencia delictiva del fuero común, por entidad, delito y mes, es la fuent
 
 ## Qué encontramos
 
-Las dos tablas cubren de 2015 a 2025, sin duplicados, y sus 32 claves de entidad están completas. El SESNSP escribe algunos nombres en su forma larga ("Coahuila de
-Zaragoza", "México", "Michoacán de Ocampo", "Veracruz de Ignacio de la Llave"), así que no los usamos para mostrar:
-unimos por la clave INEGI y mostramos los nombres oficiales. La modalidad "No especificado" aparece en el
+Las dos tablas cubren de 2015 a 2025, sin duplicados, y sus 32 claves de entidad están completas. Unimos todas las fuentes por la clave INEGI y mostramos los nombres
+oficiales de las entidades. La modalidad "No especificado" aparece en el
 5.1 % de las filas de carpetas y en el 13.5 % de las de víctimas, pero es una categoría válida del delito y no un
 faltante. En el archivo de víctimas, el 13.9 % de las filas tiene sexo "No identificado", lo que equivale al 11.3 %
 de las víctimas de los delitos que analizamos, y el 10.2 % de las mujeres víctimas no tiene edad. Ese archivo además

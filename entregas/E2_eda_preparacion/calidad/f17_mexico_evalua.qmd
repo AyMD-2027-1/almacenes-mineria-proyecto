@@ -11,14 +11,14 @@ Son los índices de impunidad por delito y entidad del reporte Hallazgos 2023, e
 ## Qué encontramos
 
 El reporte tiene 12 delitos. Para el feminicidio hay 24 filas, la nacional y 23 estados, así que nueve estados no
-tienen dato. Algunas entidades se escriben distinto que en el SESNSP (ESTADO DE MEXICO, MICHOACAN, VERACRUZ, COAHUILA) y hay una
-fila "NACIONAL". El índice es de un solo año, 2023.
+tienen dato. Los nombres de entidad vienen en mayúsculas y sin acentos (por
+ejemplo ESTADO DE MEXICO o MICHOACAN), y hay una fila "NACIONAL". El índice es de un solo año, 2023.
 
 ## Qué decidimos
 
 | Problema | Cuánto afecta | Qué decidimos y por qué |
 |---|---|---|
-| Nombres escritos distinto | 4 entidades | Las unimos por la clave INEGI con la tabla de equivalencias, sin perder filas. |
+| Nombres en mayúsculas y sin acentos | 23 entidades | Las unimos por la clave INEGI con la tabla de equivalencias, sin perder filas. |
 | Estados sin medición | 9 de 32 | Los dejamos vacíos, porque no hay forma de estimarlos. |
 | Un solo año | 230 de 352 celdas | Repetimos 2023 en los demás años. Es la decisión más débil, porque la impunidad puede cambiar más que la pobreza. |
 

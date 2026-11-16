@@ -12,14 +12,14 @@ contexto por entidad y año.
 ## Qué encontramos
 
 La tabla está completa y sin marcadores: sus 77,440 filas son 11 años por 32 entidades por 2 sexos por 110 edades.
-La leímos ya filtrada a 2015–2025 en BigQuery, para no escanear años que no usamos. Tres entidades se escriben distinto
-que en el SESNSP (COAHUILA, VERACRUZ y MICHOACAN), así que no se pueden unir por el nombre tal cual.
+La leímos ya filtrada a 2015–2025 en BigQuery, para no escanear años que no usamos. Los nombres de entidad
+vienen en mayúsculas y sin acentos, así que la unión con las demás fuentes se hace por la clave INEGI.
 
 ## Qué decidimos
 
 | Problema | Cuánto afecta | Qué decidimos y por qué |
 |---|---|---|
-| Nombres escritos distinto que en el SESNSP | 3 entidades | Las unimos por la clave INEGI con la tabla de equivalencias de `config.yaml`, sin perder filas, y en el DW se muestran con su nombre oficial. |
+| Nombres en mayúsculas y sin acentos | 32 entidades | Las unimos por la clave INEGI con la tabla de equivalencias de `config.yaml`, sin perder filas, y en el DW se muestran con su nombre oficial. |
 | Base del contexto | 352 filas | La usamos como base del contexto, porque es la única fuente con todas las entidades en todos los años. |
 
 Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
