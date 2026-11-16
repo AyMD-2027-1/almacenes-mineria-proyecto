@@ -11,7 +11,7 @@ Los polígonos de las entidades se usan para los mapas.
 ## Qué encontramos
 
 Hay una fila de más, con el código `MX-X01~` y sin nombre, que es un polígono menor sin estado asignado. Cuatro
-entidades tienen un nombre distinto al del SESNSP: Estado de México, Michoacán, "Estado de Veracruz" y "Distrito
+entidades se escriben distinto que en el SESNSP: Estado de México, Michoacán, "Estado de Veracruz" y "Distrito
 Federal" para la Ciudad de México, que además usa el código anterior `MX-DIF`.
 
 ## Qué decidimos
@@ -19,7 +19,7 @@ Federal" para la Ciudad de México, que además usa el código anterior `MX-DIF`
 | Problema | Cuánto afecta | Qué decidimos y por qué |
 |---|---|---|
 | Fila `MX-X01~` | 1 fila | La eliminamos, porque no es una entidad. |
-| Nombres distintos | 4 entidades | Los unimos con la tabla de equivalencias, que incluye `DISTRITO FEDERAL`. |
+| Nombres escritos distinto | 4 entidades | Las unimos por la clave INEGI con la tabla de equivalencias, que incluye `DISTRITO FEDERAL`. |
 | Código `MX-DIF` | 1 entidad | Guardamos `MX-CMX` en `dim_entidad`, que es el código ISO vigente. |
 
 Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.

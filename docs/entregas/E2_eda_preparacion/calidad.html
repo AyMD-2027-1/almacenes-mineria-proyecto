@@ -285,7 +285,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Antes de limpiar revisamos cada tabla de staging tal como llega de BigQuery, a su granularidad original. Cada ficha cuenta lo que encontramos y lo que decidimos; el diagnóstico lo produce <code>python -m src.eda.inspeccion</code>, y cada tratamiento queda con su conteo en el registro de limpieza (<code>pipeline/logs/registro_limpieza.csv</code>).</p>
+<p>Antes de limpiar revisamos cada tabla de staging tal como llega de BigQuery, a su granularidad original. Cada ficha cuenta lo que encontramos y lo que decidimos. Cada fuente escribe los nombres de entidad a su manera; las unimos todas por la clave INEGI con la tabla de equivalencias de <code>config.yaml</code>, y en el DW, las figuras y las páginas usamos los 32 nombres oficiales (Coahuila, Estado de México, Michoacán, Veracruz). El diagnóstico lo produce <code>python -m src.eda.inspeccion</code>, y cada tratamiento queda con su conteo en el registro de limpieza (<code>pipeline/logs/registro_limpieza.csv</code>).</p>
 <div id="tbl-fuentes" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fuentes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -321,8 +321,8 @@ Tabla&nbsp;1: Resumen de la calidad por fuente
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f03_conapo.html">F3. CONAPO</a></td>
 <td>1</td>
 <td>77,440</td>
-<td>Tres entidades tienen nombre corto.</td>
-<td>Las unimos con la tabla de equivalencias.</td>
+<td>Tres entidades se escriben distinto que en el SESNSP.</td>
+<td>Las unimos por la clave INEGI con la tabla de equivalencias.</td>
 </tr>
 <tr class="even">
 <td><a href="../../entregas/E2_eda_preparacion/calidad/f04_kworb.html">F4. Kworb</a></td>

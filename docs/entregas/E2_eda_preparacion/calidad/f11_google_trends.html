@@ -351,7 +351,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="qué-encontramos" class="level2">
 <h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
-<p>Las 77 descargas por género y las 370 por artista traen los 32 estados, sin nulos ni duplicados. El reguetón de 2021 descargado en E2 coincide con el de E1, con un Spearman de 0.99 y una diferencia media de 1.1 puntos. Algunos estados aparecen sin valor: el regional mexicano tiene 17 celdas en cero y la electrónica 43, en estados con poco volumen, y 14 de las 370 descargas por artista tienen menos de 28 estados con valor. Los nombres en español de Trends (Veracruz, Estado de México, Michoacán) difieren del SESNSP, y la Ciudad de México usa el código anterior <code>MX-DIF</code>.</p>
+<p>Las 77 descargas por género y las 370 por artista traen los 32 estados, sin nulos ni duplicados. El reguetón de 2021 descargado en E2 coincide con el de E1, con un Spearman de 0.99 y una diferencia media de 1.1 puntos. Algunos estados aparecen sin valor: el regional mexicano tiene 17 celdas en cero y la electrónica 43, en estados con poco volumen, y 14 de las 370 descargas por artista tienen menos de 28 estados con valor. Trends escribe algunos estados de otra forma (por ejemplo “Coahuila de Zaragoza”), y la Ciudad de México usa el código anterior <code>MX-DIF</code>.</p>
 </section>
 <section id="qué-decidimos" class="level2">
 <h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
@@ -375,9 +375,9 @@ ul.task-list li input[type="checkbox"] {
 <td>Pasamos al siguiente nivel del reparto, como define E1: hacen falta 28 entidades con valor.</td>
 </tr>
 <tr class="even">
-<td>Nombres distintos</td>
-<td>3 entidades</td>
-<td>Unimos por el código ISO y no por el nombre, porque el código es estable entre fuentes.</td>
+<td>Nombres escritos de otra forma</td>
+<td>Varias entidades</td>
+<td>Unimos por el código ISO y no por el nombre, porque el código es estable entre fuentes; el nombre de Trends se guarda en <code>nombre_trends</code>.</td>
 </tr>
 <tr class="odd">
 <td>Código <code>MX-DIF</code></td>

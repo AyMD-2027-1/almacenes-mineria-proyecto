@@ -22,8 +22,8 @@ artista del top 50 de cada año (109 artistas), una vez por año de 2015 a 2025.
 Las 77 descargas por género y las 370 por artista traen los 32 estados, sin nulos ni duplicados. El reguetón de 2021
 descargado en E2 coincide con el de E1, con un Spearman de 0.99 y una diferencia media de 1.1 puntos. Algunos
 estados aparecen sin valor: el regional mexicano tiene 17 celdas en cero y la electrónica 43, en estados con poco
-volumen, y 14 de las 370 descargas por artista tienen menos de 28 estados con valor. Los nombres en español de
-Trends (Veracruz, Estado de México, Michoacán) difieren del SESNSP, y la Ciudad de México usa el código anterior
+volumen, y 14 de las 370 descargas por artista tienen menos de 28 estados con valor. Trends escribe algunos estados
+de otra forma (por ejemplo "Coahuila de Zaragoza"), y la Ciudad de México usa el código anterior
 `MX-DIF`.
 
 ## Qué decidimos
@@ -31,7 +31,7 @@ Trends (Veracruz, Estado de México, Michoacán) difieren del SESNSP, y la Ciuda
 | Problema | Cuánto afecta | Qué decidimos y por qué |
 |---|---|---|
 | Descargas con pocos estados | 14 de artista y 3 de género | Pasamos al siguiente nivel del reparto, como define E1: hacen falta 28 entidades con valor. |
-| Nombres distintos | 3 entidades | Unimos por el código ISO y no por el nombre, porque el código es estable entre fuentes. |
+| Nombres escritos de otra forma | Varias entidades | Unimos por el código ISO y no por el nombre, porque el código es estable entre fuentes; el nombre de Trends se guarda en `nombre_trends`. |
 | Código `MX-DIF` | 1 entidad | Guardamos `MX-CMX` en `dim_entidad`, que es el código ISO vigente. |
 
 Con este reparto, el 95 % de los streams usa el Trends del propio artista, el 2.8 % el de su género y el 2.3 % solo

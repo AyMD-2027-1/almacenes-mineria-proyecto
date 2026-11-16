@@ -380,6 +380,13 @@ Tabla&nbsp;1: Ajustes respecto de E1
 <td>Agregamos <code>lang: es</code> a <code>_quarto.yml</code>.</td>
 <td>Es un ajuste de formato; las páginas de E0 y E1 no se volvieron a generar.</td>
 </tr>
+<tr class="odd">
+<td>11</td>
+<td>Cada fuente escribe los nombres de entidad a su manera, y el SESNSP usa formas largas como “Coahuila de Zaragoza” o “México”.</td>
+<td><code>dim_entidad.entidad</code> tomaba el nombre del catálogo de nombres.</td>
+<td><code>dim_entidad.entidad</code> usa los 32 nombres oficiales definidos en <code>config.yaml</code> (Coahuila, Estado de México, Michoacán, Veracruz…); las uniones siguen siendo por la clave INEGI.</td>
+<td>Solo cambia cómo se muestra cada estado; ninguna unión ni cifra cambia.</td>
+</tr>
 </tbody>
 </table>
 </div>
