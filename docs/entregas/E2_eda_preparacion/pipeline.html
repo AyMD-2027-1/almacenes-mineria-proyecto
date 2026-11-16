@@ -560,7 +560,7 @@ Tabla&nbsp;3: Filas por tabla en <code>misoginia_dw</code>
 </tr>
 <tr class="odd">
 <td><code>dim_cancion</code></td>
-<td>300</td>
+<td>5,177</td>
 <td><code>cancion_key</code></td>
 </tr>
 <tr class="even">
@@ -580,7 +580,7 @@ Tabla&nbsp;3: Filas por tabla en <code>misoginia_dw</code>
 </tr>
 <tr class="odd">
 <td><code>fact_consumo_musical</code></td>
-<td>237,728</td>
+<td>1,025,312</td>
 <td>Grano de fecha, entidad y canción</td>
 </tr>
 </tbody>
@@ -607,12 +607,12 @@ Tabla&nbsp;4: Consistencia del DW
 <tr class="odd">
 <td>Filas</td>
 <td>89,817</td>
-<td>237,728</td>
+<td>1,025,312</td>
 </tr>
 <tr class="even">
 <td>Combinaciones distintas del grano</td>
 <td>89,817</td>
-<td>237,728</td>
+<td>1,025,312</td>
 </tr>
 <tr class="odd">
 <td>Llaves nulas</td>
@@ -649,17 +649,17 @@ Tabla&nbsp;4: Consistencia del DW
 </div>
 </figure>
 </div>
-<p>En los dos hechos el número de filas es igual al de combinaciones distintas del grano, así que el grano es único, y no hay llaves nulas ni huérfanas. Las sumas del DW son las mismas que las locales: 5,115,477 carpetas, 767,029 víctimas mujeres y 69,008,475,449 streams estimados.</p>
+<p>En los dos hechos el número de filas es igual al de combinaciones distintas del grano, así que el grano es único, y no hay llaves nulas ni huérfanas. Las sumas del DW son las mismas que las locales: 5,115,477 carpetas, 767,029 víctimas mujeres y 146,734,645,797 streams estimados.</p>
 </section>
 <section id="datamart-consultas-ejecutadas" class="level2">
 <h2 class="anchored" data-anchor-id="datamart-consultas-ejecutadas">DataMart: consultas ejecutadas</h2>
-<p>Ejecutamos las siete vistas de E1 sobre el DW poblado; los resultados completos están en <code>pipeline/data/data-processed/mart/</code>. Las cifras de música todavía salen de las 300 canciones de E1.</p>
-<p>La vista <strong>P1a</strong> usa <code>ROLLUP</code> y <code>GROUPING</code> para dar la proporción misógina por año y género con sus subtotales. En toda la ventana, el 39 % de los streams de canciones con etiqueta es de canciones misóginas, con un mínimo de 11 % en 2018 y un máximo de 48 % en 2020. Lo que más pesa en la lectura es la cobertura: solo el 13 % de los streams tiene etiqueta, y en 2025 apenas el 7 %, de modo que la proporción todavía es muy inestable.</p>
-<p>La vista <strong>P1b</strong> ordena los estados con <code>RANK</code> y los compara con el promedio estatal. En 2025 la proporción estimada va de 33 % en Guanajuato a 51 % en Sonora. Es una estimación, porque el consumo de cada estado se reparte con Trends; en el 96 % de los casos se usó el interés del propio artista.</p>
-<p>Las vistas <strong>P2a</strong> y <strong>P2b</strong> comparan mes a mes la proporción misógina con las tasas de violencia y calculan su correlación con <code>CORR</code>. En 132 meses la correlación es positiva con la violencia familiar (0.35), la sexual (0.31) y el feminicidio (0.23), casi nula con el homicidio que usamos de control (0.07) y negativa con la violencia física (−0.15) y las desapariciones (−0.36). Como ambas series crecen con el tiempo, parte de esa correlación puede venir de la tendencia compartida; el modelado tendrá que quitarla antes de sacar conclusiones.</p>
-<p>La vista <strong>P2c</strong> arma el panel de estados y años y calcula la correlación con <code>CORR</code> como función de ventana. Entre estados la relación es débil: 0.22 con la violencia sexual, 0.15 con la familiar y 0.05 con el feminicidio. Por el hallazgo H4, esta comparación también refleja cómo registra cada fiscalía.</p>
-<p>La vista <strong>P3</strong> sigue la participación de cada tipo de violencia en la música misógina con una media móvil de 12 meses, usando un marco <code>RANGE</code>. La sexualización domina en casi todos los años; las letras de odio y de violencia física aparecen poco.</p>
-<p>La vista <strong>P4</strong> compara el orden de los tipos con <code>RANK</code> y <code>UNPIVOT</code>. En la música misógina etiquetada domina la violencia sexual (89 %), seguida de la psicológica (7 %) y la física (5 %). En las carpetas del SESNSP domina la familiar (51 %) y la sexual queda tercera (14 %), mientras que en la ENDIREH 2021 la más frecuente es la psicológica (29.4 %) y le sigue la sexual (23.3 %). La violencia sexual es el único tipo que ocupa un lugar alto en las tres fuentes.</p>
+<p>Ejecutamos las siete vistas de E1 sobre el DW poblado con el Top 200 completo de Kworb; los resultados completos están en <code>pipeline/data/data-processed/mart/</code>.</p>
+<p>La vista <strong>P1a</strong> usa <code>ROLLUP</code> y <code>GROUPING</code> para dar la proporción misógina por año y género con sus subtotales. En toda la ventana, el 48 % de los streams de canciones con etiqueta es de canciones misóginas. Por año sube de 38 % en 2015 a un máximo de 63 % en 2017, se mantiene arriba de 56 % entre 2019 y 2021 y baja a entre 35 y 44 % desde 2022. Ese recorrido coincide con las dos olas de H8: la proporción es alta mientras domina el urbano latino y baja cuando lo reemplaza el regional mexicano, que es menos misógino (H9). Lo que más pesa en la lectura es la cobertura: solo el 12 % de los streams tiene etiqueta, y en 2025 apenas el 6 %.</p>
+<p>La vista <strong>P1b</strong> ordena los estados con <code>RANK</code> y los compara con el promedio estatal. En 2025 la proporción estimada va de 34 % en Guanajuato a 49 % en Sonora. Es una estimación, porque el consumo de cada estado se reparte con Trends; en promedio, el 84 % de los streams de cada estado se repartió con el interés del propio artista.</p>
+<p>Las vistas <strong>P2a</strong> y <strong>P2b</strong> comparan mes a mes la proporción misógina con las tasas de violencia y calculan su correlación con <code>CORR</code>. En 132 meses, la correlación más alta es con el homicidio que usamos de control (0.53), seguida del feminicidio (0.39) y las desapariciones (0.22, en 104 meses), y es negativa con la violencia sexual (−0.24), la familiar (−0.12) y la física (−0.10). Que el control tenga la correlación más alta indica que estas cifras reflejan tendencias que comparten las series en el tiempo y no una relación propia de la violencia de género; el modelado tendrá que quitar la tendencia antes de sacar conclusiones.</p>
+<p>La vista <strong>P2c</strong> arma el panel de estados y años y calcula la correlación con <code>CORR</code> como función de ventana. Entre estados la relación es débil en todos los tipos, entre −0.13 con la violencia sexual y 0.11 con las desapariciones. Por el hallazgo H4, esta comparación también refleja cómo registra cada fiscalía.</p>
+<p>La vista <strong>P3</strong> sigue la participación de cada tipo de violencia en la música misógina con una media móvil de 12 meses, usando un marco <code>RANGE</code>. La sexualización domina en todos los años; las letras de odio y de violencia física aparecen poco.</p>
+<p>La vista <strong>P4</strong> compara el orden de los tipos con <code>RANK</code> y <code>UNPIVOT</code>. En la música misógina etiquetada domina la violencia sexual (87 %), seguida de la física (7 %) y la psicológica (6 %). En las carpetas del SESNSP domina la familiar (51 %) y la sexual queda tercera (14 %), mientras que en la ENDIREH 2021 la más frecuente es la psicológica (29.4 %) y le sigue la sexual (23.3 %). La violencia sexual es el único tipo que ocupa un lugar alto en las tres fuentes.</p>
 
 
 </section>

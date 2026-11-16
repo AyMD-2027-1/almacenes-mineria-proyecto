@@ -94,11 +94,11 @@ que BigQuery no cobra.
 |---|---|---|
 | `dim_fecha` | 132 | `fecha_key`, con el formato AAAAMM01 |
 | `dim_entidad` | 32 | `entidad_key` |
-| `dim_cancion` | 300 | `cancion_key` |
+| `dim_cancion` | 5,177 | `cancion_key` |
 | `dim_tipo_violencia` | 28 | `tipo_violencia_key`, donde −1 significa "no aplica" |
 | `dim_contexto_entidad` | 363 | `contexto_key`: 32 estados por 11 años, más una fila nacional por año |
 | `fact_violencia` | 89,817 | Grano de fecha, entidad y tipo de violencia |
-| `fact_consumo_musical` | 237,728 | Grano de fecha, entidad y canción |
+| `fact_consumo_musical` | 1,025,312 | Grano de fecha, entidad y canción |
 : Filas por tabla en `misoginia_dw` {#tbl-filas}
 
 Después de la carga, `carga_dw` ejecuta en BigQuery las revisiones de consistencia y guarda el resultado en
@@ -106,8 +106,8 @@ Después de la carga, `carga_dw` ejecuta en BigQuery las revisiones de consisten
 
 | Revisión | `fact_violencia` | `fact_consumo_musical` |
 |---|---|---|
-| Filas | 89,817 | 237,728 |
-| Combinaciones distintas del grano | 89,817 | 237,728 |
+| Filas | 89,817 | 1,025,312 |
+| Combinaciones distintas del grano | 89,817 | 1,025,312 |
 | Llaves nulas | 0 | 0 |
 | Llaves huérfanas en `dim_fecha` | 0 | 0 |
 | Llaves huérfanas en `dim_entidad` | 0 | 0 |
@@ -118,38 +118,41 @@ Después de la carga, `carga_dw` ejecuta en BigQuery las revisiones de consisten
 
 En los dos hechos el número de filas es igual al de combinaciones distintas del grano, así que el grano es único, y
 no hay llaves nulas ni huérfanas. Las sumas del DW son las mismas que las locales: 5,115,477 carpetas, 767,029
-víctimas mujeres y 69,008,475,449 streams estimados.
+víctimas mujeres y 146,734,645,797 streams estimados.
 
 ## DataMart: consultas ejecutadas
 
-Ejecutamos las siete vistas de E1 sobre el DW poblado; los resultados completos están en
-`pipeline/data/data-processed/mart/`. Las cifras de música todavía salen de las 300 canciones de E1.
+Ejecutamos las siete vistas de E1 sobre el DW poblado con el Top 200 completo de Kworb; los resultados completos
+están en `pipeline/data/data-processed/mart/`.
 
 La vista **P1a** usa `ROLLUP` y `GROUPING` para dar la proporción misógina por año y género con sus subtotales. En
-toda la ventana, el 39 % de los streams de canciones con etiqueta es de canciones misóginas, con un mínimo de 11 % en
-2018 y un máximo de 48 % en 2020. Lo que más pesa en la lectura es la cobertura: solo el 13 % de los streams tiene
-etiqueta, y en 2025 apenas el 7 %, de modo que la proporción todavía es muy inestable.
+toda la ventana, el 48 % de los streams de canciones con etiqueta es de canciones misóginas. Por año sube de 38 % en
+2015 a un máximo de 63 % en 2017, se mantiene arriba de 56 % entre 2019 y 2021 y baja a entre 35 y 44 % desde 2022.
+Ese recorrido coincide con las dos olas de H8: la proporción es alta mientras domina el urbano latino y baja cuando
+lo reemplaza el regional mexicano, que es menos misógino (H9). Lo que más pesa en la lectura es la cobertura: solo
+el 12 % de los streams tiene etiqueta, y en 2025 apenas el 6 %.
 
 La vista **P1b** ordena los estados con `RANK` y los compara con el promedio estatal. En 2025 la proporción
-estimada va de 33 % en Guanajuato a 51 % en Sonora. Es una estimación, porque el consumo de cada estado se reparte
-con Trends; en el 96 % de los casos se usó el interés del propio artista.
+estimada va de 34 % en Guanajuato a 49 % en Sonora. Es una estimación, porque el consumo de cada estado se reparte
+con Trends; en promedio, el 84 % de los streams de cada estado se repartió con el interés del propio artista.
 
 Las vistas **P2a** y **P2b** comparan mes a mes la proporción misógina con las tasas de violencia y calculan su
-correlación con `CORR`. En 132 meses la correlación es positiva con la violencia familiar (0.35), la sexual (0.31) y
-el feminicidio (0.23), casi nula con el homicidio que usamos de control (0.07) y negativa con la violencia física
-(−0.15) y las desapariciones (−0.36). Como ambas series crecen con el tiempo, parte de esa correlación puede venir de
-la tendencia compartida; el modelado tendrá que quitarla antes de sacar conclusiones.
+correlación con `CORR`. En 132 meses, la correlación más alta es con el homicidio que usamos de control (0.53),
+seguida del feminicidio (0.39) y las desapariciones (0.22, en 104 meses), y es negativa con la violencia sexual
+(−0.24), la familiar (−0.12) y la física (−0.10). Que el control tenga la correlación más alta indica que estas
+cifras reflejan tendencias que comparten las series en el tiempo y no una relación propia de la violencia de
+género; el modelado tendrá que quitar la tendencia antes de sacar conclusiones.
 
 La vista **P2c** arma el panel de estados y años y calcula la correlación con `CORR` como función de ventana. Entre
-estados la relación es débil: 0.22 con la violencia sexual, 0.15 con la familiar y 0.05 con el feminicidio. Por el
-hallazgo H4, esta comparación también refleja cómo registra cada fiscalía.
+estados la relación es débil en todos los tipos, entre −0.13 con la violencia sexual y 0.11 con las desapariciones.
+Por el hallazgo H4, esta comparación también refleja cómo registra cada fiscalía.
 
 La vista **P3** sigue la participación de cada tipo de violencia en la música misógina con una media móvil de 12
-meses, usando un marco `RANGE`. La sexualización domina en casi todos los años; las letras de odio y de violencia
-física aparecen poco.
+meses, usando un marco `RANGE`. La sexualización domina en todos los años; las letras de odio y de violencia física
+aparecen poco.
 
 La vista **P4** compara el orden de los tipos con `RANK` y `UNPIVOT`. En la música misógina etiquetada domina la
-violencia sexual (89 %), seguida de la psicológica (7 %) y la física (5 %). En las carpetas del SESNSP domina la
+violencia sexual (87 %), seguida de la física (7 %) y la psicológica (6 %). En las carpetas del SESNSP domina la
 familiar (51 %) y la sexual queda tercera (14 %), mientras que en la ENDIREH 2021 la más frecuente es la psicológica
 (29.4 %) y le sigue la sexual (23.3 %). La violencia sexual es el único tipo que ocupa un lugar alto en las tres
 fuentes.
