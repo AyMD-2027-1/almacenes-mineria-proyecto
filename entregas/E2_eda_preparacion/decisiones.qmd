@@ -15,18 +15,20 @@ la lista diaria completa de las 200 más escuchadas, resultó que esas 300 canci
 escuchó en 2017 y el 26 % en 2021, y que casi no había canciones de los primeros años: 15 en 2015 contra 246 en
 2025. Los números de esas canciones eran correctos, pero eran muy pocas, y cualquier conclusión sobre "la música
 que se escucha" habría hablado de una parte pequeña y nada representativa. Por eso descargamos el historial completo
-de las 200 canciones más escuchadas de cada semana, que son más de 5,000. Aun así faltan las canciones que nunca
-entraron a esa lista, porque ninguna fuente pública las publica.
+de las 200 canciones más escuchadas de cada semana, que son 5,177. Con ellas ya cubrimos entre el 81 y el 91 % de lo
+que se escuchó cada año. Aun así faltan las canciones que nunca entraron a esa lista, porque ninguna fuente pública
+las publica.
 
 ## Solo usamos etiquetas de misoginia hechas por personas
 
 Un corpus de investigación llamado MiSonGyny tiene canciones revisadas a mano y marcadas como misóginas o no. De
-las 300 canciones solo 42 estaban en él, y suman el 13 % de lo escuchado. Al resto lo dejamos sin etiqueta, en
-blanco, y no como "no misógina", porque marcar una canción sin revisarla sería inventar el dato. En la siguiente
-etapa del proyecto un modelo clasificará las demás y podremos medir qué tan bien acierta. Mientras tanto, cualquier
-proporción de canciones misóginas se basa en pocas canciones; por ejemplo, vimos más canciones misóginas en el
-reguetón que en el regional mexicano, pero con tan pocos casos la diferencia podría ser casualidad, y así lo
-reportamos.
+las 5,177 canciones de la lista, 382 están en él, y suman el 12 % de lo escuchado. Al resto lo dejamos sin
+etiqueta, en blanco, y no como "no misógina", porque marcar una canción sin revisarla sería inventar el dato. En la
+siguiente etapa del proyecto un modelo clasificará las demás y podremos medir qué tan bien acierta. Con las
+canciones que sí están revisadas ya se ve una diferencia clara: en el reguetón y la música urbana, 78 de cada 100
+canciones son misóginas, y en el regional mexicano, 18 de cada 100. Como en los últimos años la gente pasó a
+escuchar sobre todo regional mexicano, la proporción de misoginia de lo que se escucha puede cambiar aunque ninguna
+canción cambie, y por eso medimos cada género por separado.
 
 ## Dejamos fuera los delitos que no son violencia de género
 
@@ -85,7 +87,9 @@ habrá que aclarar que parte de la diferencia viene de cómo registra cada fisca
 
 No existe un dato público de cuánta música se escucha en cada estado, así que lo estimamos: repartimos lo que se
 escucha en todo el país según qué tanto se busca a cada artista en Google en cada estado y cuántas personas usan
-internet ahí. El 95 % del consumo se repartió con las búsquedas del propio artista. Cualquier resultado por estado
+internet ahí. Tres cuartas partes del consumo se repartieron con las búsquedas del propio artista, y el resto con las de su
+género o con el número de usuarios de internet. Cuatro artistas cuyo nombre es una palabra común, como Mora, no se
+usaron, porque sus búsquedas medían otra cosa. Cualquier resultado por estado
 debe leerse como una aproximación.
 
 ## Conservamos los valores extremos

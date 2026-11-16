@@ -21,7 +21,7 @@ El dataset analítico tiene tres tablas, una por cada grano de E1. Todas cubren 
 | Tabla | Grano | Filas | Variables | Fuentes | Periodo con dato |
 |---|---|---|---|---|---|
 | `analitico_violencia` | entidad × delito o registro × mes | 415,065 | 12 | SESNSP (F1), RNPDNO (F13) | 2015-01 a 2025-12; RNPDNO hasta 2023-08 |
-| `analitico_consumo` | canción × mes, nacional | 9,046 | 11 | Kworb (F4), MusicBrainz (F8) | 2015-01 a 2025-12 |
+| `analitico_consumo` | canción × mes, nacional | 69,982 | 11 | Kworb (F4), MusicBrainz (F8) | 2015-01 a 2025-12 |
 | `analitico_contexto` | entidad × año | 352 | 17 | CONAPO (F3), Censo (F14), ENDUTIH (F16), CONEVAL (F15), México Evalúa (F17), ENDIREH (F2) | 2015 a 2025; cada indicador solo en sus años de medición |
 
 ### Violencia (`analitico_violencia`)

@@ -9,6 +9,11 @@ P1 y P3.
 |---|---|---|---|---|---|
 | `stg_kworb_mx_semanal` | 42,417 | 3 | canción y semana | 0 | 0 |
 | `stg_kworb_catalogo_canciones` | 300 | 3 | canción | 0 | 0 |
+| `stg_kworb_mx_semanal_completo` | 298,179 | 3 | canción y semana | 0 | 0 |
+| `stg_kworb_catalogo_completo` | 5,177 | 3 | canción | 0 | 0 |
+
+Las dos primeras son las tablas de E1, con 300 canciones; las dos últimas son la descarga completa de E2, con todas
+las canciones que entraron al Top 200 semanal, y son las que usa el pipeline.
 
 ## Qué encontramos
 
@@ -19,15 +24,27 @@ canciones en 2015 y 246 en 2025, y frente al Top 200 de Kaggle cubren apenas el 
 26.4 % en 2021. Los valores en sí son confiables: para las mismas canciones coinciden con Kaggle, con una razón entre
 0.98 y 1.12 desde 2018.
 
+La descarga completa resuelve la cobertura: con 5,177 canciones, Kworb cubre entre el 81 % (2017) y el 91 % (2020)
+de los streams del Top 200 diario de Kaggle, y tiene entre 884 y 1,276 canciones por año, sin el sesgo hacia los
+años recientes. Lo que falta son canciones que entraron al Top 200 diario pero nunca al semanal. Para las mismas
+canciones, las dos fuentes siguen coincidiendo, con una correlación de Spearman de 0.93 a 0.97 y una razón entre
+1.02 y 1.14. En la tabla completa el 54.8 % de las celdas tiene `--`, porque cada canción aparece en todas las
+semanas de su página aunque solo haya estado en el chart en algunas. Hay 10,363 filas que no son semanas, casi todas de
+resumen ("Total" y "Peak"), y 9,905 meses de canción fuera de la ventana. De las 5,177 canciones, 55 no tienen historial: 54 porque su página de Kworb no
+trae la columna de México y una porque la página ya no existe. Dos canciones vienen sin título.
+
 ## Qué decidimos
 
 | Problema | Cuánto afecta | Qué decidimos y por qué |
 |---|---|---|
-| Filas "Total" y "Peak" | 600 filas | Las excluimos al ensamblar, porque no son semanas. |
+| Filas "Total" y "Peak" | 10,363 filas | Las excluimos al ensamblar, porque no son semanas. |
+| Meses fuera de 2015–2025 | 9,905 filas de canción y mes | Las excluimos al ensamblar, porque están fuera de la ventana de análisis. |
 | Semanas que cruzan de un mes a otro | Todas | Repartimos los streams de cada semana según sus días, lo que conserva exacta la suma. |
-| Canción y mes con 0 streams | 1,617 de 9,046 filas | Eliminamos esas filas, porque son un cero estructural: la canción no estaba en el chart. |
-| Streams muy altos | 553 fuera de las cercas de Tukey | Los conservamos y comparamos en escala logarítmica, porque son los éxitos, el centro de P1. |
-| Cobertura de 6 a 26 % | Toda la serie | Ampliamos la fuente al Top 200 completo (5,177 canciones), como E1 ya tenía previsto. |
+| Canción y mes con 0 streams | 37,941 de 69,982 filas | Eliminamos esas filas, porque son un cero estructural: la canción no estaba en el chart. |
+| Canciones sin historial | 55 de 5,177 | Quedan en el catálogo pero sin consumo; son menos del 1.1 % de las canciones. |
+| Canciones sin título | 2 | Las conservamos, porque la llave es el identificador de Spotify y el título no se usa para unir. |
+| Streams muy altos | 1,946 fuera de las cercas de Tukey | Los conservamos y comparamos en escala logarítmica, porque son los éxitos, el centro de P1. |
+| Cobertura de 6 a 26 % | Toda la serie | Ampliamos la fuente al Top 200 completo (5,177 canciones), como E1 ya tenía previsto, y la cobertura subió a entre 81 y 91 %. |
 
 Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 

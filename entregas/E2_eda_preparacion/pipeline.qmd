@@ -34,7 +34,7 @@ python run_pipeline.py --solo eda
 |---|---|---|---|
 | ingesta | `src/ingestion/ingesta.py` | Copia a Parquet las tablas de staging declaradas en `config.yaml`, leyendo solo las columnas necesarias y con un tope de bytes facturados. Omite con un aviso las tablas que todavía no existen. | `data/data-raw/` |
 | calidad | `src/eda/inspeccion.py` | Revisa cada tabla antes de limpiar: faltantes, marcadores, duplicados, cobertura y nombres de entidad. | El diagnóstico de [Calidad por fuente](calidad.qmd) |
-| ensamblado | `src/ingestion/ensamblado.py` | Arma el dataset analítico al grano de E1. | Violencia (415,065 filas), consumo (9,046) y contexto (352) |
+| ensamblado | `src/ingestion/ensamblado.py` | Arma el dataset analítico al grano de E1. | Violencia (415,065 filas), consumo (69,982) y contexto (352) |
 | eda | `src/eda/` | Calcula la descriptiva, el Gini, la entropía y la cobertura, y dibuja las figuras. | Tablas en `eda/` y figuras en `img/` |
 | limpieza | `src/cleaning/limpieza.py` | Aplica los tratamientos y escribe el registro de limpieza. | Las tablas limpias y `logs/registro_limpieza.csv` |
 | reducción | `src/reduction/reduccion.py` | Corre χ², correlación y PCA, y arma la tabla de decisión. | `reduccion/` |

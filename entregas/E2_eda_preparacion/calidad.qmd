@@ -11,11 +11,11 @@ tratamiento queda con su conteo en el registro de limpieza (`pipeline/logs/regis
 | [F1. SESNSP](calidad/f01_sesnsp.qmd) | 2 | 115,456 | Ocho estados tienen feminicidio en cero antes de registrarlo, y hay víctimas sin sexo o sin edad. | Convertimos esos ceros en faltantes y no imputamos sexo ni edad. |
 | [F2. ENDIREH 2021](calidad/f02_endireh.qmd) | 1, nueva en E2 | 3,960 | Solo existe para 2016 y 2021. | Dejamos vacíos los demás años. |
 | [F3. CONAPO](calidad/f03_conapo.qmd) | 1 | 77,440 | Los nombres de entidad vienen en mayúsculas y sin acentos. | Las unimos por la clave INEGI con la tabla de equivalencias. |
-| [F4. Kworb](calidad/f04_kworb.qmd) | 2, más 2 en E2 | 42,717 | La muestra de 300 canciones cubre poco del consumo ([detalle](datos_nuevos.qmd)). | Ampliamos la fuente al Top 200 completo. |
+| [F4. Kworb](calidad/f04_kworb.qmd) | 2, más 2 en E2 | 346,073 | La muestra de 300 canciones cubría entre 6 y 26 % del consumo ([detalle](datos_nuevos.qmd)). | Ampliamos la fuente al Top 200 completo, que cubre entre 81 y 91 %. |
 | [F5. Kaggle](calidad/f05_kaggle.qmd) | 1 | 448,832 | El Viral 50 no trae streams y solo cubre 2017–2021. | La usamos solo para validar Kworb. |
 | [F6. MiSonGyny](calidad/f06_misongyny.qmd) | 1 | 4,913 | El encabezado se cargó como dato y las etiquetas de prueba vienen aparte. | Eliminamos el encabezado y unimos las etiquetas por `id`. |
-| [F8. MusicBrainz](calidad/f08_musicbrainz.qmd) | 1, más 1 en E2 | 112 | En 18 búsquedas el resultado es otro artista. | Descartamos esos géneros y los dejamos "sin etiqueta". |
-| [F11. Google Trends](calidad/f11_google_trends.qmd) | 1, más 2 en E2 | 14,336 | Solo teníamos el reguetón de 2021. | Descargamos el interés por género y por artista de cada año. |
+| [F8. MusicBrainz](calidad/f08_musicbrainz.qmd) | 1, más 1 en E2 | 1,232 | En 257 búsquedas el resultado es otro artista. | Descartamos esos géneros y los dejamos "sin etiqueta". |
+| [F11. Google Trends](calidad/f11_google_trends.qmd) | 1, más 3 en E2 | 23,712 | Solo teníamos el reguetón de 2021. | Descargamos el interés por género y por artista de cada año, y corregimos los temas que el autocompletado eligió mal. |
 | [F13. RNPDNO](calidad/f13_rnpdno.qmd) | 1 | 116,945 | El 32 % está testado, el 80 % no tiene fecha y no hay identificador de persona. | Lo usamos como fuente secundaria y no eliminamos filas iguales. |
 | [F14. Censo 2020](calidad/f14_censo_iter.qmd) | 1 | 33 | Es de un solo año. | Lo repetimos en los demás años y lo sacamos del análisis por redundante. |
 | [F15. CONEVAL](calidad/f15_coneval.qmd) | 1 | 1,062 | Conserva el formato de presentación. | Tomamos solo la fila de pobreza e interpolamos los años intermedios. |

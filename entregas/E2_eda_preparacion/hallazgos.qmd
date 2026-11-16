@@ -4,8 +4,8 @@ title: "Hallazgos"
 
 Registramos cada hallazgo con su evidencia, su tipo, la pregunta de E0 que toca y lo que implica para la
 preparación o el modelado. Las tablas y figuras citadas están en [Estadística descriptiva](eda_descriptiva.qmd) y
-[Concentración y heterogeneidad](eda_concentracion.qmd). Los dos hallazgos de música son provisionales: los
-volveremos a calcular cuando termine la [ampliación de Kworb](datos_nuevos.qmd).
+[Concentración y heterogeneidad](eda_concentracion.qmd). Los hallazgos de música se calcularon con el Top 200
+semanal completo de Kworb (5,177 canciones), después de la [ampliación](datos_nuevos.qmd).
 
 ## Violencia
 
@@ -19,12 +19,12 @@ volveremos a calcular cuando termine la [ampliación de Kworb](datos_nuevos.qmd)
 | H6 | El feminicidio se concentra más en conteo que en tasa. | En 2025 el Gini es 0.40 en conteo y 0.33 en tasa (tabla de Gini y curva de Lorenz). | Esperado | Parte de la concentración se debe al tamaño de la población (P2). | Comparamos estados solo con tasas. |
 | H7 | La mezcla de tipos de violencia es estable aunque el volumen se duplicó. | La entropía normalizada del tipo se mantiene entre 0.69 y 0.72 en los once años (tabla de entropía). | Negativo | En P4 basta una sola distribución oficial por tipo para toda la ventana. | Usamos la distribución de toda la ventana. |
 
-## Música (provisionales)
+## Música
 
 | # | Hallazgo | Evidencia | Tipo | Vínculo con E0 | Consecuencia |
 |---|---|---|---|---|---|
-| H8 | El consumo se concentró en un solo género y en menos artistas. | La entropía del macrogénero cae de 0.95 en 2016 a 0.44 en 2025, el regional mexicano pasa de 35 a 75 % de los streams con género y el Gini entre artistas sube de 0.49 a 0.66. | Inesperado | La proporción misógina del consumo dependerá cada vez más de un género y de pocos artistas (P1 y P3). | Analizamos P1 por género y no solo en total. |
-| H9 | No hay evidencia suficiente de que un género sea más misógino que otro. | En urbano latino 9 de 15 canciones etiquetadas son misóginas y en regional mexicano 2 de 9; el efecto es moderado (V = 0.34), pero no es significativo tras la corrección de Holm (p = 0.09) con solo 42 canciones ([reducción](preparacion.qmd#chi-cuadrada-con-v-de-cramér)). | Negativo | La etiqueta humana cubre apenas el 13 % de los streams (P1). | Volveremos a probarlo con el Top 200 completo y con el clasificador del modelado. |
+| H8 | El consumo pasó por dos olas de un solo género y terminó concentrado en el regional mexicano. | Entre los streams con género, el urbano latino sube de 8 % en 2015 a 54 % en 2020, y después el regional mexicano pasa de 10 % en 2019 a 71 % en 2025, mientras el pop cae de 21 a 1 %. La entropía del macrogénero baja de 0.90 en 2016 a 0.47 en 2025, y el Gini entre artistas sube de 0.66 a 0.80 en el mismo periodo. | Inesperado | La proporción misógina del consumo depende de qué género domina cada año y de pocos artistas (P1 y P3). | Analizamos P1 por género y por año, y no solo en total. |
+| H9 | El urbano latino es mucho más misógino que el regional mexicano en las canciones etiquetadas. | De las 382 canciones del chart que están en MiSonGyny, son misóginas 105 de 134 en urbano latino (78 %) y 15 de 85 en regional mexicano (18 %). La asociación es fuerte y significativa (V = 0.48, p Holm < 0.001) ([reducción](preparacion.qmd#chi-cuadrada-con-v-de-cramér)). Con las 300 canciones de E1 solo había 42 etiquetadas y la diferencia no era significativa. | Inesperado | Junto con H8, implica que el cambio de género dominante puede mover la proporción misógina del consumo aunque ninguna canción cambie (P1 y P3). | Conservamos el macrogénero como variable de P1 y lo usaremos como control en P2. La etiqueta humana cubre solo el 12 % de los streams, así que la conclusión debe confirmarse con el clasificador del modelado. |
 
 ## Lo que los datos no permiten responder del todo
 

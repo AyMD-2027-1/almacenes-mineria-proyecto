@@ -30,10 +30,12 @@ etiqueta porque el corpus la publica aparte, en los archivos TEST_LABELS, ligada
 |---|---|---|
 | Encabezado cargado como dato | 1 fila | Lo eliminamos, porque no es una canción. |
 | Etiquetas de prueba en otro archivo | 820 canciones | Las unimos por `id`, como las publica el corpus. |
-| Canciones del chart que no están en el corpus | 258 de 300 | Dejamos `es_misogina` vacío, porque solo usamos la etiqueta humana; el clasificador corresponde al modelado. |
+| Canciones del chart que no están en el corpus | 4,795 de 5,177 | Dejamos `es_misogina` vacío, porque solo usamos la etiqueta humana; el clasificador corresponde al modelado. |
 
-El emparejamiento con Kworb es por título y artista simplificados. Quedan 42 canciones, 16 misóginas y 26 no, que
-suman el 13 % de los streams; descartamos 19 títulos iguales que pertenecían a otro artista.
+El emparejamiento con Kworb es por título y artista simplificados. Con el catálogo completo quedan 382 canciones,
+175 misóginas y 207 no, que suman el 12 % de los streams; descartamos 280 títulos iguales que pertenecían a otro
+artista. Con las 300 canciones de E1 eran solo 42. Las 175 misóginas tienen categoría de la tarea 2: 139 de
+sexualización, 20 de violencia y 16 de odio.
 
 Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 

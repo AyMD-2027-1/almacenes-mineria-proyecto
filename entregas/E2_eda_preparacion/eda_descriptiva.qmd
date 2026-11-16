@@ -4,13 +4,13 @@ title: "Estadística descriptiva"
 
 Cada variable relevante se describe en sus cuatro dimensiones. Las tasas de violencia son **por 100 mil mujeres**
 (población de CONAPO del mismo año y entidad), con una observación por entidad y año (32 × 11 = 352); los streams
-son de la muestra de Kworb. Las medidas completas están en `pipeline/data/data-processed/eda/descriptiva_*.parquet`.
+son del Top 200 semanal completo de Kworb (5,177 canciones). Las medidas completas están en `pipeline/data/data-processed/eda/descriptiva_*.parquet`.
 
 ## Localización
 
 | Variable | Unidad | n | Media | Mediana | Media recortada 10 % | Q1 | Q3 | P90 |
 |---|---|---|---|---|---|---|---|---|
-| Streams por canción y año | canción-año en el chart | 922 | 74.8 M | 54.7 M | 64.0 M | 20.3 M | 106.0 M | 166.7 M |
+| Streams por canción y año | canción-año en el chart | 7,299 | 20.1 M | 5.8 M | 11.5 M | 1.4 M | 22.6 M | 54.4 M |
 | Tasa de violencia familiar y de género | entidad-año | 352 | 367.1 | 348.3 | 356.0 | 166.8 | 547.7 | 673.0 |
 | Tasa de violencia sexual | entidad-año | 352 | 94.0 | 80.4 | 88.2 | 51.0 | 125.3 | 173.4 |
 | Tasa de víctimas mujeres de lesiones | entidad-año | 352 | 92.0 | 85.3 | 85.9 | 44.4 | 128.9 | 173.1 |
@@ -20,8 +20,8 @@ son de la muestra de Kworb. Las medidas completas están en `pipeline/data/data-
 | Impunidad del feminicidio (%) | entidad, 2023 | 23 | 79.9 | 90.6 | 83.5 | 62.8 | 99.1 | 100.0 |
 : Medidas de localización {#tbl-localizacion}
 
-En un año típico, una canción que está en el chart suma unos 55 millones de streams, pero la media sube a 75
-millones porque unas pocas canciones acumulan cientos de millones. En violencia, el estado típico registra unas 350
+En un año típico, una canción que está en el chart suma unos 6 millones de streams, pero la media sube a 20
+millones porque unas pocas canciones acumulan cientos de millones: el 10 % más escuchado pasa de 54 millones. En violencia, el estado típico registra unas 350
 carpetas de violencia familiar por cada 100 mil mujeres al año, cuatro veces la tasa sexual: es por mucho el delito
 de violencia de género más denunciado. La moda casi no dice nada en las tasas, porque apenas hay valores repetidos,
 así que no la usamos para interpretar. La excepción es la impunidad, donde la moda es 100 %: según México Evalúa,
@@ -31,8 +31,8 @@ varios estados no resuelven ningún caso de feminicidio.
 
 | Variable | DE | IQR | MAD | CV | Asimetría | Curtosis | Media / mediana | DE / (IQR/1.349) |
 |---|---|---|---|---|---|---|---|---|
-| Streams por canción y año | 70.6 M | 85.7 M | 39.9 M | 0.94 | 1.47 | 2.37 | **1.37** | 1.11 |
-| Streams por canción y mes | 9.1 M | 7.7 M | 3.6 M | 0.97 | 2.61 | 10.39 | **1.34** | **1.59** |
+| Streams por canción y año | 36.9 M | 21.2 M | 5.3 M | 1.83 | 3.91 | 20.97 | **3.46** | **2.34** |
+| Streams por canción y mes | 5.9 M | 5.0 M | 2.0 M | 1.30 | 3.77 | 23.87 | **1.66** | **1.60** |
 | Tasa familiar y de género | 239.0 | 380.9 | 187.8 | 0.65 | 0.51 | 0.05 | 1.05 | 0.85 |
 | Tasa sexual | 57.6 | 74.2 | 35.2 | 0.61 | 0.99 | 0.89 | 1.17 | 1.05 |
 | Tasa de víctimas mujeres de lesiones | 66.8 | 84.5 | 43.4 | 0.73 | 0.99 | 1.58 | 1.08 | 1.07 |
@@ -41,14 +41,14 @@ varios estados no resuelven ningún caso de feminicidio.
 | Pobreza (%) | 15.0 | 23.2 | 11.7 | 0.38 | 0.44 | −0.58 | 1.03 | 0.87 |
 : Variabilidad y forma. CV = DE/media; curtosis en exceso (0 en una normal). La última columna compara la DE con la que tendría una normal con el mismo IQR: mayor a 1 indica colas pesadas o atípicos. {#tbl-variabilidad}
 
-Comparar la media con la mediana muestra si hay sesgo. En los streams la media es entre 34 y 37 % mayor que la
-mediana y la asimetría es positiva, así que la distribución tiene una cola larga a la derecha formada por los
+Comparar la media con la mediana muestra si hay sesgo. En los streams la media es 1.7 veces la mediana por mes y 3.5
+veces por año, con asimetría cercana a 4, así que la distribución tiene una cola larga a la derecha formada por los
 grandes éxitos (@fig-streams). Las tasas de violencia están mucho más cerca de la simetría, con razones de 1.05 a
 1.17, salvo el feminicidio, cuya cola la forman unos pocos estados con tasas de 4 a 6 por 100 mil.
 
-Comparar la desviación estándar con el IQR muestra si hay atípicos. En los streams mensuales la desviación es 1.6
-veces la que tendría una normal con el mismo IQR y la curtosis llega a 10, lo que confirma meses atípicos: los
-estrenos y los picos de un éxito. En el feminicidio la razón es 1.3, porque algunos estados se separan del resto.
+Comparar la desviación estándar con el IQR muestra si hay atípicos. En los streams la desviación es 1.6 veces (por
+mes) y 2.3 veces (por año) la que tendría una normal con el mismo IQR, y la curtosis pasa de 20, lo que confirma
+valores atípicos: los estrenos y los picos de un éxito. En el feminicidio la razón es 1.3, porque algunos estados se separan del resto.
 En las tasas familiar y sexual la razón es cercana o menor a 1, es decir, la dispersión es amplia pero pareja y no
 depende de unos pocos valores extremos.
 
@@ -104,9 +104,10 @@ violencia real con prácticas de registro de cada fiscalía. En el feminicidio l
 
 ### Por macrogénero
 
-Los streams anuales por canción, en escala logarítmica, apenas difieren entre géneros: el macrogénero explica el
-4.6 % de la variación (η² = 0.046). Una canción de regional mexicano o de urbano latino no se escucha más que una de
-pop; lo que cambia entre géneros es cuántas canciones entran al chart, no cuánto se escucha cada una.
+Los streams anuales por canción, en escala logarítmica, difieren poco entre géneros: el macrogénero explica el
+8.8 % de la variación (η² = 0.088). Aun así, la diferencia típica es grande: la mediana de una canción de regional
+mexicano o de urbano latino ronda los 10 millones de streams al año, contra 2 millones en el pop. Esos dos géneros
+no solo meten más canciones al chart, también las mantienen más tiempo.
 
 ## Variables categóricas
 
@@ -114,23 +115,24 @@ pop; lo que cambia entre géneros es cuántas canciones entran al chart, no cuá
 |---|---|---|---|---|---|---|
 | Tipo de violencia (LGAMVLV) | carpetas | familiar y de género | 4 | 0.51 | 0.72 | 2.7 |
 | Subtipo de delito | carpetas | Violencia familiar | 55 | 0.11 | 0.78 | 22.6 |
-| Macrogénero | streams | regional mexicano | 8 | 0.36 | 0.67 | 4.1 |
-| Macrogénero | canciones | regional mexicano | 8 | 0.35 | 0.70 | 4.3 |
-| País del artista | canciones | sin dato | 12 | 0.39 | 0.63 | 4.8 |
+| Macrogénero | streams | regional mexicano | 8 | 0.40 | 0.72 | 4.5 |
+| Macrogénero | canciones | urbano latino | 8 | 0.26 | 0.88 | 6.2 |
+| País del artista | canciones | sin dato | 41 | 0.28 | 0.61 | 9.7 |
 : Heterogeneidad de las variables categóricas {#tbl-categoricas}
 
 La violencia familiar reúne la mitad de las carpetas de violencia de género, de modo que, aunque hay cuatro
-tipos, en la práctica equivalen a 2.7 tipos repartidos por igual. El macrogénero se reparte entre unos cuatro
-géneros efectivos en toda la ventana, pero esa cifra global esconde una concentración que crece cada año, como se
-ve en [Concentración y heterogeneidad](eda_concentracion.qmd). En el país del artista la categoría más frecuente es
-"sin dato": el 39 % de las canciones no tiene país en MusicBrainz, así que esa variable aporta poco al análisis.
+tipos, en la práctica equivalen a 2.7 tipos repartidos por igual. Sin contar a los artistas sin género, el macrogénero se reparte
+entre unos cuatro géneros efectivos por streams y seis por canciones: el urbano latino tiene más canciones, pero el
+regional mexicano suma más streams, porque domina los años recientes, cuando el consumo total es mayor. Esa cifra
+global esconde dos olas de concentración, descritas en [Concentración y heterogeneidad](eda_concentracion.qmd). En
+el país del artista la categoría más frecuente es "sin dato": el 28 % de las canciones no tiene país en MusicBrainz.
 
 ![Participación de cada macrogénero en los streams; en gris, los artistas sin género en MusicBrainz.](img/descriptiva_barras_macrogenero.png){#fig-macrogeneros}
 
 ![Mezcla de tipos de violencia en cada estado, 2025, ordenada por la participación de la violencia familiar.](img/descriptiva_tipos_por_entidad.png){#fig-tipos}
 
-La @fig-macrogeneros muestra que el regional mexicano y el urbano latino suman más de la mitad del consumo de la
-muestra, y que una parte grande no tiene género asignado. La @fig-tipos confirma que la violencia familiar es el
+La @fig-macrogeneros muestra que el regional mexicano y el urbano latino suman más de la mitad del consumo, y que
+cerca de un tercio de los streams no tiene género asignado. La @fig-tipos confirma que la violencia familiar es el
 tipo más frecuente en 25 de los 32 estados. En 6 domina la física (entre ellos Michoacán, Tlaxcala, Campeche y el
 Estado de México) y en Chiapas la sexual: es la otra cara del problema de clasificación descrito arriba, porque
 lo que un estado registra como violencia familiar otro lo registra como lesiones.

@@ -329,11 +329,29 @@ ul.task-list li input[type="checkbox"] {
 <td>0</td>
 <td>0</td>
 </tr>
+<tr class="odd">
+<td><code>stg_kworb_mx_semanal_completo</code></td>
+<td>298,179</td>
+<td>3</td>
+<td>canción y semana</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td><code>stg_kworb_catalogo_completo</code></td>
+<td>5,177</td>
+<td>3</td>
+<td>canción</td>
+<td>0</td>
+<td>0</td>
+</tr>
 </tbody>
 </table>
+<p>Las dos primeras son las tablas de E1, con 300 canciones; las dos últimas son la descarga completa de E2, con todas las canciones que entraron al Top 200 semanal, y son las que usa el pipeline.</p>
 <section id="qué-encontramos" class="level2">
 <h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
 <p>El 19.7 % de las celdas (8,359) tiene <code>--</code>, que significa que esa semana la canción no estuvo en el chart: es un cero, no un faltante. Entre las semanas aparecen 600 filas de resumen (“Total” y “Peak”), y hay semanas fuera de la ventana, de 2013–2014 y de 2026. El problema mayor es que las 300 canciones se inclinan a los años recientes, con 15 canciones en 2015 y 246 en 2025, y frente al Top 200 de Kaggle cubren apenas el 5.7 % de los streams en 2017 y el 26.4 % en 2021. Los valores en sí son confiables: para las mismas canciones coinciden con Kaggle, con una razón entre 0.98 y 1.12 desde 2018.</p>
+<p>La descarga completa resuelve la cobertura: con 5,177 canciones, Kworb cubre entre el 81 % (2017) y el 91 % (2020) de los streams del Top 200 diario de Kaggle, y tiene entre 884 y 1,276 canciones por año, sin el sesgo hacia los años recientes. Lo que falta son canciones que entraron al Top 200 diario pero nunca al semanal. Para las mismas canciones, las dos fuentes siguen coincidiendo, con una correlación de Spearman de 0.93 a 0.97 y una razón entre 1.02 y 1.14. En la tabla completa el 54.8 % de las celdas tiene <code>--</code>, porque cada canción aparece en todas las semanas de su página aunque solo haya estado en el chart en algunas. Hay 10,363 filas que no son semanas, casi todas de resumen (“Total” y “Peak”), y 9,905 meses de canción fuera de la ventana. De las 5,177 canciones, 55 no tienen historial: 54 porque su página de Kworb no trae la columna de México y una porque la página ya no existe. Dos canciones vienen sin título.</p>
 </section>
 <section id="qué-decidimos" class="level2">
 <h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
@@ -353,28 +371,43 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>Filas “Total” y “Peak”</td>
-<td>600 filas</td>
+<td>10,363 filas</td>
 <td>Las excluimos al ensamblar, porque no son semanas.</td>
 </tr>
 <tr class="even">
+<td>Meses fuera de 2015–2025</td>
+<td>9,905 filas de canción y mes</td>
+<td>Las excluimos al ensamblar, porque están fuera de la ventana de análisis.</td>
+</tr>
+<tr class="odd">
 <td>Semanas que cruzan de un mes a otro</td>
 <td>Todas</td>
 <td>Repartimos los streams de cada semana según sus días, lo que conserva exacta la suma.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Canción y mes con 0 streams</td>
-<td>1,617 de 9,046 filas</td>
+<td>37,941 de 69,982 filas</td>
 <td>Eliminamos esas filas, porque son un cero estructural: la canción no estaba en el chart.</td>
 </tr>
+<tr class="odd">
+<td>Canciones sin historial</td>
+<td>55 de 5,177</td>
+<td>Quedan en el catálogo pero sin consumo; son menos del 1.1 % de las canciones.</td>
+</tr>
 <tr class="even">
-<td>Streams muy altos</td>
-<td>553 fuera de las cercas de Tukey</td>
-<td>Los conservamos y comparamos en escala logarítmica, porque son los éxitos, el centro de P1.</td>
+<td>Canciones sin título</td>
+<td>2</td>
+<td>Las conservamos, porque la llave es el identificador de Spotify y el título no se usa para unir.</td>
 </tr>
 <tr class="odd">
+<td>Streams muy altos</td>
+<td>1,946 fuera de las cercas de Tukey</td>
+<td>Los conservamos y comparamos en escala logarítmica, porque son los éxitos, el centro de P1.</td>
+</tr>
+<tr class="even">
 <td>Cobertura de 6 a 26 %</td>
 <td>Toda la serie</td>
-<td>Ampliamos la fuente al Top 200 completo (5,177 canciones), como E1 ya tenía previsto.</td>
+<td>Ampliamos la fuente al Top 200 completo (5,177 canciones), como E1 ya tenía previsto, y la cobertura subió a entre 81 y 91 %.</td>
 </tr>
 </tbody>
 </table>

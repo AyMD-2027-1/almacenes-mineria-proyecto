@@ -320,16 +320,16 @@ Tabla&nbsp;1: Coeficiente de Gini por año (antes de limpiar). La serie completa
 <tr class="odd">
 <td>Streams entre canciones</td>
 <td>canción</td>
-<td>0.48</td>
-<td>0.44</td>
-<td>0.49</td>
+<td>0.74</td>
+<td>0.62</td>
+<td>0.66</td>
 </tr>
 <tr class="even">
 <td>Streams entre artistas</td>
 <td>artista</td>
-<td>0.49</td>
-<td>0.47</td>
-<td><strong>0.66</strong></td>
+<td>0.78</td>
+<td>0.66</td>
+<td><strong>0.80</strong></td>
 </tr>
 <tr class="odd">
 <td>Feminicidio, conteo</td>
@@ -384,7 +384,7 @@ Figura&nbsp;2: Gini por año de cada variable.
 </figcaption>
 </figure>
 </div>
-<p>En la música, la concentración entre canciones es moderada y estable, con un Gini entre 0.45 y 0.49: las canciones que entran al chart se escuchan de forma parecida entre sí (<a href="#fig-lorenz" class="quarto-xref">Figura&nbsp;1</a>). Entre artistas, en cambio, el Gini sube de 0.49 a 0.66 (<a href="#fig-gini-anio" class="quarto-xref">Figura&nbsp;2</a>), porque cada vez menos artistas reúnen los streams. Para P1 esto significa que la proporción misógina del consumo dependerá cada vez más de lo que canten unos pocos artistas.</p>
+<p>En la música, la concentración entre canciones es alta y estable, con un Gini entre 0.59 y 0.66 desde 2016: en cada año, el 10 % de las canciones reúne entre el 37 y el 47 % de los streams (<a href="#fig-lorenz" class="quarto-xref">Figura&nbsp;1</a>). Entre artistas la concentración es mayor y crece en los últimos años, de 0.66 en 2019 a 0.80 en 2025 (<a href="#fig-gini-anio" class="quarto-xref">Figura&nbsp;2</a>), porque cada vez menos artistas reúnen los streams. El valor alto de 2015 se debe a que ese año el chart tiene más canciones con pocas semanas, que suman muchos artistas pequeños. Para P1 esto significa que la proporción misógina del consumo depende cada vez más de lo que canten unos pocos artistas.</p>
 <p>En la violencia, el feminicidio está más concentrado en conteo que en tasa, con 0.40 frente a 0.33 en 2025. Parte de la concentración se debe a que los estados grandes tienen más casos, no más riesgo, y por eso P2 usa tasas. La caída del Gini entre 2015 y 2019 hay que leerla con cuidado: en 2015 varios estados aparecían con cero feminicidios porque todavía no registraban el delito, lo que infla la desigualdad de ese año; la Parte B lo corrige. La tasa de violencia familiar está poco concentrada (0.34) y se mantiene estable desde 2019.</p>
 </section>
 <section id="entropía-normalizada" class="level2">
@@ -421,23 +421,23 @@ Tabla&nbsp;2: Entropía normalizada por año. La serie completa está en <code>c
 <tbody>
 <tr class="odd">
 <td>Macrogénero de los streams</td>
-<td>0.75</td>
-<td><strong>0.95</strong></td>
-<td>0.88</td>
-<td>0.76</td>
-<td>0.54</td>
-<td>0.55</td>
-<td><strong>0.44</strong></td>
+<td>0.89</td>
+<td><strong>0.90</strong></td>
+<td>0.82</td>
+<td>0.69</td>
+<td>0.64</td>
+<td>0.56</td>
+<td><strong>0.47</strong></td>
 </tr>
 <tr class="even">
 <td>Parte de los streams con género</td>
-<td>0.61</td>
-<td>0.63</td>
-<td>0.82</td>
 <td>0.85</td>
-<td>0.76</td>
-<td>0.58</td>
-<td>0.56</td>
+<td>0.85</td>
+<td>0.84</td>
+<td>0.84</td>
+<td>0.77</td>
+<td>0.59</td>
+<td>0.54</td>
 </tr>
 <tr class="odd">
 <td>Tipo de violencia de las carpetas</td>
@@ -464,7 +464,7 @@ Figura&nbsp;3: Entropía normalizada por año del macrogénero y del tipo de vio
 </figcaption>
 </figure>
 </div>
-<p>La entropía del macrogénero baja de 0.95 en 2016, cuando el consumo se repartía casi por igual entre los géneros, a 0.44 en 2025, cuando el regional mexicano llegó a 75 % de los streams con género (<a href="#fig-entropia" class="quarto-xref">Figura&nbsp;3</a>). El consumo de la muestra se volvió mucho menos diverso, lo que importa para P1 y P3. Hay que leerlo con dos precauciones: según el año, solo entre 56 y 85 % de los streams tiene género, y los primeros años dependen de pocas canciones.</p>
+<p>La entropía del macrogénero baja de 0.90 en 2016, cuando el consumo se repartía entre muchos géneros, a 0.47 en 2025, cuando el regional mexicano llegó al 71 % de los streams con género (<a href="#fig-entropia" class="quarto-xref">Figura&nbsp;3</a>). En medio hubo otra ola: el urbano latino llegó al 54 % en 2020 y después cedió su lugar. El consumo se volvió mucho menos diverso, lo que importa para P1 y P3. Hay que leerlo con una precaución: la parte de los streams con género baja de 85 % en los primeros años a 54 % en 2025, porque muchos artistas recientes de regional mexicano no tienen etiquetas en MusicBrainz, así que el peso real de ese género en 2025 probablemente es todavía mayor.</p>
 <p>La mezcla de tipos de violencia casi no cambia, de 0.69 a 0.72, aunque el volumen se haya duplicado: los tipos crecen juntos, y para P4 eso permite usar una sola distribución oficial. Entre estados sí hay diferencias: en 2025 la entropía va de 0.57 en Morelos, Nuevo León y la Ciudad de México, donde la violencia familiar es más del 70 % de las carpetas, 0.82 en Yucatán y Campeche y 0.86 en Tlaxcala, donde ningún tipo pasa del 44 %. La violencia familiar es el tipo predominante en 25 estados, la física en 6 y la sexual en uno (Chiapas).</p>
 
 

@@ -9,20 +9,27 @@ El interés de búsqueda por estado es la base para repartir el consumo nacional
 | `stg_trends_regueton_tema_2021` | 32 | 2 | región | 0 | 0 | E1 |
 | `stg_trends_macrogenero_anio` | 2,464 | 8 | macrogénero, año y estado | 0 | 0 | E2 |
 | `stg_trends_artista_anio` | 11,840 | 10 | artista, año y estado | 0 | 0 | E2 |
+| `stg_trends_artista_anio_completo` | 9,376 | 10 | artista, año y estado | 0 | 0 | E2 |
 
 ## Por qué agregamos tablas en E2
 
 E1 definió repartir el consumo con el Trends del artista en cada año y, si no lo hay, con el de su género, pero en
 staging solo estaba el reguetón de 2021. En E2 descargamos un tema por cada uno de los 7 macrogéneros y uno por cada
-artista del top 50 de cada año (109 artistas), una vez por año de 2015 a 2025. El código de la descarga está en
+artista del top 50 de cada año (109 artistas), una vez por año de 2015 a 2025. Al ampliar Kworb al catálogo
+completo, el top 50 de cada año cambió, así que descargamos con el mismo script los 293 artista-año que faltaban,
+de 173 artistas, en `stg_trends_artista_anio_completo`. El código de la descarga está en
 `pipeline/src/ingestion/trends_descarga.js`.
 
 ## Qué encontramos
 
-Las 77 descargas por género y las 370 por artista traen los 32 estados, sin nulos ni duplicados. El reguetón de 2021
+Las 77 descargas por género y las 663 por artista traen los 32 estados, sin nulos ni duplicados. El reguetón de 2021
 descargado en E2 coincide con el de E1, con un Spearman de 0.99 y una diferencia media de 1.1 puntos. Algunos
 estados aparecen sin valor: el regional mexicano tiene 17 celdas en cero y la electrónica 43, en estados con poco
-volumen, y 14 de las 370 descargas por artista tienen menos de 28 estados con valor. Trends escribe algunos estados
+volumen, y 34 de las 663 descargas por artista tienen menos de 28 estados con valor. El autocompletado de Trends, que
+elige el tema de cada artista, se equivocó en cuatro casos: The Chainsmokers quedó como uno de sus álbumes, El
+Fantasma como el musical *El fantasma de la ópera*, Rich Music LTD como una tienda de instrumentos y Doja Cat como
+Ariana Grande. Otros cuatro artistas (Mora, MAGIC!, OMI y Los Legendarios) no tienen tema de artista y su nombre es
+una palabra común, así que su búsqueda mide otra cosa, como la fruta en el caso de Mora. Trends escribe algunos estados
 de otra forma (por ejemplo "Coahuila de Zaragoza"), y la Ciudad de México usa el código anterior
 `MX-DIF`.
 
@@ -30,11 +37,13 @@ de otra forma (por ejemplo "Coahuila de Zaragoza"), y la Ciudad de México usa e
 
 | Problema | Cuánto afecta | Qué decidimos y por qué |
 |---|---|---|
-| Descargas con pocos estados | 14 de artista y 3 de género | Pasamos al siguiente nivel del reparto, como define E1: hacen falta 28 entidades con valor. |
+| Tema equivocado | 4 artistas | Elegimos a mano el tema correcto y dejamos la corrección en `TEMAS_CORREGIDOS` del script, para que la descarga se pueda repetir igual. |
+| Nombre que es una palabra común | 4 artistas | No usamos su búsqueda (`trends_excluidos` en `config.yaml`) y su peso sale del género. |
+| Descargas con pocos estados | 34 de artista y 3 de género | Pasamos al siguiente nivel del reparto, como define E1: hacen falta 28 entidades con valor. |
 | Nombres escritos de otra forma | Varias entidades | Unimos por el código ISO y no por el nombre, porque el código es estable entre fuentes; el nombre de Trends se guarda en `nombre_trends`. |
 | Código `MX-DIF` | 1 entidad | Guardamos `MX-CMX` en `dim_entidad`, que es el código ISO vigente. |
 
-Con este reparto, el 95 % de los streams usa el Trends del propio artista, el 2.8 % el de su género y el 2.3 % solo
+Con este reparto, el 75 % de los streams usa el Trends del propio artista, el 15 % el de su género y el 9.5 % solo
 los usuarios de internet.
 
 Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.

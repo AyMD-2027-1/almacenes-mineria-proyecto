@@ -323,9 +323,9 @@ Tabla&nbsp;1: Estado de las preguntas de E0 después de E2
 <tr class="odd">
 <td><strong>P1.</strong> Proporción de contenido misógino en la música más escuchada en Spotify México, por género musical y por entidad (estimada).</td>
 <td>La proporción misógina de <code>streams_estimados</code>, con <code>es_misogina</code> y <code>macrogenero</code> de <code>dim_cancion</code> y el peso de cada estado (<code>peso_entidad</code>, <code>origen_peso</code>).</td>
-<td>El consumo se concentró en el regional mexicano y en menos artistas (H8). Con 42 canciones etiquetadas no hay diferencia significativa entre géneros (H9). Las 300 canciones de E1 cubrían entre 6 y 26 % del consumo.</td>
+<td>El consumo pasó por una ola de urbano latino hasta 2020 y otra de regional mexicano después, con menos artistas (H8). Con 382 canciones etiquetadas, el urbano latino es mucho más misógino que el regional mexicano (78 contra 18 %, H9). Las 300 canciones de E1 cubrían entre 6 y 26 % del consumo, y el catálogo completo entre 81 y 91 %.</td>
 <td>Ampliamos Kworb al Top 200 completo, dejamos <code>es_misogina</code> vacío fuera de MiSonGyny y calculamos los pesos por estado con Trends por año y los usuarios de internet de cada año.</td>
-<td>Parcial. La etiqueta humana cubre el 13 % de los streams y la respuesta completa depende del clasificador del modelado; por estado sigue siendo una estimación.</td>
+<td>Parcial. La etiqueta humana cubre el 12 % de los streams y la respuesta completa depende del clasificador del modelado; por estado sigue siendo una estimación, con el 75 % de los streams repartido por el Trends del propio artista.</td>
 </tr>
 <tr class="even">
 <td><strong>P2.</strong> Correlación entre la misoginia musical y los indicadores oficiales de violencia de género, mensual nacional y por entidad y año.</td>
@@ -337,9 +337,9 @@ Tabla&nbsp;1: Estado de las preguntas de E0 después de E2
 <tr class="odd">
 <td><strong>P3.</strong> Evolución de la misoginia en la música consumida, 2015–2025, por tipo de violencia.</td>
 <td>La participación de cada tipo en los streams de la música misógina, con su media móvil de 12 meses.</td>
-<td>Solo 23 canciones tienen categoría de MiSonGyny, y la sexualización domina en casi todos los años.</td>
+<td>Las 175 canciones misóginas etiquetadas tienen categoría de MiSonGyny, y la sexualización es el 87 % de sus streams y domina en todos los años.</td>
 <td>Mapeamos las categorías de MiSonGyny a la LGAMVLV con la regla de E1 y ampliamos Kworb para tener más canciones por año.</td>
-<td>Parcial. Con la etiqueta humana la serie es muy inestable y depende del clasificador.</td>
+<td>Parcial. La serie ya tiene canciones en todos los años, pero la cobertura de la etiqueta baja a 6 % en 2025 y la respuesta depende del clasificador.</td>
 </tr>
 <tr class="even">
 <td><strong>P4.</strong> Tipos de violencia que predominan en la música y si coinciden con los más reportados oficialmente.</td>
@@ -419,7 +419,7 @@ Tabla&nbsp;2: Variables del DW y la pregunta que responden
 <td><code>dim_cancion</code></td>
 <td><code>pais_artista</code></td>
 <td>P1</td>
-<td>Sale del análisis porque lo determina el macrogénero (V = 0.84), pero se conserva como atributo.</td>
+<td>Sale del análisis porque lo explica en buena parte el macrogénero (V = 0.55), pero se conserva como atributo.</td>
 </tr>
 <tr class="even">
 <td><code>dim_cancion</code></td>

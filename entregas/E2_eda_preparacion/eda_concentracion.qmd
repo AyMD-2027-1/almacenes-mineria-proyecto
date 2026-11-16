@@ -20,8 +20,8 @@ cantidad entre unidades y no debe confundirse con el Gini *impurity* de los árb
 
 | Variable | Unidad | 2015 | 2019 | 2025 |
 |---|---|---|---|---|
-| Streams entre canciones | canción | 0.48 | 0.44 | 0.49 |
-| Streams entre artistas | artista | 0.49 | 0.47 | **0.66** |
+| Streams entre canciones | canción | 0.74 | 0.62 | 0.66 |
+| Streams entre artistas | artista | 0.78 | 0.66 | **0.80** |
 | Feminicidio, conteo | entidad | 0.66 | 0.47 | 0.40 |
 | Feminicidio, tasa | entidad | 0.54 | 0.28 | 0.33 |
 | Violencia familiar, conteo | entidad | 0.54 | 0.41 | 0.47 |
@@ -32,10 +32,12 @@ cantidad entre unidades y no debe confundirse con el Gini *impurity* de los árb
 
 ![Gini por año de cada variable.](img/concentracion_gini_anio.png){#fig-gini-anio}
 
-En la música, la concentración entre canciones es moderada y estable, con un Gini entre 0.45 y 0.49: las canciones
-que entran al chart se escuchan de forma parecida entre sí (@fig-lorenz). Entre artistas, en cambio, el Gini sube de
-0.49 a 0.66 (@fig-gini-anio), porque cada vez menos artistas reúnen los streams. Para P1 esto significa que la
-proporción misógina del consumo dependerá cada vez más de lo que canten unos pocos artistas.
+En la música, la concentración entre canciones es alta y estable, con un Gini entre 0.59 y 0.66 desde 2016: en
+cada año, el 10 % de las canciones reúne entre el 37 y el 47 % de los streams (@fig-lorenz). Entre artistas la
+concentración es mayor y crece en los últimos años, de 0.66 en 2019 a 0.80 en 2025 (@fig-gini-anio), porque cada
+vez menos artistas reúnen los streams. El valor alto de 2015 se debe a que ese año el chart tiene más canciones
+con pocas semanas, que suman muchos artistas pequeños. Para P1 esto significa que la proporción misógina del
+consumo depende cada vez más de lo que canten unos pocos artistas.
 
 En la violencia, el feminicidio está más concentrado en conteo que en tasa, con 0.40 frente a 0.33 en 2025. Parte
 de la concentración se debe a que los estados grandes tienen más casos, no más riesgo, y por eso P2 usa tasas. La
@@ -47,17 +49,19 @@ violencia familiar está poco concentrada (0.34) y se mantiene estable desde 201
 
 | Año | 2015 | 2016 | 2018 | 2020 | 2022 | 2024 | 2025 |
 |---|---|---|---|---|---|---|---|
-| Macrogénero de los streams | 0.75 | **0.95** | 0.88 | 0.76 | 0.54 | 0.55 | **0.44** |
-| Parte de los streams con género | 0.61 | 0.63 | 0.82 | 0.85 | 0.76 | 0.58 | 0.56 |
+| Macrogénero de los streams | 0.89 | **0.90** | 0.82 | 0.69 | 0.64 | 0.56 | **0.47** |
+| Parte de los streams con género | 0.85 | 0.85 | 0.84 | 0.84 | 0.77 | 0.59 | 0.54 |
 | Tipo de violencia de las carpetas | 0.69 | 0.70 | 0.71 | 0.71 | 0.72 | 0.72 | 0.72 |
 : Entropía normalizada por año. La serie completa está en `concentracion_entropia.parquet`. {#tbl-entropia}
 
 ![Entropía normalizada por año del macrogénero y del tipo de violencia.](img/concentracion_entropia_anio.png){#fig-entropia}
 
-La entropía del macrogénero baja de 0.95 en 2016, cuando el consumo se repartía casi por igual entre los géneros,
-a 0.44 en 2025, cuando el regional mexicano llegó a 75 % de los streams con género (@fig-entropia). El consumo de la
-muestra se volvió mucho menos diverso, lo que importa para P1 y P3. Hay que leerlo con dos precauciones: según el
-año, solo entre 56 y 85 % de los streams tiene género, y los primeros años dependen de pocas canciones.
+La entropía del macrogénero baja de 0.90 en 2016, cuando el consumo se repartía entre muchos géneros, a 0.47 en
+2025, cuando el regional mexicano llegó al 71 % de los streams con género (@fig-entropia). En medio hubo otra ola:
+el urbano latino llegó al 54 % en 2020 y después cedió su lugar. El consumo se volvió mucho menos diverso, lo que
+importa para P1 y P3. Hay que leerlo con una precaución: la parte de los streams con género baja de 85 % en los
+primeros años a 54 % en 2025, porque muchos artistas recientes de regional mexicano no tienen etiquetas en
+MusicBrainz, así que el peso real de ese género en 2025 probablemente es todavía mayor.
 
 La mezcla de tipos de violencia casi no cambia, de 0.69 a 0.72, aunque el volumen se haya duplicado: los tipos
 crecen juntos, y para P4 eso permite usar una sola distribución oficial. Entre estados sí hay diferencias: en 2025 la entropía va de 0.57 en Morelos, Nuevo León

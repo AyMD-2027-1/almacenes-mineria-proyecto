@@ -321,11 +321,20 @@ ul.task-list li input[type="checkbox"] {
 <td>0</td>
 <td>0</td>
 </tr>
+<tr class="even">
+<td><code>stg_musicbrainz_tags_completo</code></td>
+<td>1,120</td>
+<td>2</td>
+<td>artista buscado</td>
+<td>0</td>
+<td>0</td>
+</tr>
 </tbody>
 </table>
+<p>La primera tabla es la de E1; la segunda tiene a los 1,120 artistas del catálogo completo de Kworb que E1 no había buscado, con el mismo método (<code>src/ingestion/musicbrainz.py</code>). Entre las dos cubren a los 1,232 artistas.</p>
 <section id="qué-encontramos" class="level2">
 <h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
-<p>Hay una búsqueda por artista, sin errores ni nulos, pero el primer resultado no siempre es el artista correcto: en 18 búsquedas el nombre no coincide, como “Alemán”, que devuelve a Oscar Alemán. Las etiquetas con pocos votos meten ruido; si se usan todas, Billie Eilish y Ed Sheeran caen en hip hop. Plan B es un caso conocido: MusicBrainz devuelve al rapero británico y no al dúo de reguetón puertorriqueño.</p>
+<p>Hay una búsqueda por artista, sin errores ni nulos, pero el primer resultado no siempre es el artista correcto: en 257 de las 1,232 búsquedas el nombre no coincide, como “Alemán”, que devuelve a Oscar Alemán, o Young Miko, que devuelve a Neil Young, y 9 no tienen ningún resultado. En E1, con 112 artistas conocidos, eran 18; los artistas nuevos son menos famosos y la búsqueda se equivoca más. Las etiquetas con pocos votos meten ruido; si se usan todas, Billie Eilish y Ed Sheeran caen en hip hop. Plan B es un caso conocido: MusicBrainz devuelve al rapero británico y no al dúo de reguetón puertorriqueño.</p>
 </section>
 <section id="qué-decidimos" class="level2">
 <h2 class="anchored" data-anchor-id="qué-decidimos">Qué decidimos</h2>
@@ -345,7 +354,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>El resultado es otro artista</td>
-<td>18 artistas</td>
+<td>257 artistas</td>
 <td>Descartamos su género y los dejamos como “sin etiqueta”, porque un género equivocado es peor que ninguno.</td>
 </tr>
 <tr class="even">
@@ -360,12 +369,11 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>Artistas sin género</td>
-<td>30.5 % de las filas de canción y mes</td>
+<td>482 de 1,232 artistas; 23.8 % de las filas de canción y mes y 30 % de los streams</td>
 <td>Los dejamos en la categoría “sin etiqueta”, porque asignarles un género inventaría la composición que mide P1.</td>
 </tr>
 </tbody>
 </table>
-<p>Con el catálogo completo de Kworb buscamos con el mismo método a 1,120 artistas más, en <code>stg_musicbrainz_tags_completo</code>.</p>
 <p>Las cifras se reproducen desde <code>pipeline/</code> con <code>python -m src.eda.inspeccion</code> y <code>python -m src.cleaning.limpieza</code>.</p>
 <p><a href="../../../entregas/E2_eda_preparacion/calidad.html">← Volver a calidad por fuente</a></p>
 

@@ -344,7 +344,7 @@ Tabla&nbsp;1: Calidad de los datos y tratamiento por tipo de problema
 </tr>
 <tr class="even">
 <td>Atípicos</td>
-<td>Hay 553 meses de streams fuera de las cercas de Tukey, 320 meses de violencia atípicos dentro de su estado (|z robusto| &gt; 3.5) y 625 fuera de las cercas entre estados. El RNPDNO tiene 7 edades mayores a 110 años.</td>
+<td>Hay 1,946 meses de streams fuera de las cercas de Tukey, 320 meses de violencia atípicos dentro de su estado (|z robusto| &gt; 3.5) y 625 fuera de las cercas entre estados. El RNPDNO tiene 7 edades mayores a 110 años.</td>
 <td>Conservamos los atípicos de streams y de violencia, porque los éxitos y los picos de denuncias son el fenómeno de P1 y P2; comparamos los streams en escala logarítmica y la violencia en tasas. Las edades imposibles pasan a faltantes, porque una edad de 1,832 años es un error de captura.</td>
 </tr>
 <tr class="odd">
@@ -359,8 +359,8 @@ Tabla&nbsp;1: Calidad de los datos y tratamiento por tipo de problema
 </tr>
 <tr class="odd">
 <td>Llaves que no coinciden</td>
-<td>258 de 300 canciones no están en MiSonGyny, 18 búsquedas de MusicBrainz devolvieron a otro artista y la fila <code>MX-X01~</code> de Natural Earth no es un estado.</td>
-<td>Dejamos <code>es_misogina</code> vacío, porque solo usamos la etiqueta humana; descartamos el género de esos 18 artistas, porque un género equivocado es peor que ninguno, y eliminamos la fila.</td>
+<td>4,795 de 5,177 canciones no están en MiSonGyny, 257 de 1,232 búsquedas de MusicBrainz devolvieron a otro artista (por ejemplo, Young Miko devuelve a Neil Young) y la fila <code>MX-X01~</code> de Natural Earth no es un estado.</td>
+<td>Dejamos <code>es_misogina</code> vacío, porque solo usamos la etiqueta humana; descartamos el género de esos 257 artistas, porque un género equivocado es peor que ninguno, y eliminamos la fila.</td>
 </tr>
 </tbody>
 </table>
@@ -395,29 +395,29 @@ Tabla&nbsp;1: Calidad de los datos y tratamiento por tipo de problema
 <tr class="odd">
 <td>analitico_consumo.streams</td>
 <td>canción y mes con 0 streams (celdas – de Kworb)</td>
-<td>1,617</td>
-<td>9,046</td>
-<td>17.88</td>
+<td>37,941</td>
+<td>69,982</td>
+<td>54.22</td>
 <td>eliminar la fila</td>
 <td>es un cero estructural: la canción estaba fuera del chart; el hecho de consumo solo guarda lo que se escuchó</td>
 </tr>
 <tr class="even">
 <td>analitico_consumo.macrogenero</td>
 <td>artista sin género en MusicBrainz</td>
-<td>2,264</td>
-<td>7,429</td>
-<td>30.48</td>
+<td>7,638</td>
+<td>32,041</td>
+<td>23.84</td>
 <td>dejar como categoría ‘sin etiqueta’</td>
-<td>son 35% de los streams; asignarles un género inventaría la composición que mide P1</td>
+<td>son 30% de los streams; asignarles un género inventaría la composición que mide P1</td>
 </tr>
 <tr class="odd">
 <td>analitico_consumo.streams</td>
 <td>fuera de las cercas de Tukey (1.5·IQR)</td>
-<td>553</td>
-<td>7,429</td>
-<td>7.44</td>
+<td>1,946</td>
+<td>32,041</td>
+<td>6.07</td>
 <td>conservar y usar log10 en las comparaciones</td>
-<td>son los éxitos del año, el centro de P1; en escala log solo quedan 256 fuera de las cercas</td>
+<td>son los éxitos del año, el centro de P1; en escala log solo quedan 806 fuera de las cercas</td>
 </tr>
 <tr class="even">
 <td>analitico_violencia.tipo_lgamvlv</td>
@@ -548,11 +548,11 @@ Tabla&nbsp;1: Calidad de los datos y tratamiento por tipo de problema
 <tr class="even">
 <td>dim_cancion.es_misogina</td>
 <td>canción del chart que no está en MiSonGyny</td>
-<td>258</td>
-<td>300</td>
-<td>86.00</td>
+<td>4,795</td>
+<td>5,177</td>
+<td>92.62</td>
 <td>dejar nulo</td>
-<td>solo se usa la etiqueta humana del corpus; las clasificadas suman 13% de los streams y 19 títulos iguales de otro artista no se emparejaron</td>
+<td>solo se usa la etiqueta humana del corpus; las clasificadas suman 12% de los streams y 280 títulos iguales de otro artista no se emparejaron</td>
 </tr>
 <tr class="odd">
 <td>analitico_contexto.pct_viviendas_internet</td>
@@ -656,38 +656,38 @@ Tabla&nbsp;2: Pruebas de independencia. Las categorías raras se agruparon para 
 <tbody>
 <tr class="odd">
 <td>es_misogina × urbano latino o resto</td>
-<td>42</td>
-<td>0.34</td>
-<td>0.088</td>
-<td>0.047</td>
-<td>5.7</td>
-<td>No</td>
+<td>382</td>
+<td><strong>0.48</strong></td>
+<td>&lt; 0.001</td>
+<td>&lt; 0.001</td>
+<td>61.4</td>
+<td><strong>Sí</strong></td>
 </tr>
 <tr class="even">
 <td>es_misogina × macrogénero (regional, urbano, otros)</td>
-<td>42</td>
-<td>0.34</td>
-<td>0.179</td>
+<td>382</td>
+<td><strong>0.50</strong></td>
+<td>&lt; 0.001</td>
 <td>—</td>
-<td>3.4</td>
-<td>No</td>
+<td>38.9</td>
+<td><strong>Sí</strong></td>
 </tr>
 <tr class="odd">
 <td>es_misogina × país del artista (México u otro)</td>
-<td>30</td>
-<td>0.22</td>
-<td>0.225</td>
-<td>0.283</td>
-<td>5.6</td>
-<td>No</td>
+<td>304</td>
+<td><strong>0.37</strong></td>
+<td>&lt; 0.001</td>
+<td>&lt; 0.001</td>
+<td>49.4</td>
+<td><strong>Sí</strong></td>
 </tr>
 <tr class="even">
 <td>macrogénero × país del artista</td>
-<td>179</td>
-<td><strong>0.84</strong></td>
+<td>3,650</td>
+<td><strong>0.55</strong></td>
 <td>&lt; 0.001</td>
 <td>—</td>
-<td>25.9</td>
+<td>111.3</td>
 <td><strong>Sí</strong></td>
 </tr>
 <tr class="odd">
@@ -713,7 +713,7 @@ Tabla&nbsp;2: Pruebas de independencia. Las categorías raras se agruparon para 
 </div>
 </figure>
 </div>
-<p>Con 42 canciones etiquetadas la diferencia entre géneros (9 de 15 misóginas en urbano latino, 2 de 9 en regional mexicano) tiene un efecto moderado pero no es significativa tras corregir por comparaciones múltiples. El tipo de violencia por año es el caso de <em>n</em> enorme: significativo con V = 0.07, sin importancia práctica. El país del artista casi lo determina el macrogénero (V = 0.84) y sale del análisis.</p>
+<p>Con las 382 canciones etiquetadas, el género se asocia con fuerza a la misoginia: son misóginas 105 de 134 canciones de urbano latino (78 %) y 15 de 85 de regional mexicano (18 %), con V = 0.48 y <em>p</em> &lt; 0.001 aun después de corregir por comparaciones múltiples. Con las 42 canciones de E1 la diferencia no era significativa; el resultado cambió porque ahora hay suficientes casos, no porque cambiara la regla. El país del artista también se asocia con la misoginia (V = 0.37), pero lo explica en buena parte el macrogénero (V = 0.55), porque el regional mexicano es mexicano y el urbano latino casi todo extranjero; por eso sale del análisis y queda como atributo. El tipo de violencia por año es el caso de <em>n</em> enorme: significativo con V = 0.07, sin importancia práctica.</p>
 </section>
 <section id="correlación" class="level3">
 <h3 class="anchored" data-anchor-id="correlación">Correlación</h3>
@@ -931,7 +931,7 @@ Tabla&nbsp;3: Varianza y cargas del PCA
 <td>consumo</td>
 <td>numérica</td>
 <td>correlación</td>
-<td>ρ(streams, semanas_en_chart) = 0.36</td>
+<td>ρ(streams, semanas_en_chart) = 0.53</td>
 <td>conservar y usar log10</td>
 <td>medida principal de P1 y P3</td>
 </tr>
@@ -940,7 +940,7 @@ Tabla&nbsp;3: Varianza y cargas del PCA
 <td>consumo</td>
 <td>numérica (conteo)</td>
 <td>correlación</td>
-<td>ρ(streams, semanas_en_chart) = 0.36</td>
+<td>ρ(streams, semanas_en_chart) = 0.53</td>
 <td>conservar</td>
 <td>el DataMart la usa como medida alternativa de P1</td>
 </tr>
@@ -949,7 +949,7 @@ Tabla&nbsp;3: Varianza y cargas del PCA
 <td>consumo</td>
 <td>numérica (ordinal)</td>
 <td>correlación</td>
-<td>ρ(streams, mejor_posicion) = -0.77</td>
+<td>ρ(streams, mejor_posicion) = -0.64</td>
 <td>conservar</td>
 <td>P3 la usa; su relación con streams no llega al umbral</td>
 </tr>
@@ -958,7 +958,7 @@ Tabla&nbsp;3: Varianza y cargas del PCA
 <td>canciones</td>
 <td>categórica nominal</td>
 <td>ninguna</td>
-<td>300 canciones, 112 artistas</td>
+<td>5177 canciones, 1232 artistas</td>
 <td>conservar</td>
 <td>atributo descriptivo de dim_cancion; demasiadas categorías para χ²</td>
 </tr>
@@ -976,16 +976,16 @@ Tabla&nbsp;3: Varianza y cargas del PCA
 <td>canciones</td>
 <td>categórica nominal</td>
 <td>χ² + V de Cramér</td>
-<td>con macrogénero: V = 0.84, p Holm &lt; 0.001, n = 179; con es_misogina: V = 0.22, p Holm = 0.225, p Fisher = 0.283, n = 30</td>
+<td>con macrogénero: V = 0.55, p Holm &lt; 0.001, n = 3,650; con es_misogina: V = 0.37, p Holm &lt; 0.001, p Fisher &lt; 0.001, n = 304</td>
 <td>descartar del análisis, conservar en la dimensión</td>
-<td>casi lo determina el macrogénero (regional mexicano es mexicano) y no se asocia con la misoginia; 121 canciones no tienen país</td>
+<td>lo explica en buena parte el macrogénero (el regional mexicano es mexicano y el urbano latino casi todo extranjero), así que su asociación con la misoginia repite la del género; 1527 canciones no tienen país</td>
 </tr>
 <tr class="even">
 <td>macrogenero</td>
 <td>canciones</td>
 <td>categórica nominal</td>
 <td>χ²</td>
-<td>V = 0.34, p Holm = 0.088, p Fisher = 0.047, n = 42</td>
+<td>V = 0.48, p Holm &lt; 0.001, p Fisher &lt; 0.001, n = 382</td>
 <td>conservar</td>
 <td>es la variable de P1 que se cruza con la misoginia</td>
 </tr>
@@ -1021,7 +1021,7 @@ Tabla&nbsp;3: Varianza y cargas del PCA
 <td>canciones</td>
 <td>categórica nominal</td>
 <td>ninguna</td>
-<td>23 canciones</td>
+<td>243 canciones</td>
 <td>conservar como categoria_misoginia</td>
 <td>da el tipo de violencia que P3 y P4 comparan</td>
 </tr>
@@ -1030,7 +1030,7 @@ Tabla&nbsp;3: Varianza y cargas del PCA
 <td>canciones</td>
 <td>binaria</td>
 <td>ninguna</td>
-<td>42 de 300</td>
+<td>382 de 5177</td>
 <td>conservar</td>
 <td>mide la cobertura</td>
 </tr>
@@ -1039,7 +1039,7 @@ Tabla&nbsp;3: Varianza y cargas del PCA
 <td>canciones</td>
 <td>binaria</td>
 <td>χ²</td>
-<td>V = 0.34, p Holm = 0.088, p Fisher = 0.047, n = 42</td>
+<td>V = 0.48, p Holm &lt; 0.001, p Fisher &lt; 0.001, n = 382</td>
 <td>conservar</td>
 <td>variable objetivo de P1</td>
 </tr>
@@ -1193,7 +1193,7 @@ Tabla&nbsp;3: Varianza y cargas del PCA
 </section>
 <section id="muestreo" class="level2">
 <h2 class="anchored" data-anchor-id="muestreo">Muestreo</h2>
-<p>El muestreo no aplica. El dataset limpio tiene 89,817 filas de violencia, 7,429 de consumo, 300 canciones y 352 de contexto; cabe completo en memoria, el pipeline local corre en segundos y la carga al DW se hace con <em>load jobs</em>, que BigQuery no cobra. Tampoco hay una variable objetivo con clases desbalanceadas ni redundancia fuerte entre registros. La etapa <code>muestreo</code> del pipeline lo comprueba en cada corrida, falla si una tabla pasa de 5 millones de filas y lo anota en el registro de etapas. Lo único que muestreamos es la copia pequeña que se sube al repositorio, en <code>pipeline/data/sample/</code>, con semilla fija.</p>
+<p>El muestreo no aplica. El dataset limpio tiene 89,817 filas de violencia, 32,041 de consumo, 5,177 canciones y 352 de contexto; cabe completo en memoria, el pipeline local corre en segundos y la carga al DW se hace con <em>load jobs</em>, que BigQuery no cobra. Tampoco hay una variable objetivo con clases desbalanceadas ni redundancia fuerte entre registros. La etapa <code>muestreo</code> del pipeline lo comprueba en cada corrida, falla si una tabla pasa de 5 millones de filas y lo anota en el registro de etapas. Lo único que muestreamos es la copia pequeña que se sube al repositorio, en <code>pipeline/data/sample/</code>, con semilla fija.</p>
 </section>
 <section id="verificación-antes-contra-después" class="level2">
 <h2 class="anchored" data-anchor-id="verificación-antes-contra-después">Verificación: antes contra después</h2>
@@ -1231,11 +1231,11 @@ Tabla&nbsp;4: Estadísticos antes y después de limpiar, con la prueba de Kolmog
 <tr class="odd">
 <td>Streams por canción y mes</td>
 <td>Se quitaron los meses con 0 streams</td>
-<td>9,046 → 7,429</td>
-<td>5.5 M → 7.0 M</td>
-<td>8.9 M → 9.1 M</td>
-<td>8.5 M → 7.7 M</td>
-<td>2.59 → 2.61</td>
+<td>69,982 → 32,041</td>
+<td>0 → 2.8 M</td>
+<td>4.6 M → 5.9 M</td>
+<td>2.4 M → 5.0 M</td>
+<td>4.90 → 3.77</td>
 <td>&lt; 0.001</td>
 </tr>
 <tr class="even">
@@ -1283,7 +1283,7 @@ Figura&nbsp;3: Hallazgos del EDA antes y después de limpiar.
 </figcaption>
 </figure>
 </div>
-<p>La preparación conserva el fenómeno que estudiamos. La entropía del macrogénero y el Gini entre artistas quedan exactamente iguales (<a href="#fig-antes-despues" class="quarto-xref">Figura&nbsp;3</a>), así que el hallazgo principal de la música no depende de la limpieza. El cambio en los streams es el esperado, porque los ceros no eran consumo, y no altera la forma de la distribución. El único hallazgo que cambia es la desigualdad del feminicidio entre estados en 2015–2018, cuyo Gini de 2015 baja de 0.54 a 0.38. No es una señal de alerta sino una corrección, porque esos ceros venían de estados que todavía no registraban el delito, y la tendencia se mantiene. El pipeline falla si algún hallazgo cambia de dirección.</p>
+<p>La preparación conserva el fenómeno que estudiamos. La entropía del macrogénero y el Gini entre artistas quedan exactamente iguales (<a href="#fig-antes-despues" class="quarto-xref">Figura&nbsp;3</a>), así que el hallazgo principal de la música no depende de la limpieza. El cambio en los streams es el esperado: más de la mitad de las filas eran meses fuera del chart, con cero streams, y al quitarlas la mediana deja de ser cero y la distribución queda algo menos sesgada, sin perder un solo stream. El único hallazgo que cambia es la desigualdad del feminicidio entre estados en 2015–2018, cuyo Gini de 2015 baja de 0.54 a 0.38. No es una señal de alerta sino una corrección, porque esos ceros venían de estados que todavía no registraban el delito, y la tendencia se mantiene. El pipeline falla si algún hallazgo cambia de dirección.</p>
 
 
 </section>

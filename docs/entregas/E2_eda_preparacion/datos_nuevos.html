@@ -300,23 +300,25 @@ ul.task-list li input[type="checkbox"] {
 <div id="tbl-cobertura" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-cobertura-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;1: Cobertura de las 300 canciones de E1 frente al Top 200 de Kaggle
+Tabla&nbsp;1: Cobertura de Kworb frente al Top 200 diario de Kaggle, con las 300 canciones de E1 y con el catálogo completo
 </figcaption>
 <div aria-describedby="tbl-cobertura-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Año</th>
 <th>Canciones en el Top 200</th>
-<th>Presentes en la muestra</th>
-<th>Parte de las canciones</th>
+<th>Con las 300 de E1</th>
+<th>Parte de los streams</th>
+<th>Con el catálogo completo</th>
 <th>Parte de los streams</th>
 </tr>
 </thead>
@@ -325,43 +327,48 @@ Tabla&nbsp;1: Cobertura de las 300 canciones de E1 frente al Top 200 de Kaggle
 <td>2017</td>
 <td>1,041</td>
 <td>19</td>
-<td>1.8 %</td>
 <td>5.7 %</td>
+<td>543</td>
+<td>81.1 %</td>
 </tr>
 <tr class="even">
 <td>2018</td>
 <td>1,163</td>
 <td>27</td>
-<td>2.3 %</td>
 <td>6.5 %</td>
+<td>681</td>
+<td>84.4 %</td>
 </tr>
 <tr class="odd">
 <td>2019</td>
 <td>949</td>
 <td>39</td>
-<td>4.1 %</td>
 <td>16.6 %</td>
+<td>607</td>
+<td>87.9 %</td>
 </tr>
 <tr class="even">
 <td>2020</td>
 <td>1,051</td>
 <td>53</td>
-<td>5.0 %</td>
 <td>23.0 %</td>
+<td>682</td>
+<td>90.8 %</td>
 </tr>
 <tr class="odd">
 <td>2021</td>
 <td>905</td>
 <td>63</td>
-<td>7.0 %</td>
 <td>26.4 %</td>
+<td>598</td>
+<td>89.2 %</td>
 </tr>
 </tbody>
 </table>
 </div>
 </figure>
 </div>
-<p>La muestra además se cargaba hacia los años recientes, con 15 canciones en 2015 y 246 en 2025, así que cualquier medida de los primeros años dependía de un puñado de canciones. Los streams de Kworb en sí son confiables: para las mismas canciones coinciden con los de Kaggle, con una razón entre 0.98 y 1.12 desde 2018. El problema era cuántas canciones teníamos, no cómo estaban medidas, así que descargamos el Top 200 semanal completo, algo que E1 ya había dejado planeado para esta etapa.</p>
+<p>La muestra además se cargaba hacia los años recientes, con 15 canciones en 2015 y 246 en 2025, así que cualquier medida de los primeros años dependía de un puñado de canciones. Los streams de Kworb en sí son confiables: para las mismas canciones coinciden con los de Kaggle, con una razón entre 0.98 y 1.12 desde 2018. El problema era cuántas canciones teníamos, no cómo estaban medidas, así que descargamos el Top 200 semanal completo, algo que E1 ya había dejado planeado para esta etapa. Con el catálogo completo la cobertura sube a entre 81 y 91 % de los streams, y cada año tiene entre 884 y 1,276 canciones. Lo que falta son canciones que estuvieron en el Top 200 diario pero nunca en el semanal.</p>
 </section>
 <section id="tablas-nuevas-de-staging" class="level2">
 <h2 class="anchored" data-anchor-id="tablas-nuevas-de-staging">Tablas nuevas de staging</h2>
@@ -398,10 +405,10 @@ Tabla&nbsp;2: Fuentes agregadas o ampliadas en E2
 </tr>
 <tr class="even">
 <td><code>stg_kworb_mx_semanal_completo</code></td>
-<td>en descarga</td>
+<td>298,179</td>
 <td>Es el historial semanal de cada una de esas canciones.</td>
-<td>Descargamos la página de cada canción y tomamos la columna de México, con 1.5 segundos entre páginas.</td>
-<td>Tiene el mismo formato que la tabla de E1.</td>
+<td>Descargamos la página de cada canción y tomamos la columna de México, con 1.5 segundos entre páginas y reintentos ante cortes de red.</td>
+<td>Tiene el mismo formato que la tabla de E1, y para las mismas canciones coincide con Kaggle (Spearman de 0.93 a 0.97). De 5,177 canciones, 55 no tienen historial: 54 sin columna de México y una cuya página ya no existe.</td>
 </tr>
 <tr class="odd">
 <td><code>stg_musicbrainz_tags_completo</code></td>
@@ -421,17 +428,24 @@ Tabla&nbsp;2: Fuentes agregadas o ampliadas en E2
 <td><code>stg_trends_artista_anio</code></td>
 <td>11,840</td>
 <td>Es la base principal del reparto por estado que definió E1.</td>
-<td>Descargamos el tema de cada artista del top 50 de cada año: 109 artistas y 370 descargas.</td>
+<td>Descargamos el tema de cada artista del top 50 de cada año con las 300 canciones de E1: 109 artistas y 370 descargas.</td>
 <td>356 de las 370 descargas tienen valor en al menos 28 estados.</td>
 </tr>
 <tr class="even">
+<td><code>stg_trends_artista_anio_completo</code></td>
+<td>9,376</td>
+<td>Completa el reparto para los artistas que entraron al top 50 de algún año al ampliar Kworb.</td>
+<td>Con el mismo script descargamos los 293 artista-año que faltaban, de 173 artistas. Revisamos el tema que eligió el autocompletado y corregimos cuatro que eran otra cosa (un álbum, un musical, una tienda y otra cantante).</td>
+<td>273 de las 293 descargas tienen valor en al menos 28 estados. Mora, MAGIC!, OMI y Los Legendarios no se usan, porque su nombre es una palabra común y la búsqueda mide otra cosa.</td>
+</tr>
+<tr class="odd">
 <td><code>stg_endireh_2021_prevalencias</code></td>
 <td>3,960</td>
 <td>Aporta las prevalencias oficiales por tipo de violencia que compara P4.</td>
 <td>Pasamos a formato largo el cuadro 21.2 de los tabulados de INEGI, sin cambiar ningún valor (<code>src/ingestion/endireh.py</code>).</td>
 <td>La prevalencia nacional de 2021 es 42.8 %, igual a la publicada.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>stg_endutih_usuarios_entidad_anio</code></td>
 <td>330</td>
 <td>Da los usuarios de internet de cada año; en E1 solo teníamos 2024.</td>
@@ -443,11 +457,10 @@ Tabla&nbsp;2: Fuentes agregadas o ampliadas en E2
 </div>
 </figure>
 </div>
-<p>Cuando termine la descarga de Kworb volveremos a bajar Trends para los artistas nuevos que entren al top 50 de cada año.</p>
 </section>
 <section id="qué-cambió-en-el-reparto-por-estado" class="level2">
 <h2 class="anchored" data-anchor-id="qué-cambió-en-el-reparto-por-estado">Qué cambió en el reparto por estado</h2>
-<p>Con los usuarios de internet de cada año, y no los de 2024 para toda la década, los pesos de los primeros años cambian bastante: en 2015 el de Chiapas baja 27 % y el de la Ciudad de México sube 27 %, porque el acceso a internet creció mucho más rápido en el sur. Con Trends por artista, el 95 % de los streams se reparte con el interés del propio artista, el 2.8 % con el de su género y el 2.3 % solo con los usuarios de internet.</p>
+<p>Con los usuarios de internet de cada año, y no los de 2024 para toda la década, los pesos de los primeros años cambian bastante: en 2015 el de Chiapas baja 27 % y el de la Ciudad de México sube 27 %, porque el acceso a internet creció mucho más rápido en el sur. Con el catálogo completo, el 75 % de los streams se reparte con el interés del propio artista, el 15 % con el de su género y el 9.5 % solo con los usuarios de internet. El reparto por artista cubre a los 50 más escuchados de cada año; el resto son artistas con menos streams, a los que E1 ya asignaba el género como respaldo.</p>
 <p>La calidad de cada fuente está descrita en <a href="../../entregas/E2_eda_preparacion/calidad.html">Calidad por fuente</a>.</p>
 
 

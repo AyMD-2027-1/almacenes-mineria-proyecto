@@ -8,11 +8,17 @@ el macrogénero de P1.
 | Tabla | Filas | Columnas | Llave natural | Filas idénticas | Llaves repetidas |
 |---|---|---|---|---|---|
 | `stg_musicbrainz_tags` | 112 | 2 | artista buscado | 0 | 0 |
+| `stg_musicbrainz_tags_completo` | 1,120 | 2 | artista buscado | 0 | 0 |
+
+La primera tabla es la de E1; la segunda tiene a los 1,120 artistas del catálogo completo de Kworb que E1 no había
+buscado, con el mismo método (`src/ingestion/musicbrainz.py`). Entre las dos cubren a los 1,232 artistas.
 
 ## Qué encontramos
 
 Hay una búsqueda por artista, sin errores ni nulos, pero el primer resultado no siempre es el artista correcto: en
-18 búsquedas el nombre no coincide, como "Alemán", que devuelve a Oscar Alemán. Las etiquetas con pocos votos meten
+257 de las 1,232 búsquedas el nombre no coincide, como "Alemán", que devuelve a Oscar Alemán, o Young Miko, que
+devuelve a Neil Young, y 9 no tienen ningún resultado. En E1, con 112 artistas conocidos, eran 18; los artistas
+nuevos son menos famosos y la búsqueda se equivoca más. Las etiquetas con pocos votos meten
 ruido; si se usan todas, Billie Eilish y Ed Sheeran caen en hip hop. Plan B es un caso conocido: MusicBrainz devuelve
 al rapero británico y no al dúo de reguetón puertorriqueño.
 
@@ -20,13 +26,10 @@ al rapero británico y no al dúo de reguetón puertorriqueño.
 
 | Problema | Cuánto afecta | Qué decidimos y por qué |
 |---|---|---|
-| El resultado es otro artista | 18 artistas | Descartamos su género y los dejamos como "sin etiqueta", porque un género equivocado es peor que ninguno. |
+| El resultado es otro artista | 257 artistas | Descartamos su género y los dejamos como "sin etiqueta", porque un género equivocado es peor que ninguno. |
 | Etiquetas con ruido | Todas | Usamos solo las 5 más votadas, lo que corrige casos como el de Billie Eilish. |
 | Plan B | 1 artista | Declaramos la corrección en `config.yaml`, porque es un error de identidad conocido. |
-| Artistas sin género | 30.5 % de las filas de canción y mes | Los dejamos en la categoría "sin etiqueta", porque asignarles un género inventaría la composición que mide P1. |
-
-Con el catálogo completo de Kworb buscamos con el mismo método a 1,120 artistas más, en
-`stg_musicbrainz_tags_completo`.
+| Artistas sin género | 482 de 1,232 artistas; 23.8 % de las filas de canción y mes y 30 % de los streams | Los dejamos en la categoría "sin etiqueta", porque asignarles un género inventaría la composición que mide P1. |
 
 Las cifras se reproducen desde `pipeline/` con `python -m src.eda.inspeccion` y `python -m src.cleaning.limpieza`.
 
