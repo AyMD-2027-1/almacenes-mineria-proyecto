@@ -22,6 +22,7 @@ import html
 import re
 import sys
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -37,6 +38,8 @@ URL_LISTA = "https://kworb.net/spotify/country/mx_weekly_totals.html"
 URL_CANCION = "https://kworb.net/spotify/track/{}.html"
 AGENTE = "Mozilla/5.0 (compatible; academic-research-script)"
 PAUSA_SEGUNDOS = 1.5
+INTENTOS = 4
+ESPERA_REINTENTO_SEGUNDOS = 30
 PAIS = "MX"
 SIN_CHART = "--"
 
@@ -45,21 +48,40 @@ PATRON_CANCION = re.compile(r'<a href="\.\./track/([A-Za-z0-9]{22})\.html">(.*?)
 PATRON_ARTISTA = re.compile(r'<a href="\.\./artist/[A-Za-z0-9]+\.html">(.*?)</a>')
 
 
-def descargar(url: str, destino: Path) -> str:
+def descargar(url: str, destino: Path) -> str | None:
     """Devuelve el HTML de una página, desde la copia local si ya existe.
+
+    Si la red falla, reintenta hasta `INTENTOS` veces con una espera creciente.
+    Si Kworb ya no tiene la página (error 404), no reintenta.
 
     Args:
         url (str): dirección de la página.
         destino (Path): archivo donde se guarda la copia.
 
     Returns:
-        str: el HTML de la página.
+        str | None: el HTML de la página, o None si la página no existe.
     """
     if destino.exists():
         return destino.read_text(encoding="utf-8")
     peticion = urllib.request.Request(url, headers={"User-Agent": AGENTE})
-    with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-        texto = respuesta.read().decode("utf-8")
+    for intento in range(1, INTENTOS + 1):
+        try:
+            with urllib.request.urlopen(peticion, timeout=60) as respuesta:
+                texto = respuesta.read().decode("utf-8")
+            break
+        except urllib.error.HTTPError as error:
+            if error.code == 404:
+                return None
+            if intento == INTENTOS:
+                raise
+            print(f"Falló {url} ({error}); reintento {intento} de {INTENTOS - 1}", flush=True)
+            time.sleep(ESPERA_REINTENTO_SEGUNDOS * intento)
+        except (TimeoutError, OSError) as error:
+            # Un corte de red no debe detener una descarga de horas: se espera y se reintenta.
+            if intento == INTENTOS:
+                raise
+            print(f"Falló {url} ({error}); reintento {intento} de {INTENTOS - 1}", flush=True)
+            time.sleep(ESPERA_REINTENTO_SEGUNDOS * intento)
     destino.write_text(texto, encoding="utf-8")
     time.sleep(PAUSA_SEGUNDOS)
     return texto
@@ -132,9 +154,12 @@ def ejecutar_kworb() -> tuple[pl.DataFrame, pl.DataFrame]:
     assert catalogo["track_id"].is_unique().all(), "la lista repite canciones"
     print(f"Canciones en la lista semanal: {catalogo.height:,}")
 
-    filas, sin_mexico = [], []
+    filas, sin_mexico, sin_pagina = [], [], []
     for i, track_id in enumerate(catalogo["track_id"], start=1):
         pagina = descargar(URL_CANCION.format(track_id), RUTA_KWORB_HTML / f"{track_id}.html")
+        if pagina is None:
+            sin_pagina.append(track_id)
+            continue
         historial = historial_mexico(track_id, pagina)
         filas.extend(historial)
         if not historial:
@@ -142,7 +167,8 @@ def ejecutar_kworb() -> tuple[pl.DataFrame, pl.DataFrame]:
         if i % 250 == 0:
             print(f"{i:,} de {catalogo.height:,} páginas", flush=True)
     semanal = pl.DataFrame(filas)
-    print(f"Filas del historial: {semanal.height:,}; canciones sin columna de México: {len(sin_mexico)}")
+    print(f"Filas del historial: {semanal.height:,}; canciones sin columna de México: {len(sin_mexico)}; "
+          f"canciones cuya página ya no existe en Kworb: {len(sin_pagina)}")
 
     for tabla, datos in (("stg_kworb_catalogo_completo", catalogo), ("stg_kworb_mx_semanal_completo", semanal)):
         destino = RUTA_DESCARGAS / ARCHIVOS_STAGING[tabla]
