@@ -266,7 +266,10 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#por-qué-ampliamos-kworb" id="toc-por-qué-ampliamos-kworb" class="nav-link active" data-scroll-target="#por-qué-ampliamos-kworb">Por qué ampliamos Kworb</a></li>
-  <li><a href="#tablas-nuevas-de-staging" id="toc-tablas-nuevas-de-staging" class="nav-link" data-scroll-target="#tablas-nuevas-de-staging">Tablas nuevas de staging</a></li>
+  <li><a href="#tablas-nuevas-de-staging" id="toc-tablas-nuevas-de-staging" class="nav-link" data-scroll-target="#tablas-nuevas-de-staging">Tablas nuevas de staging</a>
+  <ul class="collapse">
+  <li><a href="#cómo-se-relacionan-con-las-tablas-de-e1" id="toc-cómo-se-relacionan-con-las-tablas-de-e1" class="nav-link" data-scroll-target="#cómo-se-relacionan-con-las-tablas-de-e1">Cómo se relacionan con las tablas de E1</a></li>
+  </ul></li>
   <li><a href="#qué-cambió-en-el-reparto-por-estado" id="toc-qué-cambió-en-el-reparto-por-estado" class="nav-link" data-scroll-target="#qué-cambió-en-el-reparto-por-estado">Qué cambió en el reparto por estado</a></li>
   </ul>
 </nav>
@@ -400,7 +403,7 @@ Tabla&nbsp;2: Fuentes agregadas o ampliadas en E2
 <td><code>stg_kworb_catalogo_completo</code></td>
 <td>5,177</td>
 <td>Es el catálogo de todas las canciones que han estado en el Top 200 semanal de México.</td>
-<td>Leímos la lista <code>mx_weekly_totals</code> de Kworb con <code>src/ingestion/kworb.py</code>.</td>
+<td>Leímos la lista <code>mx_weekly_totals</code> de Kworb con <code>src/ingestion/collection/kworb.py</code>.</td>
 <td>Contiene exactamente las 300 canciones de E1, con el mismo artista y título.</td>
 </tr>
 <tr class="even">
@@ -414,7 +417,7 @@ Tabla&nbsp;2: Fuentes agregadas o ampliadas en E2
 <td><code>stg_musicbrainz_tags_completo</code></td>
 <td>1,120</td>
 <td>Da el género de los artistas que no estaban en E1.</td>
-<td>Buscamos cada artista en MusicBrainz con el mismo método de E1 (<code>src/ingestion/musicbrainz.py</code>).</td>
+<td>Buscamos cada artista en MusicBrainz con el mismo método de E1 (<code>src/ingestion/collection/musicbrainz.py</code>).</td>
 <td>Ninguna búsqueda devolvió error.</td>
 </tr>
 <tr class="even">
@@ -442,14 +445,14 @@ Tabla&nbsp;2: Fuentes agregadas o ampliadas en E2
 <td><code>stg_endireh_2021_prevalencias</code></td>
 <td>3,960</td>
 <td>Aporta las prevalencias oficiales por tipo de violencia que compara P4.</td>
-<td>Pasamos a formato largo el cuadro 21.2 de los tabulados de INEGI, sin cambiar ningún valor (<code>src/ingestion/endireh.py</code>).</td>
+<td>Pasamos a formato largo el cuadro 21.2 de los tabulados de INEGI, sin cambiar ningún valor (<code>src/ingestion/collection/endireh.py</code>).</td>
 <td>La prevalencia nacional de 2021 es 42.8 %, igual a la publicada.</td>
 </tr>
 <tr class="even">
 <td><code>stg_endutih_usuarios_entidad_anio</code></td>
 <td>330</td>
 <td>Da los usuarios de internet de cada año; en E1 solo teníamos 2024.</td>
-<td>Tomamos los tabulados anuales de INEGI de 2015 a 2025 (<code>src/ingestion/endutih.py</code>). INEGI no publica 2019, que interpolamos.</td>
+<td>Tomamos los tabulados anuales de INEGI de 2015 a 2025 (<code>src/ingestion/collection/endutih.py</code>). INEGI no publica 2019, que interpolamos.</td>
 <td>En cada año la suma de los estados da el total nacional.</td>
 </tr>
 </tbody>
@@ -457,6 +460,61 @@ Tabla&nbsp;2: Fuentes agregadas o ampliadas en E2
 </div>
 </figure>
 </div>
+<section id="cómo-se-relacionan-con-las-tablas-de-e1" class="level3">
+<h3 class="anchored" data-anchor-id="cómo-se-relacionan-con-las-tablas-de-e1">Cómo se relacionan con las tablas de E1</h3>
+<p>Las tablas de E2 no reemplazan a las de E1: staging guarda cada carga tal como llegó, para que E1 se pueda reproducir y se sepa de dónde viene cada dato. La unión se hace en el pipeline, que lee las tablas que lista <code>config.yaml</code>. El sufijo <code>_completo</code> no significa lo mismo en todas las fuentes:</p>
+<div id="tbl-relacion-e1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-relacion-e1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;3: Relación entre las tablas de E1 y las de E2
+</figcaption>
+<div aria-describedby="tbl-relacion-e1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Fuente</th>
+<th>Tabla de E1</th>
+<th>Tabla de E2</th>
+<th>Relación</th>
+<th>Qué usa el pipeline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Kworb</td>
+<td><code>stg_kworb_catalogo_canciones</code> y <code>stg_kworb_mx_semanal</code> (300 canciones)</td>
+<td><code>stg_kworb_catalogo_completo</code> y <code>stg_kworb_mx_semanal_completo</code> (5,177 canciones)</td>
+<td>La de E2 contiene a la de E1: tiene las mismas 300 canciones, y sus 41,817 semanas en común traen valores idénticos. Solo cambian los totales acumulados, porque la descarga es más reciente.</td>
+<td>Solo la de E2.</td>
+</tr>
+<tr class="even">
+<td>MusicBrainz</td>
+<td><code>stg_musicbrainz_tags</code> (112 artistas)</td>
+<td><code>stg_musicbrainz_tags_completo</code> (1,120 artistas)</td>
+<td>Se complementan: no comparten ningún artista, y juntas cubren a los 1,232 del catálogo.</td>
+<td>Las dos, unidas en <code>src/ingestion/generos.py</code>.</td>
+</tr>
+<tr class="odd">
+<td>Google Trends por artista</td>
+<td><code>stg_trends_artista_anio</code> (370 descargas)</td>
+<td><code>stg_trends_artista_anio_completo</code> (293 descargas)</td>
+<td>Se complementan: la de E2 solo trae los artista-año que faltaban.</td>
+<td>Las dos, unidas en <code>src/loading/pesos.py</code>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Los scripts con los que obtuvimos estas tablas están en <code>pipeline/src/ingestion/collection/</code>, separados de los módulos que corren en cada ejecución del pipeline.</p>
+</section>
 </section>
 <section id="qué-cambió-en-el-reparto-por-estado" class="level2">
 <h2 class="anchored" data-anchor-id="qué-cambió-en-el-reparto-por-estado">Qué cambió en el reparto por estado</h2>

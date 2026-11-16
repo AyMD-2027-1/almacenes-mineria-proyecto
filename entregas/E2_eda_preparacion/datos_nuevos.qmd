@@ -33,15 +33,31 @@ diario pero nunca en el semanal.
 
 | Tabla | Filas | Para qué la usamos | Cómo la obtuvimos | Cómo la validamos |
 |---|---|---|---|---|
-| `stg_kworb_catalogo_completo` | 5,177 | Es el catálogo de todas las canciones que han estado en el Top 200 semanal de México. | Leímos la lista `mx_weekly_totals` de Kworb con `src/ingestion/kworb.py`. | Contiene exactamente las 300 canciones de E1, con el mismo artista y título. |
+| `stg_kworb_catalogo_completo` | 5,177 | Es el catálogo de todas las canciones que han estado en el Top 200 semanal de México. | Leímos la lista `mx_weekly_totals` de Kworb con `src/ingestion/collection/kworb.py`. | Contiene exactamente las 300 canciones de E1, con el mismo artista y título. |
 | `stg_kworb_mx_semanal_completo` | 298,179 | Es el historial semanal de cada una de esas canciones. | Descargamos la página de cada canción y tomamos la columna de México, con 1.5 segundos entre páginas y reintentos ante cortes de red. | Tiene el mismo formato que la tabla de E1, y para las mismas canciones coincide con Kaggle (Spearman de 0.93 a 0.97). De 5,177 canciones, 55 no tienen historial: 54 sin columna de México y una cuya página ya no existe. |
-| `stg_musicbrainz_tags_completo` | 1,120 | Da el género de los artistas que no estaban en E1. | Buscamos cada artista en MusicBrainz con el mismo método de E1 (`src/ingestion/musicbrainz.py`). | Ninguna búsqueda devolvió error. |
+| `stg_musicbrainz_tags_completo` | 1,120 | Da el género de los artistas que no estaban en E1. | Buscamos cada artista en MusicBrainz con el mismo método de E1 (`src/ingestion/collection/musicbrainz.py`). | Ninguna búsqueda devolvió error. |
 | `stg_trends_macrogenero_anio` | 2,464 | Permite repartir entre estados el consumo de los artistas sin datos propios. | Descargamos de Google Trends el interés por estado de un tema por macrogénero, una vez por año de 2015 a 2025. | El reguetón de 2021 coincide con la descarga de E1 (Spearman de 0.99). |
 | `stg_trends_artista_anio` | 11,840 | Es la base principal del reparto por estado que definió E1. | Descargamos el tema de cada artista del top 50 de cada año con las 300 canciones de E1: 109 artistas y 370 descargas. | 356 de las 370 descargas tienen valor en al menos 28 estados. |
 | `stg_trends_artista_anio_completo` | 9,376 | Completa el reparto para los artistas que entraron al top 50 de algún año al ampliar Kworb. | Con el mismo script descargamos los 293 artista-año que faltaban, de 173 artistas. Revisamos el tema que eligió el autocompletado y corregimos cuatro que eran otra cosa (un álbum, un musical, una tienda y otra cantante). | 273 de las 293 descargas tienen valor en al menos 28 estados. Mora, MAGIC!, OMI y Los Legendarios no se usan, porque su nombre es una palabra común y la búsqueda mide otra cosa. |
-| `stg_endireh_2021_prevalencias` | 3,960 | Aporta las prevalencias oficiales por tipo de violencia que compara P4. | Pasamos a formato largo el cuadro 21.2 de los tabulados de INEGI, sin cambiar ningún valor (`src/ingestion/endireh.py`). | La prevalencia nacional de 2021 es 42.8 %, igual a la publicada. |
-| `stg_endutih_usuarios_entidad_anio` | 330 | Da los usuarios de internet de cada año; en E1 solo teníamos 2024. | Tomamos los tabulados anuales de INEGI de 2015 a 2025 (`src/ingestion/endutih.py`). INEGI no publica 2019, que interpolamos. | En cada año la suma de los estados da el total nacional. |
+| `stg_endireh_2021_prevalencias` | 3,960 | Aporta las prevalencias oficiales por tipo de violencia que compara P4. | Pasamos a formato largo el cuadro 21.2 de los tabulados de INEGI, sin cambiar ningún valor (`src/ingestion/collection/endireh.py`). | La prevalencia nacional de 2021 es 42.8 %, igual a la publicada. |
+| `stg_endutih_usuarios_entidad_anio` | 330 | Da los usuarios de internet de cada año; en E1 solo teníamos 2024. | Tomamos los tabulados anuales de INEGI de 2015 a 2025 (`src/ingestion/collection/endutih.py`). INEGI no publica 2019, que interpolamos. | En cada año la suma de los estados da el total nacional. |
 : Fuentes agregadas o ampliadas en E2 {#tbl-nuevas}
+
+### Cómo se relacionan con las tablas de E1
+
+Las tablas de E2 no reemplazan a las de E1: staging guarda cada carga tal como llegó, para que E1 se pueda
+reproducir y se sepa de dónde viene cada dato. La unión se hace en el pipeline, que lee las tablas que lista
+`config.yaml`. El sufijo `_completo` no significa lo mismo en todas las fuentes:
+
+| Fuente | Tabla de E1 | Tabla de E2 | Relación | Qué usa el pipeline |
+|---|---|---|---|---|
+| Kworb | `stg_kworb_catalogo_canciones` y `stg_kworb_mx_semanal` (300 canciones) | `stg_kworb_catalogo_completo` y `stg_kworb_mx_semanal_completo` (5,177 canciones) | La de E2 contiene a la de E1: tiene las mismas 300 canciones, y sus 41,817 semanas en común traen valores idénticos. Solo cambian los totales acumulados, porque la descarga es más reciente. | Solo la de E2. |
+| MusicBrainz | `stg_musicbrainz_tags` (112 artistas) | `stg_musicbrainz_tags_completo` (1,120 artistas) | Se complementan: no comparten ningún artista, y juntas cubren a los 1,232 del catálogo. | Las dos, unidas en `src/ingestion/generos.py`. |
+| Google Trends por artista | `stg_trends_artista_anio` (370 descargas) | `stg_trends_artista_anio_completo` (293 descargas) | Se complementan: la de E2 solo trae los artista-año que faltaban. | Las dos, unidas en `src/loading/pesos.py`. |
+: Relación entre las tablas de E1 y las de E2 {#tbl-relacion-e1}
+
+Los scripts con los que obtuvimos estas tablas están en `pipeline/src/ingestion/collection/`, separados de los
+módulos que corren en cada ejecución del pipeline.
 
 ## Qué cambió en el reparto por estado
 

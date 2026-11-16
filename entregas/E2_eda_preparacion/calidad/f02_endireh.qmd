@@ -12,7 +12,7 @@ usa P4. Estaba en el catálogo de E1, pero la agregamos a staging en E2.
 ## Cómo la obtuvimos
 
 Tomamos de los tabulados de INEGI el archivo "XXI. Prevalencia de la violencia", cuadro 21.2, con la violencia de
-los últimos 12 meses por entidad, tipo de persona agresora y tipo de violencia. El script `src/ingestion/endireh.py`
+los últimos 12 meses por entidad, tipo de persona agresora y tipo de violencia. El script `src/ingestion/collection/endireh.py`
 solo lo pasa del formato de presentación a una tabla larga, sin cambiar ningún valor: 33 entidades (las 32 y la
 nacional), tres tipos de agresor, cuatro medidas (estimación, coeficiente de variación, error estándar y
 observaciones), dos levantamientos (2016 y 2021) y cinco tipos de violencia.

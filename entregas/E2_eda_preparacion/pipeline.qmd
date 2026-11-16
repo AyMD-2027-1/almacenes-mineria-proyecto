@@ -59,7 +59,7 @@ están fijadas en `requirements.txt`.
 El pipeline es idempotente: la ingesta reutiliza la copia local, la carga vacía las tablas del DW y las vuelve a
 llenar, y las vistas se crean con `CREATE OR REPLACE VIEW`, así que correrlo dos veces deja el mismo resultado.
 Entre staging y el DW no hay pasos manuales. Las fuentes que se descargan de un sitio se suben a staging una sola
-vez, con scripts guardados en `src/ingestion/` y descritos en el README. Las credenciales son las de aplicación por
+vez, con scripts guardados en `src/ingestion/collection/`, separados de los módulos que corren en cada ejecución, y descritos en el README. Las credenciales son las de aplicación por
 defecto de `gcloud`, y en el repositorio no hay ningún archivo de llaves.
 
 ### Validaciones automáticas

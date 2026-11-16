@@ -356,7 +356,7 @@ ul.task-list li input[type="checkbox"] {
 </table>
 <section id="por-qué-agregamos-tablas-en-e2" class="level2">
 <h2 class="anchored" data-anchor-id="por-qué-agregamos-tablas-en-e2">Por qué agregamos tablas en E2</h2>
-<p>E1 definió repartir el consumo con el Trends del artista en cada año y, si no lo hay, con el de su género, pero en staging solo estaba el reguetón de 2021. En E2 descargamos un tema por cada uno de los 7 macrogéneros y uno por cada artista del top 50 de cada año (109 artistas), una vez por año de 2015 a 2025. Al ampliar Kworb al catálogo completo, el top 50 de cada año cambió, así que descargamos con el mismo script los 293 artista-año que faltaban, de 173 artistas, en <code>stg_trends_artista_anio_completo</code>. El código de la descarga está en <code>pipeline/src/ingestion/trends_descarga.js</code>.</p>
+<p>E1 definió repartir el consumo con el Trends del artista en cada año y, si no lo hay, con el de su género, pero en staging solo estaba el reguetón de 2021. En E2 descargamos un tema por cada uno de los 7 macrogéneros y uno por cada artista del top 50 de cada año (109 artistas), una vez por año de 2015 a 2025. Al ampliar Kworb al catálogo completo, el top 50 de cada año cambió, así que descargamos con el mismo script los 293 artista-año que faltaban, de 173 artistas, en <code>stg_trends_artista_anio_completo</code>. El código de la descarga está en <code>pipeline/src/ingestion/collection/trends_descarga.js</code>.</p>
 </section>
 <section id="qué-encontramos" class="level2">
 <h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>

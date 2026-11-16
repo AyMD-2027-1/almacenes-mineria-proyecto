@@ -11,7 +11,7 @@ el macrogénero de P1.
 | `stg_musicbrainz_tags_completo` | 1,120 | 2 | artista buscado | 0 | 0 |
 
 La primera tabla es la de E1; la segunda tiene a los 1,120 artistas del catálogo completo de Kworb que E1 no había
-buscado, con el mismo método (`src/ingestion/musicbrainz.py`). Entre las dos cubren a los 1,232 artistas.
+buscado, con el mismo método (`src/ingestion/collection/musicbrainz.py`). Entre las dos cubren a los 1,232 artistas.
 
 ## Qué encontramos
 

@@ -331,7 +331,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>La primera tabla es la de E1; la segunda tiene a los 1,120 artistas del catálogo completo de Kworb que E1 no había buscado, con el mismo método (<code>src/ingestion/musicbrainz.py</code>). Entre las dos cubren a los 1,232 artistas.</p>
+<p>La primera tabla es la de E1; la segunda tiene a los 1,120 artistas del catálogo completo de Kworb que E1 no había buscado, con el mismo método (<code>src/ingestion/collection/musicbrainz.py</code>). Entre las dos cubren a los 1,232 artistas.</p>
 <section id="qué-encontramos" class="level2">
 <h2 class="anchored" data-anchor-id="qué-encontramos">Qué encontramos</h2>
 <p>Hay una búsqueda por artista, sin errores ni nulos, pero el primer resultado no siempre es el artista correcto: en 257 de las 1,232 búsquedas el nombre no coincide, como “Alemán”, que devuelve a Oscar Alemán, o Young Miko, que devuelve a Neil Young, y 9 no tienen ningún resultado. En E1, con 112 artistas conocidos, eran 18; los artistas nuevos son menos famosos y la búsqueda se equivoca más. Las etiquetas con pocos votos meten ruido; si se usan todas, Billie Eilish y Ed Sheeran caen en hip hop. Plan B es un caso conocido: MusicBrainz devuelve al rapero británico y no al dúo de reguetón puertorriqueño.</p>

@@ -18,7 +18,7 @@ staging solo estaba el reguetón de 2021. En E2 descargamos un tema por cada uno
 artista del top 50 de cada año (109 artistas), una vez por año de 2015 a 2025. Al ampliar Kworb al catálogo
 completo, el top 50 de cada año cambió, así que descargamos con el mismo script los 293 artista-año que faltaban,
 de 173 artistas, en `stg_trends_artista_anio_completo`. El código de la descarga está en
-`pipeline/src/ingestion/trends_descarga.js`.
+`pipeline/src/ingestion/collection/trends_descarga.js`.
 
 ## Qué encontramos
 
