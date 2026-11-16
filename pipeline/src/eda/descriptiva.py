@@ -263,7 +263,7 @@ def figura_macrogeneros() -> None:
     ax.barh(datos["macrogenero"], datos["pct"], color=colores, height=0.6)
     for y, pct in enumerate(datos["pct"]):
         ax.annotate(f"{pct:.1f} %", (pct, y), xytext=(4, 0), textcoords="offset points", va="center")
-    ax.set_title("El regional mexicano y el urbano latino suman más de la mitad del consumo de la muestra")
+    ax.set_title("El regional mexicano y el urbano latino suman más de la mitad del consumo")
     ax.set_xlabel("Porcentaje de los streams 2015–2025")
     ax.grid(axis="y", visible=False)
     guardar(fig, "descriptiva_barras_macrogenero")

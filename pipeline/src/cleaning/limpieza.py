@@ -43,7 +43,7 @@ from src.cleaning.calidad import anotar, ceros_iniciales, fuera_de_iqr, guardar_
 from src.eda.vistas import POR_CADA, consumo, contexto, violencia  # noqa: E402
 from src.ingestion.ensamblado import LLAVE_DELITO, ensamblar_rnpdno, leer, sesnsp_a_meses  # noqa: E402
 from src.ingestion.entidades import asignar_clave, construir_catalogo  # noqa: E402
-from src.ingestion.generos import comparable  # noqa: E402
+from src.ingestion.generos import comparable, generos_por_artista  # noqa: E402
 from src.registro import registrar_etapa, seccion  # noqa: E402
 
 COLUMNAS_VIOLENCIA = ["cve_ent", "fecha", "origen", *LLAVE_DELITO, "tipo_lgamvlv",
@@ -301,14 +301,17 @@ def limpiar_canciones(registro: list[dict], consumo_limpio: pl.DataFrame) -> pl.
         pl.DataFrame: una fila por canción del catálogo de Kworb.
     """
     seccion("Limpieza de canciones")
-    generos = (
-        consumo_limpio.select("track_id", "pais_artista", "macrogenero", "origen_genero", "etiquetas_fuente").unique("track_id")
-    )
-    catalogo = leer(TABLA_KWORB_CATALOGO).join(generos, on="track_id", how="left").with_columns(
+    # El género sale del artista y no del consumo, para que también lo tengan las
+    # canciones que solo estuvieron en el chart fuera de la ventana.
+    generos = generos_por_artista().select("artista", "pais_artista", "macrogenero", "origen_genero", "etiquetas_fuente")
+    catalogo = leer(TABLA_KWORB_CATALOGO).with_columns(pl.col("artista").str.strip_chars()).join(
+        generos, on="artista", how="left"
+    ).with_columns(
         comparable(pl.col("titulo").str.replace_all(r"\(.*?\)|\[.*?\]", "")).alias("titulo_comparable"),
         comparable(pl.col("artista")).alias("artista_comparable"),
     )
     assert catalogo["track_id"].is_unique().all(), "el catálogo de Kworb repite canciones"
+    assert catalogo["origen_genero"].null_count() == 0, "hay artistas del catálogo sin búsqueda en MusicBrainz"
 
     corpus = etiquetas_misongyny(registro)
     pares = catalogo.select("track_id", "titulo_comparable", "artista_comparable").join(

@@ -405,8 +405,10 @@ def tabla_decision(
 
     def chi(nombre: str) -> str:
         f = pruebas.filter(pl.col("prueba").str.starts_with(nombre)).row(0, named=True)
-        fisher = f", p Fisher = {f['p_fisher']:.3f}" if f["p_fisher"] is not None else ""
-        p_holm = "< 0.001" if f["p_holm"] < 0.001 else f"= {f['p_holm']:.3f}"
+        def valor_p(p: float) -> str:
+            return "< 0.001" if p < 0.001 else f"= {p:.3f}"
+        fisher = f", p Fisher {valor_p(f['p_fisher'])}" if f["p_fisher"] is not None else ""
+        p_holm = valor_p(f["p_holm"])
         return f"V = {f['v_cramer']:.2f}, p Holm {p_holm}{fisher}, n = {f['n']:,.0f}"
 
     pc1 = varianza["varianza_explicada"][0]
@@ -459,8 +461,9 @@ def tabla_decision(
         "pais_artista": ("canciones", "categórica nominal", "χ² + V de Cramér",
                          f"con macrogénero: {chi('macrogénero × país')}; con es_misogina: {chi('es_misogina × país')}",
                          "descartar del análisis, conservar en la dimensión",
-                         "casi lo determina el macrogénero (regional mexicano es mexicano) y no se asocia con la "
-                         f"misoginia; {canciones['pais_artista'].null_count()} canciones no tienen país"),
+                         "lo explica en buena parte el macrogénero (el regional mexicano es mexicano y el urbano "
+                         "latino casi todo extranjero), así que su asociación con la misoginia repite la del género; "
+                         f"{canciones['pais_artista'].null_count()} canciones no tienen país"),
         "macrogenero": ("canciones", "categórica nominal", "χ²", chi("es_misogina × urbano"),
                         "conservar", "es la variable de P1 que se cruza con la misoginia"),
         "origen_genero": ("canciones", "categórica nominal", "ninguna", "auditoría", "conservar",
