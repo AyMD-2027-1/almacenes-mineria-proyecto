@@ -23,10 +23,12 @@ import re  # noqa: E402
 from matplotlib.collections import PolyCollection  # noqa: E402
 
 from config.parametros import REGIONES_BANXICO  # noqa: E402
-from config.rutas import RUTA_LIMPIO_ENTIDADES, RUTA_TABLAS_EDA  # noqa: E402
+from config.rutas import RUTA_TABLAS_EDA  # noqa: E402
+from src.cleaning.limpieza import limpiar_entidades  # noqa: E402
 from src.eda import vistas  # noqa: E402
 from src.eda.estilo import COLORES, REFERENCIA, aplicar_estilo, estilo_serie, guardar  # noqa: E402
 from src.eda.medidas import descomposicion_anova, indices_categoricos, resumen_numerico  # noqa: E402
+from src.ingestion.entidades import construir_catalogo  # noqa: E402
 from src.registro import seccion  # noqa: E402
 
 pl.Config.set_tbl_rows(40)
@@ -309,6 +311,18 @@ def figura_canciones_por_anio() -> None:
     guardar(fig, "descriptiva_canciones_por_anio")
 
 
+def entidades() -> pl.DataFrame:
+    """Arma las 32 entidades con su nombre oficial y su geometría desde staging.
+
+    El EDA corre antes de la limpieza, así que no puede leer la tabla limpia
+    de entidades; usa la misma función que la limpieza, sin guardar nada.
+
+    Returns:
+        pl.DataFrame: columnas `cve_ent`, `entidad`, `iso_3166_2` y `geometry_wkt`.
+    """
+    return limpiar_entidades([], construir_catalogo())
+
+
 def anillos_wkt(wkt: str) -> list[np.ndarray]:
     """Extrae los contornos exteriores de un POLYGON o MULTIPOLYGON en texto WKT.
 
@@ -333,11 +347,11 @@ def figura_mapa_tasas() -> None:
     Se usan tasas por 100 mil mujeres y no conteos, porque un mapa de conteos
     mostraría dónde vive más gente y no dónde es más frecuente la violencia.
     """
-    entidades = pl.read_parquet(RUTA_LIMPIO_ENTIDADES).select("cve_ent", "geometry_wkt")
+    geometrias = entidades().select("cve_ent", "geometry_wkt")
     tasas = vistas.tasas_entidad_anio().filter(pl.col("anio") == ANIO_RECIENTE)
     fig, ejes = plt.subplots(1, 2, figsize=(13, 4.6), layout="constrained")
     for ax, tipo in zip(ejes, ["sin distinguir", "sexual"]):
-        datos = entidades.join(tasas.filter(pl.col("tipo_lgamvlv") == tipo).select("cve_ent", "tasa_carpetas"), on="cve_ent")
+        datos = geometrias.join(tasas.filter(pl.col("tipo_lgamvlv") == tipo).select("cve_ent", "tasa_carpetas"), on="cve_ent")
         poligonos, valores = [], []
         for wkt, valor in datos.select("geometry_wkt", "tasa_carpetas").iter_rows():
             for anillo in anillos_wkt(wkt):
@@ -360,7 +374,7 @@ def figura_mapa_tasas() -> None:
 
 def figura_tipos_por_entidad() -> None:
     """Barras apiladas al 100 % de la mezcla de tipos de violencia en cada entidad (año reciente)."""
-    nombres = pl.read_parquet(RUTA_LIMPIO_ENTIDADES).select("cve_ent", "entidad")
+    nombres = entidades().select("cve_ent", "entidad")
     mezcla = (
         vistas.tasas_entidad_anio().filter(pl.col("anio") == ANIO_RECIENTE)
         .with_columns((pl.col("carpetas") / pl.col("carpetas").sum().over("cve_ent") * 100).alias("pct"))

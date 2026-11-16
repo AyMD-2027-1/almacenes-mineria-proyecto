@@ -11,7 +11,7 @@ import polars as pl
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
-from config.parametros import EQUIVALENCIAS_ENTIDAD, NOMBRES_NACIONALES  # noqa: E402
+from config.parametros import EQUIVALENCIAS_ENTIDAD, NOMBRES_ENTIDAD, NOMBRES_NACIONALES  # noqa: E402
 from config.rutas import ruta_raw  # noqa: E402
 
 
@@ -38,9 +38,13 @@ def construir_catalogo() -> pl.DataFrame:
     config.yaml y los nombres que usan las fuentes para el total del país,
     que reciben la clave 0.
 
+    El nombre que se muestra (`entidad`) es el oficial de `nombres_entidad`
+    en config.yaml, no el del SESNSP (que usa, por ejemplo, "Coahuila de
+    Zaragoza" o "México").
+
     Returns:
         pl.DataFrame: columnas `nombre` (str, normalizado), `cve_ent` (int) y
-            `entidad` (str, nombre oficial del SESNSP).
+            `entidad` (str, nombre oficial).
     """
     sesnsp = (
         pl.read_parquet(ruta_raw("stg_sesnsp_delitos"), columns=["clave_ent", "entidad"])
@@ -59,7 +63,15 @@ def construir_catalogo() -> pl.DataFrame:
     nacionales = pl.DataFrame(
         {"nombre": NOMBRES_NACIONALES, "cve_ent": [0] * len(NOMBRES_NACIONALES), "entidad": ["Nacional"] * len(NOMBRES_NACIONALES)}
     )
-    catalogo = pl.concat([sesnsp, variantes, nacionales]).sort("cve_ent", "nombre")
+    oficiales = pl.DataFrame({"cve_ent": [int(c) for c in NOMBRES_ENTIDAD], "oficial": list(NOMBRES_ENTIDAD.values())})
+    assert oficiales.height == 32, "config.yaml debe traer el nombre oficial de las 32 entidades"
+    catalogo = (
+        pl.concat([sesnsp, variantes, nacionales])
+        .join(oficiales, on="cve_ent", how="left")
+        .with_columns(pl.coalesce("oficial", "entidad").alias("entidad"))
+        .drop("oficial")
+        .sort("cve_ent", "nombre")
+    )
     assert catalogo["nombre"].is_unique().all(), "un mismo nombre quedó con dos claves"
     assert sesnsp.height == 32, f"el SESNSP debería tener 32 entidades y tiene {sesnsp.height}"
     return catalogo

@@ -35,6 +35,7 @@ VENTANA_FIN = PARAMETROS["ventana"]["fin"]
 
 EQUIVALENCIAS_ENTIDAD = PARAMETROS["equivalencias_entidad"]
 NOMBRES_NACIONALES = PARAMETROS["nombres_nacionales"]
+NOMBRES_ENTIDAD = PARAMETROS["nombres_entidad"]
 MAPEO_LGAMVLV = PARAMETROS["mapeo_lgamvlv"]
 DELITO_IMPUNIDAD = PARAMETROS["delito_impunidad"]
 MACROGENEROS = PARAMETROS["macrogeneros"]
