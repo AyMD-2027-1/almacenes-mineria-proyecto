@@ -56,6 +56,8 @@ PCA_VARIANZA_OBJETIVO = PARAMETROS["reduccion"]["pca_varianza_objetivo"]
 # Reparto del consumo nacional entre entidades.
 ARTISTAS_POR_ANIO = PARAMETROS["pesos"]["artistas_por_anio"]
 ENTIDADES_MINIMAS = PARAMETROS["pesos"]["entidades_minimas"]
+TABLAS_TRENDS_ARTISTA = PARAMETROS["pesos"]["trends_artista"]
+TRENDS_EXCLUIDOS = PARAMETROS["pesos"]["trends_excluidos"]
 
 REGIONES_BANXICO = PARAMETROS["regiones_banxico"]
 CATEGORIAS_MISONGYNY = PARAMETROS["categorias_misongyny"]

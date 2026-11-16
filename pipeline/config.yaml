@@ -54,6 +54,9 @@ ingesta:
   stg_trends_artista_anio:
     columnas: [artista, tema_trends, titulo_tema, tipo_tema, anio, geo_code, region_trends, interes, tiene_dato,
                fecha_descarga]
+  stg_trends_artista_anio_completo:
+    columnas: [artista, tema_trends, titulo_tema, tipo_tema, anio, geo_code, region_trends, interes, tiene_dato,
+               fecha_descarga]
   stg_kworb_catalogo_completo:
     columnas: [track_id, artista, titulo]
   stg_kworb_mx_semanal_completo:
@@ -72,9 +75,9 @@ ingesta:
 # streams; las "completo" traen todo el Top 200 semanal (src/ingestion/kworb.py).
 # Las búsquedas de MusicBrainz pueden venir de varias tablas y se juntan.
 consumo:
-  semanal: stg_kworb_mx_semanal
-  catalogo: stg_kworb_catalogo_canciones
-  musicbrainz: [stg_musicbrainz_tags]
+  semanal: stg_kworb_mx_semanal_completo
+  catalogo: stg_kworb_catalogo_completo
+  musicbrainz: [stg_musicbrainz_tags, stg_musicbrainz_tags_completo]
 
 # Identificación ante MusicBrainz (lo pide su política de uso). El contacto
 # puede ser un correo o la URL del repositorio; si queda vacío se omite.
@@ -88,6 +91,7 @@ musicbrainz:
 archivos_staging:
   stg_trends_macrogenero_anio: trends/trends_macrogenero_mx_2015_2025.csv
   stg_trends_artista_anio: trends/trends_artista_mx_2015_2025.csv
+  stg_trends_artista_anio_completo: trends/trends_artista_mx_2015_2025_completo.csv
   stg_endireh_2021_prevalencias: endireh/endireh_2021_prevalencias.csv
   stg_kworb_catalogo_completo: kworb/kworb_catalogo_completo.csv
   stg_kworb_mx_semanal_completo: kworb/kworb_mx_semanal_completo.csv
@@ -221,6 +225,13 @@ categorias_misongyny:
 pesos:
   artistas_por_anio: 50
   entidades_minimas: 28
+  # Búsquedas de Trends por artista y año; la segunda tabla trae los artistas que
+  # entraron al top 50 de algún año al ampliar Kworb al Top 200 completo.
+  trends_artista: [stg_trends_artista_anio, stg_trends_artista_anio_completo]
+  # Artistas cuyo nombre en Trends es una palabra común y no tienen tema de
+  # artista: su búsqueda mide otra cosa (la fruta, el equipo de baloncesto...),
+  # así que no se usa y el peso sale del género.
+  trends_excluidos: ["Mora", "MAGIC!", "OMI", "Los Legendarios"]
 
 # Una asociación entre categóricas cuenta si su p ajustada por Holm es menor que
 # alfa y además su V de Cramér llega al mínimo. Dos numéricas son redundantes

@@ -36,10 +36,18 @@ const GENEROS_POR_ANIO = Object.fromEntries(Object.keys(TEMAS_GENERO).map((g) =>
 const TEMAS_CORREGIDOS = {
   "Zion & Lennox": { keyword: "/m/01qfzz4", titulo: "Zion y Lennox", tipo: "Banda" },
   "Bobby Pulido": { keyword: "/m/01mgyt0", titulo: "Bobby Pulido", tipo: "Cantante" },
+  "The Chainsmokers": { keyword: "/m/0ndjfmd", titulo: "The Chainsmokers", tipo: "Tema" },
+  "El Fantasma": { keyword: "/g/11bt_4mrry", titulo: "El Fantasma", tipo: "Cantante" },
+  "Doja Cat": { keyword: "/m/012j_b2x", titulo: "Doja Cat", tipo: "Rapera estadounidense" },
+  "Thalia": { keyword: "/m/01_nx8", titulo: "Thalía", tipo: "Cantante y actriz" },
+  "Lele Pons": { keyword: "/m/011snksb", titulo: "Lele Pons", tipo: "Celebridad de internet" },
+  "Los Plebes del Rancho de Ariel Camacho": { keyword: "/g/11bw65s8jb", titulo: "Los Plebes del Rancho de Ariel Camacho", tipo: "Banda" },
+  "IAmChino": { keyword: "/g/11clvbdjjc", titulo: "IAmChino", tipo: "Disc-jockey cubano" },
+  "Rich Music LTD": { keyword: "/g/11fy130sgg", titulo: "Rich Music", tipo: "Compañía discográfica" },
 };
 
 // Tipos de resultado del autocompletado que corresponden a un artista.
-const TIPO_ARTISTA = /cantante|grupo|banda|rapero|músic|music|artista|dúo|duo|compositor|productor|dj|conjunto|agrupación|cantautor|singer|rapper|band|trío|trio|intérprete/i;
+const TIPO_ARTISTA = /cantante|grupo|banda|raper[oa]|músic|music|artista|dúo|duo|compositor|productor|dj|conjunto|agrupación|cantautor|singer|rapper|band|trío|trio|intérprete/i;
 
 const PAUSA_ENTRE_PETICIONES_MS = 1500;
 const PAUSA_ENTRE_DESCARGAS_MS = 2500;

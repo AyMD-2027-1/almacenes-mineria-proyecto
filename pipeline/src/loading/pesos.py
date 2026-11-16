@@ -26,7 +26,12 @@ import polars as pl
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
-from config.parametros import ARTISTAS_POR_ANIO, ENTIDADES_MINIMAS  # noqa: E402
+from config.parametros import (  # noqa: E402
+    ARTISTAS_POR_ANIO,
+    ENTIDADES_MINIMAS,
+    TABLAS_TRENDS_ARTISTA,
+    TRENDS_EXCLUIDOS,
+)
 from config.rutas import (  # noqa: E402
     RUTA_LIMPIO_CANCIONES,
     RUTA_LIMPIO_CONSUMO,
@@ -74,11 +79,25 @@ def consumo_artista_anio() -> pl.DataFrame:
     )
 
 
-def trends_validos(tabla: str, llave: str) -> pl.DataFrame:
-    """Lee una tabla de Trends de staging y conserva las descargas con valor en suficientes entidades.
+def leer_trends(tablas: list[str]) -> pl.DataFrame:
+    """Junta las tablas de Trends de staging que existan en la copia local.
 
     Args:
-        tabla (str): tabla de staging (macrogénero o artista).
+        tablas (list[str]): tablas de staging con las mismas columnas.
+
+    Returns:
+        pl.DataFrame: las filas de todas las tablas encontradas.
+    """
+    rutas = [ruta_raw(t) for t in tablas if ruta_raw(t).exists()]
+    assert rutas, f"no hay copia local de ninguna de {tablas}"
+    return pl.concat([pl.read_parquet(r) for r in rutas], how="diagonal_relaxed")
+
+
+def trends_validos(tablas: list[str], llave: str) -> pl.DataFrame:
+    """Lee las tablas de Trends de staging y conserva las descargas con valor en suficientes entidades.
+
+    Args:
+        tablas (list[str]): tablas de staging del mismo nivel (macrogénero o artista).
         llave (str): columna que identifica el tema (`macrogenero` o `artista`).
 
     Returns:
@@ -87,14 +106,15 @@ def trends_validos(tabla: str, llave: str) -> pl.DataFrame:
     """
     claves = pl.read_parquet(RUTA_LIMPIO_ENTIDADES).select("cve_ent", pl.col("iso_3166_2").alias("geo_code"))
     trends = (
-        pl.read_parquet(ruta_raw(tabla))
+        leer_trends(tablas)
         .with_columns(pl.col("anio").cast(pl.Int64), pl.col("interes").cast(pl.Int64))
         .join(claves, on="geo_code", how="left")
     )
-    assert trends["cve_ent"].null_count() == 0, f"{tabla}: hay códigos de Trends sin entidad"
+    assert trends["cve_ent"].null_count() == 0, f"{tablas}: hay códigos de Trends sin entidad"
+    assert trends.select(pl.struct(llave, "anio", "cve_ent").is_unique().all()).item(), f"{tablas}: descargas repetidas"
     con_valor = trends.group_by(llave, "anio").agg((pl.col("interes") > 0).sum().alias("entidades_con_valor"))
     validas = con_valor.filter(pl.col("entidades_con_valor") >= ENTIDADES_MINIMAS).select(llave, "anio")
-    print(f"{tabla}: {validas.height} de {con_valor.height} descargas con valor en {ENTIDADES_MINIMAS} entidades o más")
+    print(f"{', '.join(tablas)}: {validas.height} de {con_valor.height} descargas con valor en {ENTIDADES_MINIMAS} entidades o más")
     return trends.join(validas, on=[llave, "anio"]).select(llave, "anio", "cve_ent", "interes")
 
 
@@ -109,8 +129,8 @@ def calcular_pesos() -> pl.DataFrame:
     seccion("Pesos por entidad")
     artistas = consumo_artista_anio()
     usuarios = usuarios_internet()
-    por_artista = trends_validos("stg_trends_artista_anio", "artista")
-    por_genero = trends_validos("stg_trends_macrogenero_anio", "macrogenero")
+    por_artista = trends_validos(TABLAS_TRENDS_ARTISTA, "artista").filter(~pl.col("artista").is_in(TRENDS_EXCLUIDOS))
+    por_genero = trends_validos(["stg_trends_macrogenero_anio"], "macrogenero")
 
     candidatos = artistas.join(usuarios, on="anio")
     nivel_artista = (

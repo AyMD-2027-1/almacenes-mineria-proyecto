@@ -25,6 +25,7 @@ from config.parametros import (  # noqa: E402
     CATEGORIAS_MISONGYNY,
     MAPEO_LGAMVLV,
     REGIONES_BANXICO,
+    TABLAS_TRENDS_ARTISTA,
     VENTANA_FIN,
     VENTANA_INICIO,
 )
@@ -40,6 +41,7 @@ from config.rutas import (  # noqa: E402
 )
 from src.ingestion.ensamblado import LLAVE_DELITO, PREVALENCIAS  # noqa: E402
 from src.ingestion.generos import comparable  # noqa: E402
+from src.loading.pesos import leer_trends  # noqa: E402
 from src.registro import registrar_etapa, seccion  # noqa: E402
 
 MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
@@ -185,8 +187,8 @@ def dim_cancion() -> pl.DataFrame:
     """
     categorias = {codigo: v["categoria"] for codigo, v in CATEGORIAS_MISONGYNY.items()}
     temas = pl.DataFrame(schema={"artista": pl.String, "termino_trends": pl.String})
-    if ruta_raw("stg_trends_artista_anio").exists():
-        temas = (pl.read_parquet(ruta_raw("stg_trends_artista_anio"), columns=["artista", "titulo_tema", "tema_trends"])
+    if any(ruta_raw(t).exists() for t in TABLAS_TRENDS_ARTISTA):
+        temas = (leer_trends(TABLAS_TRENDS_ARTISTA).select("artista", "titulo_tema", "tema_trends")
                  .unique("artista").select("artista", pl.format("{} ({})", "titulo_tema", "tema_trends").alias("termino_trends")))
     return (
         pl.read_parquet(RUTA_LIMPIO_CANCIONES)
