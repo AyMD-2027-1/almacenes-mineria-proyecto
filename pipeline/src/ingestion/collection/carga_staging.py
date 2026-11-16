@@ -2,7 +2,7 @@
 Sube a staging las fuentes que se descargan a mano de un sitio: los CSV de
 Google Trends (interés por estado de cada macrogénero y de cada artista, una
 descarga por año) y la prevalencia de la ENDIREH 2021 que extrae
-src/ingestion/endireh.py del tabulado de INEGI.
+src/ingestion/collection/endireh.py del tabulado de INEGI.
 
 Los archivos se suben sin cambios (todas las columnas como texto), igual que
 las demás tablas de staging. La carga usa WRITE_EMPTY: si la tabla ya existe
@@ -11,9 +11,9 @@ deja la copia local en data/data-raw/ para que la ingesta no tenga que
 volver a consultar BigQuery.
 
 Este script se ejecuta desde pipeline/ con:
-    python -m src.ingestion.carga_staging
-    python -m src.ingestion.carga_staging --solo-local
-    python -m src.ingestion.carga_staging --tablas stg_endutih_usuarios_entidad_anio
+    python -m src.ingestion.collection.carga_staging
+    python -m src.ingestion.collection.carga_staging --solo-local
+    python -m src.ingestion.collection.carga_staging --tablas stg_endutih_usuarios_entidad_anio
 La opción --solo-local guarda la copia en data/data-raw/ sin tocar BigQuery.
 """
 
@@ -25,7 +25,7 @@ import polars as pl
 from google.api_core.exceptions import Conflict
 from google.cloud import bigquery
 
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 from config.parametros import ARCHIVOS_STAGING, DATASETS, PROYECTO_GCP, TABLAS_STAGING  # noqa: E402
 from config.rutas import RUTA_DATA_RAW, RUTA_DESCARGAS, ruta_raw  # noqa: E402

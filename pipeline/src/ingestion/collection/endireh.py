@@ -11,7 +11,7 @@ solo se pasa a formato largo, sin cambiar ningún valor; el resultado es el
 CSV que se sube a staging.
 
 Este script se ejecuta desde pipeline/ con:
-    python -m src.ingestion.endireh
+    python -m src.ingestion.collection.endireh
 """
 
 import sys
@@ -19,7 +19,7 @@ from pathlib import Path
 
 import polars as pl
 
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 from config.parametros import ARCHIVOS_STAGING, ENDIREH  # noqa: E402
 from config.rutas import RUTA_DESCARGAS  # noqa: E402

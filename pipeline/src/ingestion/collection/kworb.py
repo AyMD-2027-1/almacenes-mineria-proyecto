@@ -8,14 +8,14 @@ El staging de E1 solo tenía las 300 canciones con más streams; esta descarga
 trae todas, que es lo que E1 dejó planeado para la preparación. El resultado
 son dos CSV con el mismo formato que las tablas de E1 (`track_id`, `semana`,
 `valor` y el catálogo con artista y título), que se suben a staging como
-tablas nuevas con src/ingestion/carga_staging.py.
+tablas nuevas con src/ingestion/collection/carga_staging.py.
 
 Cada página se guarda en data/kworb_html/ y no se vuelve a pedir, así que la
 descarga se puede interrumpir y reanudar. Entre páginas se espera
 `PAUSA_SEGUNDOS`; el robots.txt de Kworb permite descargar todo el sitio.
 
 Este script se ejecuta desde pipeline/ con:
-    python -m src.ingestion.kworb
+    python -m src.ingestion.collection.kworb
 """
 
 import html
@@ -28,7 +28,7 @@ from pathlib import Path
 
 import polars as pl
 
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 from config.parametros import ARCHIVOS_STAGING  # noqa: E402
 from config.rutas import RUTA_DESCARGAS, RUTA_KWORB_HTML  # noqa: E402

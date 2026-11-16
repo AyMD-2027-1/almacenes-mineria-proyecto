@@ -7,14 +7,14 @@ el artista correcto la toma src/ingestion/generos.py.
 
 El resultado es un CSV con el mismo formato que stg_musicbrainz_tags, que se
 sube a staging como stg_musicbrainz_tags_completo con
-src/ingestion/carga_staging.py. Si se interrumpe, al volver a correr solo
+src/ingestion/collection/carga_staging.py. Si se interrumpe, al volver a correr solo
 busca a los artistas que faltan.
 
 MusicBrainz pide que cada programa se identifique con un nombre, una versión
 y un contacto; el contacto se configura en config.yaml.
 
 Este script se ejecuta desde pipeline/ con:
-    python -m src.ingestion.musicbrainz
+    python -m src.ingestion.collection.musicbrainz
 """
 
 import json
@@ -25,11 +25,11 @@ from pathlib import Path
 import musicbrainzngs as mb
 import polars as pl
 
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 from config.parametros import ARCHIVOS_STAGING, MUSICBRAINZ, TABLAS_MUSICBRAINZ  # noqa: E402
 from config.rutas import RUTA_DESCARGAS, RUTA_KWORB_HTML, ruta_raw  # noqa: E402
-from src.ingestion.kworb import leer_lista  # noqa: E402
+from src.ingestion.collection.kworb import leer_lista  # noqa: E402
 from src.registro import seccion  # noqa: E402
 
 TABLA_SALIDA = "stg_musicbrainz_tags_completo"

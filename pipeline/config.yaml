@@ -72,7 +72,7 @@ ingesta:
     filtro: "MUN = '000' AND LOC = '0000'"
 
 # Tablas de staging del consumo. Las de E1 traen solo las 300 canciones con más
-# streams; las "completo" traen todo el Top 200 semanal (src/ingestion/kworb.py).
+# streams; las "completo" traen todo el Top 200 semanal (src/ingestion/collection/kworb.py).
 # Las búsquedas de MusicBrainz pueden venir de varias tablas y se juntan.
 consumo:
   semanal: stg_kworb_mx_semanal_completo

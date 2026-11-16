@@ -12,7 +12,7 @@ INEGI no publica tabulados de 2019, así que ese año no aparece; la limpieza lo
 interpola entre 2018 y 2020.
 
 Este script se ejecuta desde pipeline/ con:
-    python -m src.ingestion.endutih
+    python -m src.ingestion.collection.endutih
 """
 
 import re
@@ -21,7 +21,7 @@ from pathlib import Path
 
 import polars as pl
 
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 from config.parametros import ARCHIVOS_STAGING, ENDUTIH_TABULADOS  # noqa: E402
 from config.rutas import RUTA_DESCARGAS  # noqa: E402

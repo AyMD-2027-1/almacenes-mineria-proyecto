@@ -87,21 +87,22 @@ relativas a la carpeta del proyecto.
 ## Extracción de fuentes (una sola vez)
 
 Algunas fuentes no están en BigQuery de origen: se descargan de un sitio y se suben a staging como tablas nuevas.
-Esto ya está hecho y **no es parte del pipeline**; solo hace falta repetirlo para actualizar una fuente. Los
+Los scripts que lo hacen están en `src/ingestion/collection/`, aparte de los módulos del pipeline. Esto ya está
+hecho y **no es parte del pipeline**; solo hace falta repetirlo para actualizar una fuente. Los
 archivos descargados quedan en `data/descargas/`, una carpeta por fuente (no se suben al repositorio).
 
 | Fuente | Script | Tabla de staging | Tiempo |
 |---|---|---|---|
-| Kworb, Top 200 semanal completo | `python -m src.ingestion.kworb` | `stg_kworb_catalogo_completo`, `stg_kworb_mx_semanal_completo` | unas 5 horas (1.5 s entre páginas; se puede interrumpir y retomar) |
-| MusicBrainz, artistas nuevos | `python -m src.ingestion.musicbrainz` | `stg_musicbrainz_tags_completo` | unos 25 minutos |
-| ENDIREH 2021 (tabulado de INEGI, cuadro 21.2) | `python -m src.ingestion.endireh` | `stg_endireh_2021_prevalencias` | segundos |
-| ENDUTIH 2015–2025 (tabulados de INEGI) | `python -m src.ingestion.endutih` | `stg_endutih_usuarios_entidad_anio` | segundos |
-| Google Trends por género y por artista | descarga desde el navegador (`src/ingestion/trends_descarga.js`) | `stg_trends_macrogenero_anio`, `stg_trends_artista_anio` | unos 30 minutos |
+| Kworb, Top 200 semanal completo | `python -m src.ingestion.collection.kworb` | `stg_kworb_catalogo_completo`, `stg_kworb_mx_semanal_completo` | unas 5 horas (1.5 s entre páginas; se puede interrumpir y retomar) |
+| MusicBrainz, artistas nuevos | `python -m src.ingestion.collection.musicbrainz` | `stg_musicbrainz_tags_completo` | unos 25 minutos |
+| ENDIREH 2021 (tabulado de INEGI, cuadro 21.2) | `python -m src.ingestion.collection.endireh` | `stg_endireh_2021_prevalencias` | segundos |
+| ENDUTIH 2015–2025 (tabulados de INEGI) | `python -m src.ingestion.collection.endutih` | `stg_endutih_usuarios_entidad_anio` | segundos |
+| Google Trends por género y por artista | descarga desde el navegador (`src/ingestion/collection/trends_descarga.js`) | `stg_trends_macrogenero_anio`, `stg_trends_artista_anio`, `stg_trends_artista_anio_completo` | unos 30 minutos por tanda |
 
 Después de generar los CSV se suben con:
 
 ```bash
-python -m src.ingestion.carga_staging --tablas stg_endireh_2021_prevalencias
+python -m src.ingestion.collection.carga_staging --tablas stg_endireh_2021_prevalencias
 ```
 
 La carga usa `WRITE_EMPTY`: si la tabla ya existe en staging no se toca.
@@ -116,7 +117,8 @@ pipeline/
 ├── requirements.txt     versiones fijadas
 ├── src/
 │   ├── registro.py      registro de etapas
-│   ├── ingestion/       staging, ensamblado y extracción de fuentes
+│   ├── ingestion/       copia de staging, entidades, géneros y ensamblado
+│   │   └── collection/  scripts que recopilaron las fuentes nuevas y las subieron a staging
 │   ├── eda/             inspección, medidas, descriptiva, concentración, cobertura
 │   ├── cleaning/        calidad y limpieza
 │   ├── reduction/       χ², correlación, PCA
